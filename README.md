@@ -45,10 +45,10 @@ Internally, eclipse-juniter uses [WebDriverManager] to manage the required WebDr
 
 selenium-jupiter (Copyright &copy; 2017) is a personal project of [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][selenium-jupiter issues]!
 
-[Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
-[Selenium Webdriver]: http://docs.seleniumhq.org/projects/webdriver/
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Boni Garcia]: http://bonigarcia.github.io/
+[GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
+[Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
 [selenium-jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
+[Selenium Webdriver]: http://docs.seleniumhq.org/projects/webdriver/
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
-
