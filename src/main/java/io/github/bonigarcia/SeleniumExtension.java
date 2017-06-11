@@ -42,6 +42,12 @@ import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import io.github.bonigarcia.wdm.OperaDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
+/**
+ * Selenium extension for Jupiter (JUnit 5) tests.
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 1.0.0
+ */
 public class SeleniumExtension
         implements BeforeEachCallback, AfterEachCallback, ParameterResolver {
 

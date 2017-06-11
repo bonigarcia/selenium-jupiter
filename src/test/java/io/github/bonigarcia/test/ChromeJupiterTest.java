@@ -24,6 +24,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+/**
+ * Test with Chrome browsers.
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 1.0.0
+ */
 @ExtendWith(SeleniumExtension.class)
 public class ChromeJupiterTest {
 

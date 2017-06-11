@@ -24,6 +24,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+/**
+ * Test with Firefox browsers.
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 1.0.0
+ */
 @ExtendWith(SeleniumExtension.class)
 public class FirefoxJupiterTest {
 

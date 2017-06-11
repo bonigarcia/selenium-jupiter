@@ -24,6 +24,12 @@ import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+/**
+ * Test with WebDriver (Selenium interface).
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 1.0.0
+ */
 @ExtendWith(SeleniumExtension.class)
 public class WebDriverJupiterTest {
 
