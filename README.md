@@ -1,11 +1,10 @@
 # selenium-jupiter [![][Logo]][GitHub Repository]
 
-
-This library implements a Jupiter extension aimed to ease the use of Selenium WebDriver in JUnit 5 tests. **selenium-jupiter** is open source, released under the terms of [Apache 2.0 License].
+*selenium-jupiter* is a Jupiter extension aimed to ease the use of Selenium WebDriver in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Usage
 
-In order to use selenium-jupiter in a Maven project, first add the following dependency to your `pom.xml` (Java 8 required):
+In order to include *selenium-jupiter* in a Maven project, first add the following dependency to your `pom.xml` (Java 8 required):
 
 ```xml
 <dependency>
@@ -15,12 +14,15 @@ In order to use selenium-jupiter in a Maven project, first add the following dep
 </dependency>
 ```
 
-Once we have included this dependency, you can let selenium-jupiter to manage the WebDriver instances and inject them in your JUnit 5 tests as follows:
+*selenium-jupiter* will be tipically used by tests. In that case, the scope of the dependency should be test (`<scope>test</scope>`).
+
+Once we have included this dependency, *selenium-jupiter* will manage the WebDriver instances and inject them as parameters in your JUnit 5 tests:
 
 ```java
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
