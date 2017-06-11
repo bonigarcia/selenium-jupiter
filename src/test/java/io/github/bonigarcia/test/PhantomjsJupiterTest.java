@@ -18,6 +18,7 @@ package io.github.bonigarcia.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -27,6 +28,7 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class PhantomjsJupiterTest {
 
+    @Disabled("Latest PhantomJS version (2.5.0-beta) is buggy for Linux at this moment")
     @Test
     public void test(PhantomJSDriver phantomjs) {
         phantomjs.get("http://junit.org/junit5/");
