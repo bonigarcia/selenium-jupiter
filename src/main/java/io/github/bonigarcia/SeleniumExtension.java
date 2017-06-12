@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -48,8 +47,7 @@ import io.github.bonigarcia.wdm.PhantomJsDriverManager;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-public class SeleniumExtension
-        implements BeforeEachCallback, AfterEachCallback, ParameterResolver {
+public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     private boolean chrome, firefox, opera, iexplorer, edge, phantomjs;
 
@@ -110,10 +108,6 @@ public class SeleniumExtension
         }
 
         return webDriver;
-    }
-
-    @Override
-    public void beforeEach(TestExtensionContext context) throws Exception {
     }
 
     @Override
