@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,19 +26,8 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestExtensionContext;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.EdgeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
-import io.github.bonigarcia.wdm.OperaDriverManager;
-import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Selenium extension for Jupiter (JUnit 5) tests.
@@ -49,74 +37,41 @@ import io.github.bonigarcia.wdm.PhantomJsDriverManager;
  */
 public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
-    private boolean chrome, firefox, opera, iexplorer, edge, phantomjs;
-
     private List<WebDriver> webDriverList = new ArrayList<>();
+    private List<Class<?>> typeList = new ArrayList<>();
 
     @Override
     public boolean supports(ParameterContext parameterContext,
             ExtensionContext extensionContext)
             throws ParameterResolutionException {
-        Parameter parameter = parameterContext.getParameter();
-        return WebDriver.class.isAssignableFrom(parameter.getType());
+        Class<?> type = parameterContext.getParameter().getType();
+        return WebDriver.class.isAssignableFrom(type) && !type.isInterface();
     }
 
     @Override
     public Object resolve(ParameterContext parameterContext,
             ExtensionContext extensionContext)
             throws ParameterResolutionException {
-
-        Parameter parameter = parameterContext.getParameter();
-        Class<?> type = parameter.getType();
-        WebDriver webDriver = null;
-
-        if (type == ChromeDriver.class) {
-            if (!chrome) {
-                chrome = true;
-                ChromeDriverManager.getInstance().setup();
-            }
-            webDriver = new ChromeDriver();
-        } else if (type == FirefoxDriver.class) {
-            if (!firefox) {
-                FirefoxDriverManager.getInstance().setup();
-            }
-            webDriver = new FirefoxDriver();
-        } else if (type == OperaDriver.class) {
-            if (!opera) {
-                OperaDriverManager.getInstance().setup();
-            }
-            webDriver = new OperaDriver();
-        } else if (type == InternetExplorerDriver.class) {
-            if (!iexplorer) {
-                InternetExplorerDriverManager.getInstance().setup();
-            }
-            webDriver = new InternetExplorerDriver();
-        } else if (type == EdgeDriver.class) {
-            if (!edge) {
-                EdgeDriverManager.getInstance().setup();
-            }
-            webDriver = new EdgeDriver();
-        } else if (type == PhantomJSDriver.class) {
-            if (!phantomjs) {
-                PhantomJsDriverManager.getInstance().setup();
-            }
-            webDriver = new PhantomJSDriver();
+        Class<?> type = parameterContext.getParameter().getType();
+        if (!typeList.contains(type)) {
+            typeList.add(type);
+            WebDriverManager.getInstance(type).setup();
         }
 
-        if (webDriver != null) {
+        WebDriver webDriver;
+        try {
+            webDriver = (WebDriver) type.newInstance();
             webDriverList.add(webDriver);
+        } catch (Exception e) {
+            throw new ParameterResolutionException(
+                    "Exception creating instance of " + type.getName(), e);
         }
-
         return webDriver;
     }
 
     @Override
     public void afterEach(TestExtensionContext context) throws Exception {
-        for (WebDriver w : webDriverList) {
-            if (w != null) {
-                w.close();
-            }
-        }
+        webDriverList.forEach(webdriver -> webdriver.close());
         webDriverList.clear();
     }
 
