@@ -35,6 +35,8 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -56,6 +58,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     public static final String BINARY = "binary";
     public static final String EXTENSIONS = "extensions";
     public static final String EXTENSION_FILES = "extensionFiles";
+    public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
 
     protected static final Logger log = LoggerFactory
             .getLogger(SeleniumExtension.class);
@@ -98,6 +101,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             FirefoxOptions firefoxOptions = getFirefoxOptions(parameter);
             firefoxOptions.addCapabilities(capabilities);
             webDriver = new FirefoxDriver(firefoxOptions);
+
+        } else if (type == EdgeDriver.class) {
+            EdgeOptions edgeOptions = getEdgeOptions(parameter);
+            ((DesiredCapabilities) capabilities)
+                    .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
+            webDriver = new EdgeDriver(capabilities);
 
         } else if (type == RemoteWebDriver.class) {
             Optional<URL> url = getUrl(parameter);
@@ -189,6 +198,26 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
         }
         return firefoxOptions;
+    }
+
+    private EdgeOptions getEdgeOptions(Parameter parameter) {
+        DriverOptions driverOptions = parameter
+                .getAnnotation(DriverOptions.class);
+        EdgeOptions edgeOptions = new EdgeOptions();
+        if (driverOptions != null) {
+            for (Option option : driverOptions.options()) {
+                String name = option.name();
+                String value = option.value();
+                switch (name) {
+                case PAGE_LOAD_STRATEGY:
+                    edgeOptions.setPageLoadStrategy(value);
+                    break;
+                default:
+                    log.warn("Option {} not supported for Edge", name);
+                }
+            }
+        }
+        return edgeOptions;
     }
 
     private Capabilities getCapabilities(Parameter parameter) {

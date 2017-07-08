@@ -14,10 +14,11 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.basic;
+package io.github.bonigarcia.test.advance;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,7 +34,8 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class ForceCacheJupiterTest {
 
-    static {
+    @BeforeAll
+    static void setup() {
         System.setProperty("wdm.forceCache", "true");
     }
 
