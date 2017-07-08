@@ -43,6 +43,8 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,11 +58,21 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  */
 public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
+    // Chrome, Firefox, Opera
     public static final String ARGS = "args";
     public static final String BINARY = "binary";
+
+    // Chrome, Opera
     public static final String EXTENSIONS = "extensions";
     public static final String EXTENSION_FILES = "extensionFiles";
+
+    // Edge
     public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
+
+    // Safari
+    public static final String PORT = "port";
+    public static final String USE_CLEAN_SESSION = "useCleanSession";
+    public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
 
     protected static final Logger log = LoggerFactory
             .getLogger(SeleniumExtension.class);
@@ -115,6 +127,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             ((DesiredCapabilities) capabilities)
                     .setCapability(OperaOptions.CAPABILITY, operaOptions);
             webDriver = new OperaDriver(capabilities);
+
+        } else if (type == SafariDriver.class) {
+            SafariOptions safariOptions = getSafariOptions(parameter);
+            ((DesiredCapabilities) capabilities)
+                    .setCapability(SafariOptions.CAPABILITY, safariOptions);
+            webDriver = new SafariDriver(capabilities);
 
         } else if (type == RemoteWebDriver.class) {
             Optional<URL> url = getUrl(parameter);
@@ -255,6 +273,53 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
         }
         return operaOptions;
+    }
+
+    private SafariOptions getSafariOptions(Parameter parameter) {
+        DriverOptions driverOptions = parameter
+                .getAnnotation(DriverOptions.class);
+        SafariOptions safariOptions = new SafariOptions();
+        if (driverOptions != null) {
+            for (Option option : driverOptions.options()) {
+                String name = option.name();
+                String value = option.value();
+                switch (name) {
+                case PAGE_LOAD_STRATEGY:
+                    if (isNumeric(value)) {
+                        safariOptions.setPort(Integer.parseInt(value));
+                    } else {
+                        log.warn("Port {} not valid for Safari options", value);
+                    }
+                    break;
+
+                case USE_CLEAN_SESSION:
+                    if (isBoolean(value)) {
+                        safariOptions
+                                .setUseCleanSession(Boolean.valueOf(value));
+                    } else {
+                        log.warn(
+                                "UseCleanSession {} not valid for Safari options",
+                                value);
+                    }
+                    break;
+
+                case USE_TECHNOLOGY_PREVIEW:
+                    if (isBoolean(value)) {
+                        safariOptions.setUseTechnologyPreview(
+                                Boolean.valueOf(value));
+                    } else {
+                        log.warn(
+                                "UseTechnologyPreview {} not valid for Safari options",
+                                value);
+                    }
+                    break;
+
+                default:
+                    log.warn("Option {} not supported for Edge", name);
+                }
+            }
+        }
+        return safariOptions;
     }
 
     private Capabilities getCapabilities(Parameter parameter) {
