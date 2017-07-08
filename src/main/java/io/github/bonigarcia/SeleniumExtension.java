@@ -27,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import org.junit.jupiter.api.extension.TestExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -63,7 +62,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     private Options optionsParser = new Options();
 
     @Override
-    public boolean supports(ParameterContext parameterContext,
+    public boolean supportsParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext)
             throws ParameterResolutionException {
         Class<?> type = parameterContext.getParameter().getType();
@@ -71,7 +70,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     }
 
     @Override
-    public Object resolve(ParameterContext parameterContext,
+    public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext)
             throws ParameterResolutionException {
         Parameter parameter = parameterContext.getParameter();
@@ -151,9 +150,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     }
 
     @Override
-    public void afterEach(TestExtensionContext context) throws Exception {
+    public void afterEach(ExtensionContext context) throws Exception {
         webDriverList.forEach(webdriver -> webdriver.quit());
         webDriverList.clear();
     }
-
 }
