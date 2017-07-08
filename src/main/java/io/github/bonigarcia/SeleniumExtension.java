@@ -16,15 +16,12 @@
  */
 package io.github.bonigarcia;
 
-import java.io.File;
 import java.lang.reflect.Parameter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -58,27 +55,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  */
 public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
-    // Chrome, Firefox, Opera
-    public static final String ARGS = "args";
-    public static final String BINARY = "binary";
-
-    // Chrome, Opera
-    public static final String EXTENSIONS = "extensions";
-    public static final String EXTENSION_FILES = "extensionFiles";
-
-    // Edge
-    public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
-
-    // Safari
-    public static final String PORT = "port";
-    public static final String USE_CLEAN_SESSION = "useCleanSession";
-    public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
-
     protected static final Logger log = LoggerFactory
             .getLogger(SeleniumExtension.class);
 
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
+    private Options optionsParser = new Options();
 
     @Override
     public boolean supports(ParameterContext parameterContext,
@@ -103,39 +85,43 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         }
 
         WebDriver webDriver = null;
-        Capabilities capabilities = getCapabilities(parameter);
+        Capabilities capabilities = optionsParser.getCapabilities(parameter);
 
         if (type == ChromeDriver.class) {
-            ChromeOptions chromeOptions = getChromeOptions(parameter);
+            ChromeOptions chromeOptions = optionsParser
+                    .getChromeOptions(parameter);
             ((DesiredCapabilities) capabilities)
                     .setCapability(ChromeOptions.CAPABILITY, chromeOptions);
             webDriver = new ChromeDriver(capabilities);
 
         } else if (type == FirefoxDriver.class) {
-            FirefoxOptions firefoxOptions = getFirefoxOptions(parameter);
+            FirefoxOptions firefoxOptions = optionsParser
+                    .getFirefoxOptions(parameter);
             firefoxOptions.addCapabilities(capabilities);
             webDriver = new FirefoxDriver(firefoxOptions);
 
         } else if (type == EdgeDriver.class) {
-            EdgeOptions edgeOptions = getEdgeOptions(parameter);
+            EdgeOptions edgeOptions = optionsParser.getEdgeOptions(parameter);
             ((DesiredCapabilities) capabilities)
                     .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
             webDriver = new EdgeDriver(capabilities);
 
         } else if (type == OperaDriver.class) {
-            OperaOptions operaOptions = getOperaOptions(parameter);
+            OperaOptions operaOptions = optionsParser
+                    .getOperaOptions(parameter);
             ((DesiredCapabilities) capabilities)
                     .setCapability(OperaOptions.CAPABILITY, operaOptions);
             webDriver = new OperaDriver(capabilities);
 
         } else if (type == SafariDriver.class) {
-            SafariOptions safariOptions = getSafariOptions(parameter);
+            SafariOptions safariOptions = optionsParser
+                    .getSafariOptions(parameter);
             ((DesiredCapabilities) capabilities)
                     .setCapability(SafariOptions.CAPABILITY, safariOptions);
             webDriver = new SafariDriver(capabilities);
 
         } else if (type == RemoteWebDriver.class) {
-            Optional<URL> url = getUrl(parameter);
+            Optional<URL> url = optionsParser.getUrl(parameter);
             if (url.isPresent()) {
                 webDriver = new RemoteWebDriver(url.get(), capabilities);
             } else {
@@ -150,8 +136,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                         .getDeclaredConstructor(Capabilities.class)
                         .newInstance(capabilities);
             } catch (Exception e) {
-                throw new ParameterResolutionException(
-                        "Exception creating instance of " + type.getName(), e);
+                String errorMessage = "Exception creating instance of "
+                        + type.getName();
+                log.error(errorMessage, e);
+                throw new SeleniumJupiterException(errorMessage, e);
             }
         }
 
@@ -166,198 +154,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     public void afterEach(TestExtensionContext context) throws Exception {
         webDriverList.forEach(webdriver -> webdriver.quit());
         webDriverList.clear();
-    }
-
-    private ChromeOptions getChromeOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-        ChromeOptions chromeOptions = new ChromeOptions();
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    chromeOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    chromeOptions.setBinary(value);
-                    break;
-                case EXTENSIONS:
-                    chromeOptions.addEncodedExtensions(value);
-                    break;
-                case EXTENSION_FILES:
-                    chromeOptions.addExtensions(new File(value));
-                    break;
-                default:
-                    chromeOptions.setExperimentalOption(name, value);
-                }
-            }
-        }
-        return chromeOptions;
-    }
-
-    private FirefoxOptions getFirefoxOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    firefoxOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    firefoxOptions.setBinary(value);
-                    break;
-                default:
-                    if (isBoolean(value)) {
-                        firefoxOptions.addPreference(name,
-                                Boolean.valueOf(value));
-                    } else if (isNumeric(value)) {
-                        firefoxOptions.addPreference(name,
-                                Integer.parseInt(value));
-                    } else {
-                        firefoxOptions.addPreference(name, value);
-                    }
-                }
-            }
-        }
-        return firefoxOptions;
-    }
-
-    private EdgeOptions getEdgeOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-        EdgeOptions edgeOptions = new EdgeOptions();
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case PAGE_LOAD_STRATEGY:
-                    edgeOptions.setPageLoadStrategy(value);
-                    break;
-                default:
-                    log.warn("Option {} not supported for Edge", name);
-                }
-            }
-        }
-        return edgeOptions;
-    }
-
-    private OperaOptions getOperaOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-        OperaOptions operaOptions = new OperaOptions();
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    operaOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    operaOptions.setBinary(value);
-                    break;
-                case EXTENSIONS:
-                    operaOptions.addEncodedExtensions(value);
-                    break;
-                case EXTENSION_FILES:
-                    operaOptions.addExtensions(new File(value));
-                    break;
-                default:
-                    operaOptions.setExperimentalOption(name, value);
-                }
-            }
-        }
-        return operaOptions;
-    }
-
-    private SafariOptions getSafariOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-        SafariOptions safariOptions = new SafariOptions();
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case PAGE_LOAD_STRATEGY:
-                    if (isNumeric(value)) {
-                        safariOptions.setPort(Integer.parseInt(value));
-                    } else {
-                        log.warn("Port {} not valid for Safari options", value);
-                    }
-                    break;
-
-                case USE_CLEAN_SESSION:
-                    if (isBoolean(value)) {
-                        safariOptions
-                                .setUseCleanSession(Boolean.valueOf(value));
-                    } else {
-                        log.warn(
-                                "UseCleanSession {} not valid for Safari options",
-                                value);
-                    }
-                    break;
-
-                case USE_TECHNOLOGY_PREVIEW:
-                    if (isBoolean(value)) {
-                        safariOptions.setUseTechnologyPreview(
-                                Boolean.valueOf(value));
-                    } else {
-                        log.warn(
-                                "UseTechnologyPreview {} not valid for Safari options",
-                                value);
-                    }
-                    break;
-
-                default:
-                    log.warn("Option {} not supported for Edge", name);
-                }
-            }
-        }
-        return safariOptions;
-    }
-
-    private Capabilities getCapabilities(Parameter parameter) {
-        DriverCapabilities driverCapabilities = parameter
-                .getAnnotation(DriverCapabilities.class);
-        Capabilities capabilities = new DesiredCapabilities();
-
-        if (driverCapabilities != null) {
-            for (Capability capability : driverCapabilities.capability()) {
-                ((DesiredCapabilities) capabilities)
-                        .setCapability(capability.name(), capability.value());
-            }
-        }
-        return capabilities;
-    }
-
-    private Optional<URL> getUrl(Parameter parameter) {
-        DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
-        Optional<URL> out = Optional.empty();
-        if (driverUrl != null) {
-            String value = driverUrl.value();
-            try {
-                out = Optional.of(new URL(value));
-            } catch (MalformedURLException e) {
-                log.warn("Bad URL {}", value, e);
-            }
-        }
-        return out;
-    }
-
-    private boolean isBoolean(String s) {
-        return s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false");
-    }
-
-    private boolean isNumeric(String s) {
-        return StringUtils.isNumeric(s);
     }
 
 }

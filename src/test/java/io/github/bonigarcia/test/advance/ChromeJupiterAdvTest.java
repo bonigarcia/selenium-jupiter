@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static io.github.bonigarcia.SeleniumExtension.ARGS;
+import static io.github.bonigarcia.Options.ARGS;
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,8 +56,8 @@ public class ChromeJupiterAdvTest {
         chrome.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
 
-        // Wait 10 seconds to see the page
-        sleep(10000);
+        // Wait 3 seconds to see the page
+        sleep(3000);
     }
 
 }

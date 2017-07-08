@@ -45,8 +45,8 @@ public class FirefoxJupiterAdvTest {
         firefox.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
 
-        // Wait 10 seconds to see the page
-        sleep(10000);
+        // Wait 3 seconds to see the page
+        sleep(3000);
     }
 
 }

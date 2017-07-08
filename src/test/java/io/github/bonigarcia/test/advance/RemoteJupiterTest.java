@@ -55,7 +55,7 @@ public class RemoteJupiterTest {
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=chrome,version=59", "-port", "5555" });
 
-        // Register Firefos in hub
+        // Register Firefox in hub
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
@@ -71,27 +71,27 @@ public class RemoteJupiterTest {
 
     @Test
     void testWithChrome(
-            @DriverCapabilities(capability = {
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
                     @Capability(name = "browserName", value = "chrome"),
-                    @Capability(name = "version", value = "59") }) @DriverUrl("http://localhost:4444/wd/hub") RemoteWebDriver remoteChrome)
+                    @Capability(name = "version", value = "59") }) RemoteWebDriver remoteChrome)
             throws InterruptedException {
         exercise(remoteChrome);
     }
 
     @Test
     void testWithFirefox(
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "firefox") }) @DriverUrl("http://localhost:4444/wd/hub") RemoteWebDriver remoteFirefox)
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
+                    @Capability(name = "browserName", value = "firefox") }) RemoteWebDriver remoteFirefox)
             throws InterruptedException {
         exercise(remoteFirefox);
     }
 
     @Test
     void testWithChromeAndFirefox(
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome") }) @DriverUrl("http://localhost:4444/wd/hub") RemoteWebDriver remoteChrome,
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "firefox") }) @DriverUrl("http://localhost:4444/wd/hub") RemoteWebDriver remoteFirefox)
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
+                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome,
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
+                    @Capability(name = "browserName", value = "firefox") }) RemoteWebDriver remoteFirefox)
             throws InterruptedException {
         exercise(remoteChrome);
         exercise(remoteFirefox);
