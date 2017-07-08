@@ -14,29 +14,42 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test;
+package io.github.bonigarcia.test.basic;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
 /**
- * Test with PhatomJS headless browser.
+ * Test with Chrome browsers.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
 @ExtendWith(SeleniumExtension.class)
-public class PhantomjsJupiterTest {
+public class ChromeJupiterTest {
 
     @Test
-    public void test(PhantomJSDriver phantomjs) {
-        phantomjs.get("http://junit.org/junit5/");
-        assertNotNull(phantomjs.getPageSource());
+    public void test1(ChromeDriver chrome) {
+        chrome.get("http://www.seleniumhq.org/");
+        String title = chrome.getTitle();
+
+        assertTrue(title.equals("Selenium - Web Browser Automation"));
+    }
+
+    @Test
+    public void test2(ChromeDriver chrome1, ChromeDriver chrome2) {
+        chrome1.get("http://www.seleniumhq.org/");
+        String title1 = chrome1.getTitle();
+        chrome2.get("http://junit.org/junit5/");
+        String title2 = chrome2.getTitle();
+
+        assertTrue(title1.equals("Selenium - Web Browser Automation"));
+        assertTrue(title2.equals("JUnit 5"));
     }
 
 }

@@ -14,35 +14,23 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test;
+package io.github.bonigarcia;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import io.github.bonigarcia.SeleniumExtension;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Test with Chrome browser forcing the use of cache.
+ * Annotation for capabilities.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-@ExtendWith(SeleniumExtension.class)
-public class ForceCacheJupiterTest {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface DriverCapabilities {
 
-    static {
-        System.setProperty("wdm.forceCache", "true");
-    }
-
-    @Test
-    public void test(ChromeDriver chrome) {
-        chrome.get("http://www.seleniumhq.org/");
-        String title = chrome.getTitle();
-
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
-    }
+    public Capability[] capability();
 
 }

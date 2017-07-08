@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test;
+package io.github.bonigarcia.test.basic;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -9,8 +9,9 @@
     <properties>
         <!-- Dependencies -->
         <selenium-java.version>3.4.0</selenium-java.version>
+        <selenium-server.version>3.4.0</selenium-server.version>
         <webdrivermanager.version>1.7.0</webdrivermanager.version>
-        <slf4j.version>1.7.12</slf4j.version>
+        <slf4j.version>1.7.24</slf4j.version>
 
         <!-- Test dependencies -->
         <junit.jupiter.version>5.0.0-M4</junit.jupiter.version>
@@ -76,6 +77,11 @@
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
         <!-- provided -->
         <dependency>
@@ -94,15 +100,14 @@
         <!-- test -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>${selenium-server.version}</version>
         </dependency>
     </dependencies>
 
