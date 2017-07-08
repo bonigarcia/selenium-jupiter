@@ -39,6 +39,8 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -107,6 +109,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             ((DesiredCapabilities) capabilities)
                     .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
             webDriver = new EdgeDriver(capabilities);
+
+        } else if (type == OperaDriver.class) {
+            OperaOptions operaOptions = getOperaOptions(parameter);
+            ((DesiredCapabilities) capabilities)
+                    .setCapability(OperaOptions.CAPABILITY, operaOptions);
+            webDriver = new OperaDriver(capabilities);
 
         } else if (type == RemoteWebDriver.class) {
             Optional<URL> url = getUrl(parameter);
@@ -218,6 +226,35 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
         }
         return edgeOptions;
+    }
+
+    private OperaOptions getOperaOptions(Parameter parameter) {
+        DriverOptions driverOptions = parameter
+                .getAnnotation(DriverOptions.class);
+        OperaOptions operaOptions = new OperaOptions();
+        if (driverOptions != null) {
+            for (Option option : driverOptions.options()) {
+                String name = option.name();
+                String value = option.value();
+                switch (name) {
+                case ARGS:
+                    operaOptions.addArguments(value);
+                    break;
+                case BINARY:
+                    operaOptions.setBinary(value);
+                    break;
+                case EXTENSIONS:
+                    operaOptions.addEncodedExtensions(value);
+                    break;
+                case EXTENSION_FILES:
+                    operaOptions.addExtensions(new File(value));
+                    break;
+                default:
+                    operaOptions.setExperimentalOption(name, value);
+                }
+            }
+        }
+        return operaOptions;
     }
 
     private Capabilities getCapabilities(Parameter parameter) {
