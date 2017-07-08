@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -34,6 +35,8 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -90,6 +93,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             ((DesiredCapabilities) capabilities)
                     .setCapability(ChromeOptions.CAPABILITY, chromeOptions);
             webDriver = new ChromeDriver(capabilities);
+
+        } else if (type == FirefoxDriver.class) {
+            FirefoxOptions firefoxOptions = getFirefoxOptions(parameter);
+            firefoxOptions.addCapabilities(capabilities);
+            webDriver = new FirefoxDriver(firefoxOptions);
 
         } else if (type == RemoteWebDriver.class) {
             Optional<URL> url = getUrl(parameter);
@@ -152,6 +160,37 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         return chromeOptions;
     }
 
+    private FirefoxOptions getFirefoxOptions(Parameter parameter) {
+        DriverOptions driverOptions = parameter
+                .getAnnotation(DriverOptions.class);
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        if (driverOptions != null) {
+            for (Option option : driverOptions.options()) {
+                String name = option.name();
+                String value = option.value();
+                switch (name) {
+                case ARGS:
+                    firefoxOptions.addArguments(value);
+                    break;
+                case BINARY:
+                    firefoxOptions.setBinary(value);
+                    break;
+                default:
+                    if (isBoolean(value)) {
+                        firefoxOptions.addPreference(name,
+                                Boolean.valueOf(value));
+                    } else if (isNumeric(value)) {
+                        firefoxOptions.addPreference(name,
+                                Integer.parseInt(value));
+                    } else {
+                        firefoxOptions.addPreference(name, value);
+                    }
+                }
+            }
+        }
+        return firefoxOptions;
+    }
+
     private Capabilities getCapabilities(Parameter parameter) {
         DriverCapabilities driverCapabilities = parameter
                 .getAnnotation(DriverCapabilities.class);
@@ -178,6 +217,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
         }
         return out;
+    }
+
+    private boolean isBoolean(String s) {
+        return s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false");
+    }
+
+    private boolean isNumeric(String s) {
+        return StringUtils.isNumeric(s);
     }
 
 }
