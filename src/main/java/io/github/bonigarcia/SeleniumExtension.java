@@ -146,7 +146,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         } else {
             // Any other
             try {
-                webDriver = (WebDriver) type.newInstance();
+                webDriver = (WebDriver) type
+                        .getDeclaredConstructor(Capabilities.class)
+                        .newInstance(capabilities);
             } catch (Exception e) {
                 throw new ParameterResolutionException(
                         "Exception creating instance of " + type.getName(), e);
