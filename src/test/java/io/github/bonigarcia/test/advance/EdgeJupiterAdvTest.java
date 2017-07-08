@@ -20,6 +20,7 @@ import static io.github.bonigarcia.SeleniumExtension.PAGE_LOAD_STRATEGY;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -34,6 +35,7 @@ import io.github.bonigarcia.SeleniumExtension;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
+@Disabled
 @ExtendWith(SeleniumExtension.class)
 public class EdgeJupiterAdvTest {
 
