@@ -39,8 +39,7 @@ public class ChromeJupiterAdvTest {
 
     @Test
     void headlessTest(@DriverOptions(options = {
-            @Option(name = ARGS, value = "--headless"),
-            @Option(name = ARGS, value = "--disable-gpu") }) ChromeDriver chrome) {
+            @Option(name = ARGS, value = "--headless") }) ChromeDriver chrome) {
         chrome.get("http://www.seleniumhq.org/");
         String title = chrome.getTitle();
 
