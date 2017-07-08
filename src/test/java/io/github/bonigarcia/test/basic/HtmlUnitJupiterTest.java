@@ -16,42 +16,31 @@
  */
 package io.github.bonigarcia.test.basic;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
 /**
- * Test with Chrome browsers.
+ * Test with HtmlUnit.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
 @ExtendWith(SeleniumExtension.class)
-public class OtherJupiterTest {
+public class HtmlUnitJupiterTest {
 
     @Disabled("WebDriverManager 1.7.1 required")
     @Test
-    public void htmlUnitTest(HtmlUnitDriver htmlUnitDriver) {
+    public void test(HtmlUnitDriver htmlUnitDriver) {
         htmlUnitDriver.get("http://www.seleniumhq.org/");
         String title = htmlUnitDriver.getTitle();
 
         assertTrue(title.equals("Selenium - Web Browser Automation"));
-    }
-
-    @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
-    @Test
-    public void safariTest(SafariDriver safari) {
-        assertThrows(ParameterResolutionException.class, () -> {
-            safari.get("http://www.seleniumhq.org/");
-        });
     }
 
 }
