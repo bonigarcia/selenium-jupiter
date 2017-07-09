@@ -45,7 +45,7 @@ Internally, eclipse-jupiter uses [WebDriverManager] to manage the required WebDr
 
 ## Documentation
 
-You can find more details about this extension taking a look to the [selenium-jupiter documentation].
+You can find more details about this extension taking a look to the [selenium-jupiter user guide].
 
 
 ## About
@@ -56,7 +56,7 @@ selenium-jupiter (Copyright &copy; 2017) is a project by [Boni Garcia] licensed 
 [Boni Garcia]: http://bonigarcia.github.io/
 [GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
 [Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
-[selenium-jupiter documentation]: https://bonigarcia.github.io/selenium-jupiter/
+[selenium-jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
 [selenium-jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
 [Selenium Webdriver]: http://docs.seleniumhq.org/projects/webdriver/
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
