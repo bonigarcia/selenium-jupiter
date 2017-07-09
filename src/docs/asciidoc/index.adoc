@@ -1,4 +1,4 @@
-= *_selenium-jupiter_*: JUnit 5 extension for Selenium WebDriver
+= *_selenium-jupiter_*: A JUnit 5 extension for Selenium WebDriver
 Boni García <boni.garcia@urjc.es>
 Version {project-version}
 
