@@ -17,10 +17,13 @@
         <junit.jupiter.version>5.0.0-M5</junit.jupiter.version>
         <junit.platform.version>1.0.0-M5</junit.platform.version>
 
-        <!-- Pluigns -->
+        <!-- Plugins -->
         <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <maven-asciidoctor-plugin.version>1.5.5</maven-asciidoctor-plugin.version>
+        <asciidoctorj-pdf.version>1.5.0-alpha.15</asciidoctorj-pdf.version>
+        <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
 
         <!-- Java 8 -->
         <java.version>1.8</java.version>
@@ -34,7 +37,7 @@
 
     <name>selenium-jupiter</name>
     <description>
-		Jupiter extension aimed to ease the use of Selenium WebDriver in JUnit 5 tests
+		JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests
 	</description>
     <url>https://github.com/bonigarcia/selenium-jupiter</url>
 
@@ -133,6 +136,86 @@
                         <version>${junit.jupiter.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${maven-asciidoctor-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-pdf</artifactId>
+                        <version>${asciidoctorj-pdf.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+                    <attributes>
+                        <endpoint-url>http://example.org</endpoint-url>
+                        <sourcedir>${project.build.sourceDirectory}</sourcedir>
+                        <project-version>${project.version}</project-version>
+                    </attributes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>asciidoc-to-html</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <stylesheet>css/styles.css</stylesheet>
+                                <imagesdir>./img</imagesdir>
+                                <toc>left</toc>
+                                <icons>font</icons>
+                                <sectanchors>true</sectanchors>
+                                <idprefix />
+                                <idseparator>-</idseparator>
+                                <docinfo1>true</docinfo1>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>asciidoc-to-pdf</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>pdf</backend>
+                            <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <pagenums />
+                                <toc />
+                                <idprefix />
+                                <idseparator>-</idseparator>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>${copy-rename-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>rename-file</id>
+                        <phase>post-site</phase>
+                        <goals>
+                            <goal>rename</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.build.directory}/generated-docs/index.pdf</sourceFile>
+                            <destinationFile>${project.build.directory}/generated-docs/selenium-jupiter.pdf</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

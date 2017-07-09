@@ -83,6 +83,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             WebDriverManager.getInstance(type).setup();
         }
 
+        // Instantiate WebDriver
         WebDriver webDriver = null;
         Capabilities capabilities = optionsParser.getCapabilities(parameter);
 
@@ -129,7 +130,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
 
         } else {
-            // Any other
+            // Other WebDriver type
             try {
                 webDriver = (WebDriver) type
                         .getDeclaredConstructor(Capabilities.class)

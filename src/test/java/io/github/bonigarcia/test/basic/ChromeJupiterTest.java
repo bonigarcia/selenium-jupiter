@@ -30,6 +30,7 @@ import io.github.bonigarcia.SeleniumExtension;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
+//tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class ChromeJupiterTest {
 
@@ -53,3 +54,4 @@ public class ChromeJupiterTest {
     }
 
 }
+//end::snippet-in-doc[]

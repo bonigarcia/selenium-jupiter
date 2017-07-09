@@ -1,0 +1,3 @@
+== About
+
+selenium-jupiter (Copyright © 2017) is a project of Boni Garcia licensed under Apache 2.0 License. Comments, questions and suggestions are always very welcome!
