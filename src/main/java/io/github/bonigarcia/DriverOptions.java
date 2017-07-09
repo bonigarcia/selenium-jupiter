@@ -29,9 +29,9 @@ import java.lang.annotation.Target;
  * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
+@Target({ ElementType.PARAMETER, ElementType.FIELD })
 public @interface DriverOptions {
 
-    public Option[] options();
+    public Option[] options() default {};
 
 }
