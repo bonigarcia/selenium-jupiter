@@ -74,7 +74,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             ExtensionContext extensionContext)
             throws ParameterResolutionException {
         Parameter parameter = parameterContext.getParameter();
-
+        Optional<Object> testInstance = extensionContext.getTestInstance();
         Class<?> type = parameter.getType();
 
         // WebDriverManager
@@ -121,12 +121,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             webDriver = new SafariDriver(capabilities);
 
         } else if (type == RemoteWebDriver.class) {
-            Optional<URL> url = optionsParser.getUrl(parameter);
+            Optional<URL> url = optionsParser.getUrl(parameter, testInstance);
             if (url.isPresent()) {
                 webDriver = new RemoteWebDriver(url.get(), capabilities);
             } else {
-                log.warn(
-                        "Was not possible to instantiate RemoteWebDriver, URL not present");
+                log.warn("Was not possible to instantiate RemoteWebDriver,"
+                        + " URL not present");
             }
 
         } else {
