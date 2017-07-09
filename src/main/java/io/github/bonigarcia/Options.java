@@ -61,10 +61,15 @@ public class Options {
 
     protected static final Logger log = LoggerFactory.getLogger(Options.class);
 
-    protected ChromeOptions getChromeOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+    protected ChromeOptions getChromeOptions(Parameter parameter,
+            Optional<Object> testInstance) {
         ChromeOptions chromeOptions = new ChromeOptions();
+        Class<DriverOptions> driverOptionsClass = DriverOptions.class;
+
+        DriverOptions driverOptions = parameter
+                .getAnnotation(driverOptionsClass);
+
+        // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
@@ -86,7 +91,15 @@ public class Options {
                     chromeOptions.setExperimentalOption(name, value);
                 }
             }
+        } else {
+            // If not, search DriverOptions in any field
+            Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                    testInstance, driverOptionsClass);
+            if (annotatedField.isPresent()) {
+                chromeOptions = (ChromeOptions) annotatedField.get();
+            }
         }
+
         return chromeOptions;
     }
 

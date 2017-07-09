@@ -89,7 +89,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         if (type == ChromeDriver.class) {
             ChromeOptions chromeOptions = optionsParser
-                    .getChromeOptions(parameter);
+                    .getChromeOptions(parameter, testInstance);
             ((DesiredCapabilities) capabilities)
                     .setCapability(ChromeOptions.CAPABILITY, chromeOptions);
             webDriver = new ChromeDriver(capabilities);
