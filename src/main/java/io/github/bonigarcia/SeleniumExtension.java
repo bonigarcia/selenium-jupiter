@@ -109,7 +109,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         } else if (type == EdgeDriver.class) {
             EdgeOptions edgeOptions = annotationsReader
-                    .getEdgeOptions(parameter);
+                    .getEdgeOptions(parameter, testInstance);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
                         .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
