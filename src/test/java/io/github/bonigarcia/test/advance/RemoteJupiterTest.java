@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.grid.selenium.GridLauncherV3;
@@ -41,7 +40,6 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
  * @since 1.0.0
  */
 @ExtendWith(SeleniumExtension.class)
-@Disabled("WebDriverManager 1.7.1 required")
 public class RemoteJupiterTest {
 
     @BeforeAll

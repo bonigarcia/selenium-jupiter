@@ -18,7 +18,6 @@ package io.github.bonigarcia.test.basic;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -34,7 +33,6 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class HtmlUnitJupiterTest {
 
-    @Disabled("WebDriverManager 1.7.1 required")
     @Test
     public void test(HtmlUnitDriver htmlUnitDriver) {
         htmlUnitDriver.get("http://www.seleniumhq.org/");

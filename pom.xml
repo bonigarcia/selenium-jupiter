@@ -9,13 +9,13 @@
     <properties>
         <!-- Dependencies -->
         <selenium-java.version>3.4.0</selenium-java.version>
-        <selenium-server.version>3.4.0</selenium-server.version>
-        <webdrivermanager.version>1.7.0</webdrivermanager.version>
+        <webdrivermanager.version>1.7.1</webdrivermanager.version>
         <slf4j.version>1.7.24</slf4j.version>
 
         <!-- Test dependencies -->
         <junit.jupiter.version>5.0.0-M5</junit.jupiter.version>
         <junit.platform.version>1.0.0-M5</junit.platform.version>
+        <selenium-server.version>3.4.0</selenium-server.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
@@ -111,6 +111,7 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-server</artifactId>
             <version>${selenium-server.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
