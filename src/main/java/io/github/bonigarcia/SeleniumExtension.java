@@ -120,7 +120,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         } else if (type == OperaDriver.class) {
             OperaOptions operaOptions = annotationsReader
-                    .getOperaOptions(parameter);
+                    .getOperaOptions(parameter, testInstance);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
                         .setCapability(OperaOptions.CAPABILITY, operaOptions);
@@ -131,7 +131,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         } else if (type == SafariDriver.class) {
             SafariOptions safariOptions = annotationsReader
-                    .getSafariOptions(parameter);
+                    .getSafariOptions(parameter, testInstance);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
                         .setCapability(SafariOptions.CAPABILITY, safariOptions);

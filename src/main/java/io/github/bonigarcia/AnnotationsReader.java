@@ -44,7 +44,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Options/capabilities parser (from annotated parameters to the proper type).
+ * Options/capabilities reader from annotated parameters or test instance to the
+ * proper type (ChromeOptions, FirefoxOptions, Capabilities, etc).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
@@ -57,9 +58,8 @@ public class AnnotationsReader {
     protected ChromeOptions getChromeOptions(Parameter parameter,
             Optional<Object> testInstance) {
         ChromeOptions chromeOptions = new ChromeOptions();
-        Class<DriverOptions> driverOptionsClass = DriverOptions.class;
         DriverOptions driverOptions = parameter
-                .getAnnotation(driverOptionsClass);
+                .getAnnotation(DriverOptions.class);
 
         // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
@@ -85,11 +85,8 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                    testInstance, driverOptionsClass);
-            if (annotatedField.isPresent()) {
-                chromeOptions = (ChromeOptions) annotatedField.get();
-            }
+            chromeOptions = (ChromeOptions) getOptionsFromAnnotatedField(
+                    testInstance, DriverOptions.class);
         }
 
         return chromeOptions;
@@ -97,10 +94,9 @@ public class AnnotationsReader {
 
     protected FirefoxOptions getFirefoxOptions(Parameter parameter,
             Optional<Object> testInstance) {
-        Class<DriverOptions> driverOptionsClass = DriverOptions.class;
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         DriverOptions driverOptions = parameter
-                .getAnnotation(driverOptionsClass);
+                .getAnnotation(DriverOptions.class);
 
         // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
@@ -128,19 +124,19 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                    testInstance, driverOptionsClass);
-            if (annotatedField.isPresent()) {
-                firefoxOptions = (FirefoxOptions) annotatedField.get();
-            }
+            firefoxOptions = (FirefoxOptions) getOptionsFromAnnotatedField(
+                    testInstance, DriverOptions.class);
         }
         return firefoxOptions;
     }
 
-    protected EdgeOptions getEdgeOptions(Parameter parameter) {
+    protected EdgeOptions getEdgeOptions(Parameter parameter,
+            Optional<Object> testInstance) {
+        EdgeOptions edgeOptions = new EdgeOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);
-        EdgeOptions edgeOptions = new EdgeOptions();
+
+        // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
@@ -153,14 +149,21 @@ public class AnnotationsReader {
                     log.warn("Option {} not supported for Edge", name);
                 }
             }
+        } else {
+            // If not, search DriverOptions in any field
+            edgeOptions = (EdgeOptions) getOptionsFromAnnotatedField(
+                    testInstance, DriverOptions.class);
         }
         return edgeOptions;
     }
 
-    protected OperaOptions getOperaOptions(Parameter parameter) {
+    protected OperaOptions getOperaOptions(Parameter parameter,
+            Optional<Object> testInstance) {
+        OperaOptions operaOptions = new OperaOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);
-        OperaOptions operaOptions = new OperaOptions();
+
+        // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
@@ -182,14 +185,20 @@ public class AnnotationsReader {
                     operaOptions.setExperimentalOption(name, value);
                 }
             }
+        } else {
+            // If not, search DriverOptions in any field
+            operaOptions = (OperaOptions) getOptionsFromAnnotatedField(
+                    testInstance, DriverOptions.class);
         }
         return operaOptions;
     }
 
-    protected SafariOptions getSafariOptions(Parameter parameter) {
+    protected SafariOptions getSafariOptions(Parameter parameter,
+            Optional<Object> testInstance) {
+        SafariOptions safariOptions = new SafariOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);
-        SafariOptions safariOptions = new SafariOptions();
+
         if (driverOptions != null) {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
@@ -229,6 +238,10 @@ public class AnnotationsReader {
                     log.warn("Option {} not supported for Edge", name);
                 }
             }
+        } else {
+            // If not, search DriverOptions in any field
+            safariOptions = (SafariOptions) getOptionsFromAnnotatedField(
+                    testInstance, DriverOptions.class);
         }
         return safariOptions;
     }
@@ -236,9 +249,8 @@ public class AnnotationsReader {
     protected Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) {
         Optional<Capabilities> out = Optional.empty();
-        Class<DriverCapabilities> driverCapabilititesClass = DriverCapabilities.class;
         DriverCapabilities driverCapabilities = parameter
-                .getAnnotation(driverCapabilititesClass);
+                .getAnnotation(DriverCapabilities.class);
 
         Capabilities capabilities = null;
         if (driverCapabilities != null) {
@@ -252,7 +264,7 @@ public class AnnotationsReader {
         } else {
             // If not, search DriverCapabilities in any field
             Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                    testInstance, driverCapabilititesClass);
+                    testInstance, DriverCapabilities.class);
             if (annotatedField.isPresent()) {
                 capabilities = (Capabilities) annotatedField.get();
                 out = Optional.of(capabilities);
@@ -264,12 +276,10 @@ public class AnnotationsReader {
     protected Optional<URL> getUrl(Parameter parameter,
             Optional<Object> testInstance) {
         Optional<URL> out = Optional.empty();
-        Class<DriverUrl> driverUrlClass = DriverUrl.class;
-
         String urlValue = null;
-        try {
 
-            DriverUrl driverUrl = parameter.getAnnotation(driverUrlClass);
+        try {
+            DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
             if (driverUrl != null) {
                 // Search first DriverUrl annotation in parameter
                 urlValue = driverUrl.value();
@@ -277,7 +287,7 @@ public class AnnotationsReader {
             } else {
                 // If not, search DriverUrl in any field
                 Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                        testInstance, driverUrlClass);
+                        testInstance, DriverUrl.class);
                 if (annotatedField.isPresent()) {
                     urlValue = (String) annotatedField.get();
                     out = Optional.of(new URL(urlValue));
@@ -296,6 +306,17 @@ public class AnnotationsReader {
 
     private boolean isNumeric(String s) {
         return StringUtils.isNumeric(s);
+    }
+
+    private Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
+            Class<DriverOptions> annotationClass) {
+        Object out = null;
+        Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
+                annotationClass);
+        if (annotatedField.isPresent()) {
+            out = annotatedField.get();
+        }
+        return out;
     }
 
     private Optional<Object> seekFieldAnnotatedWith(
