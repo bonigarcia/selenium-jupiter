@@ -57,7 +57,7 @@ public class RemoteJupiterTest {
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
-                "browserName=firefox,version=54", "-port", "5556" });
+                "browserName=firefox", "-port", "5556" });
     }
 
     @Test

@@ -44,7 +44,7 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
 public class RemoteJupiterGlobalOptionsTest {
 
     @DriverUrl
-    String url = "http://localhost:4444/wd/hub";
+    String url = "http://localhost:4445/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = DesiredCapabilities.firefox();
@@ -52,19 +52,19 @@ public class RemoteJupiterGlobalOptionsTest {
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
+        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4445" });
 
         // Register Chrome in hub
         ChromeDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=chrome", "-port", "5555" });
+                "http://localhost:4445/grid/register", "-browser",
+                "browserName=chrome", "-port", "5557" });
 
         // Register Firefox in hub
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=firefox", "-port", "5556" });
+                "http://localhost:4445/grid/register", "-browser",
+                "browserName=firefox", "-port", "5558" });
     }
 
     @Test
@@ -76,9 +76,9 @@ public class RemoteJupiterGlobalOptionsTest {
     }
 
     @Test
-    void testWithGlobalOptoins(RemoteWebDriver remoteChrome)
+    void testWithGlobalOptoins(RemoteWebDriver remoteFirefox)
             throws InterruptedException {
-        exercise(remoteChrome);
+        exercise(remoteFirefox);
     }
 
     void exercise(WebDriver webdriver) {
