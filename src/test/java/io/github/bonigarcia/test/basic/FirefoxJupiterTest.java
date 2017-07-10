@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
@@ -24,32 +25,25 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Firefox browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
 public class FirefoxJupiterTest {
 
     @Test
-    public void test1(FirefoxDriver firefox) {
-        firefox.get("http://www.seleniumhq.org/");
-        String title = firefox.getTitle();
+    public void testWithOneFirefox(FirefoxDriver firefox) {
+        firefox.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(firefox.getTitle().startsWith("selenium-jupiter"));
     }
 
     @Test
-    public void test2(FirefoxDriver firefox1, FirefoxDriver firefox2) {
+    public void testWithTwoFirefoxs(FirefoxDriver firefox1,
+            FirefoxDriver firefox2) {
         firefox1.get("http://www.seleniumhq.org/");
-        String title1 = firefox1.getTitle();
         firefox2.get("http://junit.org/junit5/");
-        String title2 = firefox2.getTitle();
 
-        assertTrue(title1.equals("Selenium - Web Browser Automation"));
-        assertTrue(title2.equals("JUnit 5"));
+        assertTrue(firefox1.getTitle().startsWith("Selenium"));
+        assertTrue(firefox2.getTitle().equals("JUnit 5"));
     }
 
 }
+// end::snippet-in-doc[]

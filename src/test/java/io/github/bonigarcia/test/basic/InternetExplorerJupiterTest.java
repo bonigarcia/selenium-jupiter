@@ -25,22 +25,15 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Internet Explorer.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-@Disabled("Internet Explorer is deprecated and it should be avoided since it does not work properly")
+@Disabled("Internet Explorer is deprecated and thus it should be avoided if possible")
 @ExtendWith(SeleniumExtension.class)
 public class InternetExplorerJupiterTest {
 
     @Test
     void webrtcTest(InternetExplorerDriver iexplorer) {
-        iexplorer.get("http://www.seleniumhq.org/");
-        String title = iexplorer.getTitle();
+        iexplorer.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(iexplorer.getTitle().startsWith("selenium-jupiter"));
     }
 
 }

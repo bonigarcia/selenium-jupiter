@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
@@ -25,22 +26,16 @@ import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Edge browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @Disabled
 @ExtendWith(SeleniumExtension.class)
 public class EdgeJupiterTest {
 
     @Test
     void webrtcTest(EdgeDriver edge) {
-        edge.get("http://www.seleniumhq.org/");
-        String title = edge.getTitle();
+        edge.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(edge.getCurrentUrl().contains("selenium-jupiter"));
     }
 
 }
+// end::snippet-in-doc[]

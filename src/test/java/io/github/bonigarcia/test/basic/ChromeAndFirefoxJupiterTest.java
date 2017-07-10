@@ -17,31 +17,30 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Safari browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class SafariJupiterTest {
+public class ChromeAndFirefoxJupiterTest {
 
-    @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
-    public void test(SafariDriver safari) {
-        safari.get("http://www.seleniumhq.org/");
+    public void testWithOneChrome(ChromeDriver chrome) {
+        // using Chrome in this test
+    }
 
-        assertTrue(
-                safari.getTitle().equals("Selenium - Web Browser Automation"));
+    @Test
+    public void testWithFirefox(FirefoxDriver firefox) {
+        // using Firefox in this test
+    }
+
+    @Test
+    public void testWithChromeAndFirefox(ChromeDriver chrome,
+            FirefoxDriver firefox) {
+        // using Chrome and Firefox in this test
     }
 
 }

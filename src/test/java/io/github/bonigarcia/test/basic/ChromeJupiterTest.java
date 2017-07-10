@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -24,34 +25,24 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Chrome browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-//tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class ChromeJupiterTest {
 
     @Test
-    public void test1(ChromeDriver chrome) {
-        chrome.get("http://www.seleniumhq.org/");
-        String title = chrome.getTitle();
+    public void testWithOneChrome(ChromeDriver chrome) {
+        chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(chrome.getTitle().startsWith("selenium-jupiter"));
     }
 
     @Test
-    public void test2(ChromeDriver chrome1, ChromeDriver chrome2) {
+    public void testWithTwoChromes(ChromeDriver chrome1, ChromeDriver chrome2) {
         chrome1.get("http://www.seleniumhq.org/");
-        String title1 = chrome1.getTitle();
         chrome2.get("http://junit.org/junit5/");
-        String title2 = chrome2.getTitle();
 
-        assertTrue(title1.equals("Selenium - Web Browser Automation"));
-        assertTrue(title2.equals("JUnit 5"));
+        assertTrue(chrome1.getTitle().startsWith("Selenium"));
+        assertTrue(chrome2.getTitle().equals("JUnit 5"));
     }
 
 }
-//end::snippet-in-doc[]
+// end::snippet-in-doc[]

@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
@@ -25,22 +26,16 @@ import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Opera browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-@Disabled
 @ExtendWith(SeleniumExtension.class)
 public class OperaJupiterTest {
 
+    @Disabled("Opera not available on Travis CI")
     @Test
     public void test(OperaDriver opera) {
-        opera.get("http://www.seleniumhq.org/");
-        String title = opera.getTitle();
+        opera.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(opera.getCurrentUrl().contains("github"));
     }
 
 }
+// end::snippet-in-doc[]

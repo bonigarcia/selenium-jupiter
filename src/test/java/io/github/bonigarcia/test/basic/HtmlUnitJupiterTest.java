@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -24,21 +25,15 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with HtmlUnit.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
 public class HtmlUnitJupiterTest {
 
     @Test
-    public void test(HtmlUnitDriver htmlUnitDriver) {
-        htmlUnitDriver.get("http://www.seleniumhq.org/");
-        String title = htmlUnitDriver.getTitle();
+    public void test(HtmlUnitDriver htmlUnit) {
+        htmlUnit.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(htmlUnit.getTitle().contains("JUnit 5 extension"));
     }
 
 }
+// end::snippet-in-doc[]

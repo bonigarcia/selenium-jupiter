@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.basic;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -24,19 +25,15 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with PhatomJS headless browser.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
 public class PhantomjsJupiterTest {
 
     @Test
     public void test(PhantomJSDriver phantomjs) {
-        phantomjs.get("http://junit.org/junit5/");
+        phantomjs.get("https://bonigarcia.github.io/selenium-jupiter/");
+
         assertNotNull(phantomjs.getPageSource());
     }
 
 }
+// end::snippet-in-doc[]
