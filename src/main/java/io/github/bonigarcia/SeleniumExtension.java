@@ -85,56 +85,83 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         // Instantiate WebDriver
         WebDriver webDriver = null;
-        Capabilities capabilities = optionsParser.getCapabilities(parameter);
+        Optional<Capabilities> capabilities = optionsParser
+                .getCapabilities(parameter);
 
         if (type == ChromeDriver.class) {
             ChromeOptions chromeOptions = optionsParser
                     .getChromeOptions(parameter, testInstance);
-            ((DesiredCapabilities) capabilities)
-                    .setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-            webDriver = new ChromeDriver(capabilities);
+            if (capabilities.isPresent()) {
+                ((DesiredCapabilities) capabilities.get())
+                        .setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+                webDriver = new ChromeDriver(capabilities.get());
+            } else {
+                webDriver = new ChromeDriver(chromeOptions);
+            }
 
         } else if (type == FirefoxDriver.class) {
             FirefoxOptions firefoxOptions = optionsParser
                     .getFirefoxOptions(parameter);
-            firefoxOptions.addCapabilities(capabilities);
+            if (capabilities.isPresent()) {
+                firefoxOptions.addCapabilities(capabilities.get());
+            }
             webDriver = new FirefoxDriver(firefoxOptions);
 
         } else if (type == EdgeDriver.class) {
             EdgeOptions edgeOptions = optionsParser.getEdgeOptions(parameter);
-            ((DesiredCapabilities) capabilities)
-                    .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
-            webDriver = new EdgeDriver(capabilities);
+            if (capabilities.isPresent()) {
+                ((DesiredCapabilities) capabilities.get())
+                        .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
+                webDriver = new EdgeDriver(capabilities.get());
+            } else {
+                webDriver = new EdgeDriver(edgeOptions);
+            }
 
         } else if (type == OperaDriver.class) {
             OperaOptions operaOptions = optionsParser
                     .getOperaOptions(parameter);
-            ((DesiredCapabilities) capabilities)
-                    .setCapability(OperaOptions.CAPABILITY, operaOptions);
-            webDriver = new OperaDriver(capabilities);
+            if (capabilities.isPresent()) {
+                ((DesiredCapabilities) capabilities.get())
+                        .setCapability(OperaOptions.CAPABILITY, operaOptions);
+                webDriver = new OperaDriver(capabilities.get());
+            } else {
+                webDriver = new OperaDriver(operaOptions);
+            }
 
         } else if (type == SafariDriver.class) {
             SafariOptions safariOptions = optionsParser
                     .getSafariOptions(parameter);
-            ((DesiredCapabilities) capabilities)
-                    .setCapability(SafariOptions.CAPABILITY, safariOptions);
-            webDriver = new SafariDriver(capabilities);
+            if (capabilities.isPresent()) {
+                ((DesiredCapabilities) capabilities.get())
+                        .setCapability(SafariOptions.CAPABILITY, safariOptions);
+                webDriver = new SafariDriver(capabilities.get());
+            } else {
+                webDriver = new SafariDriver(safariOptions);
+            }
 
         } else if (type == RemoteWebDriver.class) {
             Optional<URL> url = optionsParser.getUrl(parameter, testInstance);
-            if (url.isPresent()) {
-                webDriver = new RemoteWebDriver(url.get(), capabilities);
+            if (url.isPresent() && capabilities.isPresent()) {
+                webDriver = new RemoteWebDriver(url.get(), capabilities.get());
             } else {
-                log.warn("Was not possible to instantiate RemoteWebDriver,"
-                        + " URL not present");
+                String urlMessage = url.isPresent() ? "" : "URL not present ";
+                String capabilitiesMessage = capabilities.isPresent() ? ""
+                        : "Capabilites not present";
+                log.warn("Was not possible to instantiate RemoteWebDriver: "
+                        + urlMessage + capabilitiesMessage);
             }
 
         } else {
             // Other WebDriver type
             try {
-                webDriver = (WebDriver) type
-                        .getDeclaredConstructor(Capabilities.class)
-                        .newInstance(capabilities);
+                if (capabilities.isPresent()) {
+                    webDriver = (WebDriver) type
+                            .getDeclaredConstructor(Capabilities.class)
+                            .newInstance(capabilities.get());
+                } else {
+                    webDriver = (WebDriver) type.newInstance();
+                }
+
             } catch (Exception e) {
                 String errorMessage = "Exception creating instance of "
                         + type.getName();

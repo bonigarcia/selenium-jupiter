@@ -230,18 +230,20 @@ public class Options {
         return safariOptions;
     }
 
-    protected Capabilities getCapabilities(Parameter parameter) {
+    protected Optional<Capabilities> getCapabilities(Parameter parameter) {
+        Optional<Capabilities> out = Optional.empty();
         DriverCapabilities driverCapabilities = parameter
                 .getAnnotation(DriverCapabilities.class);
-        Capabilities capabilities = new DesiredCapabilities();
 
         if (driverCapabilities != null) {
+            Capabilities capabilities = new DesiredCapabilities();
             for (Capability capability : driverCapabilities.capability()) {
                 ((DesiredCapabilities) capabilities)
                         .setCapability(capability.name(), capability.value());
             }
+            out = Optional.of(capabilities);
         }
-        return capabilities;
+        return out;
     }
 
     protected Optional<URL> getUrl(Parameter parameter,
