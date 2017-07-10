@@ -16,44 +16,29 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Edge browser and options (EdgeOptions) as annotated field.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-@Disabled
 @ExtendWith(SeleniumExtension.class)
-public class EdgeJupiterGlobalOptionsTest {
-
-    @DriverOptions
-    EdgeOptions edgeOptions = new EdgeOptions();
-    {
-        edgeOptions.setPageLoadStrategy("eager");
-    }
-
-    @BeforeAll
-    static void setup() {
-        System.setProperty("wdm.edgeVersion", "3.14393");
-    }
+public class FirefoxWithOptionsJupiterTest {
 
     @Test
-    void webrtcTest(EdgeDriver edge) {
-        edge.get("http://www.seleniumhq.org/");
-        String title = edge.getTitle();
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+    void webrtcTest(
+            @DriverOptions(options = {
+                    @Option(name = "media.navigator.permission.disabled", value = "true"),
+                    @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver firefox)
+            throws InterruptedException {
+        firefox.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+
+        Thread.sleep(3000); // Wait 3 seconds to see the page
     }
 
 }
+// end::snippet-in-doc[]

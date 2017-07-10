@@ -16,39 +16,36 @@
  */
 package io.github.bonigarcia.test.advance;
 
+// tag::snippet-in-doc[]
+import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Firefox and global options.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class FirefoxJupiterGlobalOptionsTest {
+public class EdgeWithOptionsJupiterTest {
 
-    @DriverOptions
-    FirefoxOptions firefoxOptions = new FirefoxOptions();
-    {
-        // Flag to use fake media for WebRTC user media
-        firefoxOptions.addPreference("media.navigator.streams.fake", true);
-
-        // Flag to avoid granting access to user media
-        firefoxOptions.addPreference("media.navigator.permission.disabled",
-                true);
+    @BeforeAll
+    static void setup() {
+        System.setProperty("wdm.edgeVersion", "3.14393");
     }
 
+    @Disabled("Edge not available on Travis CI")
     @Test
-    void webrtcTest(FirefoxDriver firefox) throws InterruptedException {
-        firefox.get(
-                "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        Thread.sleep(3000); // Wait 3 seconds to see the page
+    void webrtcTest(@DriverOptions(options = {
+            @Option(name = PAGE_LOAD_STRATEGY, value = "eager") }) EdgeDriver edge) {
+        edge.get("http://www.seleniumhq.org/");
+
+        assertTrue(edge.getTitle().equals("Selenium - Web Browser Automation"));
     }
 
 }
+// end::snippet-in-doc[]

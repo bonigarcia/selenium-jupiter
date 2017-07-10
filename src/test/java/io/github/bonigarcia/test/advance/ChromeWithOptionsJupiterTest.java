@@ -16,8 +16,8 @@
  */
 package io.github.bonigarcia.test.advance;
 
+// tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -28,36 +28,29 @@ import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Chrome browsers (advance).
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class ChromeJupiterAdvTest {
+public class ChromeWithOptionsJupiterTest {
 
     @Test
     void headlessTest(@DriverOptions(options = {
             @Option(name = ARGS, value = "--headless") }) ChromeDriver chrome) {
-        chrome.get("http://www.seleniumhq.org/");
-        String title = chrome.getTitle();
+        chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(chrome.getTitle().startsWith("selenium-jupiter"));
     }
 
     @Test
     void webrtcTest(
             @DriverOptions(options = {
-                    @Option(name = ARGS, value = "--use-fake-ui-for-media-stream"),
-                    @Option(name = ARGS, value = "--use-fake-device-for-media-stream") }) ChromeDriver chrome)
+                    @Option(name = ARGS, value = "--use-fake-device-for-media-stream"),
+                    @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver chrome)
             throws InterruptedException {
 
         chrome.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
 
-        // Wait 3 seconds to see the page
-        sleep(3000);
+        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }
+// end::snippet-in-doc[]

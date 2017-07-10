@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -24,33 +24,32 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.DriverOptions;
-import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Edge browsers (advance).
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-@Disabled
 @ExtendWith(SeleniumExtension.class)
-public class EdgeJupiterAdvTest {
+public class EdgeWithGlobalOptionsJupiterTest {
+
+    @DriverOptions
+    EdgeOptions edgeOptions = new EdgeOptions();
+    {
+        edgeOptions.setPageLoadStrategy("eager");
+    }
 
     @BeforeAll
     static void setup() {
         System.setProperty("wdm.edgeVersion", "3.14393");
     }
 
+    @Disabled("Edge not available on Travis CI")
     @Test
-    void webrtcTest(@DriverOptions(options = {
-            @Option(name = PAGE_LOAD_STRATEGY, value = "eager") }) EdgeDriver edge) {
+    void webrtcTest(EdgeDriver edge) {
         edge.get("http://www.seleniumhq.org/");
-        String title = edge.getTitle();
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(edge.getTitle().equals("Selenium - Web Browser Automation"));
     }
 
 }
+// end::snippet-in-doc[]

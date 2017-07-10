@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,14 +34,8 @@ import io.github.bonigarcia.SeleniumExtension;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
-/**
- * Test with Remote WebDriver.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class RemoteJupiterTest {
+public class RemoteWebDriverWithCapabilitiesJupiterTest {
 
     @BeforeAll
     static void setup() throws Exception {
@@ -58,6 +53,9 @@ public class RemoteJupiterTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
+
+        // Wait to finish browser registration
+        Thread.sleep(2000);
     }
 
     @Test
@@ -68,7 +66,7 @@ public class RemoteJupiterTest {
     }
 
     @Test
-    void testWithChrome(
+    void testWithRemoteChrome(
             @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
                     @Capability(name = "browserName", value = "chrome"),
                     @Capability(name = "version", value = "59") }) RemoteWebDriver remoteChrome)
@@ -77,29 +75,18 @@ public class RemoteJupiterTest {
     }
 
     @Test
-    void testWithFirefox(
+    void testWithRemoteFirefox(
             @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "firefox") }) RemoteWebDriver remoteFirefox)
-            throws InterruptedException {
-        exercise(remoteFirefox);
-    }
-
-    @Test
-    void testWithChromeAndFirefox(
-            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome,
-            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "firefox") }) RemoteWebDriver remoteFirefox)
+                    @Capability(name = "browserName", value = "firefox") }) RemoteWebDriver remoteChrome)
             throws InterruptedException {
         exercise(remoteChrome);
-        exercise(remoteFirefox);
     }
 
     void exercise(WebDriver webdriver) {
-        webdriver.get("http://www.seleniumhq.org/");
-        String title = webdriver.getTitle();
+        webdriver.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(webdriver.getTitle().contains("JUnit 5 extension"));
     }
 
 }
+// end::snippet-in-doc[]

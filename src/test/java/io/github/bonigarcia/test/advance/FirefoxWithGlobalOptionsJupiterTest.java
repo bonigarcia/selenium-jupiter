@@ -16,48 +16,36 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static java.lang.Thread.sleep;
-
+//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Chrome browsers and global options (defined as field).
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class ChromeJupiterAdvGlobalOptionsTest {
+public class FirefoxWithGlobalOptionsJupiterTest {
 
     @DriverOptions
-    ChromeOptions chromeOptions = new ChromeOptions();
+    FirefoxOptions firefoxOptions = new FirefoxOptions();
     {
-        chromeOptions.addArguments("--use-fake-ui-for-media-stream",
-                "--use-fake-device-for-media-stream");
+        // Flag to use fake media for WebRTC user media
+        firefoxOptions.addPreference("media.navigator.streams.fake", true);
+
+        // Flag to avoid granting access to user media
+        firefoxOptions.addPreference("media.navigator.permission.disabled",
+                true);
     }
 
     @Test
-    void webrtcTest1(ChromeDriver chrome) throws InterruptedException {
-        chrome.get(
+    void webrtcTest(FirefoxDriver firefox) throws InterruptedException {
+        firefox.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
 
-        // Wait 3 seconds to see the page
-        sleep(3000);
-    }
-
-    @Test
-    void webrtcTest2(ChromeDriver chrome) throws InterruptedException {
-        chrome.get(
-                "https://webrtc.github.io/samples/src/content/getusermedia/gum/");
-
-        // Wait 3 seconds to see the page
-        sleep(3000);
+        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }
+//end::snippet-in-doc[]

@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -34,14 +35,8 @@ import io.github.bonigarcia.SeleniumExtension;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
-/**
- * Test with Remote WebDriver.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class RemoteJupiterGlobalOptionsTest {
+public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
 
     @DriverUrl
     String url = "http://localhost:4445/wd/hub";
@@ -65,10 +60,13 @@ public class RemoteJupiterGlobalOptionsTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4445/grid/register", "-browser",
                 "browserName=firefox", "-port", "5558" });
+
+        // Wait to finish browser registration
+        Thread.sleep(2000);
     }
 
     @Test
-    void testOnlyWithCapabilities(
+    void testWithCapabilitiesOnly(
             @DriverCapabilities(capability = {
                     @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome)
             throws InterruptedException {
@@ -76,16 +74,16 @@ public class RemoteJupiterGlobalOptionsTest {
     }
 
     @Test
-    void testWithGlobalOptoins(RemoteWebDriver remoteFirefox)
+    void testWithGlobalOptoins(RemoteWebDriver remoteChrome)
             throws InterruptedException {
-        exercise(remoteFirefox);
+        exercise(remoteChrome);
     }
 
     void exercise(WebDriver webdriver) {
         webdriver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        String title = webdriver.getTitle();
-        assertTrue(title.equals(
-                "selenium-jupiter: A JUnit 5 extension for Selenium WebDriver"));
+
+        assertTrue(webdriver.getTitle().startsWith("selenium-jupiter"));
     }
 
 }
+// end::snippet-in-doc[]

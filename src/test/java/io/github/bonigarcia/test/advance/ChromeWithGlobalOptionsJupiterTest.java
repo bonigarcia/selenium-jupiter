@@ -16,37 +16,41 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static java.lang.Thread.sleep;
-
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.DriverOptions;
-import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Firefox browsers (advance).
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
-public class FirefoxJupiterAdvTest {
+public class ChromeWithGlobalOptionsJupiterTest {
+
+    @DriverOptions
+    ChromeOptions chromeOptions = new ChromeOptions();
+    {
+        // Flags to use fake media for WebRTC user media
+        chromeOptions.addArguments("--use-fake-device-for-media-stream",
+                "--use-fake-ui-for-media-stream");
+    }
 
     @Test
-    void webrtcTest(
-            @DriverOptions(options = {
-                    @Option(name = "media.navigator.permission.disabled", value = "true"),
-                    @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver firefox)
-            throws InterruptedException {
-
-        firefox.get(
+    void webrtcTest1(ChromeDriver chrome) throws InterruptedException {
+        chrome.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
 
-        // Wait 3 seconds to see the page
-        sleep(3000);
+        Thread.sleep(3000); // Wait 3 seconds to see the video
+    }
+
+    @Test
+    void webrtcTest2(ChromeDriver chrome) throws InterruptedException {
+        chrome.get(
+                "https://webrtc.github.io/samples/src/content/getusermedia/gum/");
+
+        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }
+// end::snippet-in-doc[]

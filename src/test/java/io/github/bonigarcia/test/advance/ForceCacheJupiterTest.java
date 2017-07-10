@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
+//tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -25,12 +26,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Chrome browser forcing the use of cache.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
 public class ForceCacheJupiterTest {
 
@@ -41,10 +36,10 @@ public class ForceCacheJupiterTest {
 
     @Test
     public void test(ChromeDriver chrome) {
-        chrome.get("http://www.seleniumhq.org/");
-        String title = chrome.getTitle();
+        chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertTrue(title.equals("Selenium - Web Browser Automation"));
+        assertTrue(chrome.getTitle().contains("JUnit 5 extension"));
     }
 
 }
+// end::snippet-in-doc[]
