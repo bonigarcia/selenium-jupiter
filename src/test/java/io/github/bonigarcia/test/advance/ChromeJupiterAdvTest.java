@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static io.github.bonigarcia.Options.ARGS;
+import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -16,21 +16,28 @@
  */
 package io.github.bonigarcia;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Annotation for capabilities.
+ * Collection of options/capabilities names.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
-public @interface DriverCapabilities {
+public class SeleniumJupiter {
 
-    public Capability[] capability() default {};
+    // Chrome, Firefox, Opera
+    public static final String ARGS = "args";
+    public static final String BINARY = "binary";
+
+    // Chrome, Opera
+    public static final String EXTENSIONS = "extensions";
+    public static final String EXTENSION_FILES = "extensionFiles";
+
+    // Edge
+    public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
+
+    // Safari
+    public static final String PORT = "port";
+    public static final String USE_CLEAN_SESSION = "useCleanSession";
+    public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
 
 }

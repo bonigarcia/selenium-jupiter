@@ -59,7 +59,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
-    private Options optionsParser = new Options();
+    private AnnotationsReader annotationsReader = new AnnotationsReader();
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
@@ -85,11 +85,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         // Instantiate WebDriver
         WebDriver webDriver = null;
-        Optional<Capabilities> capabilities = optionsParser
-                .getCapabilities(parameter);
+        Optional<Capabilities> capabilities = annotationsReader
+                .getCapabilities(parameter, testInstance);
 
         if (type == ChromeDriver.class) {
-            ChromeOptions chromeOptions = optionsParser
+            ChromeOptions chromeOptions = annotationsReader
                     .getChromeOptions(parameter, testInstance);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
@@ -100,7 +100,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
 
         } else if (type == FirefoxDriver.class) {
-            FirefoxOptions firefoxOptions = optionsParser
+            FirefoxOptions firefoxOptions = annotationsReader
                     .getFirefoxOptions(parameter);
             if (capabilities.isPresent()) {
                 firefoxOptions.addCapabilities(capabilities.get());
@@ -108,7 +108,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             webDriver = new FirefoxDriver(firefoxOptions);
 
         } else if (type == EdgeDriver.class) {
-            EdgeOptions edgeOptions = optionsParser.getEdgeOptions(parameter);
+            EdgeOptions edgeOptions = annotationsReader
+                    .getEdgeOptions(parameter);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
                         .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
@@ -118,7 +119,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
 
         } else if (type == OperaDriver.class) {
-            OperaOptions operaOptions = optionsParser
+            OperaOptions operaOptions = annotationsReader
                     .getOperaOptions(parameter);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
@@ -129,7 +130,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
 
         } else if (type == SafariDriver.class) {
-            SafariOptions safariOptions = optionsParser
+            SafariOptions safariOptions = annotationsReader
                     .getSafariOptions(parameter);
             if (capabilities.isPresent()) {
                 ((DesiredCapabilities) capabilities.get())
@@ -140,7 +141,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             }
 
         } else if (type == RemoteWebDriver.class) {
-            Optional<URL> url = optionsParser.getUrl(parameter, testInstance);
+            Optional<URL> url = annotationsReader.getUrl(parameter,
+                    testInstance);
             if (url.isPresent() && capabilities.isPresent()) {
                 webDriver = new RemoteWebDriver(url.get(), capabilities.get());
             } else {

@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static io.github.bonigarcia.Options.PAGE_LOAD_STRATEGY;
+import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;

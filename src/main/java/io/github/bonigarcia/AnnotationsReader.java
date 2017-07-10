@@ -16,6 +16,14 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.ARGS;
+import static io.github.bonigarcia.SeleniumJupiter.BINARY;
+import static io.github.bonigarcia.SeleniumJupiter.EXTENSIONS;
+import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
+import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
+import static io.github.bonigarcia.SeleniumJupiter.USE_CLEAN_SESSION;
+import static io.github.bonigarcia.SeleniumJupiter.USE_TECHNOLOGY_PREVIEW;
+
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -36,30 +44,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Options parser (from annotated parameters to the proper type).
+ * Options/capabilities parser (from annotated parameters to the proper type).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-public class Options {
+public class AnnotationsReader {
 
-    // Chrome, Firefox, Opera
-    public static final String ARGS = "args";
-    public static final String BINARY = "binary";
-
-    // Chrome, Opera
-    public static final String EXTENSIONS = "extensions";
-    public static final String EXTENSION_FILES = "extensionFiles";
-
-    // Edge
-    public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
-
-    // Safari
-    public static final String PORT = "port";
-    public static final String USE_CLEAN_SESSION = "useCleanSession";
-    public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
-
-    protected static final Logger log = LoggerFactory.getLogger(Options.class);
+    protected static final Logger log = LoggerFactory
+            .getLogger(AnnotationsReader.class);
 
     protected ChromeOptions getChromeOptions(Parameter parameter,
             Optional<Object> testInstance) {
@@ -230,18 +223,30 @@ public class Options {
         return safariOptions;
     }
 
-    protected Optional<Capabilities> getCapabilities(Parameter parameter) {
+    protected Optional<Capabilities> getCapabilities(Parameter parameter,
+            Optional<Object> testInstance) {
         Optional<Capabilities> out = Optional.empty();
+        Class<DriverCapabilities> driverCapabilititesClass = DriverCapabilities.class;
         DriverCapabilities driverCapabilities = parameter
-                .getAnnotation(DriverCapabilities.class);
+                .getAnnotation(driverCapabilititesClass);
 
+        Capabilities capabilities = null;
         if (driverCapabilities != null) {
-            Capabilities capabilities = new DesiredCapabilities();
+            // Search first DriverCapabilities annotation in parameter
+            capabilities = new DesiredCapabilities();
             for (Capability capability : driverCapabilities.capability()) {
                 ((DesiredCapabilities) capabilities)
                         .setCapability(capability.name(), capability.value());
             }
             out = Optional.of(capabilities);
+        } else {
+            // If not, search DriverCapabilities in any field
+            Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                    testInstance, driverCapabilititesClass);
+            if (annotatedField.isPresent()) {
+                capabilities = (Capabilities) annotatedField.get();
+                out = Optional.of(capabilities);
+            }
         }
         return out;
     }
