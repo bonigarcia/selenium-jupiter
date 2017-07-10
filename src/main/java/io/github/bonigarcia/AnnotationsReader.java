@@ -58,7 +58,6 @@ public class AnnotationsReader {
             Optional<Object> testInstance) {
         ChromeOptions chromeOptions = new ChromeOptions();
         Class<DriverOptions> driverOptionsClass = DriverOptions.class;
-
         DriverOptions driverOptions = parameter
                 .getAnnotation(driverOptionsClass);
 
@@ -96,10 +95,14 @@ public class AnnotationsReader {
         return chromeOptions;
     }
 
-    protected FirefoxOptions getFirefoxOptions(Parameter parameter) {
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+    protected FirefoxOptions getFirefoxOptions(Parameter parameter,
+            Optional<Object> testInstance) {
+        Class<DriverOptions> driverOptionsClass = DriverOptions.class;
         FirefoxOptions firefoxOptions = new FirefoxOptions();
+        DriverOptions driverOptions = parameter
+                .getAnnotation(driverOptionsClass);
+
+        // Search first DriverOptions annotation in parameter
         if (driverOptions != null) {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
@@ -122,6 +125,13 @@ public class AnnotationsReader {
                         firefoxOptions.addPreference(name, value);
                     }
                 }
+            }
+        } else {
+            // If not, search DriverOptions in any field
+            Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                    testInstance, driverOptionsClass);
+            if (annotatedField.isPresent()) {
+                firefoxOptions = (FirefoxOptions) annotatedField.get();
             }
         }
         return firefoxOptions;

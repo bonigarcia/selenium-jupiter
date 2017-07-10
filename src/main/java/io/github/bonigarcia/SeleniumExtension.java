@@ -101,7 +101,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         } else if (type == FirefoxDriver.class) {
             FirefoxOptions firefoxOptions = annotationsReader
-                    .getFirefoxOptions(parameter);
+                    .getFirefoxOptions(parameter, testInstance);
             if (capabilities.isPresent()) {
                 firefoxOptions.addCapabilities(capabilities.get());
             }
