@@ -85,8 +85,11 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            chromeOptions = (ChromeOptions) getOptionsFromAnnotatedField(
+            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
                     testInstance, DriverOptions.class);
+            if (optionsFromAnnotatedField != null) {
+                chromeOptions = (ChromeOptions) optionsFromAnnotatedField;
+            }
         }
 
         return chromeOptions;
@@ -124,8 +127,11 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            firefoxOptions = (FirefoxOptions) getOptionsFromAnnotatedField(
+            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
                     testInstance, DriverOptions.class);
+            if (optionsFromAnnotatedField != null) {
+                firefoxOptions = (FirefoxOptions) optionsFromAnnotatedField;
+            }
         }
         return firefoxOptions;
     }
@@ -151,8 +157,11 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            edgeOptions = (EdgeOptions) getOptionsFromAnnotatedField(
+            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
                     testInstance, DriverOptions.class);
+            if (optionsFromAnnotatedField != null) {
+                edgeOptions = (EdgeOptions) optionsFromAnnotatedField;
+            }
         }
         return edgeOptions;
     }
@@ -187,8 +196,11 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            operaOptions = (OperaOptions) getOptionsFromAnnotatedField(
+            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
                     testInstance, DriverOptions.class);
+            if (optionsFromAnnotatedField != null) {
+                operaOptions = (OperaOptions) optionsFromAnnotatedField;
+            }
         }
         return operaOptions;
     }
@@ -240,8 +252,11 @@ public class AnnotationsReader {
             }
         } else {
             // If not, search DriverOptions in any field
-            safariOptions = (SafariOptions) getOptionsFromAnnotatedField(
+            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
                     testInstance, DriverOptions.class);
+            if (optionsFromAnnotatedField != null) {
+                safariOptions = (SafariOptions) optionsFromAnnotatedField;
+            }
         }
         return safariOptions;
     }
