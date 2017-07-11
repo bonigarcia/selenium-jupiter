@@ -16,25 +16,22 @@
  */
 package io.github.bonigarcia.test.advance;
 
-// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class EdgeWithGlobalOptionsJupiterTest {
+public class EdgeSettingVersionJupiterTest {
 
-    @DriverOptions
-    EdgeOptions edgeOptions = new EdgeOptions();
-    {
-        edgeOptions.setPageLoadStrategy("eager");
+    @BeforeAll
+    static void setup() {
+        System.setProperty("wdm.edgeVersion", "3.14393");
     }
 
     @Disabled("Edge not available on Travis CI")
