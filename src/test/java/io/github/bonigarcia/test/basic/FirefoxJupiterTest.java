@@ -19,7 +19,7 @@ package io.github.bonigarcia.test.basic;
 // tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
