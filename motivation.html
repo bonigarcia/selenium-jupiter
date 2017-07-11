@@ -177,7 +177,7 @@ p.lead, .paragraph.lead > p, #preamble > .sectionbody > .paragraph:first-of-type
 div, dl, dt, dd, ul, ol, li, h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6, pre, form, p, blockquote, th, td { margin: 0; padding: 0; direction: ltr; }
 
 /* Default Link Styles */
-a { color: #2984a9; text-decoration: underline; line-height: inherit; }
+a { color: #2984a9; text-decoration: none; line-height: inherit; }
 a:hover, a:focus { color: #faa94c; }
 a img { border: none; }
 
@@ -327,13 +327,13 @@ p a > code:hover { color: #444444; }
 
 #toctitle { color: #3c3d3f; }
 
-@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 20em; }
-  #toc.toc2 { position: fixed; width: 20em; left: 0; top: 0; border-right: 1px solid #cccccc; border-bottom: 0; z-index: 1000; padding: 1em; height: 100%; overflow: auto; }
+@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 18em; }
+  #toc.toc2 { position: fixed; width: 18em; left: 0; top: 0; border-right: 1px solid #cccccc; border-bottom: 0; z-index: 1000; padding: 1em; height: 100%; overflow: auto; }
   #toc.toc2 #toctitle { margin-top: 0; }
-  #toc.toc2 > ul { font-size: .95em; }
+  #toc.toc2 > ul { font-size: 1.1em; }
   #toc.toc2 ul ul { margin-left: 0; padding-left: 1.25em; }
   #toc.toc2 ul.sectlevel0 ul.sectlevel1 { padding-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
-  body.toc2.toc-right { padding-left: 0; padding-right: 20em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 18em; }
   body.toc2.toc-right #toc.toc2 { border-right: 0; border-left: 1px solid #cccccc; left: auto; right: 0; } }
 #content #toc { border-style: solid; border-width: 1px; border-color: #d9d9d9; margin-bottom: 1.25em; padding: 1.25em; background: #f2f2f2; border-width: 0; -webkit-border-radius: 4px; border-radius: 4px; }
 #content #toc > :first-child { margin-top: 0; }
@@ -792,14 +792,71 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="motivation"><a class="anchor" href="#motivation"></a>Motivation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To do.</p>
+<p><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is great to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. The general schema should is depicted as follows:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-general-schema.png" alt="webdriver general schema">
+</div>
+<div class="title">Figure 1. WebDriver general scenario</div>
+</div>
+<div class="paragraph">
+<p>From a tester point of view, this is a cumbersome process, since it is required to download the proper binary for the platform running the test (i.e. Windows, Linux, Mac). Moreover, the versioning is also a headache, since browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be constantly updated:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-particular-schemas.png" alt="webdriver particular schemas">
+</div>
+<div class="title">Figure 2. WebDriver scenario for Chrome, Firefox, Opera, PhantomJS, Edge, and Internet Explorer</div>
+</div>
+<div class="paragraph">
+<p>Focusing on Java, before creating a WebDriver instance, the absolute path of the binary controlling the browser should be exported in a given environment variable, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.chrome.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/chromedriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.opera.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/operadriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.ie.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/IEDriverServer.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.edge.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/MicrosoftWebDriver.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs.binary.path</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/phantomjs</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.gecko.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/geckodriver</span><span class="delimiter">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to simplify the life of Java WebDriver users, in March 2015 the utility <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> was first released. WebDriverManager is a library which automates all this process (download the proper binary and export the proper variable) for Java in runtime. The WebDriverManager API is quite simple, providing a singleton object for each of the above mentioned browsers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">ChromeDriverManager.getInstance().setup();
+FirefoxDriverManager.getInstance().setup();
+OperaDriverManager.getInstance().setup();
+PhantomJsDriverManager.getInstance().setup();
+EdgeDriverManager.getInstance().setup();
+InternetExplorerDriverManager.getInstance().setup();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The solution implemented by WebDriverManager was latter ported in equivalent tools for other languages, such as <a href="https://github.com/angular/webdriver-manager">webdriver-manager</a> for <strong>Node.js</strong> or <a href="https://github.com/rosolko/WebDriverManager.Net">WebDriverManager.net</a> for <strong>.NET</strong>.</p>
+</div>
+<div class="paragraph">
+<p>On August 2017, a new major version of the well-know testing JUnit framework was released. This leads to <strong><em>selenium-jupiter</em></strong>, which can be seen as the natural evolution of <em>WebDriverManager</em> for <strong>JUnit 5</strong> tests. Internally, <em>selenium-jupiter</em> is built using two foundations:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It uses <em>WebDriverManager</em> to manage the binaries requires by WebDriver.</p>
+</li>
+<li>
+<p>It uses the <em>dependency injection</em> feature of the extension model of JUnit 5 to inject WebDriver objects within <code>@Test</code> methods.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-09 21:20:52 CEST
+Last updated 2017-07-11 05:07:18 CEST
 </div>
 </div>
 </body>

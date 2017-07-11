@@ -178,7 +178,7 @@ p.lead, .paragraph.lead > p, #preamble > .sectionbody > .paragraph:first-of-type
 div, dl, dt, dd, ul, ol, li, h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6, pre, form, p, blockquote, th, td { margin: 0; padding: 0; direction: ltr; }
 
 /* Default Link Styles */
-a { color: #2984a9; text-decoration: underline; line-height: inherit; }
+a { color: #2984a9; text-decoration: none; line-height: inherit; }
 a:hover, a:focus { color: #faa94c; }
 a img { border: none; }
 
@@ -328,13 +328,13 @@ p a > code:hover { color: #444444; }
 
 #toctitle { color: #3c3d3f; }
 
-@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 20em; }
-  #toc.toc2 { position: fixed; width: 20em; left: 0; top: 0; border-right: 1px solid #cccccc; border-bottom: 0; z-index: 1000; padding: 1em; height: 100%; overflow: auto; }
+@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 18em; }
+  #toc.toc2 { position: fixed; width: 18em; left: 0; top: 0; border-right: 1px solid #cccccc; border-bottom: 0; z-index: 1000; padding: 1em; height: 100%; overflow: auto; }
   #toc.toc2 #toctitle { margin-top: 0; }
-  #toc.toc2 > ul { font-size: .95em; }
+  #toc.toc2 > ul { font-size: 1.1em; }
   #toc.toc2 ul ul { margin-left: 0; padding-left: 1.25em; }
   #toc.toc2 ul.sectlevel0 ul.sectlevel1 { padding-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
-  body.toc2.toc-right { padding-left: 0; padding-right: 20em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 18em; }
   body.toc2.toc-right #toc.toc2 { border-right: 0; border-left: 1px solid #cccccc; left: auto; right: 0; } }
 #content #toc { border-style: solid; border-width: 1px; border-color: #d9d9d9; margin-bottom: 1.25em; padding: 1.25em; background: #f2f2f2; border-width: 0; -webkit-border-radius: 4px; border-radius: 4px; }
 #content #toc > :first-child { margin-top: 0; }
@@ -791,20 +791,8 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#quick-reference">Quick reference</a></li>
-<li><a href="#examples">Examples</a>
-<ul class="sectlevel2">
-<li><a href="#chrome">Chrome</a></li>
-<li><a href="#firefox">Firefox</a></li>
-<li><a href="#edge">Edge</a></li>
-<li><a href="#opera">Opera</a></li>
-</ul>
-</li>
 <li><a href="#motivation">Motivation</a></li>
-<li><a href="#advanced">Advanced</a>
-<ul class="sectlevel2">
-<li><a href="#level-2">Level 2</a></li>
-</ul>
-</li>
+<li><a href="#support">Support</a></li>
 <li><a href="#about">About</a></li>
 </ul>
 </div>
@@ -813,7 +801,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="http://junit.org/junit5/">JUnit 5</a> is the next generation of the well-known testing framework JUnit. <em>Jupiter</em> is the name given by the JUnit team to the new programming and extension model provided by JUnit 5. This extension model allows incorporating extra capabilities for Jupiter tests. On the on other hand, <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> is another testing framework which allows to control browsers (e.g. Chrome, Firefox, and so on) programmatically in order to carry out automated testing of web applications. This documentation presents <strong><em>selenium-jupiter</em></strong>, a JUnit 5 extension aimed to provide seamless integration of Selenium WebDriver within Jupiter tests. It is open source (Apache 2.0 license) and its source code is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter">GitHub</a>.</p>
+<p><a href="http://junit.org/junit5/">JUnit 5</a> is the next generation of the well-known testing framework JUnit. <em>Jupiter</em> is the name given to the new programming and extension model provided by JUnit 5. Regarding the extension model of JUnit 5, it allows to incorporate extra capabilities for Jupiter tests. On the other hand, <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> is another testing framework which allows to control browsers (e.g. Chrome, Firefox, and so on) programmatically to carry out automated testing of web applications. This documentation presents <strong><em>selenium-jupiter</em></strong>, a JUnit 5 extension aimed to provide seamless integration of Selenium WebDriver within Jupiter tests. It is open source (Apache 2.0 license) and its source code is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter">GitHub</a>.</p>
 </div>
 </div>
 </div>
@@ -821,99 +809,88 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="quick-reference"><a class="anchor" href="#quick-reference"></a>Quick reference</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is the user guide of selenium-jupiter.</p>
+<p><strong><em>selenium-jupiter</em></strong> has been built using the <a href="http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection">dependency injection</a> capability provided by the extension model of JUnit 5. Thank to this feature, parameters can be injected in JUnit 5 in <code>@Test</code> methods. Concretely, <em>selenium-jupiter</em> allows to inject subtypes of the <strong>WebDriver</strong> interface (e.g. <em>ChromeDriver</em>, <em>FirefoxDriver</em>, etc.) as parameters.</p>
 </div>
 <div class="paragraph">
-<p>JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>To do.</p>
-</div>
-<div class="sect2">
-<h3 id="chrome"><a class="anchor" href="#chrome"></a>Chrome</h3>
-<div class="paragraph">
-<p>To do.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="firefox"><a class="anchor" href="#firefox"></a>Firefox</h3>
-<div class="paragraph">
-<p>To do.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
-<div class="paragraph">
-<p>To do.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
-<div class="paragraph">
-<p>To do.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="motivation"><a class="anchor" href="#motivation"></a>Motivation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>To do.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="advanced"><a class="anchor" href="#advanced"></a>Advanced</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This is the advance doc.</p>
-</div>
-<div class="paragraph">
-<p>You can find this documentation in PDF <a href="selenium-jupiter.pdf">here</a>.</p>
+<p>Using <em>selenium-jupiter</em> it&#8217;s easy as pie. First, you need to import the dependency in your project (typically as <em>test</em> dependency). In Maven, it is done as follows:</p>
 </div>
 <div class="listingblock">
-<div class="title">Java code from project</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+        <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
+        <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
+        <span class="tag">&lt;version&gt;</span>1.0.0<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, you need to declare <em>selenium-jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumExtension.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods whose types implements the <code>WebDriver</code> interface. That&#8217;s it. <em>selenium-jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test case to automatically control the browser(s) you want. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test1(ChromeDriver chrome) {
-        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        <span class="predefined-type">String</span> title = chrome.getTitle();
-
-        assertTrue(title.equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium - Web Browser Automation</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chrome) {
+        <span class="comment">// using Chrome in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test2(ChromeDriver chrome1, ChromeDriver chrome2) {
-        chrome1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        <span class="predefined-type">String</span> title1 = chrome1.getTitle();
-        chrome2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
-        <span class="predefined-type">String</span> title2 = chrome2.getTitle();
+    <span class="directive">public</span> <span class="type">void</span> testWithFirefox(FirefoxDriver firefox) {
+        <span class="comment">// using Firefox in this test</span>
+    }
 
-        assertTrue(title1.equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium - Web Browser Automation</span><span class="delimiter">&quot;</span></span>));
-        assertTrue(title2.equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chrome,
+            FirefoxDriver firefox) {
+        <span class="comment">// using Chrome and Firefox in this test</span>
     }
 
 }</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="level-2"><a class="anchor" href="#level-2"></a>Level 2</h3>
 <div class="paragraph">
-<p>This page was built by the following command:</p>
+<p>The <code>WebDriver</code> subtypes supported by <em>selenium-jupiter</em> are the following:</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>$ mvn</pre>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ChromeDriver</code>: Used to control Google Chrome browser.</p>
+</li>
+<li>
+<p><code>FirefoxDriver</code>: Used to control Firefox browser.</p>
+</li>
+<li>
+<p><code>EdgeDriver</code>: Used to control Microsoft Edge browser.</p>
+</li>
+<li>
+<p><code>OperaDriver</code>: Used to control Opera browser.</p>
+</li>
+<li>
+<p><code>SafariDriver</code>: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).</p>
+</li>
+<li>
+<p><code>HtmlUnitDriver</code>: Used to control HtmlUnit (headless browser).</p>
+</li>
+<li>
+<p><code>PhantomJSDriver</code>: Used to control PhantomJS (headless browser).</p>
+</li>
+<li>
+<p><code>InternetExplorerDriver</code>: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.</p>
+</li>
+<li>
+<p><code>RemoteDriver</code>: Used to control remote browsers (<em>Selenium Grid</em>).</p>
+</li>
+</ul>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -922,11 +899,96 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Includes can be tricky!
+The browser to be used must be installed in the machine running the test beforehand (except in the case of <code>RemoteWebDriver</code>, in which the requirement is to known a Selenium Server URL).
 </td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="motivation"><a class="anchor" href="#motivation"></a>Motivation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is great to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. The general schema should is depicted as follows:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-general-schema.png" alt="webdriver general schema">
+</div>
+<div class="title">Figure 1. WebDriver general scenario</div>
+</div>
+<div class="paragraph">
+<p>From a tester point of view, this is a cumbersome process, since it is required to download the proper binary for the platform running the test (i.e. Windows, Linux, Mac). Moreover, the versioning is also a headache, since browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be constantly updated:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-particular-schemas.png" alt="webdriver particular schemas">
+</div>
+<div class="title">Figure 2. WebDriver scenario for Chrome, Firefox, Opera, PhantomJS, Edge, and Internet Explorer</div>
+</div>
+<div class="paragraph">
+<p>Focusing on Java, before creating a WebDriver instance, the absolute path of the binary controlling the browser should be exported in a given environment variable, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.chrome.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/chromedriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.opera.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/operadriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.ie.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/IEDriverServer.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.edge.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/MicrosoftWebDriver.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs.binary.path</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/phantomjs</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.gecko.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/geckodriver</span><span class="delimiter">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to simplify the life of Java WebDriver users, in March 2015 the utility <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> was first released. WebDriverManager is a library which automates all this process (download the proper binary and export the proper variable) for Java in runtime. The WebDriverManager API is quite simple, providing a singleton object for each of the above mentioned browsers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">ChromeDriverManager.getInstance().setup();
+FirefoxDriverManager.getInstance().setup();
+OperaDriverManager.getInstance().setup();
+PhantomJsDriverManager.getInstance().setup();
+EdgeDriverManager.getInstance().setup();
+InternetExplorerDriverManager.getInstance().setup();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The solution implemented by WebDriverManager was latter ported in equivalent tools for other languages, such as <a href="https://github.com/angular/webdriver-manager">webdriver-manager</a> for <strong>Node.js</strong> or <a href="https://github.com/rosolko/WebDriverManager.Net">WebDriverManager.net</a> for <strong>.NET</strong>.</p>
+</div>
+<div class="paragraph">
+<p>On August 2017, a new major version of the well-know testing JUnit framework was released. This leads to <strong><em>selenium-jupiter</em></strong>, which can be seen as the natural evolution of <em>WebDriverManager</em> for <strong>JUnit 5</strong> tests. Internally, <em>selenium-jupiter</em> is built using two foundations:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It uses <em>WebDriverManager</em> to manage the binaries requires by WebDriver.</p>
+</li>
+<li>
+<p>It uses the <em>dependency injection</em> feature of the extension model of JUnit 5 to inject WebDriver objects within <code>@Test</code> methods.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="support"><a class="anchor" href="#support"></a>Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several ways to get in touch with <em>selenium-jupiter</em>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Questions about <em>selenium-jupiter</em> are supposed to be discussed in <a href="https://stackoverflow.com/questions/tagged/selenium-jupiter">StackOverflow</a>, using the tag <em>selenium-jupiter</em>.</p>
+</li>
+<li>
+<p>Comments, suggestions and bug-reporting should be done using the <a href="https://github.com/bonigarcia/selenium-jupiter/issues">GitHub issues</a>.</p>
+</li>
+<li>
+<p>If you think <em>selenium-jupiter</em> can be enhanced, consider contribute to the project by means of a  <a href="https://github.com/bonigarcia/selenium-jupiter/pulls">pull request</a>.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -934,7 +996,7 @@ Includes can be tricky!
 <h2 id="about"><a class="anchor" href="#about"></a>About</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>selenium-jupiter (Copyright © 2017) is a project of Boni Garcia licensed under Apache 2.0 License. Comments, questions and suggestions are always very welcome!</p>
+<p><strong><em>selenium-jupiter</em></strong> (Copyright © 2017) is a project created by <a href="http://bonigarcia.github.io/">Boni Garcia</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>) licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation is released under the terms of <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
 </div>
 </div>
 </div>
@@ -942,7 +1004,7 @@ Includes can be tricky!
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0-SNAPSHOT<br>
-Last updated 2017-07-09 21:44:23 CEST
+Last updated 2017-07-11 04:27:36 CEST
 </div>
 </div>
 </body>
