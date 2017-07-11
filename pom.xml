@@ -191,6 +191,7 @@
                             <sourceDocumentName>index.adoc</sourceDocumentName>
                             <sourceHighlighter>coderay</sourceHighlighter>
                             <attributes>
+                                <imagesdir>./img</imagesdir>
                                 <pagenums />
                                 <toc />
                                 <idprefix />
