@@ -11,4 +11,4 @@ selenium-jupiter (1.0.0)
   + Reuse tests as examples in documentation (using AsciiDoc tags)
   + Publication of documentation on gh-pages branch (https://bonigarcia.github.io/selenium-jupiter/)
 
- -- Boni Garcia <boni.gg@gmail.com>  Tue, 11 Jul 2017 05:06:00
+ -- Boni Garcia <boni.gg@gmail.com>  Tue, 12 Jul 2017 01:07:00
