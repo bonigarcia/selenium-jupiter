@@ -26,7 +26,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-@Disabled
+@Disabled("Edge is not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class EdgeJupiterTest {
 
