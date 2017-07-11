@@ -792,7 +792,7 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="motivation"><a class="anchor" href="#motivation"></a>Motivation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is great to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. The general schema should is depicted as follows:</p>
+<p><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is very useful to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. One the one hand, the communication between the WebDriver object and that binary is done using the (<a href="https://www.w3.org/TR/webdriver/)">W3C WebDriver specification</a>, formerly called <em>JSON Wire Protocol</em>. It consists basically on a REST service using JSON for requests and responses. On the other hand, the communication between the binary and the browser is done using native capabilities of the browser. Therefore, the general schema of Selenium WebDriver can be illustrated as follows:</p>
 </div>
 <div class="imageblock thumb">
 <div class="content">
@@ -801,7 +801,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="title">Figure 1. WebDriver general scenario</div>
 </div>
 <div class="paragraph">
-<p>From a tester point of view, this is a cumbersome process, since it is required to download the proper binary for the platform running the test (i.e. Windows, Linux, Mac). Moreover, the versioning is also a headache, since browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be constantly updated:</p>
+<p>From a tester point of view, the need of this binary component is a pain in the neck, since it should be downloaded manually for the proper platform running the test (i.e. Windows, Linux, Mac). Moreover, the binary version should be constantly updated. The majority of browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be also updated. The following picture shows a fine-grained diagram of the different flavor of WebDriver binaries and browsers:</p>
 </div>
 <div class="imageblock thumb">
 <div class="content">
@@ -810,16 +810,16 @@ table.CodeRay td.code>pre{padding:0}
 <div class="title">Figure 2. WebDriver scenario for Chrome, Firefox, Opera, PhantomJS, Edge, and Internet Explorer</div>
 </div>
 <div class="paragraph">
-<p>Focusing on Java, before creating a WebDriver instance, the absolute path of the binary controlling the browser should be exported in a given environment variable, as follows:</p>
+<p>Concerning Java, in order to locate these drivers, the absolute path of the binary controlling the browser should be exported in a given environment variable before creating a WebDriver instance, as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.chrome.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/chromedriver</span><span class="delimiter">&quot;</span></span>);
-<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.opera.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/operadriver</span><span class="delimiter">&quot;</span></span>);
-<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.ie.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/IEDriverServer.exe</span><span class="delimiter">&quot;</span></span>);
-<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.edge.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/absolute/path/to/binary/MicrosoftWebDriver.exe</span><span class="delimiter">&quot;</span></span>);
-<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs.binary.path</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/phantomjs</span><span class="delimiter">&quot;</span></span>);
-<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.gecko.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/absolute/path/to/binary/geckodriver</span><span class="delimiter">&quot;</span></span>);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.chrome.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/chromedriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.opera.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/operadriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.ie.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/path/to/IEDriverServer.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.edge.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/path/to/MicrosoftWebDriver.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs.binary.path</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/phantomjs</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.gecko.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/geckodriver</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -836,7 +836,7 @@ InternetExplorerDriverManager.getInstance().setup();</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The solution implemented by WebDriverManager was latter ported in equivalent tools for other languages, such as <a href="https://github.com/angular/webdriver-manager">webdriver-manager</a> for <strong>Node.js</strong> or <a href="https://github.com/rosolko/WebDriverManager.Net">WebDriverManager.net</a> for <strong>.NET</strong>.</p>
+<p>The solution implemented by WebDriverManager is today supported by similar tools for other languages, such as <a href="https://github.com/angular/webdriver-manager">webdriver-manager</a> for <strong>Node.js</strong> or <a href="https://github.com/rosolko/WebDriverManager.Net">WebDriverManager.Net</a> for <strong>.NET</strong>.</p>
 </div>
 <div class="paragraph">
 <p>On August 2017, a new major version of the well-know testing JUnit framework was released. This leads to <strong><em>selenium-jupiter</em></strong>, which can be seen as the natural evolution of <em>WebDriverManager</em> for <strong>JUnit 5</strong> tests. Internally, <em>selenium-jupiter</em> is built using two foundations:</p>
@@ -851,12 +851,15 @@ InternetExplorerDriverManager.getInstance().setup();</code></pre>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>All in all, using Selenium WebDriver to control browsers using Java was never that easy. Using JUnit 5 and <em>selenium-jupiter</em>, you simply need to declare the flavor of browser you want to use in your test method and use it.</p>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-11 05:07:18 CEST
+Last updated 2017-07-11 23:21:12 CEST
 </div>
 </div>
 </body>

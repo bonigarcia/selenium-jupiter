@@ -787,6 +787,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#using-options">Using options</a></li>
 <li><a href="#using-capabilities">Using capabilities</a></li>
+<li><a href="#tuning-webdrivermanager">Tuning WebDriverManager</a></li>
 </ul>
 </li>
 </ul>
@@ -797,16 +798,259 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="advanced"><a class="anchor" href="#advanced"></a>Advanced</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is the advance doc.</p>
+<p>So far, we have discovered how to use different browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What if I need to specify options (e.g. <code>ChromeOptions</code>, <code>FirefoxOptions</code>, etc) to my WebDriver object?</p>
+</li>
+<li>
+<p>What if need to specify desired capabilities (e.g. browser type, version, platform)?</p>
+</li>
+<li>
+<p>And what about remote browsers (<a href="http://www.seleniumhq.org/projects/grid/">Selenium Grid</a>)? How is <code>RemoteWebDriver</code> supported by <em>selenium-jupiter</em>?</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>You can find this documentation in PDF <a href="selenium-jupiter.pdf">here</a>.</p>
+<p>In order to support the advance features of Selenium WebDriver, <em>selenium-jupiter</em> provides several annotations aimed to allow a fine-grained control of the WebDriver object instantiation. These annotations are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DriverOptions</code>: Annotation to configure <em>options</em> (e.g. <code>ChromeOptions</code> for Chrome, <code>FirefoOptions</code> for Firefox, <code>EdgeOptions</code> for Edge, <code>OperaOptions</code> for Opera, and <code>SafariOptions</code> for Safari).</p>
+</li>
+<li>
+<p><code>DriverCapabilities</code>: Annotation to configure the desired <em>capabilities</em> (WebDriver&#8217;s object <code>DesiredCapabilities</code>).</p>
+</li>
+<li>
+<p><code>DriverUrl</code>: Annotation used to identify the URL value needed to instantiate a <code>RemoteWebDriver</code> object.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All these 3 annotation can be used both at <em>parameter-level</em> (applied to a single WebDriver parameter), and also at <em>field-level</em> (applied globally in a test class). Keep reading to find out several examples about that.</p>
+</div>
+<div class="sect2">
+<h3 id="using-options"><a class="anchor" href="#using-options"></a>Using options</h3>
+<div class="paragraph">
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java">example</a> shows how to specify options for Chrome. To that aim, the annotation <code>@DriverOptions</code> is used to set a collection of options. This array of options is configured using the annotation <code>@Option</code> declaring the parameters <code>name</code> and <code>value</code>). In the example, the annotation <code>@DriverOptions</code> is used at <em>parameter-level</em>. In the first test (called <code>headlessTest</code>), we are setting the argument <code>--headless</code>, used in Chrome to work as a headless browser. In the second test (<code>webrtcTest</code>), we are using two different arguments: <code>--use-fake-device-for-media-stream</code> and <code>--use-fake-ui-for-media-stream</code>, used to fake user media (i.e. camera and microphone) in <a href="https://webrtc.org/">WebRTC</a> applications.</p>
 </div>
 <div class="listingblock">
-<div class="title">Java code from project</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.SeleniumJupiter.ARGS</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverOptions</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Option</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithOptionsJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> headlessTest(<span class="annotation">@DriverOptions</span>(options = {
+            <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--headless</span><span class="delimiter">&quot;</span></span>) }) ChromeDriver chrome) {
+        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+
+        assertTrue(chrome.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> webrtcTest(
+            <span class="annotation">@DriverOptions</span>(options = {
+                    <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-device-for-media-stream</span><span class="delimiter">&quot;</span></span>),
+                    <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-ui-for-media-stream</span><span class="delimiter">&quot;</span></span>) }) ChromeDriver chrome)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+
+        chrome.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://webrtc.github.io/samples/src/content/devices/input-output/</span><span class="delimiter">&quot;</span></span>);
+
+        <span class="predefined-type">Thread</span>.sleep(<span class="integer">3000</span>); <span class="comment">// Wait 3 seconds to see the video</span>
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As introduced before, this annotation <code>@DriverOptions</code> can be used also at <em>field-level</em>, as shown in this other <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java">example</a>. This test is setting to <code>true</code> the Firefox preferences <code>media.navigator.streams.fake</code> and <code>media.navigator.permission.disabled</code>, used also for WebRTC.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxOptions</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverOptions</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxWithGlobalOptionsJupiterTest</span> {
+
+    <span class="annotation">@DriverOptions</span>
+    FirefoxOptions firefoxOptions = <span class="keyword">new</span> FirefoxOptions();
+    {
+        <span class="comment">// Flag to use fake media for WebRTC user media</span>
+        firefoxOptions.addPreference(<span class="string"><span class="delimiter">&quot;</span><span class="content">media.navigator.streams.fake</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">true</span>);
+
+        <span class="comment">// Flag to avoid granting access to user media</span>
+        firefoxOptions.addPreference(<span class="string"><span class="delimiter">&quot;</span><span class="content">media.navigator.permission.disabled</span><span class="delimiter">&quot;</span></span>,
+                <span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> webrtcTest(FirefoxDriver firefox) <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        firefox.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://webrtc.github.io/samples/src/content/devices/input-output/</span><span class="delimiter">&quot;</span></span>);
+
+        <span class="predefined-type">Thread</span>.sleep(<span class="integer">3000</span>); <span class="comment">// Wait 3 seconds to see the video</span>
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-capabilities"><a class="anchor" href="#using-capabilities"></a>Using capabilities</h3>
+<div class="paragraph">
+<p>The annotation <code>@DriverCapabilities</code> is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as <em>Selenium Server</em>) should be up an running, and its URL should known. This URL will be specified using the <em>selenium-jupiter</em> annotation <code>@DriverUrl</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following example provides a complete <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java">example</a> about this. As you can see, in the test setup (<code>@BeforeAll</code>) a Selenium Grid is implemented, first starting a Hub (a.k.a. <em>Selenium Server</em>), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using <code>RemoteWebDriver</code> can be executed, simply pointing to the Hub (whose URL in this case is <code><a href="http://localhost:4444/wd/hub" class="bare">http://localhost:4444/wd/hub</a></code> in this example) and selecting the browser to be used using the <code>Capabilities</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertThrows</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.grid.selenium.GridLauncherV3</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Capability</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverUrl</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.ChromeDriverManager</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.FirefoxDriverManager</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">RemoteWebDriverWithCapabilitiesJupiterTest</span> {
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        <span class="comment">// Start hub</span>
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">hub</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">4444</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Chrome in hub</span>
+        ChromeDriverManager.getInstance().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome,version=59</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5555</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Firefox in hub</span>
+        FirefoxDriverManager.getInstance().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=firefox</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5556</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Wait to finish browser registration</span>
+        <span class="predefined-type">Thread</span>.sleep(<span class="integer">2000</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithoutUrl(RemoteWebDriver remoteWebDriver) {
+        assertThrows(<span class="exception">NullPointerException</span>.class, () -&gt; {
+            exercise(remoteWebDriver);
+        });
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithRemoteChrome(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(capability = {
+                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>),
+                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">59</span><span class="delimiter">&quot;</span></span>) }) RemoteWebDriver remoteChrome)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        exercise(remoteChrome);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithRemoteFirefox(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(capability = {
+                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">firefox</span><span class="delimiter">&quot;</span></span>) }) RemoteWebDriver remoteChrome)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        exercise(remoteChrome);
+    }
+
+    <span class="type">void</span> exercise(WebDriver webdriver) {
+        webdriver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+
+        assertTrue(webdriver.getTitle().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The equivalent example, this time using global capabilities and URL (i.e. using <code>@DriverCapabilities</code> and <code>@DriverUrl</code> at <em>field-level</em> is also available on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java">GitHub</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tuning-webdrivermanager"><a class="anchor" href="#tuning-webdrivermanager"></a>Tuning WebDriverManager</h3>
+<div class="paragraph">
+<p>As introduced before, <em>selenium-jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
 
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeSettingVersionJupiterTest</span> {
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        <span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">wdm.edgeVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Edge not available on Travis CI</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> webrtcTest(EdgeDriver edge) {
+        edge.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+
+        assertTrue(edge.getTitle().equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium - Web Browser Automation</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This other example shows how to force cache (i.e. binaries previously downloaded by WebDriverManager) to avoid the connection with online repository to check the latest version:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
@@ -814,54 +1058,22 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ForceCacheJupiterTest</span> {
 
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chrome) {
-        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(chrome.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        <span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">wdm.forceCache</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver chrome1, ChromeDriver chrome2) {
-        chrome1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        chrome2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
+    <span class="directive">public</span> <span class="type">void</span> test(ChromeDriver chrome) {
+        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
 
-        assertTrue(chrome1.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
-        assertTrue(chrome2.getTitle().equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+        assertTrue(chrome.getTitle().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
 </div>
-</div>
-<div class="sect2">
-<h3 id="using-options"><a class="anchor" href="#using-options"></a>Using options</h3>
-<div class="paragraph">
-<p>This page was built by the following command:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>$ mvn</pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-Includes can be tricky!
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="using-capabilities"><a class="anchor" href="#using-capabilities"></a>Using capabilities</h3>
-<div class="paragraph">
-<p>To do.</p>
 </div>
 </div>
 </div>
@@ -869,7 +1081,7 @@ Includes can be tricky!
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-11 05:07:36 CEST
+Last updated 2017-07-11 23:21:12 CEST
 </div>
 </div>
 </body>
