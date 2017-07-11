@@ -1,23 +1,62 @@
 == Advanced
 
-This is the advance doc.
+So far, we have discover how to use different browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) with its default options and supposing that the browser in question is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:
 
-You can find this documentation in PDF link:selenium-jupiter.pdf[here].
+* What if I need to specify options (e.g. `ChromeOptions`, `FirefoxOptions`, etc) to my WebDriver object?
+* What if need to specify desired capabilities?
+* And what about remote browsers (http://www.seleniumhq.org/projects/grid/[Selenium Grid])? Is `RemoteWebDriver` supported by _selenium-jupiter_.
 
-[source,java]
-.Java code from project
-----
-include::../../test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
-----
+In order to support these advance features of Selenium WebDriver, _selenium-jupiter_ provides several annotations aimed to provide a fine-grained control of the WebDriver object instantiation. These annotations are the following:
+
+* `DriverOptions`: Annotation to configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
+* `DriverCapabilities`: Annotation to configure the desired _capabilities_ (WebDriver's object `DesiredCapabilities`).
+* `DriverUrl`: Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object.
+
+All these 3 annotation can be used both at _parameter-level_ (applied to a single WebDriver parameter), and also at _field-level_ (applied globally in a test class). Keep reading to find out comprehensive examples using these annotations in different cases.
 
 === Using options
 
-This page was built by the following command:
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. To that aim, the annotation `DriverOptions` is used to set a collection of options (entries annotated with `@Option` declaring the parameters `name` and `value`). In this example, the annotation `DriverOptions` is used at _parameter-level_. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to take user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications.
 
- $ mvn
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
 
-WARNING: Includes can be tricky!
+As introduced before, this annotation `@DriverOptions` can be used also at _field-level_, as shown in this other https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[example]. This test is setting to `true` the Firefox preferences `media.navigator.streams.fake` and `media.navigator.permission.disabled`, used also for WebRTC.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === Using capabilities
 
-To do.
+The annotation `@DriverCapabilities` is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as _Selenium Server_) should be up an running, and its URL should known. This URL will be specified using the _selenium-jupiter_ annotation `@DriverUrl`. 
+
+The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java[example] about this. AS you can see, in the test setup (`@BeforeAll`) and Selenium Grid is started, first starting a Hub (or _Selenium Server_), and the a couple of nodes (Chrome a Firefox) are registered in the hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the HUB (whose URL is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The equivalent example but using global capabilities and URL (i.e. using `@DriverCapabilities` and `@DriverUrl` at _field-level_ is also available on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java[GitHub].
+
+=== Tuning WebDriverManager
+
+As introduced before, _selenium-jupiter_ internally used https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
+
+In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/EdgeSettingVersionJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+This other example shows how to force cache (i.e. binaries previously downloaded by WebDriverManager) to avoid the connection with online repository to check the latest version: 
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest.java[tags=snippet-in-doc,indent=0]
+----

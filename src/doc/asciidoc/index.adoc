@@ -15,7 +15,7 @@ include::motivation.adoc[]
 
 include::examples.adoc[]
 
-// include::advanced.adoc[]
+include::advanced.adoc[]
 
 include::support.adoc[]
 

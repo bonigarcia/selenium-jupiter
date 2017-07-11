@@ -29,6 +29,6 @@ The `WebDriver` subtypes supported by _selenium-jupiter_ are the following:
 - `HtmlUnitDriver`: Used to control HtmlUnit (headless browser).
 - `PhantomJSDriver`: Used to control PhantomJS (headless browser).
 - `InternetExplorerDriver`: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.
-- `RemoteDriver`: Used to control remote browsers (_Selenium Grid_).
+- `RemoteWebDriver`: Used to control remote browsers (_Selenium Grid_).
 
 WARNING: The browser to be used must be installed in the machine running the test beforehand (except in the case of `RemoteWebDriver`, in which the requirement is to known a Selenium Server URL).
