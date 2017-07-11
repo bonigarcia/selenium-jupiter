@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<title>Quick reference</title>
+<title>Support</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -783,116 +783,36 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#quick-reference">Quick reference</a></li>
+<li><a href="#support">Support</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="quick-reference"><a class="anchor" href="#quick-reference"></a>Quick reference</h2>
+<h2 id="support"><a class="anchor" href="#support"></a>Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong><em>selenium-jupiter</em></strong> has been built using the <a href="http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection">dependency injection</a> capability provided by the extension model of JUnit 5. Thank to this feature, parameters can be injected in JUnit 5 in <code>@Test</code> methods. Concretely, <em>selenium-jupiter</em> allows to inject subtypes of the <strong>WebDriver</strong> interface (e.g. <em>ChromeDriver</em>, <em>FirefoxDriver</em>, etc.) as parameters.</p>
-</div>
-<div class="paragraph">
-<p>Using <em>selenium-jupiter</em> it&#8217;s easy as pie. First, you need to import the dependency in your project (typically as <em>test</em> dependency). In Maven, it is done as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
-        <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
-        <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>1.0.0<span class="tag">&lt;/version&gt;</span>
-        <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
-<span class="tag">&lt;/dependency&gt;</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then, you need to declare <em>selenium-jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumExtension.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods whose types implements the <code>WebDriver</code> interface. That&#8217;s it. <em>selenium-jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test case to automatically control the browser(s) you want. For example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
-
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chrome) {
-        <span class="comment">// using Chrome in this test</span>
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithFirefox(FirefoxDriver firefox) {
-        <span class="comment">// using Firefox in this test</span>
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chrome,
-            FirefoxDriver firefox) {
-        <span class="comment">// using Chrome and Firefox in this test</span>
-    }
-
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The <code>WebDriver</code> subtypes supported by <em>selenium-jupiter</em> are the following:</p>
+<p>There are several ways to get in touch with <em>selenium-jupiter</em>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>ChromeDriver</code>: Used to control Google Chrome browser.</p>
+<p>Questions about <em>selenium-jupiter</em> are supposed to be discussed in <a href="https://stackoverflow.com/questions/tagged/selenium-jupiter">StackOverflow</a>, using the tag <em>selenium-jupiter</em>.</p>
 </li>
 <li>
-<p><code>FirefoxDriver</code>: Used to control Firefox browser.</p>
+<p>Comments, suggestions and bug-reporting should be done using the <a href="https://github.com/bonigarcia/selenium-jupiter/issues">GitHub issues</a>.</p>
 </li>
 <li>
-<p><code>EdgeDriver</code>: Used to control Microsoft Edge browser.</p>
-</li>
-<li>
-<p><code>OperaDriver</code>: Used to control Opera browser.</p>
-</li>
-<li>
-<p><code>SafariDriver</code>: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).</p>
-</li>
-<li>
-<p><code>HtmlUnitDriver</code>: Used to control HtmlUnit (headless browser).</p>
-</li>
-<li>
-<p><code>PhantomJSDriver</code>: Used to control PhantomJS (headless browser).</p>
-</li>
-<li>
-<p><code>InternetExplorerDriver</code>: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.</p>
-</li>
-<li>
-<p><code>RemoteDriver</code>: Used to control remote browsers (<em>Selenium Grid</em>).</p>
+<p>If you think <em>selenium-jupiter</em> can be enhanced, consider contribute to the project by means of a  <a href="https://github.com/bonigarcia/selenium-jupiter/pulls">pull request</a>.</p>
 </li>
 </ul>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-The browser to be used must be installed in the machine running the test beforehand (except in the case of <code>RemoteWebDriver</code>, in which the requirement is to known a Selenium Server URL).
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-11 05:07:05 CEST
+Last updated 2017-07-11 05:05:31 CEST
 </div>
 </div>
 </body>
