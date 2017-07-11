@@ -1,3 +1,3 @@
 == About
 
-selenium-jupiter (Copyright © 2017) is a project of Boni Garcia licensed under Apache 2.0 License. Comments, questions and suggestions are always very welcome!
+*_selenium-jupiter_* (Copyright © 2017) is a project created by http://bonigarcia.github.io/[Boni Garcia] (https://twitter.com/boni_gg[@boni_gg]) licensed under http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation is released under the terms of https://creativecommons.org/licenses/by/3.0/[CC BY 3.0].

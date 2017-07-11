@@ -1,5 +1,14 @@
-selenium-java (1.0.0)
+selenium-jupiter (1.0.0)
 
-  + First version of selenium-java
+  + Use of JUnit 5 dependency injection to use WebDriver objects as parameter in Jupiter tests
+  + Support for ChromeDriver, FirefoxDriver, EdgeDriver, OperaDriver, SafariDriver, HtmlUnitDriver, PhantomJSDriver, and InternetExplorerDriver
+  + Integration with WebDriverManager (1.7.1) to manage WebDriver binaries (chromedriver, geckodriver, etc)
+  + Integration with selenium-java (3.4.0)
+  + Provide the annotation @DriverCapabilities, @DriverCapabilities, and @DriverUrl to specify options/capabilities to instatiate WebDriver objects
+  + Allow to use these annotations at parameter level and also at field level (global options/capabilities)
+  + Rich test suite running on Travis CI
+  + AsciiDoc documentation, generated to HTML and PDF with maven-asciidoctor-plugin (mvn site)
+  + Reuse tests as examples in documentation (using AsciiDoc tags)
+  + Publication of documentation on gh-pages branch (https://bonigarcia.github.io/selenium-jupiter/)
 
- -- Boni Garcia <boni.gg@gmail.com>  Mon, 12 Jun 2017 01:05:00
+ -- Boni Garcia <boni.gg@gmail.com>  Tue, 11 Jul 2017 05:06:00

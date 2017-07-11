@@ -1,0 +1,7 @@
+== Support
+
+There are several ways to get in touch with _selenium-jupiter_:
+
+* Questions about _selenium-jupiter_ are supposed to be discussed in https://stackoverflow.com/questions/tagged/selenium-jupiter[StackOverflow], using the tag _selenium-jupiter_.
+* Comments, suggestions and bug-reporting should be done using the https://github.com/bonigarcia/selenium-jupiter/issues[GitHub issues].
+* If you think _selenium-jupiter_ can be enhanced, consider contribute to the project by means of a  https://github.com/bonigarcia/selenium-jupiter/pulls[pull request].

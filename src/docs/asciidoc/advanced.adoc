@@ -10,10 +10,14 @@ You can find this documentation in PDF link:selenium-jupiter.pdf[here].
 include::../../test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-=== Level 2
+=== Using options
 
 This page was built by the following command:
 
  $ mvn
 
 WARNING: Includes can be tricky!
+
+=== Using capabilities
+
+To do.

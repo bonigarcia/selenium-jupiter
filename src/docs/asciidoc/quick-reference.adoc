@@ -1,5 +1,34 @@
 == Quick reference
 
-This is the user guide of selenium-jupiter.
+*_selenium-jupiter_* has been built using the http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection[dependency injection] capability provided by the extension model of JUnit 5. Thank to this feature, parameters can be injected in JUnit 5 in `@Test` methods. Concretely, _selenium-jupiter_ allows to inject subtypes of the *WebDriver* interface (e.g. _ChromeDriver_, _FirefoxDriver_, etc.) as parameters. 
 
-JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests.
+Using _selenium-jupiter_ it's easy as pie. First, you need to import the dependency in your project (typically as _test_ dependency). In Maven, it is done as follows:
+
+[source,xml]
+<dependency>
+	<groupId>io.github.bonigarcia</groupId>
+	<artifactId>selenium-jupiter</artifactId>
+	<version>1.0.0</version>
+	<scope>test</scope>
+</dependency>
+
+Then, you need to declare _selenium-jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods whose types implements the `WebDriver` interface. That's it. _selenium-jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test case to automatically control the browser(s) you want. For example:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/basic/ChromeAndFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The `WebDriver` subtypes supported by _selenium-jupiter_ are the following:
+
+- `ChromeDriver`: Used to control Google Chrome browser.
+- `FirefoxDriver`: Used to control Firefox browser.
+- `EdgeDriver`: Used to control Microsoft Edge browser.
+- `OperaDriver`: Used to control Opera browser.
+- `SafariDriver`: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).
+- `HtmlUnitDriver`: Used to control HtmlUnit (headless browser).
+- `PhantomJSDriver`: Used to control PhantomJS (headless browser).
+- `InternetExplorerDriver`: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.
+- `RemoteDriver`: Used to control remote browsers (_Selenium Grid_).
+
+WARNING: The browser to be used must be installed in the machine running the test beforehand (except in the case of `RemoteWebDriver`, in which the requirement is to known a Selenium Server URL).

@@ -1,6 +1,6 @@
 # selenium-jupiter [![][Logo]][GitHub Repository]
 
-*selenium-jupiter* is a Jupiter extension aimed to ease the use of Selenium WebDriver in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
+*selenium-jupiter* is a JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Usage
 
