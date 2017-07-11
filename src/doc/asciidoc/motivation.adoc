@@ -1,12 +1,12 @@
 == Motivation
 
-http://www.seleniumhq.org/projects/webdriver/[Selenium WebDriver] allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is great to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. The general schema should is depicted as follows:
+http://www.seleniumhq.org/projects/webdriver/[Selenium WebDriver] allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is great to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. One the one hand, the communication between the WebDriver object and that binary is done using the (https://www.w3.org/TR/webdriver/)[W3C WebDriver specification], formerly called _JSON Wire Protocol_. It consists basically on REST service using JSON for request and responses. On the other hand, the communication between the binary and the browser is done using native capabilities of the browser. Therefore, the general schema should can be illustrated as follows:
 
 [.thumb]
 .WebDriver general scenario
 image::webdriver-general-schema.png[scaledwidth=100%]
 
-From a tester point of view, this is a cumbersome process, since it is required to download the proper binary for the platform running the test (i.e. Windows, Linux, Mac). Moreover, the versioning is also a headache, since browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be constantly updated:  
+From a tester point of view, the need of this binary component is a pain in the neck, since it is required to manually download the proper binary for the platform running the test (i.e. Windows, Linux, Mac). Moreover, the binary version should be constantly updated. The most of browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be updated by hand. The following picture shows a fine-grained diagram of the different flavour of WebDriver binaries and browsers: 
 
 [.thumb]
 .WebDriver scenario for Chrome, Firefox, Opera, PhantomJS, Edge, and Internet Explorer
@@ -16,12 +16,12 @@ Focusing on Java, before creating a WebDriver instance, the absolute path of the
 
 [source,java]
 ----
-System.setProperty("webdriver.chrome.driver", "/absolute/path/to/binary/chromedriver");
-System.setProperty("webdriver.opera.driver", "/absolute/path/to/binary/operadriver");
-System.setProperty("webdriver.ie.driver", "C:/absolute/path/to/binary/IEDriverServer.exe");
-System.setProperty("webdriver.edge.driver", "C:/absolute/path/to/binary/MicrosoftWebDriver.exe");
-System.setProperty("phantomjs.binary.path", "/absolute/path/to/binary/phantomjs");
-System.setProperty("webdriver.gecko.driver", "/absolute/path/to/binary/geckodriver");
+System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+System.setProperty("webdriver.opera.driver", "/path/to/operadriver");
+System.setProperty("webdriver.ie.driver", "C:/path/to/IEDriverServer.exe");
+System.setProperty("webdriver.edge.driver", "C:/path/to/MicrosoftWebDriver.exe");
+System.setProperty("phantomjs.binary.path", "/path/to/phantomjs");
+System.setProperty("webdriver.gecko.driver", "/path/to/geckodriver");
 ----
 
 In order to simplify the life of Java WebDriver users, in March 2015 the utility https://github.com/bonigarcia/webdrivermanager[WebDriverManager] was first released. WebDriverManager is a library which automates all this process (download the proper binary and export the proper variable) for Java in runtime. The WebDriverManager API is quite simple, providing a singleton object for each of the above mentioned browsers:
@@ -36,9 +36,11 @@ EdgeDriverManager.getInstance().setup();
 InternetExplorerDriverManager.getInstance().setup();
 ----
 
-The solution implemented by WebDriverManager was latter ported in equivalent tools for other languages, such as https://github.com/angular/webdriver-manager[webdriver-manager] for *Node.js* or https://github.com/rosolko/WebDriverManager.Net[WebDriverManager.net] for *.NET*.
+The solution implemented by WebDriverManager is today supported by similar tools for other languages, such as https://github.com/angular/webdriver-manager[webdriver-manager] for *Node.js* or https://github.com/rosolko/WebDriverManager.Net[WebDriverManager.Net] for *.NET*.
 
 On August 2017, a new major version of the well-know testing JUnit framework was released. This leads to *_selenium-jupiter_*, which can be seen as the natural evolution of _WebDriverManager_ for *JUnit 5* tests. Internally, _selenium-jupiter_ is built using two foundations:
 
 1. It uses _WebDriverManager_ to manage the binaries requires by WebDriver.
 2. It uses the _dependency injection_ feature of the extension model of JUnit 5 to inject WebDriver objects within `@Test` methods.
+
+All in all, using Selenium WebDriver to control browsers using Java was never that easy. Using JUnit 5 and _selenium-jupiter_, you simply need to declare the flavor of browser you want to use in your test method and use it.
