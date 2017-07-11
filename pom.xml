@@ -150,7 +150,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+                    <sourceDirectory>src/doc/asciidoc</sourceDirectory>
                     <attributes>
                         <endpoint-url>http://example.org</endpoint-url>
                         <sourcedir>${project.build.sourceDirectory}</sourcedir>
@@ -187,7 +187,7 @@
                         </goals>
                         <configuration>
                             <backend>pdf</backend>
-                            <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+                            <sourceDirectory>src/doc/asciidoc</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
                             <sourceHighlighter>coderay</sourceHighlighter>
                             <attributes>
