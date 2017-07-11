@@ -26,12 +26,6 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
-/**
- * Test with Safari browsers.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
 @ExtendWith(SeleniumExtension.class)
 public class SafariJupiterTest {
 
