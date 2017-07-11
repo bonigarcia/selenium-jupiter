@@ -1,5 +1,10 @@
 # selenium-jupiter [![][Logo]][GitHub Repository]
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.bonigarcia/selenium-jupiter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.bonigarcia/selenium-jupiter)
+[![Build Status](https://travis-ci.org/bonigarcia/selenium-jupiter.svg?branch=master)](https://travis-ci.org/bonigarcia/selenium-jupiter)
+[![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Support badge]( https://img.shields.io/badge/support-sof-green.svg)](http://stackoverflow.com/questions/tagged/selenium-jupiter)
+
 *selenium-jupiter* is a JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Usage
