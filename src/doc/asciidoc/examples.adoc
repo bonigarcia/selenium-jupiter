@@ -1,10 +1,10 @@
 == Examples
 
-This section contains a comprehensive collection of examples demonstrating the basic usage of _seleniun-jupiter_ in JUnit 5 tests using different types of browsers. All these examples are part of the test suite contained in the https://github.com/bonigarcia/selenium-jupiter[source code of _selenium-jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI].
+This section contains a comprehensive collection of examples demonstrating the basic usage of _seleniun-jupiter_ in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of https://github.com/bonigarcia/selenium-jupiter[_selenium-jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI].
 
 === Chrome
 
-The following example contains a simple use of Chrome. The complete source code of this test is hosted on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[GitHub]. Notice that there are two tests here (methods annotated with `@Test`). The first one (`testWithOneChrome`) declares just one `ChromeDriver` parameter, and therefore this test controls a single Chrome browser. On the other hand, the second `@Test` (`testWithTwoChromes`) declares two different `ChromeDriver` parameters, and so it controls two Chrome browsers. As you can see, using these browsers you can be used to load two pages, make different assertions, and so on.   
+The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[GitHub]. Notice that this class contains two tests (methods annotated with `@Test`). The first one (`testWithOneChrome`) declares just one `ChromeDriver` parameter, and therefore this test controls a single Chrome browser. On the other hand, the second `@Test` (`testWithTwoChromes`) declares two different `ChromeDriver` parameters, and so, it controls two Chrome browsers.
 
 [source,java]
 ----
@@ -22,14 +22,14 @@ include::../../test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java
 
 === Edge
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. Notice that this time the test is disabled, due to the fact that Edge is not available on Travis CI. However, this test could be executed on a Windows machine with Edge without problems. 
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. Notice that this test is disabled (with JUnit 5's `@Disabled` annotation), due to the fact that Edge is not available on Travis CI. However, this test could be executed on a Windows machine with Edge without problems. 
 
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-WARNING: The required version of _MicrosoftWebDriver.exe_ depends on the version on Edge to be used (more info MicrosoftWebDriver.exe[here]). By default, WebDriverManager always downloads and used the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the link:advanced[advance examples section] to find out how to configure WebDriverManager.
+TIP: The required version of _MicrosoftWebDriver.exe_ depends on the version on Edge to be used (more info https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/[here]). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the link:advanced[advance examples section] to find out how to setup the different options of WebDriverManager.
 
 === Opera
 
@@ -51,8 +51,7 @@ include::../../test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java[
 
 === PhamtomJS
 
-PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for some tests.  
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java[example] demonstrates how to use PhamtomJS with _selenium-jupiter-.  
+PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java[example] demonstrates how to use PhamtomJS with _selenium-jupiter_.  
 
 [source,java]
 ----

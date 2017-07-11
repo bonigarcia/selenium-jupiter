@@ -1,6 +1,6 @@
 == Quick reference
 
-*_selenium-jupiter_* has been built using the http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection[dependency injection] capability provided by the extension model of JUnit 5. Thank to this feature, parameters can be injected in JUnit 5 in `@Test` methods. Concretely, _selenium-jupiter_ allows to inject subtypes of the *WebDriver* interface (e.g. _ChromeDriver_, _FirefoxDriver_, etc.) as parameters. 
+*_selenium-jupiter_* has been built using the http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection[dependency injection] capability provided by the extension model of JUnit 5. Thank to this feature, different types objects can be injected in JUnit 5 in `@Test` methods as parameters. Concretely, _selenium-jupiter_ allows to inject subtypes of the *WebDriver* interface (e.g. _ChromeDriver_, _FirefoxDriver_, and so on). 
 
 Using _selenium-jupiter_ it's easy as pie. First, you need to import the dependency in your project (typically as _test_ dependency). In Maven, it is done as follows:
 
@@ -12,7 +12,9 @@ Using _selenium-jupiter_ it's easy as pie. First, you need to import the depende
 	<scope>test</scope>
 </dependency>
 
-Then, you need to declare _selenium-jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods whose types implements the `WebDriver` interface. That's it. _selenium-jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test case to automatically control the browser(s) you want. For example:
+NOTE: _selenium-jupiter_ 1.0.0 depends on *_selenium-java_ 3.4.0* and *_webdrivermanager_ 1.7.1*. Therefore, by using the _selenium-jupiter_ dependency, those libraries (_selenium-java_ and _webdrivermanager_) will be added as transitive dependencies to your project.
+
+Then, you need to declare _selenium-jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _selenium-jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
 
 [source,java]
 ----
