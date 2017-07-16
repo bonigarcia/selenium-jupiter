@@ -24,4 +24,5 @@ before_script:
     - sleep 3 # give xvfb some time to start
 
 script:
-    - mvn test -Dheadless=true
+    - mvn test
+    - bash <(curl -s https://codecov.io/bash)
