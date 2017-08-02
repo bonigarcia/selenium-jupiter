@@ -1,3 +1,11 @@
+selenium-jupiter (1.1.0)
+
+  + Support for Appium (AppiumDriver<T extends WebElement>)
+  + Use of io.appium:java-client version 5.0.0-BETA9
+
+ -- Boni Garcia <boni.gg@gmail.com>  Tue, 03 Aug 2017 00:04:00
+
+
 selenium-jupiter (1.0.0)
 
   + Use of JUnit 5 dependency injection to use WebDriver objects as parameter in Jupiter tests
