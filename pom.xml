@@ -19,7 +19,7 @@
         <selenium-server.version>3.4.0</selenium-server.version>
 
         <!-- Plugins -->
-        <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <maven-asciidoctor-plugin.version>1.5.5</maven-asciidoctor-plugin.version>
