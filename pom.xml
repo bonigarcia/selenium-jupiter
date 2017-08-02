@@ -10,6 +10,7 @@
         <!-- Dependencies -->
         <selenium-java.version>3.4.0</selenium-java.version>
         <webdrivermanager.version>1.7.1</webdrivermanager.version>
+        <appium-java-client.version>5.0.0-BETA9</appium-java-client.version>
         <slf4j.version>1.7.24</slf4j.version>
 
         <!-- Test dependencies -->
@@ -82,10 +83,16 @@
             <version>${webdrivermanager.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium-java-client.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+
 
         <!-- provided -->
         <dependency>

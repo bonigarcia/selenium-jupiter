@@ -44,6 +44,9 @@ import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
@@ -60,6 +63,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
     private AnnotationsReader annotationsReader = new AnnotationsReader();
+    private AppiumDriverLocalService appiumDriverLocalService;
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
@@ -153,6 +157,27 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                         + urlMessage + capabilitiesMessage);
             }
 
+        } else if (type == AppiumDriver.class) {
+            Optional<URL> url = annotationsReader.getUrl(parameter,
+                    testInstance);
+            if (capabilities.isPresent()) {
+                URL appiumServerUrl;
+                if (url.isPresent()) {
+                    appiumServerUrl = url.get();
+                } else {
+                    appiumDriverLocalService = AppiumDriverLocalService
+                            .buildDefaultService();
+                    appiumDriverLocalService.start();
+                    appiumServerUrl = appiumDriverLocalService.getUrl();
+                }
+
+                webDriver = new AndroidDriver<>(appiumServerUrl,
+                        capabilities.get());
+            } else {
+                log.warn(
+                        "Was not possible to instantiate AppiumDriver: Capabilites not present");
+            }
+
         } else {
             // Other WebDriver type
             try {
@@ -183,5 +208,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     public void afterEach(ExtensionContext context) throws Exception {
         webDriverList.forEach(webdriver -> webdriver.quit());
         webDriverList.clear();
+
+        if (appiumDriverLocalService != null) {
+            appiumDriverLocalService.stop();
+        }
     }
 }
