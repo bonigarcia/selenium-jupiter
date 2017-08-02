@@ -24,23 +24,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.appium.java_client.AppiumDriver;
-import io.github.bonigarcia.Capability;
 import io.github.bonigarcia.DriverCapabilities;
+import io.github.bonigarcia.DriverUrl;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class AppiumJupiterTest {
+public class AppiumWithGlobalOptionsChromeJupiterTest {
+
+    @DriverUrl
+    String url = "http://localhost:4723/wd/hub";
+
+    @DriverCapabilities
+    DesiredCapabilities capabilities = new DesiredCapabilities();
+    {
+        capabilities.setCapability("browserName", "chrome");
+        capabilities.setCapability("deviceName", "Android");
+    }
 
     @Disabled("Android emulator not available on Travis CI")
     @Test
-    void testWithAndroid(
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome"),
-                    @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> android)
-            throws InterruptedException {
-
+    void testWithAndroid(AppiumDriver<WebElement> android) {
         String context = android.getContext();
         android.context("NATIVE_APP");
         android.findElement(By.id("com.android.chrome:id/terms_accept"))
