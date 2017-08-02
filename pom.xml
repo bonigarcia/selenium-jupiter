@@ -13,8 +13,8 @@
         <slf4j.version>1.7.24</slf4j.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.0.0-M5</junit.jupiter.version>
-        <junit.platform.version>1.0.0-M5</junit.platform.version>
+        <junit.jupiter.version>5.0.0-RC2</junit.jupiter.version>
+        <junit.platform.version>1.0.0-RC2</junit.platform.version>
         <selenium-server.version>3.4.0</selenium-server.version>
 
         <!-- Plugins -->
