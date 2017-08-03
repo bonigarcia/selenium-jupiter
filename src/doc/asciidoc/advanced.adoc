@@ -41,7 +41,14 @@ The following example provides a complete https://github.com/bonigarcia/selenium
 include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-The equivalent example, this time using global capabilities and URL (i.e. using `@DriverCapabilities` and `@DriverUrl` at _field-level_ is also available on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java[GitHub].
+TIP: The equivalent example, this time using global capabilities and URL (i.e. using `@DriverCapabilities` and `@DriverUrl` at _field-level_ is also available on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java[GitHub].
+
+The following class contains an example which uses Chrome as browser and capabilities defined using `@DriverCapabilities`. Concretely, this example uses the mobile emulation feature provided out of the box by Chrome (i.e. render the web page using small screen resolutions to emulate smartphones).
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithGlobalCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === AppiumDriver
 
