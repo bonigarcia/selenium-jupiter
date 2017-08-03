@@ -1001,8 +1001,61 @@ table.CodeRay td.code>pre{padding:0}
 }</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The equivalent example, this time using global capabilities and URL (i.e. using <code>@DriverCapabilities</code> and <code>@DriverUrl</code> at <em>field-level</em> is also available on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java">GitHub</a>.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>The equivalent example, this time using global capabilities and URL (i.e. using <code>@DriverCapabilities</code> and <code>@DriverUrl</code> at <em>field-level</em> is also available on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java">GitHub</a>.</p>
+<p>The following class contains an example which uses Chrome as browser and capabilities defined using <code>@DriverCapabilities</code>. Concretely, this example uses the mobile emulation feature provided out of the box by Chrome (i.e. render the web page using small screen resolutions to emulate smartphones).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">java.util.HashMap</span>;
+<span class="keyword">import</span> <span class="include">java.util.Map</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithGlobalCapabilitiesJupiterTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+    {
+        <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt; mobileEmulation = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt;();
+        mobileEmulation.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus 5</span><span class="delimiter">&quot;</span></span>);
+        <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; chromeOptions = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;();
+        chromeOptions.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">mobileEmulation</span><span class="delimiter">&quot;</span></span>, mobileEmulation);
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> webrtcTest1(ChromeDriver chrome) <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+
+        assertTrue(chrome.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+
+        <span class="predefined-type">Thread</span>.sleep(<span class="integer">1500</span>); <span class="comment">// Wait 1.5 seconds to see the page</span>
+    }
+
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1181,7 +1234,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-08-03 02:14:29 CEST
+Last updated 2017-08-03 11:11:54 CEST
 </div>
 </div>
 </body>
