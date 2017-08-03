@@ -43,6 +43,23 @@ include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCa
 
 The equivalent example, this time using global capabilities and URL (i.e. using `@DriverCapabilities` and `@DriverUrl` at _field-level_ is also available on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java[GitHub].
 
+=== AppiumDriver
+
+The annotation `@DriverCapabilities` can be also used to specify the desired capabilities to create an instances of AppiumDriver to drive mobile devices (Android or iOS). If not `@DriverUrl` is specified, _selenium-jupiter_ will start automatically an instance of Appium Server (by default in port 4723) in the localhost after each test execution (this server is shutdown before each test). For example:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/AppiumChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+We can also specify a custom Appium Server URL changing the value of `@DriverUrl`, at field-level or parameter-level:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/AppiumApkJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+
 === Tuning WebDriverManager
 
 As introduced before, _selenium-jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
