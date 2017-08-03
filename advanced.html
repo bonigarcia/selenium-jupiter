@@ -787,6 +787,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#using-options">Using options</a></li>
 <li><a href="#using-capabilities">Using capabilities</a></li>
+<li><a href="#appiumdriver">AppiumDriver</a></li>
 <li><a href="#tuning-webdrivermanager">Tuning WebDriverManager</a></li>
 </ul>
 </li>
@@ -1005,6 +1006,105 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
+<h3 id="appiumdriver"><a class="anchor" href="#appiumdriver"></a>AppiumDriver</h3>
+<div class="paragraph">
+<p>The annotation <code>@DriverCapabilities</code> can be also used to specify the desired capabilities to create an instances of AppiumDriver to drive mobile devices (Android or iOS). If not <code>@DriverUrl</code> is specified, <em>selenium-jupiter</em> will start automatically an instance of Appium Server (by default in port 4723) in the localhost after each test execution (this server is shutdown before each test). For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Capability</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumChromeJupiterTest</span> {
+
+    <span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Android emulator not available on Travis CI</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithAndroid(
+            <span class="annotation">@DriverCapabilities</span>(capability = {
+                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>),
+                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>) }) AppiumDriver&lt;WebElement&gt; android)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+
+        <span class="predefined-type">String</span> context = android.getContext();
+        android.context(<span class="string"><span class="delimiter">&quot;</span><span class="content">NATIVE_APP</span><span class="delimiter">&quot;</span></span>);
+        android.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.android.chrome:id/terms_accept</span><span class="delimiter">&quot;</span></span>))
+                .click();
+        android.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.android.chrome:id/negative_button</span><span class="delimiter">&quot;</span></span>))
+                .click();
+        android.context(context);
+
+        android.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertTrue(android.getTitle().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also specify a custom Appium Server URL changing the value of <code>@DriverUrl</code>, at field-level or parameter-level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">java.io.File</span>;
+<span class="keyword">import</span> <span class="include">java.net.URISyntaxException</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
+<span class="keyword">import</span> <span class="include">io.appium.java_client.MobileElement</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumApkJupiterTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = <span class="keyword">new</span> DesiredCapabilities();
+    {
+        <span class="keyword">try</span> {
+            <span class="predefined-type">File</span> apk = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="local-variable">this</span>.getClass()
+                    .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/selendroid-test-app.apk</span><span class="delimiter">&quot;</span></span>).toURI());
+            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">app</span><span class="delimiter">&quot;</span></span>, apk.getAbsolutePath());
+            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>);
+
+        } <span class="keyword">catch</span> (<span class="exception">URISyntaxException</span> e) {
+            e.printStackTrace();
+        }
+    }
+
+    <span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Android emulator not available on Travis CI</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithAndroid(AppiumDriver&lt;MobileElement&gt; android)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        WebElement button = android.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">buttonStartWebview</span><span class="delimiter">&quot;</span></span>));
+        button.click();
+
+        WebElement inputField = android.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">name_input</span><span class="delimiter">&quot;</span></span>));
+        inputField.clear();
+        inputField.sendKeys(<span class="string"><span class="delimiter">&quot;</span><span class="content">Custom name</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="tuning-webdrivermanager"><a class="anchor" href="#tuning-webdrivermanager"></a>Tuning WebDriverManager</h3>
 <div class="paragraph">
 <p>As introduced before, <em>selenium-jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
@@ -1081,7 +1181,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-11 23:21:12 CEST
+Last updated 2017-08-03 02:14:29 CEST
 </div>
 </div>
 </body>
