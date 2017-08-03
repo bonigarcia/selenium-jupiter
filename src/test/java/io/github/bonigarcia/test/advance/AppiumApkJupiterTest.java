@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
+//tag::snippet-in-doc[]
 import java.io.File;
 import java.net.URISyntaxException;
 
