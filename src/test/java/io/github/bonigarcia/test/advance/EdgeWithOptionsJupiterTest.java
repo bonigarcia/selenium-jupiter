@@ -40,7 +40,7 @@ public class EdgeWithOptionsJupiterTest {
 
     @Disabled("Edge not available on Travis CI")
     @Test
-    void webrtcTest(@DriverOptions(options = {
+    public void edgeTest(@DriverOptions(options = {
             @Option(name = PAGE_LOAD_STRATEGY, value = "eager") }) EdgeDriver edge) {
         edge.get("http://www.seleniumhq.org/");
 
