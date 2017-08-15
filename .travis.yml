@@ -1,32 +1,22 @@
 language: java
-sudo: true
+sudo: false
 dist: trusty
 
 addons:
     firefox: latest
+    apt:
+        packages:
+            - google-chrome-stable
     sonarcloud:
         organization: "bonigarcia-github"
         token:
             secure: "fNDlGiZsMS83K1aL/TInfwpBDrr9GL5/6XWPQ9iv8xARPIKNf+Sb5Y3Pj/UUCOGyLLtK0g5gocl9ZXVIcRi38zKfHI1lPkgaO8HW6prhLB5wjvtWqL900wRmHSm3zS45dSeshutzHB1ycohriwzfPoiPx2Iqfz7nOg290MKLTGuhR6ZSDeZUFlS0MDqNhC62Ud44xkD5BXwoiMi/X3HJCgAdjA3HqhEKy4yFFIN0KIREJeHG6x6jlSWwHPFQ35QbNdSWD1vEDTspeYOeSCdmOeJ4347dA/bs3ox3RexAIpfa8ZbU214Mlr3+pXauiyPuY0JwOVUyAB8FKEOiXn8gvhSz4GD1b+v6VHnxnLUwc1yxqU+A4ZFIxV5l76z8mk2wTSVBU/NP7LZojBCXyGJ0urCnqrMp97LzpMU0c3oYeG7NlU5bmRNcxbFIdBt4dq9wDrugBcrNExGIjlt/idVDvbkSm6g1UaurxK708CuIfvwrfgB/JFEePwRzldt1aIqDYjTbQ+qDgoFf+zBoLk25aLVN7AVJuwZLxgyp0iQulNmavWE7vhyo4Pi+sQmhn1aqcU8JOV2b0cWQKYiD2B/K4LodVEURIXhptCvDMVgHTuj45nFWk3sNoj0Sp2rGWuDy8iCvSLyH75fP6X/MHKzuwWWzmrP4In6IdOprbcl3gMM="
 
-install:
-    # Add repos
-    - sudo apt-add-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
-    # Remove "deb-src" repos added from apt-add-repository, because it doesn't exist online
-    - sudo sed -i s/deb-src.*google.*//g /etc/apt/sources.list
-    # Add apt-keys for checking the packages
-    - wget -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    # Update
-    - sudo apt-get update -qq
-    # Install the browsers
-    - sudo apt-get install -y google-chrome-stable
-
 before_script:
-    # start xvfb
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
-    - sleep 3 # give xvfb some time to start
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start &
+    - sleep 3
 
 script:
     - mvn test sonar:sonar
-    - bash < (curl -s https://codecov.io/bash)
+    - bash <(curl -s https://codecov.io/bash)
