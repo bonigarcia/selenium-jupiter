@@ -4,9 +4,10 @@ dist: trusty
 
 addons:
     firefox: latest
-    addons:
-        sonarcloud:
-            organization: "bonigarcia-github"
+    sonarcloud:
+        organization: "bonigarcia-github"
+        token:
+            secure: "GxqvHx+zhNTXf5Np9JtvvjcvK6ZRbSvwViEnzjgRLBjq6qL8OKZf7lm4g4YYoxEwKHVUSQNUvz4NsTlI7JQKwt8E+dik9EL5KUCjv2jy5OqN243u9flvgfqZ85xRFOJ2xufmFaG5YpwuoP36bSQ2l+XFZlFAjXCU66xbYghIm2a0pDQZ7/wrbfZYX8E7zqGHDFd1pOjoztwr5NchFLWTURIFVNGMviwsVEzPobwqrx00YltIzp8y1XhICcw1HPCYyxrrtcLeHPbTIBgN5cmJ8z6T45Y2aK8XQ0C0PavVa9D6UR6tALsi01EHBMBaESYB6wPl9jdYAyUX2hahSqGDQMBkIIGC7XJEr+Al9+xCVV68+ZWIm1exNATUh+wjVBZGVr/kwOwde5TkKAiRLGyaF1sZsWpIdo6Slycz5wq0muQtI7FjENY3w3e2u6ewBeRnwcDOOoHbETtkqTLL6NuUzaoMG/6oqdfZNq++ZAonbX90bxQmqihpVGEqipGBjDKG/XfTiDrf5j8CFV6iWu9yF7IMmA/5z+kRQwPQnuZHl5psAJrg00gxVF+Gp+pQb4ro+c17q+CYRpxE8BwE9qpLzV+ZqAWzEPau3p3GW6AHsQHWfKBACws0GF58yLkhup1bU5MB41KUOSIc8NlRgViTGTiW1jFLGmWoluu/07TgS4U="
 
 install:
     # Add repos
