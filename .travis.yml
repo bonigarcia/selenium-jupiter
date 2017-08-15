@@ -4,6 +4,9 @@ dist: trusty
 
 addons:
     firefox: latest
+    addons:
+        sonarcloud:
+            organization: "bonigarcia-github"
 
 install:
     # Add repos
@@ -24,5 +27,5 @@ before_script:
     - sleep 3 # give xvfb some time to start
 
 script:
-    - mvn test
-    - bash <(curl -s https://codecov.io/bash)
+    - mvn test sonar:sonar
+    - bash < (curl -s https://codecov.io/bash)
