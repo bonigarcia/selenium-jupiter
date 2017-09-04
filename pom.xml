@@ -8,23 +8,23 @@
 
     <properties>
         <!-- Dependencies -->
-        <selenium-java.version>3.4.0</selenium-java.version>
+        <selenium-java.version>3.5.3</selenium-java.version>
         <webdrivermanager.version>1.7.1</webdrivermanager.version>
-        <appium-java-client.version>5.0.0-BETA9</appium-java-client.version>
-        <slf4j.version>1.7.24</slf4j.version>
-        <mockito-core.version>2.8.47</mockito-core.version>
+        <appium-java-client.version>5.0.2</appium-java-client.version>
+        <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.0.0-RC2</junit.jupiter.version>
-        <junit.platform.version>1.0.0-RC2</junit.platform.version>
-        <selenium-server.version>3.4.0</selenium-server.version>
+        <junit.jupiter.version>5.0.0-RC3</junit.jupiter.version>
+        <junit.platform.version>1.0.0-RC3</junit.platform.version>
+        <selenium-server.version>3.5.3</selenium-server.version>
+        <mockito-core.version>2.9.0</mockito-core.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <maven-asciidoctor-plugin.version>1.5.5</maven-asciidoctor-plugin.version>
-        <asciidoctorj-pdf.version>1.5.0-alpha.15</asciidoctorj-pdf.version>
+        <asciidoctorj-pdf.version>1.5.0-alpha.16</asciidoctorj-pdf.version>
         <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
 
