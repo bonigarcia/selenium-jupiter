@@ -18,7 +18,7 @@ In order to include *selenium-jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 ```
 

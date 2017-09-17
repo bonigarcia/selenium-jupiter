@@ -1,3 +1,12 @@
+selenium-jupiter (1.1.2)
+
+  + Use of JUnit 5.0.0 (GA) for tests
+  + Use of io.github.bonigarcia:webdrivermanager version 1.7.2
+  + Use of io.appium:java-client version 5.0.3
+
+ -- Boni Garcia <boni.gg@gmail.com>  Sun, 17 Sep 2017 13:36:00
+
+
 selenium-jupiter (1.1.1)
 
   + Use of org.seleniumhq.selenium:selenium-java version 3.5.3
