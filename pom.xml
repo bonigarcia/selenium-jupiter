@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bonigarcia</groupId>
@@ -9,12 +10,12 @@
         <!-- Dependencies -->
         <selenium-java.version>3.5.3</selenium-java.version>
         <webdrivermanager.version>1.7.1</webdrivermanager.version>
-        <appium-java-client.version>5.0.2</appium-java-client.version>
+        <appium-java-client.version>5.0.3</appium-java-client.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.0.0-RC3</junit.jupiter.version>
-        <junit.platform.version>1.0.0-RC3</junit.platform.version>
+        <junit.jupiter.version>5.0.0</junit.jupiter.version>
+        <junit.platform.version>1.0.0</junit.platform.version>
         <selenium-server.version>3.5.3</selenium-server.version>
         <mockito-core.version>2.9.0</mockito-core.version>
 
