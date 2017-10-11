@@ -18,14 +18,22 @@ package io.github.bonigarcia;
 
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
+import static java.io.File.separator;
+import static java.nio.file.Files.createTempDirectory;
 import static java.util.Arrays.asList;
+import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 
+import java.io.File;
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -205,11 +213,37 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             List<Volume> volumes = asList(volume, resources);
 
             try {
-                URL browsersJson = this.getClass()
-                        .getResource("/browsers.json");
+                String parent = null;
+                String browserJsonName = "browsers.json";
+                File jarFile = new File(getClass().getProtectionDomain()
+                        .getCodeSource().getLocation().getPath());
+
+                if (jarFile.isFile()) {
+                    JarFile jar = new JarFile(jarFile);
+                    Enumeration<JarEntry> entries = jar.entries();
+                    while (entries.hasMoreElements()) {
+                        JarEntry jarEntry = entries.nextElement();
+                        if (jarEntry.getName().startsWith(browserJsonName)) {
+                            jar.getInputStream(jarEntry);
+                            Path tmpDir = createTempDirectory("browsersJson");
+                            parent = tmpDir.toFile().toString();
+                            File destination = new File(
+                                    parent + separator + browserJsonName);
+                            copyInputStreamToFile(jar.getInputStream(jarEntry),
+                                    destination);
+                            break;
+                        }
+                    }
+                    jar.close();
+                } else { // Development
+                    URL browsersJsonUrl = SeleniumExtension.class
+                            .getResource("/" + browserJsonName);
+                    parent = Paths.get(browsersJsonUrl.toURI()).toFile()
+                            .getParent();
+                }
+
                 List<Bind> binds = asList(new Bind(dockerDefaultSocket, volume),
-                        new Bind(Paths.get(browsersJson.toURI()).toFile()
-                                .getParent(), resources));
+                        new Bind(parent, resources));
                 int freePort = dockerService.findRandomOpenPort();
                 Binding bindPort = bindPort(freePort);
                 ExposedPort exposedPort = tcp(4444);
