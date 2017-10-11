@@ -219,22 +219,25 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                         .getCodeSource().getLocation().getPath());
 
                 if (jarFile.isFile()) {
-                    JarFile jar = new JarFile(jarFile);
-                    Enumeration<JarEntry> entries = jar.entries();
-                    while (entries.hasMoreElements()) {
-                        JarEntry jarEntry = entries.nextElement();
-                        if (jarEntry.getName().startsWith(browserJsonName)) {
-                            jar.getInputStream(jarEntry);
-                            Path tmpDir = createTempDirectory("browsersJson");
-                            parent = tmpDir.toFile().toString();
-                            File destination = new File(
-                                    parent + separator + browserJsonName);
-                            copyInputStreamToFile(jar.getInputStream(jarEntry),
-                                    destination);
-                            break;
+                    try (JarFile jar = new JarFile(jarFile)) {
+                        Enumeration<JarEntry> entries = jar.entries();
+                        while (entries.hasMoreElements()) {
+                            JarEntry jarEntry = entries.nextElement();
+                            if (jarEntry.getName()
+                                    .startsWith(browserJsonName)) {
+                                jar.getInputStream(jarEntry);
+                                Path tmpDir = createTempDirectory(
+                                        "browsersJson");
+                                parent = tmpDir.toFile().toString();
+                                File destination = new File(
+                                        parent + separator + browserJsonName);
+                                copyInputStreamToFile(
+                                        jar.getInputStream(jarEntry),
+                                        destination);
+                                break;
+                            }
                         }
                     }
-                    jar.close();
                 } else { // Development
                     URL browsersJsonUrl = SeleniumExtension.class
                             .getResource("/" + browserJsonName);

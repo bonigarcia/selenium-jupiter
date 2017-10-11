@@ -17,6 +17,7 @@
 package io.github.bonigarcia;
 
 import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -291,6 +292,7 @@ public class DockerService {
                     log.warn(
                             "Interrupted Exception while waiting for container",
                             e);
+                    currentThread().interrupt();
                 }
             }
         } while (!isRunning);
