@@ -29,15 +29,11 @@ import io.github.bonigarcia.SeleniumExtension;
 public class FirefoxWithOptionsJupiterTest {
 
     @Test
-    public void webrtcFirefoxTest(
-            @DriverOptions(options = {
-                    @Option(name = "media.navigator.permission.disabled", value = "true"),
-                    @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver firefox)
-            throws InterruptedException {
+    public void webrtcFirefoxTest(@DriverOptions(options = {
+            @Option(name = "media.navigator.permission.disabled", value = "true"),
+            @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver firefox) {
         firefox.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the page
     }
 
 }

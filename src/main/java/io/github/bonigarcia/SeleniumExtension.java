@@ -174,8 +174,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                 String urlMessage = url.isPresent() ? "" : "URL not present ";
                 String capabilitiesMessage = capabilities.isPresent() ? ""
                         : "Capabilites not present";
-                log.warn("Was not possible to instantiate RemoteWebDriver: "
-                        + urlMessage + capabilitiesMessage);
+                log.warn("Was not possible to instantiate RemoteWebDriver: {}",
+                        urlMessage + capabilitiesMessage);
             }
 
         } else if (type == AppiumDriver.class) {

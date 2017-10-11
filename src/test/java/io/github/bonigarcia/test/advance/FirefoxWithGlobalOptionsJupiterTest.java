@@ -40,12 +40,10 @@ public class FirefoxWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest(FirefoxDriver firefox) throws InterruptedException {
+    void webrtcTest(FirefoxDriver firefox) {
         firefox.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }
-//end::snippet-in-doc[]
+// end::snippet-in-doc[]

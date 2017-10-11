@@ -147,11 +147,10 @@ public class AnnotationsReader {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
                 String value = option.value();
-                switch (name) {
-                case PAGE_LOAD_STRATEGY:
+
+                if (name.equals(PAGE_LOAD_STRATEGY)) {
                     edgeOptions.setPageLoadStrategy(value);
-                    break;
-                default:
+                } else {
                     log.warn("Option {} not supported for Edge", name);
                 }
             }

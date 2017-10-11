@@ -83,7 +83,7 @@ public class DockerService {
     private String dockerServerUrl = "unix://" + dockerDefaultSocket;
     private String dockerDefaultHostIp = "127.0.0.1";
     private String dockerServerIp;
-    private boolean isRunningInContainer = false;
+    private boolean runningInContainer = false;
     private boolean containerCheked = false;
 
     private DockerClient dockerClient;
@@ -99,10 +99,10 @@ public class DockerService {
                     dockerServerIp = getDockerMachineIp();
                 } else {
                     if (!containerCheked) {
-                        isRunningInContainer = isRunningInContainer();
+                        runningInContainer = isRunningInContainer();
                         containerCheked = true;
                     }
-                    if (isRunningInContainer) {
+                    if (runningInContainer) {
                         dockerServerIp = getContainerIp();
 
                     } else {

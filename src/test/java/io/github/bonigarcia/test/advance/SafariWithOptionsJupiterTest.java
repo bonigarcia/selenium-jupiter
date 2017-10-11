@@ -31,15 +31,11 @@ public class SafariWithOptionsJupiterTest {
 
     @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
-    public void safariTest(
-            @DriverOptions(options = {
-                    @Option(name = "useCleanSession", value = "true"),
-                    @Option(name = "useTechnologyPreview", value = "false") }) SafariDriver safari)
-            throws InterruptedException {
+    public void safariTest(@DriverOptions(options = {
+            @Option(name = "useCleanSession", value = "true"),
+            @Option(name = "useTechnologyPreview", value = "false") }) SafariDriver safari) {
         safari.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the page
     }
 
 }

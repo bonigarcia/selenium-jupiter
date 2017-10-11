@@ -46,12 +46,10 @@ public class ChromeWithGlobalCapabilitiesJupiterTest {
     }
 
     @Test
-    void webrtcTest1(ChromeDriver chrome) throws InterruptedException {
+    void webrtcTest1(ChromeDriver chrome) {
         chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
 
         assertTrue(chrome.getTitle().startsWith("selenium-jupiter"));
-
-        Thread.sleep(1500); // Wait 1.5 seconds to see the page
     }
 
 }

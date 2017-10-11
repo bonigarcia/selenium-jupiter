@@ -37,19 +37,15 @@ public class ChromeWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest1(ChromeDriver chrome) throws InterruptedException {
+    void webrtcTest1(ChromeDriver chrome) {
         chrome.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
     @Test
-    void webrtcTest2(ChromeDriver chrome) throws InterruptedException {
+    void webrtcTest2(ChromeDriver chrome) {
         chrome.get(
                 "https://webrtc.github.io/samples/src/content/getusermedia/gum/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }

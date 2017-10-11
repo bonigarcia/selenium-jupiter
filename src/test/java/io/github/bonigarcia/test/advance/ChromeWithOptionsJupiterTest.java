@@ -40,16 +40,12 @@ public class ChromeWithOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest(
-            @DriverOptions(options = {
-                    @Option(name = ARGS, value = "--use-fake-device-for-media-stream"),
-                    @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver chrome)
-            throws InterruptedException {
+    void webrtcTest(@DriverOptions(options = {
+            @Option(name = ARGS, value = "--use-fake-device-for-media-stream"),
+            @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver chrome) {
 
         chrome.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-
-        Thread.sleep(3000); // Wait 3 seconds to see the video
     }
 
 }
