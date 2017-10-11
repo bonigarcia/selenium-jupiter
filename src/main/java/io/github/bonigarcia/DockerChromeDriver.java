@@ -16,22 +16,22 @@
  */
 package io.github.bonigarcia;
 
+import java.net.URL;
+
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 /**
- * Custom exception of selenium-jupiter extension.
+ * Chrome in Docker.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
+ * @since 1.1.2
  */
-public class SeleniumJupiterException extends RuntimeException {
+public class DockerChromeDriver extends RemoteWebDriver {
 
-    private static final long serialVersionUID = -7026228903533825338L;
-
-    public SeleniumJupiterException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public SeleniumJupiterException(String message) {
-        super(message);
+    public DockerChromeDriver(URL remoteAddress,
+            Capabilities desiredCapabilities) {
+        super(remoteAddress, desiredCapabilities);
     }
 
 }

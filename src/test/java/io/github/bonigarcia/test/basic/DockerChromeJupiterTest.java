@@ -14,24 +14,26 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia;
+package io.github.bonigarcia.test.basic;
 
-/**
- * Custom exception of selenium-jupiter extension.
- *
- * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
- */
-public class SeleniumJupiterException extends RuntimeException {
+// tag::snippet-in-doc[]
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    private static final long serialVersionUID = -7026228903533825338L;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-    public SeleniumJupiterException(String message, Throwable cause) {
-        super(message, cause);
-    }
+import io.github.bonigarcia.DockerChromeDriver;
+import io.github.bonigarcia.SeleniumExtension;
 
-    public SeleniumJupiterException(String message) {
-        super(message);
+@ExtendWith(SeleniumExtension.class)
+public class DockerChromeJupiterTest {
+
+    @Test
+    public void testWithOneChrome(DockerChromeDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+
+        assertTrue(driver.getTitle().startsWith("selenium-jupiter"));
     }
 
 }
+// end::snippet-in-doc[]

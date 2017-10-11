@@ -16,8 +16,13 @@
  */
 package io.github.bonigarcia;
 
+import static com.github.dockerjava.api.model.ExposedPort.tcp;
+import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
+import static java.util.Arrays.asList;
+
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +49,12 @@ import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports.Binding;
+import com.github.dockerjava.api.model.Volume;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
@@ -64,6 +75,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     private List<Class<?>> typeList = new ArrayList<>();
     private AnnotationsReader annotationsReader = new AnnotationsReader();
     private AppiumDriverLocalService appiumDriverLocalService;
+    private DockerService dockerService;
+    private List<String> containers;
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
@@ -178,6 +191,50 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                         "Was not possible to instantiate AppiumDriver: Capabilites not present");
             }
 
+        } else if (type == DockerChromeDriver.class) {
+
+            dockerService = new DockerService();
+            containers = new ArrayList<>();
+            String selenoidImage = "aerokube/selenoid:1.3.7";
+            dockerService.pullImageIfNecessary(selenoidImage);
+            dockerService.pullImageIfNecessary("selenoid/vnc:chrome_61.0");
+
+            String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
+            Volume volume = new Volume(dockerDefaultSocket);
+            Volume resources = new Volume("/etc/selenoid");
+            List<Volume> volumes = asList(volume, resources);
+
+            try {
+                URL browsersJson = this.getClass()
+                        .getResource("/browsers.json");
+                List<Bind> binds = asList(new Bind(dockerDefaultSocket, volume),
+                        new Bind(Paths.get(browsersJson.toURI()).toFile()
+                                .getParent(), resources));
+                int freePort = dockerService.findRandomOpenPort();
+                Binding bindPort = bindPort(freePort);
+                ExposedPort exposedPort = tcp(4444);
+
+                List<PortBinding> portBindings = asList(
+                        new PortBinding(bindPort, exposedPort));
+                String selenoidContainerName = dockerService
+                        .generateContainerName("selenoid");
+                DockerContainer dockerContainer = DockerContainer
+                        .dockerBuilder(selenoidImage, selenoidContainerName)
+                        .portBindings(portBindings).volumes(volumes)
+                        .binds(binds).build();
+                dockerService.startAndWaitContainer(dockerContainer);
+                containers.add(selenoidContainerName);
+
+                webDriver = new DockerChromeDriver(
+                        new URL("http://" + dockerService.getDockerServerIp()
+                                + ":" + freePort + "/wd/hub"),
+                        DesiredCapabilities.chrome());
+            } catch (Exception e) {
+                String errorMessage = "Exception creating instance of DockerChromeDriver";
+                log.error(errorMessage, e);
+                throw new SeleniumJupiterException(errorMessage, e);
+            }
+
         } else {
             // Other WebDriver type
             try {
@@ -211,6 +268,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         if (appiumDriverLocalService != null) {
             appiumDriverLocalService.stop();
+        }
+
+        if (dockerService != null) {
+            containers.forEach(dockerService::stopAndRemoveContainer);
         }
     }
 }
