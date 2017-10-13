@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiterConfig.getConfig;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -77,11 +78,17 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    private int dockerWaitTimeoutSec = 10;
-    private int dockerPollTimeMs = 200;
-    private String dockerDefaultSocket = "/var/run/docker.sock";
-    private String dockerServerUrl = "unix://" + dockerDefaultSocket;
-    private String dockerDefaultHostIp = "127.0.0.1";
+    private int dockerWaitTimeoutSec = getConfig()
+            .getInt("sel.jup.docker.wait.timeout");
+    private int dockerPollTimeMs = getConfig()
+            .getInt("sel.jup.docker.poll.time");
+    private String dockerDefaultHostIp = getConfig()
+            .getString("sel.jup.docker.default.host");
+    private String dockerDefaultSocket = getConfig()
+            .getString("sel.jup.docker.default.socket");
+    private String dockerServerUrl = getConfig()
+            .getString("sel.jup.docker.server.url");
+
     private String dockerServerIp;
     private boolean runningInContainer = false;
     private boolean containerCheked = false;
