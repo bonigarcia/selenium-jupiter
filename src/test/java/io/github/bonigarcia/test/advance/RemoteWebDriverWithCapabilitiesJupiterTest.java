@@ -53,9 +53,6 @@ public class RemoteWebDriverWithCapabilitiesJupiterTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
-
-        // Wait to finish browser registration
-        Thread.sleep(2000);
     }
 
     @Test

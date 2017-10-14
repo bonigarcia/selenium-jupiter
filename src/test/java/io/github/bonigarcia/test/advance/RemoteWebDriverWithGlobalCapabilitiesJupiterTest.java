@@ -60,15 +60,11 @@ public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4445/grid/register", "-browser",
                 "browserName=firefox", "-port", "5558" });
-
-        // Wait to finish browser registration
-        Thread.sleep(2000);
     }
 
     @Test
-    void testWithCapabilitiesOnly(
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome)
+    void testWithCapabilitiesOnly(@DriverCapabilities(capability = {
+            @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome)
             throws InterruptedException {
         exercise(remoteChrome);
     }

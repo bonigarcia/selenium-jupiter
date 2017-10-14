@@ -38,7 +38,6 @@ import java.util.jar.JarFile;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -88,16 +87,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
-            ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+            ExtensionContext extensionContext) {
         Class<?> type = parameterContext.getParameter().getType();
         return WebDriver.class.isAssignableFrom(type) && !type.isInterface();
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
-            ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+            ExtensionContext extensionContext) {
         Parameter parameter = parameterContext.getParameter();
         Optional<Object> testInstance = extensionContext.getTestInstance();
         Class<?> type = parameter.getType();
@@ -174,8 +171,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                 String urlMessage = url.isPresent() ? "" : "URL not present ";
                 String capabilitiesMessage = capabilities.isPresent() ? ""
                         : "Capabilites not present";
-                log.warn("Was not possible to instantiate RemoteWebDriver: {}",
-                        urlMessage + capabilitiesMessage);
+                log.warn(
+                        "Was not possible to instantiate RemoteWebDriver: {}{}",
+                        urlMessage, capabilitiesMessage);
             }
 
         } else if (type == AppiumDriver.class) {
@@ -299,8 +297,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
-        webDriverList.forEach(webdriver -> webdriver.quit());
+    public void afterEach(ExtensionContext context) {
+        webDriverList.forEach(WebDriver::quit);
         webDriverList.clear();
 
         if (appiumDriverLocalService != null) {
