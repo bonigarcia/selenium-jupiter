@@ -213,22 +213,22 @@ public class AnnotationsReader {
             for (Option option : driverOptions.options()) {
                 String name = option.name();
                 String value = option.value();
+                String noValidMessage = " not valid for Safari options";
                 switch (name) {
                 case PAGE_LOAD_STRATEGY:
-                    assert isNumeric(value) : "Port " + value
-                            + " not valid for Safari options";
+                    assert isNumeric(value) : "Port " + value + noValidMessage;
                     safariOptions.setPort(parseInt(value));
                     break;
 
                 case USE_CLEAN_SESSION:
                     assert isBoolean(value) : "UseCleanSession " + value
-                            + " not valid for Safari options";
+                            + noValidMessage;
                     safariOptions.setUseCleanSession(valueOf(value));
                     break;
 
                 case USE_TECHNOLOGY_PREVIEW:
                     assert isBoolean(value) : "UseTechnologyPreview " + value
-                            + " not valid for Safari options";
+                            + noValidMessage;
                     safariOptions.setUseTechnologyPreview(valueOf(value));
                     break;
 
