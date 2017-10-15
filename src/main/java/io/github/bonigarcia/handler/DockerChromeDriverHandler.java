@@ -26,14 +26,12 @@ import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
-import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Optional;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -74,8 +72,7 @@ public class DockerChromeDriverHandler {
         return instance;
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    public WebDriver resolve() {
         WebDriver webDriver = null;
 
         if (dockerService == null) {
