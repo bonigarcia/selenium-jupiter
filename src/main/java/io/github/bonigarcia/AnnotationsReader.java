@@ -23,6 +23,8 @@ import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
 import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
 import static io.github.bonigarcia.SeleniumJupiter.USE_CLEAN_SESSION;
 import static io.github.bonigarcia.SeleniumJupiter.USE_TECHNOLOGY_PREVIEW;
+import static java.lang.Boolean.valueOf;
+import static java.lang.Integer.parseInt;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -52,8 +54,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AnnotationsReader {
 
-    protected static final Logger log = LoggerFactory
-            .getLogger(AnnotationsReader.class);
+    final Logger log = LoggerFactory.getLogger(AnnotationsReader.class);
 
     protected ChromeOptions getChromeOptions(Parameter parameter,
             Optional<Object> testInstance) {
@@ -115,11 +116,9 @@ public class AnnotationsReader {
                     break;
                 default:
                     if (isBoolean(value)) {
-                        firefoxOptions.addPreference(name,
-                                Boolean.valueOf(value));
+                        firefoxOptions.addPreference(name, valueOf(value));
                     } else if (isNumeric(value)) {
-                        firefoxOptions.addPreference(name,
-                                Integer.parseInt(value));
+                        firefoxOptions.addPreference(name, parseInt(value));
                     } else {
                         firefoxOptions.addPreference(name, value);
                     }
@@ -217,31 +216,19 @@ public class AnnotationsReader {
                 switch (name) {
                 case PAGE_LOAD_STRATEGY:
                     if (isNumeric(value)) {
-                        safariOptions.setPort(Integer.parseInt(value));
-                    } else {
-                        log.warn("Port {} not valid for Safari options", value);
+                        safariOptions.setPort(parseInt(value));
                     }
                     break;
 
                 case USE_CLEAN_SESSION:
                     if (isBoolean(value)) {
-                        safariOptions
-                                .setUseCleanSession(Boolean.valueOf(value));
-                    } else {
-                        log.warn(
-                                "UseCleanSession {} not valid for Safari options",
-                                value);
+                        safariOptions.setUseCleanSession(valueOf(value));
                     }
                     break;
 
                 case USE_TECHNOLOGY_PREVIEW:
                     if (isBoolean(value)) {
-                        safariOptions.setUseTechnologyPreview(
-                                Boolean.valueOf(value));
-                    } else {
-                        log.warn(
-                                "UseTechnologyPreview {} not valid for Safari options",
-                                value);
+                        safariOptions.setUseTechnologyPreview(valueOf(value));
                     }
                     break;
 
@@ -315,11 +302,20 @@ public class AnnotationsReader {
     }
 
     private boolean isBoolean(String s) {
-        return s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false");
+        boolean isBool = s.equalsIgnoreCase("true")
+                || s.equalsIgnoreCase("false");
+        if (!isBool) {
+            log.warn("Value {} is not boolean", s);
+        }
+        return isBool;
     }
 
     private boolean isNumeric(String s) {
-        return StringUtils.isNumeric(s);
+        boolean numeric = StringUtils.isNumeric(s);
+        if (!numeric) {
+            log.warn("Value {} is not numeric", s);
+        }
+        return numeric;
     }
 
     private Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
