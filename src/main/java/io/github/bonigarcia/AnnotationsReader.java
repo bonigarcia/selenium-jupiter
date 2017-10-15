@@ -16,17 +16,9 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSIONS;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
-import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
-import static io.github.bonigarcia.SeleniumJupiter.USE_CLEAN_SESSION;
-import static io.github.bonigarcia.SeleniumJupiter.USE_TECHNOLOGY_PREVIEW;
-import static java.lang.Boolean.valueOf;
-import static java.lang.Integer.parseInt;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
@@ -36,14 +28,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Options/capabilities reader from annotated parameters or test instance to the
@@ -54,200 +40,18 @@ import org.slf4j.LoggerFactory;
  */
 public class AnnotationsReader {
 
-    final Logger log = LoggerFactory.getLogger(AnnotationsReader.class);
+    final Logger log = getLogger(lookup().lookupClass());
 
-    protected ChromeOptions getChromeOptions(Parameter parameter,
-            Optional<Object> testInstance) {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+    static AnnotationsReader instance;
 
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    chromeOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    chromeOptions.setBinary(value);
-                    break;
-                case EXTENSIONS:
-                    chromeOptions.addEncodedExtensions(value);
-                    break;
-                case EXTENSION_FILES:
-                    chromeOptions.addExtensions(new File(value));
-                    break;
-                default:
-                    chromeOptions.setExperimentalOption(name, value);
-                }
-            }
-        } else {
-            // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
-                    testInstance, DriverOptions.class);
-            if (optionsFromAnnotatedField != null) {
-                chromeOptions = (ChromeOptions) optionsFromAnnotatedField;
-            }
+    public static synchronized AnnotationsReader getInstance() {
+        if (instance == null) {
+            instance = new AnnotationsReader();
         }
-
-        return chromeOptions;
+        return instance;
     }
 
-    protected FirefoxOptions getFirefoxOptions(Parameter parameter,
-            Optional<Object> testInstance) {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    firefoxOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    firefoxOptions.setBinary(value);
-                    break;
-                default:
-                    if (isBoolean(value)) {
-                        firefoxOptions.addPreference(name, valueOf(value));
-                    } else if (isNumeric(value)) {
-                        firefoxOptions.addPreference(name, parseInt(value));
-                    } else {
-                        firefoxOptions.addPreference(name, value);
-                    }
-                }
-            }
-        } else {
-            // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
-                    testInstance, DriverOptions.class);
-            if (optionsFromAnnotatedField != null) {
-                firefoxOptions = (FirefoxOptions) optionsFromAnnotatedField;
-            }
-        }
-        return firefoxOptions;
-    }
-
-    protected EdgeOptions getEdgeOptions(Parameter parameter,
-            Optional<Object> testInstance) {
-        EdgeOptions edgeOptions = new EdgeOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-
-                if (name.equals(PAGE_LOAD_STRATEGY)) {
-                    edgeOptions.setPageLoadStrategy(value);
-                } else {
-                    log.warn("Option {} not supported for Edge", name);
-                }
-            }
-        } else {
-            // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
-                    testInstance, DriverOptions.class);
-            if (optionsFromAnnotatedField != null) {
-                edgeOptions = (EdgeOptions) optionsFromAnnotatedField;
-            }
-        }
-        return edgeOptions;
-    }
-
-    protected OperaOptions getOperaOptions(Parameter parameter,
-            Optional<Object> testInstance) {
-        OperaOptions operaOptions = new OperaOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                switch (name) {
-                case ARGS:
-                    operaOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    operaOptions.setBinary(value);
-                    break;
-                case EXTENSIONS:
-                    operaOptions.addEncodedExtensions(value);
-                    break;
-                case EXTENSION_FILES:
-                    operaOptions.addExtensions(new File(value));
-                    break;
-                default:
-                    operaOptions.setExperimentalOption(name, value);
-                }
-            }
-        } else {
-            // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
-                    testInstance, DriverOptions.class);
-            if (optionsFromAnnotatedField != null) {
-                operaOptions = (OperaOptions) optionsFromAnnotatedField;
-            }
-        }
-        return operaOptions;
-    }
-
-    protected SafariOptions getSafariOptions(Parameter parameter,
-            Optional<Object> testInstance) {
-        SafariOptions safariOptions = new SafariOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
-
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
-                String value = option.value();
-                String noValidMessage = " not valid for Safari options";
-                switch (name) {
-                case PAGE_LOAD_STRATEGY:
-                    assert isNumeric(value) : "Port " + value + noValidMessage;
-                    safariOptions.setPort(parseInt(value));
-                    break;
-
-                case USE_CLEAN_SESSION:
-                    assert isBoolean(value) : "UseCleanSession " + value
-                            + noValidMessage;
-                    safariOptions.setUseCleanSession(valueOf(value));
-                    break;
-
-                case USE_TECHNOLOGY_PREVIEW:
-                    assert isBoolean(value) : "UseTechnologyPreview " + value
-                            + noValidMessage;
-                    safariOptions.setUseTechnologyPreview(valueOf(value));
-                    break;
-
-                default:
-                    log.warn("Option {} not supported for Edge", name);
-                }
-            }
-        } else {
-            // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = getOptionsFromAnnotatedField(
-                    testInstance, DriverOptions.class);
-            if (optionsFromAnnotatedField != null) {
-                safariOptions = (SafariOptions) optionsFromAnnotatedField;
-            }
-        }
-        return safariOptions;
-    }
-
-    protected Optional<Capabilities> getCapabilities(Parameter parameter,
+    public Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) {
         Optional<Capabilities> out = Optional.empty();
         DriverCapabilities driverCapabilities = parameter
@@ -274,7 +78,7 @@ public class AnnotationsReader {
         return out;
     }
 
-    protected Optional<URL> getUrl(Parameter parameter,
+    public Optional<URL> getUrl(Parameter parameter,
             Optional<Object> testInstance) {
         Optional<URL> out = Optional.empty();
         String urlValue = null;
@@ -301,7 +105,7 @@ public class AnnotationsReader {
         return out;
     }
 
-    private boolean isBoolean(String s) {
+    public boolean isBoolean(String s) {
         boolean isBool = s.equalsIgnoreCase("true")
                 || s.equalsIgnoreCase("false");
         if (!isBool) {
@@ -310,7 +114,7 @@ public class AnnotationsReader {
         return isBool;
     }
 
-    private boolean isNumeric(String s) {
+    public boolean isNumeric(String s) {
         boolean numeric = StringUtils.isNumeric(s);
         if (!numeric) {
             log.warn("Value {} is not numeric", s);
@@ -318,7 +122,7 @@ public class AnnotationsReader {
         return numeric;
     }
 
-    private Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
+    public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
             Class<DriverOptions> annotationClass) {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
@@ -329,7 +133,7 @@ public class AnnotationsReader {
         return out;
     }
 
-    private Optional<Object> seekFieldAnnotatedWith(
+    public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
             Class<? extends Annotation> annotation) {
         Optional<Object> out = Optional.empty();
