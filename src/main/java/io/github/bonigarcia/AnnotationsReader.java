@@ -215,21 +215,21 @@ public class AnnotationsReader {
                 String value = option.value();
                 switch (name) {
                 case PAGE_LOAD_STRATEGY:
-                    if (isNumeric(value)) {
-                        safariOptions.setPort(parseInt(value));
-                    }
+                    assert isNumeric(value) : "Port " + value
+                            + " not valid for Safari options";
+                    safariOptions.setPort(parseInt(value));
                     break;
 
                 case USE_CLEAN_SESSION:
-                    if (isBoolean(value)) {
-                        safariOptions.setUseCleanSession(valueOf(value));
-                    }
+                    assert isBoolean(value) : "UseCleanSession " + value
+                            + " not valid for Safari options";
+                    safariOptions.setUseCleanSession(valueOf(value));
                     break;
 
                 case USE_TECHNOLOGY_PREVIEW:
-                    if (isBoolean(value)) {
-                        safariOptions.setUseTechnologyPreview(valueOf(value));
-                    }
+                    assert isBoolean(value) : "UseTechnologyPreview " + value
+                            + " not valid for Safari options";
+                    safariOptions.setUseTechnologyPreview(valueOf(value));
                     break;
 
                 default:
