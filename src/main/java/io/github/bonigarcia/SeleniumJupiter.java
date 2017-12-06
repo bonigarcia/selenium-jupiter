@@ -36,7 +36,6 @@ public class SeleniumJupiter {
     public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
 
     // Safari
-    public static final String PORT = "port";
     public static final String USE_CLEAN_SESSION = "useCleanSession";
     public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
 

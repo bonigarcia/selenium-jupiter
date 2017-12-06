@@ -16,11 +16,9 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.PORT;
 import static io.github.bonigarcia.SeleniumJupiter.USE_CLEAN_SESSION;
 import static io.github.bonigarcia.SeleniumJupiter.USE_TECHNOLOGY_PREVIEW;
 import static java.lang.Boolean.valueOf;
-import static java.lang.Integer.parseInt;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -85,11 +83,6 @@ public class SafariDriverHandler {
                 String name = option.name();
                 String value = option.value();
                 switch (name) {
-                case PORT:
-                    assert AnnotationsReader.getInstance()
-                            .isNumeric(value) : "Invalid Port value: " + value;
-                    safariOptions.setPort(parseInt(value));
-                    break;
                 case USE_CLEAN_SESSION:
                     assert AnnotationsReader.getInstance().isBoolean(
                             value) : "Invalid UseCleanSession vaue: " + value;

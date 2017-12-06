@@ -8,17 +8,18 @@
 
     <properties>
         <!-- Dependencies -->
-        <selenium-java.version>3.5.3</selenium-java.version>
-        <webdrivermanager.version>1.7.1</webdrivermanager.version>
-        <appium-java-client.version>5.0.3</appium-java-client.version>
-        <docker-java.version>3.0.13</docker-java.version>
+        <selenium-java.version>3.8.1</selenium-java.version>
+        <webdrivermanager.version>1.7.2</webdrivermanager.version>
+        <appium-java-client.version>5.0.4</appium-java-client.version>
+        <docker-java.version>3.0.14</docker-java.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.0.0</junit.jupiter.version>
-        <junit.platform.version>1.0.0</junit.platform.version>
-        <selenium-server.version>3.5.3</selenium-server.version>
-        <mockito-core.version>2.9.0</mockito-core.version>
+        <junit.jupiter.version>5.0.2</junit.jupiter.version>
+        <junit.platform.version>1.0.2</junit.platform.version>
+        <selenium-server.version>3.8.1</selenium-server.version>
+        <mockito-core.version>2.13.0</mockito-core.version>
+        <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -132,6 +133,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>${phantomjsdriver.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -44,8 +44,7 @@ public class EdgeAnnotationReaderTest {
         EdgeOptions edgeOptions = annotationsReader.getEdgeOptions(parameter,
                 Optional.empty());
 
-        assertEquals("eager",
-                edgeOptions.toJson().get("pageLoadStrategy").getAsString());
+        assertEquals("eager", edgeOptions.getCapability("pageLoadStrategy"));
     }
 
 }
