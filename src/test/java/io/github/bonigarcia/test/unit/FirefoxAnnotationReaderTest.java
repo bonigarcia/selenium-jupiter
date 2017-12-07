@@ -17,8 +17,10 @@
 package io.github.bonigarcia.test.unit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 
 import java.lang.reflect.Parameter;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -38,17 +40,19 @@ public class FirefoxAnnotationReaderTest {
     FirefoxDriverHandler annotationsReader;
 
     @Test
+    @SuppressWarnings("unchecked")
     void testFirefoxOptions() throws Exception {
         Parameter parameter = FirefoxWithOptionsJupiterTest.class
                 .getMethod("webrtcFirefoxTest", FirefoxDriver.class)
                 .getParameters()[0];
         FirefoxOptions firefoxOptions = annotationsReader
                 .getFirefoxOptions(parameter, Optional.empty());
+        Map<String, Map<String, Boolean>> options = (Map<String, Map<String, Boolean>>) firefoxOptions
+                .asMap().get(FIREFOX_OPTIONS);
 
-        assertTrue(firefoxOptions.getProfile().getBooleanPreference(
-                "media.navigator.permission.disabled", false));
-        assertTrue(firefoxOptions.getProfile()
-                .getBooleanPreference("media.navigator.streams.fake", false));
+        assertTrue(options.get("prefs")
+                .get("media.navigator.permission.disabled"));
+        assertTrue(options.get("prefs").get("media.navigator.streams.fake"));
     }
 
 }
