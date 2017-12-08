@@ -32,7 +32,7 @@ import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.github.bonigarcia.AnnotationsReader;
 
 /**
- * Resolver for ChromeDriver.
+ * Resolver for AppiumDriver.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0

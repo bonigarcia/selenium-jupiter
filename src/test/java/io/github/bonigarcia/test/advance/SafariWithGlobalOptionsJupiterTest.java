@@ -16,27 +16,32 @@
  */
 package io.github.bonigarcia.test.advance;
 
+//tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
-//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.DriverOptions;
-import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SafariWithOptionsJupiterTest {
+public class SafariWithGlobalOptionsJupiterTest {
+
+    @DriverOptions
+    SafariOptions safariOptions = new SafariOptions();
+    {
+        safariOptions.useCleanSession(true);
+        safariOptions.setUseTechnologyPreview(false);
+    }
 
     @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
-    public void safariTest(@DriverOptions(options = {
-            @Option(name = "useCleanSession", value = "true"),
-            @Option(name = "useTechnologyPreview", value = "false") }) SafariDriver driver) {
+    public void safariTest(SafariDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

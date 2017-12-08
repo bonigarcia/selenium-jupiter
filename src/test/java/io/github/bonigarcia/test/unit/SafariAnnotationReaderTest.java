@@ -16,19 +16,22 @@
  */
 package io.github.bonigarcia.test.unit;
 
-import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Parameter;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.handler.SafariDriverHandler;
+import io.github.bonigarcia.test.advance.SafariWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.SafariWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
@@ -38,16 +41,21 @@ public class SafariAnnotationReaderTest {
     @InjectMocks
     SafariDriverHandler annotationsReader;
 
-    @Test
+    static Stream<Class<?>> testClassProvider() {
+        return Stream.of(SafariWithOptionsJupiterTest.class,
+                SafariWithGlobalOptionsJupiterTest.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("testClassProvider")
     @SuppressWarnings("deprecation")
-    void testSafariOptions() throws Exception {
-        Parameter parameter = SafariWithOptionsJupiterTest.class
+    void testSafariOptions(Class<?> testClass) throws Exception {
+        Parameter parameter = testClass
                 .getMethod("safariTest", SafariDriver.class).getParameters()[0];
-        SafariOptions safariOptions = annotationsReader
-                .getSafariOptions(parameter, empty());
+        SafariOptions safariOptions = annotationsReader.getSafariOptions(
+                parameter, Optional.of(testClass.newInstance()));
 
         assertTrue(safariOptions.getUseCleanSession());
         assertFalse(safariOptions.getUseTechnologyPreview());
     }
-
 }

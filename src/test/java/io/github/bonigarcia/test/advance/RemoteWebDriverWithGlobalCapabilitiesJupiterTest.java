@@ -18,6 +18,7 @@ package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.grid.selenium.GridLauncherV3;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.Capability;
@@ -42,7 +42,7 @@ public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
     String url = "http://localhost:4445/wd/hub";
 
     @DriverCapabilities
-    Capabilities capabilities = DesiredCapabilities.firefox();
+    Capabilities capabilities = firefox();
 
     @BeforeAll
     static void setup() throws Exception {
