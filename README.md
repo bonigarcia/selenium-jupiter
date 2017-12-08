@@ -3,7 +3,6 @@
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=io.github.bonigarcia:selenium-jupiter)](https://sonarcloud.io/dashboard/index/io.github.bonigarcia:selenium-jupiter)
 [![codecov](https://codecov.io/gh/bonigarcia/selenium-jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/bonigarcia/selenium-jupiter)
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![javadoc.io](https://javadoc-emblem.rhcloud.com/doc/com.qualinsight.plugins.sonarqube/qualinsight-plugins-sonarqube-badges/badge.svg)](http://www.javadoc.io/doc/io.github.bonigarcia/selenium-jupiter)
 [![Support badge]( https://img.shields.io/badge/support-sof-green.svg)](http://stackoverflow.com/questions/tagged/selenium-jupiter)
 [![Twitter Follow](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/boni_gg)
 
