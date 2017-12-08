@@ -20,6 +20,7 @@
         <selenium-server.version>3.8.1</selenium-server.version>
         <mockito-core.version>2.13.0</mockito-core.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
+        <hamcrest.version>1.3</hamcrest.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -139,6 +140,12 @@
             <groupId>com.codeborne</groupId>
             <artifactId>phantomjsdriver</artifactId>
             <version>${phantomjsdriver.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
