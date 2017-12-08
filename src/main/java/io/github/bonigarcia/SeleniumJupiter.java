@@ -16,8 +16,19 @@
  */
 package io.github.bonigarcia;
 
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Properties;
+
+import io.github.bonigarcia.wdm.WdmConfig;
+import io.github.bonigarcia.wdm.WebDriverManagerException;
+
 /**
- * Collection of options/capabilities names.
+ * Collection of utility features.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
@@ -41,6 +52,49 @@ public class SeleniumJupiter {
 
     SeleniumJupiter() {
         throw new IllegalStateException("Utility class");
+    }
+
+    static String getString(String key) {
+        String value = "";
+        if (!key.equals("")) {
+            value = System.getenv(key.toUpperCase().replace(".", "_"));
+            if (value == null) {
+                value = System.getProperty(key);
+            }
+            if (value == null) {
+                value = getProperty(key);
+            }
+        }
+        return value;
+    }
+
+    static int getInt(String key) {
+        return parseInt(getString(key));
+    }
+
+    static boolean getBoolean(String key) {
+        return parseBoolean(getString(key));
+    }
+
+    static URL getUrl(String key) {
+        try {
+            return new URL(getString(key));
+        } catch (MalformedURLException e) {
+            throw new WebDriverManagerException(e);
+        }
+    }
+
+    private static String getProperty(String key) {
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = WdmConfig.class.getResourceAsStream(
+                    System.getProperty("sel.jup.properties",
+                            "/selenium-jupiter.properties"));
+            properties.load(inputStream);
+        } catch (Exception e) {
+            throw new WebDriverManagerException(e);
+        }
+        return properties.getProperty(key);
     }
 
 }
