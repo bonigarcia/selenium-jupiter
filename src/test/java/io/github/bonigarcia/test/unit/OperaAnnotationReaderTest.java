@@ -17,9 +17,11 @@
 package io.github.bonigarcia.test.unit;
 
 import static java.util.Optional.empty;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Parameter;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +30,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
 import io.github.bonigarcia.handler.OperaDriverHandler;
+import io.github.bonigarcia.test.advance.OperaWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.OperaWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
@@ -37,14 +40,20 @@ public class OperaAnnotationReaderTest {
     @InjectMocks
     OperaDriverHandler annotationsReader;
 
+    static Stream<Class<?>> testClassProvider() {
+        return Stream.of(OperaWithOptionsJupiterTest.class,
+                OperaWithGlobalOptionsJupiterTest.class);
+    }
+
     @Test
-    void testEdgeOptions() throws Exception {
+    void testOperaOptions() throws Exception {
         Parameter parameter = OperaWithOptionsJupiterTest.class
                 .getMethod("operaTest", EdgeDriver.class).getParameters()[0];
         OperaOptions operaOptions = annotationsReader.getOperaOptions(parameter,
                 empty());
-        assertTrue(operaOptions.asMap().get("operaOptions").toString()
-                .contains("binary"));
+
+        assertThat(operaOptions.asMap().get("operaOptions").toString(),
+                containsString("binary"));
     }
 
 }

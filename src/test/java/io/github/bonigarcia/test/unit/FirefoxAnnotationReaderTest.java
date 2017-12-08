@@ -51,7 +51,7 @@ public class FirefoxAnnotationReaderTest {
     @MethodSource("testClassProvider")
     @SuppressWarnings("unchecked")
     void testFirefoxOptions(Class<?> testClass) throws Exception {
-        Parameter parameter = testClass  
+        Parameter parameter = testClass
                 .getMethod("webrtcTest", FirefoxDriver.class)
                 .getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());

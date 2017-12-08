@@ -19,30 +19,34 @@ package io.github.bonigarcia.test.advance;
 // tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class EdgeWithGlobalOptionsJupiterTest {
+public class OperaWithGlobalOptionsJupiterTest {
 
     @DriverOptions
-    EdgeOptions edgeOptions = new EdgeOptions();
+    OperaOptions operaOptions = new OperaOptions();
     {
-        edgeOptions.setPageLoadStrategy("eager");
+        operaOptions
+                .setBinary(new File("C:\\Program Files\\Opera\\launcher.exe"));
     }
 
-    @Disabled("Edge not available on Travis CI")
+    @Disabled("Opera not available on Travis CI")
     @Test
-    public void edgeTest(EdgeDriver edge) {
-        edge.get("http://www.seleniumhq.org/");
+    public void operaTest(OperaDriver driver) {
+        driver.get("http://www.seleniumhq.org/");
 
-        assertTrue(edge.getTitle().equals("Selenium - Web Browser Automation"));
+        assertTrue(
+                driver.getTitle().equals("Selenium - Web Browser Automation"));
     }
 
 }

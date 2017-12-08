@@ -16,18 +16,22 @@
  */
 package io.github.bonigarcia.test.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.handler.EdgeDriverHandler;
+import io.github.bonigarcia.test.advance.EdgeWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.EdgeWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
@@ -37,14 +41,21 @@ public class EdgeAnnotationReaderTest {
     @InjectMocks
     EdgeDriverHandler annotationsReader;
 
-    @Test
-    void testEdgeOptions() throws Exception {
-        Parameter parameter = EdgeWithOptionsJupiterTest.class
-                .getMethod("edgeTest", EdgeDriver.class).getParameters()[0];
-        EdgeOptions edgeOptions = annotationsReader.getEdgeOptions(parameter,
-                Optional.empty());
+    static Stream<Class<?>> testClassProvider() {
+        return Stream.of(EdgeWithOptionsJupiterTest.class,
+                EdgeWithGlobalOptionsJupiterTest.class);
+    }
 
-        assertEquals("eager", edgeOptions.getCapability("pageLoadStrategy"));
+    @ParameterizedTest
+    @MethodSource("testClassProvider")
+    void testEdgeOptions(Class<?> testClass) throws Exception {
+        Parameter parameter = testClass.getMethod("edgeTest", EdgeDriver.class)
+                .getParameters()[0];
+        Optional<Object> testInstance = Optional.of(testClass.newInstance());
+        EdgeOptions edgeOptions = annotationsReader.getEdgeOptions(parameter,
+                testInstance);
+        assertThat(edgeOptions.getCapability("pageLoadStrategy"),
+                equalTo("eager"));
     }
 
 }
