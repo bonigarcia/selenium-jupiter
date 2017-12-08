@@ -18,7 +18,7 @@ package io.github.bonigarcia.test.advance;
 
 //tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

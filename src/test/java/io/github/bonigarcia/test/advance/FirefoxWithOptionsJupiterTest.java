@@ -29,10 +29,10 @@ import io.github.bonigarcia.SeleniumExtension;
 public class FirefoxWithOptionsJupiterTest {
 
     @Test
-    public void webrtcFirefoxTest(@DriverOptions(options = {
+    public void webrtcTest(@DriverOptions(options = {
             @Option(name = "media.navigator.permission.disabled", value = "true"),
-            @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver firefox) {
-        firefox.get(
+            @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver driver) {
+        driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
     }
 

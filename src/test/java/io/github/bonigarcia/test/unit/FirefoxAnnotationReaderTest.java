@@ -22,14 +22,17 @@ import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
+import io.github.bonigarcia.test.advance.FirefoxWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.FirefoxWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
@@ -39,14 +42,22 @@ public class FirefoxAnnotationReaderTest {
     @InjectMocks
     FirefoxDriverHandler annotationsReader;
 
-    @Test
+    static Stream<Class<?>> testClassProvider() {
+        return Stream.of(FirefoxWithOptionsJupiterTest.class,
+                FirefoxWithGlobalOptionsJupiterTest.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("testClassProvider")
     @SuppressWarnings("unchecked")
-    void testFirefoxOptions() throws Exception {
-        Parameter parameter = FirefoxWithOptionsJupiterTest.class
-                .getMethod("webrtcFirefoxTest", FirefoxDriver.class)
+    void testFirefoxOptions(Class<?> testClass) throws Exception {
+        Parameter parameter = testClass  
+                .getMethod("webrtcTest", FirefoxDriver.class)
                 .getParameters()[0];
+        Optional<Object> testInstance = Optional.of(testClass.newInstance());
+
         FirefoxOptions firefoxOptions = annotationsReader
-                .getFirefoxOptions(parameter, Optional.empty());
+                .getFirefoxOptions(parameter, testInstance);
         Map<String, Map<String, Boolean>> options = (Map<String, Map<String, Boolean>>) firefoxOptions
                 .asMap().get(FIREFOX_OPTIONS);
 

@@ -40,8 +40,8 @@ public class FirefoxWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest(FirefoxDriver firefox) {
-        firefox.get(
+    public void webrtcTest(FirefoxDriver driver) {
+        driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
     }
 
