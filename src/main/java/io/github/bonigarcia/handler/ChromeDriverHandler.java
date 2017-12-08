@@ -21,7 +21,6 @@ import static io.github.bonigarcia.SeleniumJupiter.BINARY;
 import static io.github.bonigarcia.SeleniumJupiter.EXTENSIONS;
 import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -32,7 +31,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
@@ -60,19 +58,13 @@ public class ChromeDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
         Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
                 .getCapabilities(parameter, testInstance);
-
         ChromeOptions chromeOptions = getChromeOptions(parameter, testInstance);
         if (capabilities.isPresent()) {
-            ((DesiredCapabilities) capabilities.get()).setCapability(CAPABILITY,
-                    chromeOptions);
-            webDriver = new ChromeDriver(capabilities.get());
-        } else {
-            webDriver = new ChromeDriver(chromeOptions);
+            chromeOptions.merge(capabilities.get());
         }
-        return webDriver;
+        return new ChromeDriver(chromeOptions);
     }
 
     private ChromeOptions getChromeOptions(Parameter parameter,

@@ -16,11 +16,11 @@
  */
 package io.github.bonigarcia.test.unit;
 
+import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,11 +39,12 @@ public class SafariAnnotationReaderTest {
     SafariDriverHandler annotationsReader;
 
     @Test
+    @SuppressWarnings("deprecation")
     void testSafariOptions() throws Exception {
         Parameter parameter = SafariWithOptionsJupiterTest.class
                 .getMethod("safariTest", SafariDriver.class).getParameters()[0];
         SafariOptions safariOptions = annotationsReader
-                .getSafariOptions(parameter, Optional.empty());
+                .getSafariOptions(parameter, empty());
 
         assertTrue(safariOptions.getUseCleanSession());
         assertFalse(safariOptions.getUseTechnologyPreview());

@@ -57,17 +57,14 @@ public class FirefoxDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
         Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
                 .getCapabilities(parameter, testInstance);
-
         FirefoxOptions firefoxOptions = getFirefoxOptions(parameter,
                 testInstance);
         if (capabilities.isPresent()) {
-            firefoxOptions.addCapabilities(capabilities.get());
+            firefoxOptions.merge(capabilities.get());
         }
-        webDriver = new FirefoxDriver(firefoxOptions);
-        return webDriver;
+        return new FirefoxDriver(firefoxOptions);
     }
 
     public FirefoxOptions getFirefoxOptions(Parameter parameter,

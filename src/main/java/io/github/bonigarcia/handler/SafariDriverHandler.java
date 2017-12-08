@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
@@ -57,19 +56,13 @@ public class SafariDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
         Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
                 .getCapabilities(parameter, testInstance);
-
         SafariOptions safariOptions = getSafariOptions(parameter, testInstance);
         if (capabilities.isPresent()) {
-            ((DesiredCapabilities) capabilities.get())
-                    .setCapability(SafariOptions.CAPABILITY, safariOptions);
-            webDriver = new SafariDriver(capabilities.get());
-        } else {
-            webDriver = new SafariDriver(safariOptions);
+            safariOptions.merge(capabilities.get());
         }
-        return webDriver;
+        return new SafariDriver(safariOptions);
     }
 
     public SafariOptions getSafariOptions(Parameter parameter,
@@ -86,7 +79,7 @@ public class SafariDriverHandler {
                 case USE_CLEAN_SESSION:
                     assert AnnotationsReader.getInstance().isBoolean(
                             value) : "Invalid UseCleanSession vaue: " + value;
-                    safariOptions.setUseCleanSession(valueOf(value));
+                    safariOptions.useCleanSession(valueOf(value));
                     break;
                 case USE_TECHNOLOGY_PREVIEW:
                     assert AnnotationsReader.getInstance().isBoolean(

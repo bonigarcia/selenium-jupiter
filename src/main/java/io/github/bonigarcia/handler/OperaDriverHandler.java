@@ -20,8 +20,8 @@ import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static io.github.bonigarcia.SeleniumJupiter.BINARY;
 import static io.github.bonigarcia.SeleniumJupiter.EXTENSIONS;
 import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
-import static org.slf4j.LoggerFactory.getLogger;
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.lang.reflect.Parameter;
@@ -31,7 +31,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
@@ -59,20 +58,13 @@ public class OperaDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
         Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
                 .getCapabilities(parameter, testInstance);
-
         OperaOptions operaOptions = getOperaOptions(parameter, testInstance);
         if (capabilities.isPresent()) {
-            ((DesiredCapabilities) capabilities.get())
-                    .setCapability(OperaOptions.CAPABILITY, operaOptions);
-            webDriver = new OperaDriver(capabilities.get());
-        } else {
-            webDriver = new OperaDriver(operaOptions);
+            operaOptions.merge(capabilities.get());
         }
-
-        return webDriver;
+        return new OperaDriver(operaOptions);
     }
 
     public OperaOptions getOperaOptions(Parameter parameter,

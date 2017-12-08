@@ -27,7 +27,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
@@ -55,20 +54,13 @@ public class EdgeDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
         Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
                 .getCapabilities(parameter, testInstance);
-
         EdgeOptions edgeOptions = getEdgeOptions(parameter, testInstance);
         if (capabilities.isPresent()) {
-            ((DesiredCapabilities) capabilities.get())
-                    .setCapability(EdgeOptions.CAPABILITY, edgeOptions);
-            webDriver = new EdgeDriver(capabilities.get());
-        } else {
-            webDriver = new EdgeDriver(edgeOptions);
+            edgeOptions.merge(capabilities.get());
         }
-
-        return webDriver;
+        return new EdgeDriver(edgeOptions);
     }
 
     public EdgeOptions getEdgeOptions(Parameter parameter,
