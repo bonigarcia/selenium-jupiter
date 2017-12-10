@@ -21,6 +21,7 @@ import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ public class ForcedOperaJupiterTest {
         assertThat(driver, nullValue());
     }
 
-    @BeforeEach
+    @AfterEach
     void teardown() {
         clearProperty("sel.jup.exception.when.no.driver");
     }

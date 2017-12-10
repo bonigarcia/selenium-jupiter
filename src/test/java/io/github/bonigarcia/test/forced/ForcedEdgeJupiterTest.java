@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +46,7 @@ public class ForcedEdgeJupiterTest {
         assertThat(driver, nullValue());
     }
 
-    @BeforeEach
+    @AfterEach
     void teardown() {
         clearProperty("sel.jup.exception.when.no.driver");
         clearProperty("wdm.forceOs");
