@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
-import io.github.bonigarcia.handler.DockerChromeDriverHandler;
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.handler.OperaDriverHandler;
@@ -112,9 +111,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             webDriver = AppiumDriverHandler.getInstance().resolve(parameter,
                     testInstance);
 
-        } else if (type == DockerChromeDriver.class) {
-            webDriver = DockerChromeDriverHandler.getInstance().resolve();
-
         } else {
             // Other WebDriver type
             webDriver = OtherDriverHandler.getInstance().resolve(parameter,
@@ -134,6 +130,5 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         webDriverList.clear();
 
         AppiumDriverHandler.getInstance().closeLocalServiceIfNecessary();
-        DockerChromeDriverHandler.getInstance().clearContainersIfNecessary();
     }
 }

@@ -11,7 +11,6 @@
         <selenium-java.version>3.8.1</selenium-java.version>
         <webdrivermanager.version>2.0.0</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
-        <docker-java.version>3.0.14</docker-java.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
@@ -90,11 +89,6 @@
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
             <version>${appium-java-client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java</artifactId>
-            <version>${docker-java.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
