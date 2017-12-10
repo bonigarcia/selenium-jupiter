@@ -16,9 +16,13 @@
  */
 package io.github.bonigarcia.test.advance;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -43,6 +47,8 @@ public class FirefoxWithGlobalOptionsJupiterTest {
     public void webrtcTest(FirefoxDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName(),
+                equalTo("video"));
     }
 
 }

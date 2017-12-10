@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
+import static java.lang.System.setProperty;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,7 +35,7 @@ public class ForceCacheJupiterTest {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("wdm.forceCache", "true");
+        setProperty("wdm.forceCache", "true");
     }
 
     @Test

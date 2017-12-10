@@ -19,10 +19,12 @@ package io.github.bonigarcia.test.advance;
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.DriverOptions;
@@ -46,6 +48,8 @@ public class ChromeWithOptionsJupiterTest {
             @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName(),
+                equalTo("video"));
     }
 
 }

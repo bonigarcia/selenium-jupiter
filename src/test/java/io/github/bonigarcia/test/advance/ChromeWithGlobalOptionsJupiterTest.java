@@ -16,9 +16,13 @@
  */
 package io.github.bonigarcia.test.advance;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -31,21 +35,16 @@ public class ChromeWithGlobalOptionsJupiterTest {
     @DriverOptions
     ChromeOptions chromeOptions = new ChromeOptions();
     {
-        // Flags to use fake media for WebRTC user media
         chromeOptions.addArguments("--use-fake-device-for-media-stream",
-                "--use-fake-ui-for-media-stream");
+                "--use-fake-ui-for-media-stream", "--incognito");
     }
 
     @Test
-    void webrtcTest1(ChromeDriver driver) {
+    void webrtcTest(ChromeDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-    }
-
-    @Test
-    void webrtcTest2(ChromeDriver driver) {
-        driver.get(
-                "https://webrtc.github.io/samples/src/content/getusermedia/gum/");
+        assertThat(driver.findElement(By.id("video")).getTagName(),
+                equalTo("video"));
     }
 
 }

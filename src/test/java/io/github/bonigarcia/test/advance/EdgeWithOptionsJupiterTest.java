@@ -18,6 +18,7 @@ package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
+import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -37,7 +38,7 @@ public class EdgeWithOptionsJupiterTest {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("wdm.edgeVersion", "3.14393");
+        setProperty("wdm.edgeVersion", "3.14393");
     }
 
     @Test
