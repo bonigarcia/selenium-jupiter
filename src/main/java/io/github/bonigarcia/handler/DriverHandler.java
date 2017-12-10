@@ -17,8 +17,8 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
-import static org.slf4j.LoggerFactory.getLogger;
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -38,9 +38,6 @@ public abstract class DriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    boolean exceptionWhenNoDriver = getBoolean(
-            "sel.jup.exception.when.no.driver");
-
     public abstract WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance);
 
@@ -52,7 +49,7 @@ public abstract class DriverHandler {
     }
 
     boolean throwExceptionWhenNoDriver() {
-        return exceptionWhenNoDriver;
+        return getBoolean("sel.jup.exception.when.no.driver");
     }
 
 }
