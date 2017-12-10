@@ -54,7 +54,7 @@ public class SeleniumJupiter {
         throw new IllegalStateException("Utility class");
     }
 
-    static String getString(String key) {
+    public static String getString(String key) {
         String value = "";
         if (!key.equals("")) {
             value = System.getenv(key.toUpperCase().replace(".", "_"));
@@ -68,15 +68,15 @@ public class SeleniumJupiter {
         return value;
     }
 
-    static int getInt(String key) {
+    public static int getInt(String key) {
         return parseInt(getString(key));
     }
 
-    static boolean getBoolean(String key) {
+    public static boolean getBoolean(String key) {
         return parseBoolean(getString(key));
     }
 
-    static URL getUrl(String key) {
+    public static URL getUrl(String key) {
         try {
             return new URL(getString(key));
         } catch (MalformedURLException e) {

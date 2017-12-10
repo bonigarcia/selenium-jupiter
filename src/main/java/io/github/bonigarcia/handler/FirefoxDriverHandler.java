@@ -42,7 +42,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class FirefoxDriverHandler {
+public class FirefoxDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -57,14 +57,20 @@ public class FirefoxDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
-        FirefoxOptions firefoxOptions = getFirefoxOptions(parameter,
-                testInstance);
-        if (capabilities.isPresent()) {
-            firefoxOptions.merge(capabilities.get());
+        FirefoxDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            FirefoxOptions firefoxOptions = getFirefoxOptions(parameter,
+                    testInstance);
+            if (capabilities.isPresent()) {
+                firefoxOptions.merge(capabilities.get());
+            }
+            driver = new FirefoxDriver(firefoxOptions);
+        } catch (Exception e) {
+            handleException(e);
         }
-        return new FirefoxDriver(firefoxOptions);
+        return driver;
     }
 
     public FirefoxOptions getFirefoxOptions(Parameter parameter,

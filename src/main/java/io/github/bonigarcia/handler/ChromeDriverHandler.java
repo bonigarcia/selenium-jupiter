@@ -43,7 +43,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class ChromeDriverHandler {
+public class ChromeDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -58,13 +58,20 @@ public class ChromeDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
-        ChromeOptions chromeOptions = getChromeOptions(parameter, testInstance);
-        if (capabilities.isPresent()) {
-            chromeOptions.merge(capabilities.get());
+        ChromeDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            ChromeOptions chromeOptions = getChromeOptions(parameter,
+                    testInstance);
+            if (capabilities.isPresent()) {
+                chromeOptions.merge(capabilities.get());
+            }
+            driver = new ChromeDriver(chromeOptions);
+        } catch (Exception e) {
+            handleException(e);
         }
-        return new ChromeDriver(chromeOptions);
+        return driver;
     }
 
     private ChromeOptions getChromeOptions(Parameter parameter,

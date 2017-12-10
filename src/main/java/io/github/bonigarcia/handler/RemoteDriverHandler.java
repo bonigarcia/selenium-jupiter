@@ -29,6 +29,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
  * Resolver for RemoteWebDriver.
@@ -36,7 +37,7 @@ import io.github.bonigarcia.AnnotationsReader;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class RemoteDriverHandler {
+public class RemoteDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -51,22 +52,31 @@ public class RemoteDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
+        WebDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
 
-        Optional<URL> url = AnnotationsReader.getInstance().getUrl(parameter,
-                testInstance);
-        if (url.isPresent() && capabilities.isPresent()) {
-            webDriver = new RemoteWebDriver(url.get(), capabilities.get());
-        } else {
-            String urlMessage = url.isPresent() ? "" : "URL not present ";
-            String capabilitiesMessage = capabilities.isPresent() ? ""
-                    : "Capabilites not present";
-            log.warn("Was not possible to instantiate RemoteWebDriver: {}{}",
-                    urlMessage, capabilitiesMessage);
+            Optional<URL> url = AnnotationsReader.getInstance()
+                    .getUrl(parameter, testInstance);
+            if (url.isPresent() && capabilities.isPresent()) {
+                driver = new RemoteWebDriver(url.get(), capabilities.get());
+            } else {
+                String urlMessage = url.isPresent() ? "" : "URL not present ";
+                String noCapsMessage = capabilities.isPresent() ? ""
+                        : "Capabilites not present";
+                String errMessage = "Was not possible to instantiate RemoteWebDriver: "
+                        + urlMessage + noCapsMessage;
+                if (throwExceptionWhenNoDriver()) {
+                    throw new SeleniumJupiterException(errMessage);
+                } else {
+                    log.warn(errMessage);
+                }
+            }
+        } catch (Exception e) {
+            handleException(e);
         }
-        return webDriver;
+        return driver;
     }
 
 }

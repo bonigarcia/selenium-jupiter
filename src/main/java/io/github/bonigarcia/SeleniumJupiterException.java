@@ -34,4 +34,8 @@ public class SeleniumJupiterException extends RuntimeException {
         super(message);
     }
 
+    public SeleniumJupiterException(Throwable cause) {
+        super(cause);
+    }
+
 }

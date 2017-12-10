@@ -43,7 +43,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class OperaDriverHandler {
+public class OperaDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -58,13 +58,20 @@ public class OperaDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
-        OperaOptions operaOptions = getOperaOptions(parameter, testInstance);
-        if (capabilities.isPresent()) {
-            operaOptions.merge(capabilities.get());
+        OperaDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            OperaOptions operaOptions = getOperaOptions(parameter,
+                    testInstance);
+            if (capabilities.isPresent()) {
+                operaOptions.merge(capabilities.get());
+            }
+            driver = new OperaDriver(operaOptions);
+        } catch (Exception e) {
+            handleException(e);
         }
-        return new OperaDriver(operaOptions);
+        return driver;
     }
 
     public OperaOptions getOperaOptions(Parameter parameter,

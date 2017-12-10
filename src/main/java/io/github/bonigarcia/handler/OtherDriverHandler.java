@@ -27,7 +27,6 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
-import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
  * Resolver for other drivers.
@@ -35,7 +34,7 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class OtherDriverHandler {
+public class OtherDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -51,28 +50,22 @@ public class OtherDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        WebDriver webDriver = null;
-        Class<?> type = parameter.getType();
-        Optional<Capabilities> capabilities = annotationsReader
-                .getCapabilities(parameter, testInstance);
-
+        WebDriver driver = null;
         try {
+            Class<?> type = parameter.getType();
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             if (capabilities.isPresent()) {
-                webDriver = (WebDriver) type
+                driver = (WebDriver) type
                         .getDeclaredConstructor(Capabilities.class)
                         .newInstance(capabilities.get());
             } else {
-                webDriver = (WebDriver) type.newInstance();
+                driver = (WebDriver) type.newInstance();
             }
-
         } catch (Exception e) {
-            String errorMessage = "Exception creating instance of "
-                    + type.getName();
-            log.error(errorMessage, e);
-            throw new SeleniumJupiterException(errorMessage, e);
+            handleException(e);
         }
-
-        return webDriver;
+        return driver;
     }
 
 }

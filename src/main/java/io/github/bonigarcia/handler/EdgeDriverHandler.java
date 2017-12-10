@@ -39,7 +39,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class EdgeDriverHandler {
+public class EdgeDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -54,13 +54,19 @@ public class EdgeDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
-        EdgeOptions edgeOptions = getEdgeOptions(parameter, testInstance);
-        if (capabilities.isPresent()) {
-            edgeOptions.merge(capabilities.get());
+        EdgeDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            EdgeOptions edgeOptions = getEdgeOptions(parameter, testInstance);
+            if (capabilities.isPresent()) {
+                edgeOptions.merge(capabilities.get());
+            }
+            driver = new EdgeDriver(edgeOptions);
+        } catch (Exception e) {
+            handleException(e);
         }
-        return new EdgeDriver(edgeOptions);
+        return driver;
     }
 
     public EdgeOptions getEdgeOptions(Parameter parameter,

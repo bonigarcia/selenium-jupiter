@@ -41,7 +41,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class SafariDriverHandler {
+public class SafariDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -56,13 +56,20 @@ public class SafariDriverHandler {
 
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
-        SafariOptions safariOptions = getSafariOptions(parameter, testInstance);
-        if (capabilities.isPresent()) {
-            safariOptions.merge(capabilities.get());
+        SafariDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            SafariOptions safariOptions = getSafariOptions(parameter,
+                    testInstance);
+            if (capabilities.isPresent()) {
+                safariOptions.merge(capabilities.get());
+            }
+            driver = new SafariDriver(safariOptions);
+        } catch (Exception e) {
+            handleException(e);
         }
-        return new SafariDriver(safariOptions);
+        return driver;
     }
 
     public SafariOptions getSafariOptions(Parameter parameter,

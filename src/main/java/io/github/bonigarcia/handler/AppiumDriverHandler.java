@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
  * Resolver for AppiumDriver.
@@ -37,7 +38,7 @@ import io.github.bonigarcia.AnnotationsReader;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class AppiumDriverHandler {
+public class AppiumDriverHandler extends AbstractDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -54,29 +55,36 @@ public class AppiumDriverHandler {
     public WebDriver resolve(Parameter parameter,
             Optional<Object> testInstance) {
         WebDriver webDriver = null;
-        Optional<Capabilities> capabilities = AnnotationsReader.getInstance()
-                .getCapabilities(parameter, testInstance);
+        try {
+            Optional<Capabilities> capabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
 
-        Optional<URL> url = AnnotationsReader.getInstance().getUrl(parameter,
-                testInstance);
-        if (capabilities.isPresent()) {
-            URL appiumServerUrl;
-            if (url.isPresent()) {
-                appiumServerUrl = url.get();
+            Optional<URL> url = AnnotationsReader.getInstance()
+                    .getUrl(parameter, testInstance);
+            if (capabilities.isPresent()) {
+                URL appiumServerUrl;
+                if (url.isPresent()) {
+                    appiumServerUrl = url.get();
+                } else {
+                    appiumDriverLocalService = AppiumDriverLocalService
+                            .buildDefaultService();
+                    appiumDriverLocalService.start();
+                    appiumServerUrl = appiumDriverLocalService.getUrl();
+                }
+
+                webDriver = new AndroidDriver<>(appiumServerUrl,
+                        capabilities.get());
             } else {
-                appiumDriverLocalService = AppiumDriverLocalService
-                        .buildDefaultService();
-                appiumDriverLocalService.start();
-                appiumServerUrl = appiumDriverLocalService.getUrl();
+                String noCapsMessage = "Was not possible to instantiate AppiumDriver: Capabilites not present";
+                if (throwExceptionWhenNoDriver()) {
+                    throw new SeleniumJupiterException(noCapsMessage);
+                } else {
+                    log.warn(noCapsMessage);
+                }
             }
-
-            webDriver = new AndroidDriver<>(appiumServerUrl,
-                    capabilities.get());
-        } else {
-            log.warn(
-                    "Was not possible to instantiate AppiumDriver: Capabilites not present");
+        } catch (Exception e) {
+            handleException(e);
         }
-
         return webDriver;
     }
 
