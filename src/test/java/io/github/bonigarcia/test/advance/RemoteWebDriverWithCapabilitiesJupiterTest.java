@@ -19,7 +19,6 @@ package io.github.bonigarcia.test.advance;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -54,13 +53,6 @@ public class RemoteWebDriverWithCapabilitiesJupiterTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
-    }
-
-    @Test
-    void testWithoutUrl(RemoteWebDriver remoteWebDriver) {
-        assertThrows(NullPointerException.class, () -> {
-            exercise(remoteWebDriver);
-        });
     }
 
     @Test

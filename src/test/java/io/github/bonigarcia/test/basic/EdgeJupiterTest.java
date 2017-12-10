@@ -32,7 +32,7 @@ import io.github.bonigarcia.SeleniumExtension;
 public class EdgeJupiterTest {
 
     @Test
-    void webrtcTest(EdgeDriver driver) {
+    void edgeTest(EdgeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
