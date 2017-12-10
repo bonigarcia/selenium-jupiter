@@ -16,10 +16,12 @@
  */
 package io.github.bonigarcia.test.forced;
 
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
@@ -29,13 +31,19 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class ForcedOperaJupiterTest {
 
-    static {
+    @BeforeEach
+    void setup() {
         setProperty("sel.jup.exception.when.no.driver", "false");
     }
 
     @Test
     void operaTest(OperaDriver driver) {
         assertThat(driver, nullValue());
+    }
+
+    @BeforeEach
+    void teardown() {
+        clearProperty("sel.jup.exception.when.no.driver");
     }
 
 }

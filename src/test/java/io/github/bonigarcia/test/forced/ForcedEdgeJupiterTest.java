@@ -16,12 +16,14 @@
  */
 package io.github.bonigarcia.test.forced;
 
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -31,7 +33,8 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class ForcedEdgeJupiterTest {
 
-    static {
+    @BeforeEach
+    void setup() {
         setProperty("sel.jup.exception.when.no.driver", "false");
         setProperty("wdm.forceOs", "WIN");
     }
@@ -40,6 +43,12 @@ public class ForcedEdgeJupiterTest {
     void edgeTest(EdgeDriver driver) {
         assumeFalse(IS_OS_WINDOWS);
         assertThat(driver, nullValue());
+    }
+
+    @BeforeEach
+    void teardown() {
+        clearProperty("sel.jup.exception.when.no.driver");
+        clearProperty("wdm.forceOs");
     }
 
 }
