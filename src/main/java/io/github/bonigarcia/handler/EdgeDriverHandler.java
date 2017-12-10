@@ -17,8 +17,6 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -27,7 +25,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
@@ -39,9 +36,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class EdgeDriverHandler extends AbstractDriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
+public class EdgeDriverHandler extends DriverHandler {
 
     static EdgeDriverHandler instance;
 

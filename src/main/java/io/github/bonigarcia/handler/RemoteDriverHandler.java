@@ -16,9 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
-
 import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.util.Optional;
@@ -26,7 +23,6 @@ import java.util.Optional;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.SeleniumJupiterException;
@@ -37,9 +33,7 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class RemoteDriverHandler extends AbstractDriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
+public class RemoteDriverHandler extends DriverHandler {
 
     static RemoteDriverHandler instance;
 

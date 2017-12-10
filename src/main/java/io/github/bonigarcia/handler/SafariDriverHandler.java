@@ -19,8 +19,6 @@ package io.github.bonigarcia.handler;
 import static io.github.bonigarcia.SeleniumJupiter.USE_CLEAN_SESSION;
 import static io.github.bonigarcia.SeleniumJupiter.USE_TECHNOLOGY_PREVIEW;
 import static java.lang.Boolean.valueOf;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -29,7 +27,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
@@ -41,9 +38,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class SafariDriverHandler extends AbstractDriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
+public class SafariDriverHandler extends DriverHandler {
 
     static SafariDriverHandler instance;
 

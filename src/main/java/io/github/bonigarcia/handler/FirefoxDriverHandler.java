@@ -20,8 +20,6 @@ import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static io.github.bonigarcia.SeleniumJupiter.BINARY;
 import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -30,7 +28,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
@@ -42,9 +39,7 @@ import io.github.bonigarcia.Option;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class FirefoxDriverHandler extends AbstractDriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
+public class FirefoxDriverHandler extends DriverHandler {
 
     static FirefoxDriverHandler instance;
 

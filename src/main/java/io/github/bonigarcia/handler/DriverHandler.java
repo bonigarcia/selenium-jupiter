@@ -34,7 +34,7 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public abstract class AbstractDriverHandler {
+public abstract class DriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 

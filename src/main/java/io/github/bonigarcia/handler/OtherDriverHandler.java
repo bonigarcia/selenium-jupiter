@@ -16,15 +16,11 @@
  */
 package io.github.bonigarcia.handler;
 
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
-
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 
@@ -34,9 +30,7 @@ import io.github.bonigarcia.AnnotationsReader;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class OtherDriverHandler extends AbstractDriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
+public class OtherDriverHandler extends DriverHandler {
 
     static OtherDriverHandler instance;
     AnnotationsReader annotationsReader = new AnnotationsReader();
