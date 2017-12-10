@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
 import io.github.bonigarcia.handler.OperaDriverHandler;
@@ -48,7 +48,7 @@ public class OperaAnnotationReaderTest {
     @Test
     void testOperaOptions() throws Exception {
         Parameter parameter = OperaWithOptionsJupiterTest.class
-                .getMethod("operaTest", EdgeDriver.class).getParameters()[0];
+                .getMethod("operaTest", OperaDriver.class).getParameters()[0];
         OperaOptions operaOptions = annotationsReader.getOperaOptions(parameter,
                 empty());
 
