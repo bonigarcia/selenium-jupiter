@@ -9,7 +9,7 @@
     <properties>
         <!-- Dependencies -->
         <selenium-java.version>3.8.1</selenium-java.version>
-        <webdrivermanager.version>2.0.0</webdrivermanager.version>
+        <webdrivermanager.version>2.0.1</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
         <slf4j.version>1.7.25</slf4j.version>
 
