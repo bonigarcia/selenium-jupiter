@@ -17,6 +17,8 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
+import static io.github.bonigarcia.SeleniumJupiter.ARGS;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -31,7 +33,8 @@ public class FirefoxWithOptionsJupiterTest {
     @Test
     public void webrtcTest(@DriverOptions(options = {
             @Option(name = "media.navigator.permission.disabled", value = "true"),
-            @Option(name = "media.navigator.streams.fake", value = "true") }) FirefoxDriver driver) {
+            @Option(name = "media.navigator.streams.fake", value = "true"),
+            @Option(name = ARGS, value = "-private") }) FirefoxDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
     }

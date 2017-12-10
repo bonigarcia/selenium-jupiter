@@ -17,6 +17,7 @@
 package io.github.bonigarcia;
 
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Optional.empty;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.annotation.Annotation;
@@ -53,7 +54,7 @@ public class AnnotationsReader {
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<Capabilities> out = Optional.empty();
+        Optional<Capabilities> out = empty();
         DriverCapabilities driverCapabilities = parameter
                 .getAnnotation(DriverCapabilities.class);
 
@@ -80,7 +81,7 @@ public class AnnotationsReader {
 
     public Optional<URL> getUrl(Parameter parameter,
             Optional<Object> testInstance) {
-        Optional<URL> out = Optional.empty();
+        Optional<URL> out = empty();
         String urlValue = null;
 
         try {
@@ -136,7 +137,7 @@ public class AnnotationsReader {
     public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
             Class<? extends Annotation> annotation) {
-        Optional<Object> out = Optional.empty();
+        Optional<Object> out = empty();
         if (testInstance.isPresent()) {
             Object object = testInstance.get();
             Field[] declaredFields = object.getClass().getDeclaredFields();
