@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +30,10 @@ import io.github.bonigarcia.SeleniumExtension;
 public class HtmlUnitJupiterTest {
 
     @Test
-    public void test(HtmlUnitDriver htmlUnit) {
-        htmlUnit.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(htmlUnit.getTitle().contains("JUnit 5 extension"));
+    public void test(HtmlUnitDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

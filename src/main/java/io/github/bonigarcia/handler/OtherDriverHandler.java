@@ -30,7 +30,7 @@ import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
- * Resolver for ChromeDriver.
+ * Resolver for other drivers.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0

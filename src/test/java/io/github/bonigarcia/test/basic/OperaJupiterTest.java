@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -26,15 +27,15 @@ import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class OperaJupiterTest {
 
-    @Disabled("Opera not available on Travis CI")
     @Test
-    public void test(OperaDriver opera) {
-        opera.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(opera.getCurrentUrl().contains("github"));
+    public void test(OperaDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

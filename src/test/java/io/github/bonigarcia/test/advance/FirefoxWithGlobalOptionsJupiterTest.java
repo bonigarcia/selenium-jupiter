@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;

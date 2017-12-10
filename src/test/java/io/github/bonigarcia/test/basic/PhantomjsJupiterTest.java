@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +30,9 @@ import io.github.bonigarcia.SeleniumExtension;
 public class PhantomjsJupiterTest {
 
     @Test
-    public void test(PhantomJSDriver phantomjs) {
-        phantomjs.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertNotNull(phantomjs.getPageSource());
+    public void test(PhantomJSDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getPageSource(), notNullValue());
     }
 
 }

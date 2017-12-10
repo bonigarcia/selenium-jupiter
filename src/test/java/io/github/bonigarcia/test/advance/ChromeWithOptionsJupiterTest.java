@@ -18,7 +18,8 @@ package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,18 +34,17 @@ public class ChromeWithOptionsJupiterTest {
 
     @Test
     void headlessTest(@DriverOptions(options = {
-            @Option(name = ARGS, value = "--headless") }) ChromeDriver chrome) {
-        chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(chrome.getTitle().startsWith("selenium-jupiter"));
+            @Option(name = ARGS, value = "--headless") }) ChromeDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
     @Test
     void webrtcTest(@DriverOptions(options = {
             @Option(name = ARGS, value = "--use-fake-device-for-media-stream"),
-            @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver chrome) {
-
-        chrome.get(
+            @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver driver) {
+        driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
     }
 

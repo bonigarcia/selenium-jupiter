@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
+// tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -29,10 +29,10 @@ import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
 @ExtendWith(SeleniumExtension.class)
 public class SafariWithOptionsJupiterTest {
 
-    @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
     public void safariTest(@DriverOptions(options = {
             @Option(name = "useCleanSession", value = "true"),

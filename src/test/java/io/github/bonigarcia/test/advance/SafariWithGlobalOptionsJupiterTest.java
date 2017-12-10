@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
+// tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -29,6 +29,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
 @ExtendWith(SeleniumExtension.class)
 public class SafariWithGlobalOptionsJupiterTest {
 
@@ -39,7 +40,6 @@ public class SafariWithGlobalOptionsJupiterTest {
         safariOptions.setUseTechnologyPreview(false);
     }
 
-    @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
     public void safariTest(SafariDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");

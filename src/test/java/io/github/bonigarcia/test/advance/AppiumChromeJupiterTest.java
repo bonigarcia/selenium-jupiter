@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
+// tag::snippet-in-doc[]
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
@@ -30,27 +30,25 @@ import io.github.bonigarcia.Capability;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Android emulator not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class AppiumChromeJupiterTest {
 
-    @Disabled("Android emulator not available on Travis CI")
     @Test
-    void testWithAndroid(
-            @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome"),
-                    @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> android)
+    void testWithAndroid(@DriverCapabilities(capability = {
+            @Capability(name = "browserName", value = "chrome"),
+            @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> driver)
             throws InterruptedException {
 
-        String context = android.getContext();
-        android.context("NATIVE_APP");
-        android.findElement(By.id("com.android.chrome:id/terms_accept"))
+        String context = driver.getContext();
+        driver.context("NATIVE_APP");
+        driver.findElement(By.id("com.android.chrome:id/terms_accept")).click();
+        driver.findElement(By.id("com.android.chrome:id/negative_button"))
                 .click();
-        android.findElement(By.id("com.android.chrome:id/negative_button"))
-                .click();
-        android.context(context);
+        driver.context(context);
 
-        android.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertTrue(android.getTitle().contains("JUnit 5 extension"));
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertTrue(driver.getTitle().contains("JUnit 5 extension"));
     }
 
 }

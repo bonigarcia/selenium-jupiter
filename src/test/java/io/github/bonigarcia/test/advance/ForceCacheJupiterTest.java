@@ -16,16 +16,19 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// tag::snippet-in-doc[]
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Redudant test for Travis CI suite")
 @ExtendWith(SeleniumExtension.class)
 public class ForceCacheJupiterTest {
 
@@ -35,10 +38,10 @@ public class ForceCacheJupiterTest {
     }
 
     @Test
-    public void test(ChromeDriver chrome) {
-        chrome.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(chrome.getTitle().contains("JUnit 5 extension"));
+    public void test(ChromeDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

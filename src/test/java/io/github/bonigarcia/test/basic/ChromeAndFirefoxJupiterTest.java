@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,22 +25,23 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Redudant test for Travis CI suite")
 @ExtendWith(SeleniumExtension.class)
 public class ChromeAndFirefoxJupiterTest {
 
     @Test
-    public void testWithOneChrome(ChromeDriver chrome) {
+    public void testWithOneChrome(ChromeDriver chromeDriver) {
         // using Chrome in this test
     }
 
     @Test
-    public void testWithFirefox(FirefoxDriver firefox) {
+    public void testWithFirefox(FirefoxDriver firefoxDriver) {
         // using Firefox in this test
     }
 
     @Test
-    public void testWithChromeAndFirefox(ChromeDriver chrome,
-            FirefoxDriver firefox) {
+    public void testWithChromeAndFirefox(ChromeDriver chromeDriver,
+            FirefoxDriver firefoxDriver) {
         // using Chrome and Firefox in this test
     }
 

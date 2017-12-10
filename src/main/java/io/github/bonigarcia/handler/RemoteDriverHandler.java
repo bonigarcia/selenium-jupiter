@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.AnnotationsReader;
 
 /**
- * Resolver for ChromeDriver.
+ * Resolver for RemoteWebDriver.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0

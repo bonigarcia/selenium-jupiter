@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +32,8 @@ public class DockerChromeJupiterTest {
     @Test
     public void testWithOneChrome(DockerChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(driver.getTitle().startsWith("selenium-jupiter"));
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

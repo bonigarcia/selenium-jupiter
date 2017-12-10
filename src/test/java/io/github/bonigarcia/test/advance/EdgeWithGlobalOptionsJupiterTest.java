@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Edge not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class EdgeWithGlobalOptionsJupiterTest {
 
@@ -37,12 +39,11 @@ public class EdgeWithGlobalOptionsJupiterTest {
         edgeOptions.setPageLoadStrategy("eager");
     }
 
-    @Disabled("Edge not available on Travis CI")
     @Test
-    public void edgeTest(EdgeDriver edge) {
-        edge.get("http://www.seleniumhq.org/");
-
-        assertTrue(edge.getTitle().equals("Selenium - Web Browser Automation"));
+    public void edgeTest(EdgeDriver driver) {
+        driver.get("http://www.seleniumhq.org/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

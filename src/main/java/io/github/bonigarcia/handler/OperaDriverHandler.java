@@ -38,7 +38,7 @@ import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
 /**
- * Resolver for ChromeDriver.
+ * Resolver for OperaDriver.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0

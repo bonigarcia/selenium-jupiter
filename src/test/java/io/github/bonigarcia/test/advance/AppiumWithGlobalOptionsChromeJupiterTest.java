@@ -16,8 +16,9 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// tag::snippet-in-doc[]
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.DriverUrl;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Android emulator not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class AppiumWithGlobalOptionsChromeJupiterTest {
 
@@ -44,19 +46,18 @@ public class AppiumWithGlobalOptionsChromeJupiterTest {
         capabilities.setCapability("deviceName", "Android");
     }
 
-    @Disabled("Android emulator not available on Travis CI")
     @Test
-    void testWithAndroid(AppiumDriver<WebElement> android) {
-        String context = android.getContext();
-        android.context("NATIVE_APP");
-        android.findElement(By.id("com.android.chrome:id/terms_accept"))
+    void testWithAndroid(AppiumDriver<WebElement> driver) {
+        String context = driver.getContext();
+        driver.context("NATIVE_APP");
+        driver.findElement(By.id("com.android.chrome:id/terms_accept")).click();
+        driver.findElement(By.id("com.android.chrome:id/negative_button"))
                 .click();
-        android.findElement(By.id("com.android.chrome:id/negative_button"))
-                .click();
-        android.context(context);
+        driver.context(context);
 
-        android.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertTrue(android.getTitle().contains("JUnit 5 extension"));
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

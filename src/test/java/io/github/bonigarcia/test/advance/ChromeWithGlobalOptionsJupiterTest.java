@@ -37,14 +37,14 @@ public class ChromeWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest1(ChromeDriver chrome) {
-        chrome.get(
+    void webrtcTest1(ChromeDriver driver) {
+        driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
     }
 
     @Test
-    void webrtcTest2(ChromeDriver chrome) {
-        chrome.get(
+    void webrtcTest2(ChromeDriver driver) {
+        driver.get(
                 "https://webrtc.github.io/samples/src/content/getusermedia/gum/");
     }
 

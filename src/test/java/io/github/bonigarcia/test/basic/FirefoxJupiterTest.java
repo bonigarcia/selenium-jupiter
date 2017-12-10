@@ -17,8 +17,12 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -29,20 +33,20 @@ import io.github.bonigarcia.SeleniumExtension;
 public class FirefoxJupiterTest {
 
     @Test
-    public void testWithOneFirefox(FirefoxDriver firefox) {
-        firefox.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(firefox.getTitle().startsWith("selenium-jupiter"));
+    public void testWithOneFirefox(FirefoxDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
+    @Disabled("Redudant test for Travis CI suite")
     @Test
-    public void testWithTwoFirefoxs(FirefoxDriver firefox1,
-            FirefoxDriver firefox2) {
-        firefox1.get("http://www.seleniumhq.org/");
-        firefox2.get("http://junit.org/junit5/");
-
-        assertTrue(firefox1.getTitle().startsWith("Selenium"));
-        assertTrue(firefox2.getTitle().equals("JUnit 5"));
+    public void testWithTwoFirefoxs(FirefoxDriver driver1,
+            FirefoxDriver driver2) {
+        driver1.get("http://www.seleniumhq.org/");
+        driver2.get("http://junit.org/junit5/");
+        assertThat(driver1.getTitle(), startsWith("Selenium"));
+        assertThat(driver2.getTitle(), equalTo("JUnit 5"));
     }
 
 }

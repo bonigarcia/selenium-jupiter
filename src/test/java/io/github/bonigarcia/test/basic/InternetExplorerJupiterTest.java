@@ -16,7 +16,9 @@
  */
 package io.github.bonigarcia.test.basic;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// tag::snippet-in-doc[]
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,10 +32,11 @@ import io.github.bonigarcia.SeleniumExtension;
 public class InternetExplorerJupiterTest {
 
     @Test
-    void webrtcTest(InternetExplorerDriver iexplorer) {
-        iexplorer.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(iexplorer.getTitle().startsWith("selenium-jupiter"));
+    void webrtcTest(InternetExplorerDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }
+// end::snippet-in-doc[]

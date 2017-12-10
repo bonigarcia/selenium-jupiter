@@ -18,7 +18,8 @@ package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -30,6 +31,7 @@ import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Edge not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class EdgeWithOptionsJupiterTest {
 
@@ -38,13 +40,12 @@ public class EdgeWithOptionsJupiterTest {
         System.setProperty("wdm.edgeVersion", "3.14393");
     }
 
-    @Disabled("Edge not available on Travis CI")
     @Test
     public void edgeTest(@DriverOptions(options = {
-            @Option(name = PAGE_LOAD_STRATEGY, value = "eager") }) EdgeDriver edge) {
-        edge.get("http://www.seleniumhq.org/");
-
-        assertTrue(edge.getTitle().equals("Selenium - Web Browser Automation"));
+            @Option(name = PAGE_LOAD_STRATEGY, value = "eager") }) EdgeDriver driver) {
+        driver.get("http://www.seleniumhq.org/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

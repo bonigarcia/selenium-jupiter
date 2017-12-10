@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 
@@ -30,6 +31,7 @@ import org.openqa.selenium.opera.OperaOptions;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class OperaWithGlobalOptionsJupiterTest {
 
@@ -40,13 +42,11 @@ public class OperaWithGlobalOptionsJupiterTest {
                 .setBinary(new File("C:\\Program Files\\Opera\\launcher.exe"));
     }
 
-    @Disabled("Opera not available on Travis CI")
     @Test
     public void operaTest(OperaDriver driver) {
         driver.get("http://www.seleniumhq.org/");
-
-        assertTrue(
-                driver.getTitle().equals("Selenium - Web Browser Automation"));
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

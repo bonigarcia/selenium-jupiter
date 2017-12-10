@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.advance;
 
-//tag::snippet-in-doc[]
+// tag::snippet-in-doc[]
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -32,6 +32,7 @@ import io.appium.java_client.MobileElement;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Android emulator not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class AppiumApkJupiterTest {
 
@@ -49,14 +50,13 @@ public class AppiumApkJupiterTest {
         }
     }
 
-    @Disabled("Android emulator not available on Travis CI")
     @Test
-    void testWithAndroid(AppiumDriver<MobileElement> android)
+    void testWithAndroid(AppiumDriver<MobileElement> driver)
             throws InterruptedException {
-        WebElement button = android.findElement(By.id("buttonStartWebview"));
+        WebElement button = driver.findElement(By.id("buttonStartWebview"));
         button.click();
 
-        WebElement inputField = android.findElement(By.id("name_input"));
+        WebElement inputField = driver.findElement(By.id("name_input"));
         inputField.clear();
         inputField.sendKeys("Custom name");
     }

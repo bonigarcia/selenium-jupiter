@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -26,16 +27,15 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
 @ExtendWith(SeleniumExtension.class)
 public class SafariJupiterTest {
 
-    @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
     @Test
-    public void test(SafariDriver safari) {
-        safari.get("http://www.seleniumhq.org/");
-
-        assertTrue(
-                safari.getTitle().equals("Selenium - Web Browser Automation"));
+    public void test(SafariDriver driver) {
+        driver.get("http://www.seleniumhq.org/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

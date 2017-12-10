@@ -17,7 +17,8 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -64,21 +65,21 @@ public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
 
     @Test
     void testWithCapabilitiesOnly(@DriverCapabilities(capability = {
-            @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver remoteChrome)
+            @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver)
             throws InterruptedException {
-        exercise(remoteChrome);
+        exercise(driver);
     }
 
     @Test
-    void testWithGlobalOptoins(RemoteWebDriver remoteChrome)
+    void testWithGlobalOptoins(RemoteWebDriver driver)
             throws InterruptedException {
-        exercise(remoteChrome);
+        exercise(driver);
     }
 
-    void exercise(WebDriver webdriver) {
-        webdriver.get("https://bonigarcia.github.io/selenium-jupiter/");
-
-        assertTrue(webdriver.getTitle().startsWith("selenium-jupiter"));
+    void exercise(WebDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }
