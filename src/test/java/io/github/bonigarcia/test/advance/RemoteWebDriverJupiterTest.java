@@ -37,10 +37,10 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
 @ExtendWith(SeleniumExtension.class)
-public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
+public class RemoteWebDriverJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
+    String url = "http://localhost:4444/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = firefox();
@@ -48,30 +48,31 @@ public class RemoteWebDriverWithGlobalCapabilitiesJupiterTest {
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4445" });
+        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
 
         // Register Chrome in hub
         ChromeDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
-                "browserName=chrome", "-port", "5557" });
+                "http://localhost:4444/grid/register", "-browser",
+                "browserName=chrome", "-port", "5555" });
 
         // Register Firefox in hub
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
-                "browserName=firefox", "-port", "5558" });
+                "http://localhost:4444/grid/register", "-browser",
+                "browserName=firefox", "-port", "5556" });
     }
 
     @Test
-    void testWithCapabilitiesOnly(@DriverCapabilities(capability = {
-            @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver)
+    void testWithRemoteChrome(
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
+                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);
     }
 
     @Test
-    void testWithGlobalOptoins(RemoteWebDriver driver)
+    void testWithRemoteFirefox(RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);
     }
