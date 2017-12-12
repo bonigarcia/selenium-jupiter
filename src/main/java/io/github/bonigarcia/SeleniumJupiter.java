@@ -39,9 +39,8 @@ public class SeleniumJupiter {
     public static final String ARGS = "args";
     public static final String BINARY = "binary";
 
-    // Chrome, Opera
-    public static final String EXTENSIONS = "extensions";
-    public static final String EXTENSION_FILES = "extensionFiles";
+    // Chrome, Firefox, Opera
+    public static final String EXTENSION = "extension";
 
     // Edge
     public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";

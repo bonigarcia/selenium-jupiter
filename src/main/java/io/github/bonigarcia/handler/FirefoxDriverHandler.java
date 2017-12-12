@@ -18,9 +18,11 @@ package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static io.github.bonigarcia.SeleniumJupiter.BINARY;
+import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
 import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
 
+import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -28,6 +30,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
@@ -69,7 +72,7 @@ public class FirefoxDriverHandler extends DriverHandler {
     }
 
     public FirefoxOptions getFirefoxOptions(Parameter parameter,
-            Optional<Object> testInstance) {
+            Optional<Object> testInstance) throws IOException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);
@@ -85,6 +88,11 @@ public class FirefoxDriverHandler extends DriverHandler {
                     break;
                 case BINARY:
                     firefoxOptions.setBinary(value);
+                    break;
+                case EXTENSION:
+                    FirefoxProfile firefoxProfile = new FirefoxProfile();
+                    firefoxProfile.addExtension(getExtension(value));
+                    firefoxOptions.setProfile(firefoxProfile);
                     break;
                 default:
                     if (AnnotationsReader.getInstance().isBoolean(value)) {

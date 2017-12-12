@@ -16,50 +16,31 @@
  */
 package io.github.bonigarcia.test.advance;
 
-// tag::snippet-in-doc[]
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
+import static io.github.bonigarcia.SeleniumJupiter.BINARY;
 import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
+@Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
-public class ChromeWithOptionsJupiterTest {
+public class OperaExtensionJupiterTest {
 
     @Test
-    void headlessTest(@DriverOptions(options = {
-            @Option(name = ARGS, value = "--headless") }) ChromeDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
-    }
-
-    @Test
-    void webrtcTest(@DriverOptions(options = {
-            @Option(name = ARGS, value = "--use-fake-device-for-media-stream"),
-            @Option(name = ARGS, value = "--use-fake-ui-for-media-stream") }) ChromeDriver driver) {
-        driver.get(
-                "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName(),
-                equalTo("video"));
-    }
-
-    @Test
-    void extensionTest(@DriverOptions(options = {
-            @Option(name = EXTENSION, value = "hello_world.crx") }) ChromeDriver driver) {
+    void operaExtensionTest(@DriverOptions(options = {
+            @Option(name = BINARY, value = "C:\\Program Files\\Opera\\launcher.exe"),
+            @Option(name = EXTENSION, value = "atomizer.crx") }) OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }
-// end::snippet-in-doc[]

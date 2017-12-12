@@ -18,6 +18,8 @@ package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
+import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -42,6 +44,14 @@ public class FirefoxWithOptionsJupiterTest {
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),
                 equalTo("video"));
+    }
+
+    @Test
+    void extensionTest(@DriverOptions(options = {
+            @Option(name = EXTENSION, value = "hello_world.xpi") }) FirefoxDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

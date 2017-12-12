@@ -18,10 +18,9 @@ package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.ARGS;
 import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSIONS;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION_FILES;
+import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
 
-import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -70,7 +69,7 @@ public class ChromeDriverHandler extends DriverHandler {
     }
 
     private ChromeOptions getChromeOptions(Parameter parameter,
-            Optional<Object> testInstance) {
+            Optional<Object> testInstance) throws IOException {
         ChromeOptions chromeOptions = new ChromeOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);
@@ -87,11 +86,8 @@ public class ChromeDriverHandler extends DriverHandler {
                 case BINARY:
                     chromeOptions.setBinary(value);
                     break;
-                case EXTENSIONS:
-                    chromeOptions.addEncodedExtensions(value);
-                    break;
-                case EXTENSION_FILES:
-                    chromeOptions.addExtensions(new File(value));
+                case EXTENSION:
+                    chromeOptions.addExtensions(getExtension(value));
                     break;
                 default:
                     chromeOptions.setExperimentalOption(name, value);
