@@ -80,29 +80,23 @@ public class AnnotationsReader {
     }
 
     public Optional<URL> getUrl(Parameter parameter,
-            Optional<Object> testInstance) {
+            Optional<Object> testInstance) throws MalformedURLException {
         Optional<URL> out = empty();
         String urlValue = null;
-
-        try {
-            DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
-            if (driverUrl != null) {
-                // Search first DriverUrl annotation in parameter
-                urlValue = driverUrl.value();
+        DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
+        if (driverUrl != null) {
+            // Search first DriverUrl annotation in parameter
+            urlValue = driverUrl.value();
+            out = Optional.of(new URL(urlValue));
+        } else {
+            // If not, search DriverUrl in any field
+            Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                    testInstance, DriverUrl.class);
+            if (annotatedField.isPresent()) {
+                urlValue = (String) annotatedField.get();
                 out = Optional.of(new URL(urlValue));
-            } else {
-                // If not, search DriverUrl in any field
-                Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                        testInstance, DriverUrl.class);
-                if (annotatedField.isPresent()) {
-                    urlValue = (String) annotatedField.get();
-                    out = Optional.of(new URL(urlValue));
-                }
             }
-        } catch (MalformedURLException e) {
-            log.warn("Bad URL {}", urlValue, e);
         }
-
         return out;
     }
 

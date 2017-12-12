@@ -20,8 +20,6 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Properties;
 
 import io.github.bonigarcia.wdm.WdmConfig;
@@ -73,14 +71,6 @@ public class SeleniumJupiter {
 
     public static boolean getBoolean(String key) {
         return parseBoolean(getString(key));
-    }
-
-    public static URL getUrl(String key) {
-        try {
-            return new URL(getString(key));
-        } catch (MalformedURLException e) {
-            throw new WebDriverManagerException(e);
-        }
     }
 
     private static String getProperty(String key) {
