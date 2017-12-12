@@ -41,7 +41,7 @@ public class ForcedEdgeJupiterTest {
     }
 
     @Test
-    void edgeTest(EdgeDriver driver) {
+    public void edgeTest(EdgeDriver driver) {
         assumeFalse(IS_OS_WINDOWS);
         assertThat(driver, nullValue());
     }

@@ -41,12 +41,12 @@ public class ForcedAppiumJupiterTest {
     }
 
     @Test
-    void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
+    public void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());
     }
 
     @Test
-    void appiumWithCapabilitiesTest(@DriverCapabilities(capability = {
+    public void appiumWithCapabilitiesTest(@DriverCapabilities(capability = {
             @Capability(name = "browserName", value = "chrome"),
             @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());

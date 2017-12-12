@@ -38,7 +38,7 @@ public class ForcedOperaJupiterTest {
     }
 
     @Test
-    void operaTest(OperaDriver driver) {
+    public void operaTest(OperaDriver driver) {
         assertThat(driver, nullValue());
     }
 

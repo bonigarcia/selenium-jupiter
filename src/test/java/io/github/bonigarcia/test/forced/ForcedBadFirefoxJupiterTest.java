@@ -41,7 +41,7 @@ public class ForcedBadFirefoxJupiterTest {
     }
 
     @Test
-    void operaTest(@DriverOptions(options = {
+    public void firefoxTest(@DriverOptions(options = {
             @Option(name = BINARY, value = "/bad/path/to/firefox") }) FirefoxDriver driver) {
         assertThat(driver, nullValue());
     }

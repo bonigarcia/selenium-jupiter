@@ -40,7 +40,7 @@ public class ForcedSafariJupiterTest {
     }
 
     @Test
-    void safariTest(SafariDriver driver) {
+    public void safariTest(SafariDriver driver) {
         assumeFalse(IS_OS_MAC);
         assertThat(driver, nullValue());
     }

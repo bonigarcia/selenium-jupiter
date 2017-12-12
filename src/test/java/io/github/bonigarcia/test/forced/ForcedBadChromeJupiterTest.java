@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.forced;
 
+import static io.github.bonigarcia.SeleniumJupiter.BINARY;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -25,12 +26,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
+import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ForcedBadRemoteJupiterTest {
+public class ForcedBadChromeJupiterTest {
 
     @BeforeEach
     void setup() {
@@ -38,7 +41,8 @@ public class ForcedBadRemoteJupiterTest {
     }
 
     @Test
-    public void remoteTest(RemoteWebDriver driver) {
+    public void chromeTest(@DriverOptions(options = {
+            @Option(name = BINARY, value = "/bad/path/to/chrome") }) ChromeDriver driver) {
         assertThat(driver, nullValue());
     }
 
