@@ -16,36 +16,16 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-// tag::snippet-in-doc[]
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.DriverOptions;
-import io.github.bonigarcia.SeleniumExtension;
 
-@ExtendWith(SeleniumExtension.class)
-public class ChromeWithGlobalOptionsJupiterTest {
+public class ChromeOptionsParentTest {
 
     @DriverOptions
     ChromeOptions chromeOptions = new ChromeOptions();
     {
-        chromeOptions.addArguments("--use-fake-device-for-media-stream",
-                "--use-fake-ui-for-media-stream");
-    }
-
-    @Test
-    void webrtcTest(ChromeDriver driver) {
-        driver.get(
-                "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName(),
-                equalTo("video"));
+        chromeOptions.addArguments("--incognito");
     }
 
 }
-// end::snippet-in-doc[]

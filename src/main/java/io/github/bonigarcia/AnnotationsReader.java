@@ -53,7 +53,8 @@ public class AnnotationsReader {
     }
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
-            Optional<Object> testInstance) {
+            Optional<Object> testInstance)
+            throws IllegalArgumentException, IllegalAccessException {
         Optional<Capabilities> out = empty();
         DriverCapabilities driverCapabilities = parameter
                 .getAnnotation(DriverCapabilities.class);
@@ -80,7 +81,8 @@ public class AnnotationsReader {
     }
 
     public Optional<URL> getUrl(Parameter parameter,
-            Optional<Object> testInstance) throws MalformedURLException {
+            Optional<Object> testInstance) throws MalformedURLException,
+            IllegalArgumentException, IllegalAccessException {
         Optional<URL> out = empty();
         String urlValue = null;
         DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
@@ -118,7 +120,8 @@ public class AnnotationsReader {
     }
 
     public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
-            Class<DriverOptions> annotationClass) {
+            Class<DriverOptions> annotationClass)
+            throws IllegalArgumentException, IllegalAccessException {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
                 annotationClass);
@@ -130,25 +133,38 @@ public class AnnotationsReader {
 
     public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
-            Class<? extends Annotation> annotation) {
+            Class<? extends Annotation> annotation)
+            throws IllegalArgumentException, IllegalAccessException {
         Optional<Object> out = empty();
         if (testInstance.isPresent()) {
             Object object = testInstance.get();
-            Field[] declaredFields = object.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                if (field.isAnnotationPresent(annotation)) {
-                    try {
-                        field.setAccessible(true);
-                        out = Optional.of(field.get(object));
-                    } catch (Exception e) {
-                        log.warn(
-                                "Exception searching annotation {} in test instance {}",
-                                annotation, testInstance, e);
-                    }
+            Class<? extends Object> clazz = object.getClass();
+            out = getField(annotation, clazz, object);
+
+            // If annotation not present in class, look for it in the parent(s)
+            Class<?> superclass;
+            while ((superclass = clazz.getSuperclass()) != Object.class) {
+                out = getField(annotation, superclass, object);
+                if (out.isPresent()) {
+                    break;
                 }
+                clazz = clazz.getSuperclass();
             }
         }
         return out;
+    }
+
+    private Optional<Object> getField(Class<? extends Annotation> annotation,
+            Class<? extends Object> clazz, Object object)
+            throws IllegalArgumentException, IllegalAccessException {
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (field.isAnnotationPresent(annotation)) {
+                field.setAccessible(true);
+                return Optional.of(field.get(object));
+            }
+        }
+        return empty();
     }
 
 }
