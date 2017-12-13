@@ -47,7 +47,7 @@ public class ChromeWithGlobalCapabilitiesJupiterTest {
     }
 
     @Test
-    void webrtcTest1(ChromeDriver driver) {
+    void chromeTest(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
