@@ -1,3 +1,18 @@
+selenium-jupiter (1.2.0)
+
+  + Use of org.seleniumhq.selenium:selenium-java version 3.8.1
+  + Use of io.github.bonigarcia:webdrivermanager version 2.0.1
+  + Use of io.appium:java-client version 5.0.4
+  + Seek for annotated fields (DriverOptions, etc) in test superclass(es) [issue #2]
+  + Log Base64 screenshots of browser session(s) when test fails
+  + Include configuration key (sel.jup.exception.when.no.driver) to raise exception or not when failure
+  + Use SonarCloud to keep a good level of internal code quality
+  + Use Codecov to keep a good level of code coverage
+  + Improvement of test suite
+
+ -- Boni Garcia <boni.gg@gmail.com>  Wed, 13 Dec 2017 02:10:00
+
+
 selenium-jupiter (1.1.2)
 
   + Use of JUnit 5.0.0 (GA) for tests
