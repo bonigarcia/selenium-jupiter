@@ -811,8 +811,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
-
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
@@ -823,19 +825,18 @@ table.CodeRay td.code>pre{padding:0}
 <span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chrome) {
-        chrome.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(chrome.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver chrome1, ChromeDriver chrome2) {
-        chrome1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        chrome2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(chrome1.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
-        assertTrue(chrome2.getTitle().equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
+        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
+        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -849,7 +850,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
@@ -861,20 +865,19 @@ table.CodeRay td.code>pre{padding:0}
 <span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneFirefox(FirefoxDriver firefox) {
-        firefox.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(firefox.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testWithOneFirefox(FirefoxDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver firefox1,
-            FirefoxDriver firefox2) {
-        firefox1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        firefox2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(firefox1.getTitle().startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
-        assertTrue(firefox2.getTitle().equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver driver1,
+            FirefoxDriver driver2) {
+        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
+        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -884,28 +887,27 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
 <div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. Notice that this test is disabled (with JUnit 5&#8217;s <code>@Disabled</code> annotation), due to the fact that Edge is not available on Travis CI. However, this test could be executed on a Windows machine with Edge without problems.</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
-<span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Edge is not available on Travis CI</span><span class="delimiter">&quot;</span></span>)
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> webrtcTest(EdgeDriver edge) {
-        edge.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(edge.getCurrentUrl().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter</span><span class="delimiter">&quot;</span></span>));
+    <span class="type">void</span> edgeTest(EdgeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -931,9 +933,9 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
@@ -943,12 +945,11 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
 
-    <span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Opera not available on Travis CI</span><span class="delimiter">&quot;</span></span>)
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver opera) {
-        opera.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(opera.getCurrentUrl().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">github</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -962,9 +963,9 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.safari.SafariDriver</span>;
@@ -974,13 +975,11 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">SafariJupiterTest</span> {
 
-    <span class="annotation">@Disabled</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">SafariDriver requires Safari 10 running on OSX El Capitan or greater.</span><span class="delimiter">&quot;</span></span>)
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(SafariDriver safari) {
-        safari.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(
-                safari.getTitle().equals(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium - Web Browser Automation</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> test(SafariDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -994,7 +993,8 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertNotNull</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.notNullValue</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
@@ -1006,10 +1006,9 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="directive">public</span> <span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(PhantomJSDriver phantomjs) {
-        phantomjs.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertNotNull(phantomjs.getPageSource());
+    <span class="directive">public</span> <span class="type">void</span> test(PhantomJSDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getPageSource(), notNullValue());
     }
 
 }</code></pre>
@@ -1023,7 +1022,8 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
@@ -1035,10 +1035,10 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="directive">public</span> <span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(HtmlUnitDriver htmlUnit) {
-        htmlUnit.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-
-        assertTrue(htmlUnit.getTitle().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> test(HtmlUnitDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -1050,7 +1050,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-08-03 11:28:32 CEST
+Last updated 2017-12-13 03:15:08 CET
 </div>
 </div>
 </body>
