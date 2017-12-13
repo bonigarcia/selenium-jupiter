@@ -21,8 +21,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+
+//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -39,7 +41,9 @@ public class ChromeJupiterTest {
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
+    // end::snippet-in-doc[]
     @Disabled("Redudant test for Travis CI suite")
+    // tag::snippet-in-doc[]
     @Test
     public void testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
         driver1.get("http://www.seleniumhq.org/");

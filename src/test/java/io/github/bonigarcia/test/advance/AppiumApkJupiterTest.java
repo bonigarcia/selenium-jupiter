@@ -20,7 +20,9 @@ package io.github.bonigarcia.test.advance;
 import java.io.File;
 import java.net.URISyntaxException;
 
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -32,7 +34,9 @@ import io.appium.java_client.MobileElement;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.SeleniumExtension;
 
+// end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class AppiumApkJupiterTest {
 

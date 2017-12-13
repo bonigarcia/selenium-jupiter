@@ -20,14 +20,18 @@ package io.github.bonigarcia.test.basic;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+// end::snippet-in-doc[]
 @Disabled("Opera not available on Travis CI")
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class OperaJupiterTest {
 

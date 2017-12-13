@@ -21,14 +21,18 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
 
+// end::snippet-in-doc[]
 @Disabled("Edge not available on Travis CI")
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class EdgeSettingVersionJupiterTest {
 
