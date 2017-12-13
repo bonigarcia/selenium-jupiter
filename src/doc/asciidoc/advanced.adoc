@@ -16,7 +16,7 @@ All these 3 annotation can be used both at _parameter-level_ (applied to a singl
 
 === Using options
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. To that aim, the annotation `@DriverOptions` is used to set a collection of options. This array of options is configured using the annotation `@Option` declaring the parameters `name` and `value`). In the example, the annotation `@DriverOptions` is used at _parameter-level_. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications.
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. To that aim, the annotation `@DriverOptions` is used to set a collection of options. This array of options is configured using the annotation `@Option` declaring the parameters `name` and `value`). In the example, the annotation `@DriverOptions` is used at _parameter-level_. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we are adding an extension to Chrome using the `@Option` named `EXTENSION`. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
 
 [source,java]
 ----
@@ -34,14 +34,12 @@ include::../../test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOpti
 
 The annotation `@DriverCapabilities` is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as _Selenium Server_) should be up an running, and its URL should known. This URL will be specified using the _selenium-jupiter_ annotation `@DriverUrl`. 
 
-The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
+The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
-
-TIP: The equivalent example, this time using global capabilities and URL (i.e. using `@DriverCapabilities` and `@DriverUrl` at _field-level_ is also available on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverWithGlobalCapabilitiesJupiterTest.java[GitHub].
 
 The following class contains an example which uses Chrome as browser and capabilities defined using `@DriverCapabilities`. Concretely, this example uses the mobile emulation feature provided out of the box by Chrome (i.e. render the web page using small screen resolutions to emulate smartphones).
 
@@ -84,3 +82,24 @@ This other example shows how to force cache (i.e. binaries previously downloaded
 ----
 include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+
+=== Debugging
+
+As of version 1.2.0, _selenium-jupiter_ provides a built-in feature for debugging purposes. When a JUnit 5 test using this extension fails, _selenium-jupiter_ will make an *screenshot* for each of the browser sessions at the end of the test. These screenshots, encoded in *Base 64*, are logged using the *debug* level of (https://www.slf4j.org/)[Simple Logging Facade for Java (SLF4J)]. You can copy&paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot. All in all, this capability allows to watch what was the status of the web under test just after the test is declared as failure, which can help to identify the cause of the test failure.
+
+[source]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running io.github.bonigarcia.test.basic.ChromeJupiterTest
+...
+2017-12-13 02:41:53 [main] DEBUG i.g.bonigarcia.SeleniumExtension - Screenshot (in Base64) at the end of session 5712cce700bb76d8f5f5d65a00e2c7bc (copy&paste this string as URL in browser to watch it)
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAykAAANaCAIAAAACvpRSAAAgAElEQVR4nOy9e3xV1Zn//1lr384t5+RyCDmBhJBwSRACBAqhXFQsYlGLZeygrWVGbalTtVU72gv9fgfnK3Yq36mdqTqOLTL1R8fyq2Wk3kCGSqEMlxKQiyQICZAAJySHnJyT5Nz2ZX3/ODGEk71DDuSCuN4vXrySnXX2WWfvtc767Od51vMQxhg4HA6Hw+FwOOkTDofTfQkdiH5wOBwOh8PhcEzh2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOZ/Dg2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOp5/5wx/+YPUnrr04HA6Hw+Fw+pOk8LKSX1x7cTgcDofD4fQb3SWXqfzi2o
+...
+nr2SgWY2TMdyRZMNENknWYTIo75WxuUWNCij9k178gCKO3BHLtkeQjiMYEgXy66/8f5nl+x57/98mYAvFysJUmckrGBLMv/dC0SlJSUjrXpwn3Ba6MgAlILbL+//8/5fAruDfRSl08WQBr2oDm4uNtmZOPKRm7GSgptWXBFJPrAAAAl0lEQVS4/biJEm74sxVmrvz///+U468MXDMRZc7zY5Aj1uDndWEG2gCWk+R5ARMgl5aZrga3N7XBT9vCbxrBWPjx/3/96tsQz8LL4foDPzSVlH4crofHwrFXxyDZx1xHaWN7EjwAiT/f69Gf/8G1O5SUDCBnj2EW8huvfnTLaFNSMsD043+89QUmwCz/yUhp9AFYT/DCDwBA0OZPpbBVqwAAAABJRU5ErkJggg==
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 7.219 sec <<< FAILURE! - in io.github.bonigarcia.test.basic.ChromeJupiterTest
+testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  <<< FAILURE!
+----
+

@@ -22,7 +22,7 @@ include::../../test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java
 
 === Edge
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. Notice that this test is disabled (with JUnit 5's `@Disabled` annotation), due to the fact that Edge is not available on Travis CI. However, this test could be executed on a Windows machine with Edge without problems. 
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. This test should be executed on a Windows machine with Edge. 
 
 [source,java]
 ----

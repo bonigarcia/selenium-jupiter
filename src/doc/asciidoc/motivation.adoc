@@ -38,7 +38,7 @@ InternetExplorerDriverManager.getInstance().setup();
 
 The solution implemented by WebDriverManager is today supported by similar tools for other languages, such as https://github.com/angular/webdriver-manager[webdriver-manager] for *Node.js* or https://github.com/rosolko/WebDriverManager.Net[WebDriverManager.Net] for *.NET*.
 
-On August 2017, a new major version of the well-know testing JUnit framework was released. This leads to *_selenium-jupiter_*, which can be seen as the natural evolution of _WebDriverManager_ for *JUnit 5* tests. Internally, _selenium-jupiter_ is built using two foundations:
+On September 2017, a new major version of the well-know testing JUnit framework was released. This leads to *_selenium-jupiter_*, which can be seen as the natural evolution of _WebDriverManager_ for *JUnit 5* tests. Internally, _selenium-jupiter_ is built using two foundations:
 
 1. It uses _WebDriverManager_ to manage the binaries requires by WebDriver.
 2. It uses the _dependency injection_ feature of the extension model of JUnit 5 to inject WebDriver objects within `@Test` methods.
