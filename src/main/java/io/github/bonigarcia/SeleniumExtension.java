@@ -16,6 +16,10 @@
  */
 package io.github.bonigarcia;
 
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.openqa.selenium.OutputType.BASE64;
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -33,7 +38,6 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
@@ -54,8 +58,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  */
 public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
-    protected static final Logger log = LoggerFactory
-            .getLogger(SeleniumExtension.class);
+    final Logger log = getLogger(lookup().lookupClass());
 
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
@@ -126,9 +129,31 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     @Override
     public void afterEach(ExtensionContext context) {
+        Optional<Throwable> executionException = context
+                .getExecutionException();
+        if (executionException.isPresent()) {
+            webDriverList.forEach(this::logBase64Screenshot);
+        }
+
         webDriverList.forEach(WebDriver::quit);
         webDriverList.clear();
 
         AppiumDriverHandler.getInstance().closeLocalServiceIfNecessary();
+    }
+
+    void logBase64Screenshot(WebDriver driver) {
+        if (driver != null) {
+            try {
+                String screenshotBase64 = ((TakesScreenshot) driver)
+                        .getScreenshotAs(BASE64);
+                log.debug("Screenshot (in Base64) at the end of session {} "
+                        + "(copy&paste this string as URL in browser to watch it)\n"
+                        + "data:image/png;base64,{}",
+                        ((RemoteWebDriver) driver).getSessionId(),
+                        screenshotBase64);
+            } catch (Exception e) {
+                log.trace("Exception getting screenshot", e);
+            }
+        }
     }
 }
