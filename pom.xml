@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bonigarcia</groupId>
@@ -10,7 +11,7 @@
         <selenium-java.version>3.8.1</selenium-java.version>
         <webdrivermanager.version>2.0.1</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
-        <docker-java.version>3.0.14</docker-java.version>
+        <docker-java.version>3.0.9</docker-java.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
@@ -325,5 +326,13 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/</url>
+        </repository>
+    </repositories>
 
 </project>
