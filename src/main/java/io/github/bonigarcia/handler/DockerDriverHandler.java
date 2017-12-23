@@ -130,11 +130,11 @@ public class DockerDriverHandler {
                     new PortBinding(bindPort, exposedPort));
             String selenoidContainerName = dockerService
                     .generateContainerName("selenoid");
-            DockerContainer dockerContainer = DockerContainer
+            DockerContainer selenoidContainer = DockerContainer
                     .dockerBuilder(selenoidImage, selenoidContainerName)
                     .portBindings(portBindings).volumes(volumes).binds(binds)
                     .build();
-            dockerService.startAndWaitContainer(dockerContainer);
+            dockerService.startAndWaitContainer(selenoidContainer);
             containers.add(selenoidContainerName);
 
             Class<? extends RemoteWebDriver> driverClass = browser
@@ -146,12 +146,21 @@ public class DockerDriverHandler {
                         selenoidConfig.getImageVersion(browser, version.get()));
             }
 
+            capabilities.setCapability("enableVNC", true);
+
             webDriver = driverClass
                     .getConstructor(URL.class, Capabilities.class)
                     .newInstance(new URL(
                             "http://" + dockerService.getDockerServerIp() + ":"
                                     + freePort + "/wd/hub"),
                             capabilities);
+
+            String vncUrlFormat = "http://%s:%d/vnc-autofocus.html"
+                    + "?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=selenoid";
+            String vncUrl = String.format(vncUrlFormat, "localhost", 8080,
+                    dockerService.getDockerServerIp(), freePort,
+                    ((RemoteWebDriver) webDriver).getSessionId());
+            log.debug("VNC URL {}", vncUrl);
 
             return webDriver;
 
