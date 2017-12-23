@@ -14,13 +14,12 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.unit;
+package io.github.bonigarcia.test.annotations;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 
 import java.lang.reflect.Parameter;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -28,42 +27,36 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
-import io.github.bonigarcia.handler.FirefoxDriverHandler;
-import io.github.bonigarcia.test.advance.FirefoxWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.test.advance.FirefoxWithOptionsJupiterTest;
+import io.github.bonigarcia.handler.SafariDriverHandler;
+import io.github.bonigarcia.test.advance.SafariWithGlobalOptionsJupiterTest;
+import io.github.bonigarcia.test.advance.SafariWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FirefoxAnnotationReaderTest {
+public class SafariAnnotationReaderTest {
 
     @InjectMocks
-    FirefoxDriverHandler annotationsReader;
+    SafariDriverHandler annotationsReader;
 
     static Stream<Class<?>> testClassProvider() {
-        return Stream.of(FirefoxWithOptionsJupiterTest.class,
-                FirefoxWithGlobalOptionsJupiterTest.class);
+        return Stream.of(SafariWithOptionsJupiterTest.class,
+                SafariWithGlobalOptionsJupiterTest.class);
     }
 
     @ParameterizedTest
     @MethodSource("testClassProvider")
-    @SuppressWarnings("unchecked")
-    void testFirefoxOptions(Class<?> testClass) throws Exception {
+    @SuppressWarnings("deprecation")
+    void testSafariOptions(Class<?> testClass) throws Exception {
         Parameter parameter = testClass
-                .getMethod("webrtcTest", FirefoxDriver.class)
-                .getParameters()[0];
+                .getMethod("safariTest", SafariDriver.class).getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
+        SafariOptions safariOptions = annotationsReader.getSafariOptions(
+                parameter, testInstance);
 
-        FirefoxOptions firefoxOptions = annotationsReader
-                .getFirefoxOptions(parameter, testInstance);
-        Map<String, Map<String, Boolean>> options = (Map<String, Map<String, Boolean>>) firefoxOptions
-                .asMap().get(FIREFOX_OPTIONS);
-
-        assertTrue(options.get("prefs")
-                .get("media.navigator.permission.disabled"));
-        assertTrue(options.get("prefs").get("media.navigator.streams.fake"));
+        assertTrue(safariOptions.getUseCleanSession());
+        assertFalse(safariOptions.getUseTechnologyPreview());
     }
-
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.unit;
+package io.github.bonigarcia.test.annotations;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.unit;
+package io.github.bonigarcia.test.annotations;
 
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.containsString;
