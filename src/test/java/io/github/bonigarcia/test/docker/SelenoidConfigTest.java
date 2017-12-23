@@ -76,7 +76,7 @@ public class SelenoidConfigTest {
     @SuppressWarnings("serial")
     void testBrowserConfig() throws IOException {
         String browsersJsonFromProperties = selenoidConfig
-                .getBrowsersJsonFromProperties();
+                .getBrowsersJsonAsString();
         String expectedBrowsersJson = IOUtils.toString(
                 this.getClass().getResourceAsStream("/browsers-test.json"),
                 defaultCharset());

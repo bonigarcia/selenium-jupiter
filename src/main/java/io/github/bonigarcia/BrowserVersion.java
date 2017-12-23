@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -24,14 +23,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for driver URL (used in RemoteWebDriver).
+ * Annotation for browser version.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
+ * @since 1.2.0
  */
 @Retention(RUNTIME)
-@Target({ PARAMETER, FIELD })
-public @interface DriverUrl {
+@Target(PARAMETER)
+public @interface BrowserVersion {
 
     public String value() default "";
 

@@ -80,6 +80,16 @@ public class AnnotationsReader {
         return out;
     }
 
+    public Optional<String> getVersion(Parameter parameter,
+            Optional<Object> testInstance) {
+        Optional<String> out = empty();
+        BrowserVersion browserVersion = parameter.getAnnotation(BrowserVersion.class);
+        if (browserVersion != null) {
+            out = Optional.of(browserVersion.value());
+        }
+        return out;
+    }
+
     public Optional<URL> getUrl(Parameter parameter,
             Optional<Object> testInstance) throws MalformedURLException,
             IllegalArgumentException, IllegalAccessException {

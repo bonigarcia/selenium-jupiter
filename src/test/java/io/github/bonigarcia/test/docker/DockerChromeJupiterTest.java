@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import io.github.bonigarcia.BrowserVersion;
 import io.github.bonigarcia.DockerChromeDriver;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -30,7 +31,14 @@ import io.github.bonigarcia.SeleniumExtension;
 public class DockerChromeJupiterTest {
 
     @Test
-    public void testWithOneChrome(DockerChromeDriver driver) {
+    public void testLatest(DockerChromeDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
+    }
+
+    @Test
+    public void testVersion(@BrowserVersion("62.0") DockerChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

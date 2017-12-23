@@ -31,10 +31,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -46,6 +48,7 @@ import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports.Binding;
 import com.github.dockerjava.api.model.Volume;
 
+import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DockerChromeDriver;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
@@ -76,7 +79,8 @@ public class DockerChromeDriverHandler {
         return instance;
     }
 
-    public WebDriver resolve() {
+    public WebDriver resolve(Parameter parameter,
+            Optional<Object> testInstance) {
         WebDriver webDriver = null;
 
         if (dockerService == null) {
@@ -86,20 +90,30 @@ public class DockerChromeDriverHandler {
             containers = new ArrayList<>();
         }
 
-        String selenoidImage = getString("sel.jup.selenoid.image");
-        dockerService.pullImageIfNecessary(selenoidImage);
-        dockerService.pullImageIfNecessary("selenoid/vnc:chrome_63.0");
-
-        String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
-        Volume volume = new Volume(dockerDefaultSocket);
-        Volume resources = new Volume("/etc/selenoid");
-        List<Volume> volumes = asList(volume, resources);
-
         try {
-            tmpDir = createTempDirectory(BROWSER_JSON_FILENAME);
+            Optional<String> version = AnnotationsReader.getInstance()
+                    .getVersion(parameter, testInstance);
+
             SelenoidConfig selenoidConfig = new SelenoidConfig();
-            String browsersJson = selenoidConfig
-                    .getBrowsersJsonFromProperties();
+
+            String selenoidImage = getString("sel.jup.selenoid.image");
+            String browserImage = version.isPresent()
+                    && !version.get().isEmpty()
+                            ? selenoidConfig
+                                    .getChromeImageFromVersion(version.get())
+                            : selenoidConfig.getLatestChromeImage();
+
+            dockerService.pullImageIfNecessary(selenoidImage);
+            dockerService.pullImageIfNecessary(browserImage);
+
+            String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
+            Volume volume = new Volume(dockerDefaultSocket);
+            Volume resources = new Volume("/etc/selenoid");
+            List<Volume> volumes = asList(volume, resources);
+
+            tmpDir = createTempDirectory(BROWSER_JSON_FILENAME);
+
+            String browsersJson = selenoidConfig.getBrowsersJsonAsString();
             writeStringToFile(
                     new File(tmpDir + separator + BROWSER_JSON_FILENAME),
                     browsersJson, defaultCharset());

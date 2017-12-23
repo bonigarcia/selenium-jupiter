@@ -51,20 +51,26 @@ public class SelenoidConfig {
     final static String FIREFOX_FIRST_VERSION = "3.6";
     final static String OPERA_FIRST_VERSION = "33.0";
 
-    String chromeLatestVersion = getString("sel.jup.chrome.latest.version");
-    String firefoxLatestVersion = getString("sel.jup.firefox.latest.version");
-    String operaLatestVersion = getString("sel.jup.opera.latest.version");
+    Browsers browsers;
 
-    public String getBrowsersJsonFromProperties() {
+    public SelenoidConfig() {
+        // Initialize from properties
+        String chromeLatestVersion = getString("sel.jup.chrome.latest.version");
+        String firefoxLatestVersion = getString(
+                "sel.jup.firefox.latest.version");
+        String operaLatestVersion = getString("sel.jup.opera.latest.version");
+
         BrowserConfig chromeConfig = getBrowserConfig(CHROME_FIRST_VERSION,
                 chromeLatestVersion, CHROME_DOCKER_IMAGE);
         BrowserConfig firefoxConfig = getBrowserConfig(FIREFOX_FIRST_VERSION,
                 firefoxLatestVersion, FIREFOX_DOCKER_IMAGE);
         BrowserConfig operaConfig = getBrowserConfig(OPERA_FIRST_VERSION,
                 operaLatestVersion, OPERA_DOCKER_IMAGE);
-        Browsers browsers = new Browsers(chromeConfig, firefoxConfig,
-                operaConfig);
 
+        browsers = new Browsers(chromeConfig, firefoxConfig, operaConfig);
+    }
+
+    public String getBrowsersJsonAsString() {
         return new Gson().toJson(browsers);
     }
 
@@ -101,6 +107,38 @@ public class SelenoidConfig {
         return valueOf(nextVersionInt) + ".0";
     }
 
+    public String getChromeImageFromVersion(String version) {
+        Map<String, Browser> versions = browsers.getChrome().getVersions();
+
+        if (versions.containsKey(version)) {
+            return versions.get(version).getImage();
+        }
+
+        for (String v : versions.keySet()) {
+            if (version.startsWith(v)) {
+                return versions.get(v).getImage();
+            }
+        }
+
+        throw new SeleniumJupiterException(
+                "Version " + version + " is not valid for Chrome");
+    }
+
+    public String getLatestChromeImage() {
+        return format(CHROME_DOCKER_IMAGE,
+                browsers.getChrome().getDefaultBrowser());
+    }
+
+    public String getLatestFirefoxImage() {
+        return format(FIREFOX_DOCKER_IMAGE,
+                browsers.getFirefox().getDefaultBrowser());
+    }
+
+    public String getLatestOperaImage() {
+        return format(OPERA_DOCKER_IMAGE,
+                browsers.getOpera().getDefaultBrowser());
+    }
+
     class Browsers {
         BrowserConfig chrome;
         BrowserConfig firefox;
@@ -111,6 +149,18 @@ public class SelenoidConfig {
             this.chrome = chrome;
             this.firefox = firefox;
             this.opera = opera;
+        }
+
+        public BrowserConfig getChrome() {
+            return chrome;
+        }
+
+        public BrowserConfig getFirefox() {
+            return firefox;
+        }
+
+        public BrowserConfig getOpera() {
+            return opera;
         }
 
     }
@@ -128,6 +178,15 @@ public class SelenoidConfig {
         public void addBrowser(String version, Browser browser) {
             this.versions.put(version, browser);
         }
+
+        public String getDefaultBrowser() {
+            return defaultBrowser;
+        }
+
+        public Map<String, Browser> getVersions() {
+            return versions;
+        }
+
     }
 
     class Browser {
@@ -137,6 +196,11 @@ public class SelenoidConfig {
         public Browser(String image) {
             this.image = image;
         }
+
+        public String getImage() {
+            return image;
+        }
+
     }
 
 }
