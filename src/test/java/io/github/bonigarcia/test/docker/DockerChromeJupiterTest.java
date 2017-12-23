@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.basic;
+package io.github.bonigarcia.test.docker;
 
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;

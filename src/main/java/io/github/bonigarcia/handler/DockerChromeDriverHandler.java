@@ -18,22 +18,23 @@ package io.github.bonigarcia.handler;
 
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
+import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SelenoidConfig.DOCKER_CONTAINER_PORT;
 import static java.io.File.separator;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.createTempDirectory;
 import static java.util.Arrays.asList;
-import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
+import static org.apache.commons.io.FileUtils.deleteDirectory;
+import static org.apache.commons.io.FileUtils.writeStringToFile;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -48,8 +49,8 @@ import com.github.dockerjava.api.model.Volume;
 import io.github.bonigarcia.DockerChromeDriver;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
-import io.github.bonigarcia.SeleniumExtension;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.SelenoidConfig;
 
 /**
  * Resolver for DockerChromeDriver.
@@ -61,9 +62,12 @@ public class DockerChromeDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    final static String BROWSER_JSON_FILENAME = "browsers.json";
+
     static DockerChromeDriverHandler instance;
     DockerService dockerService;
     List<String> containers;
+    Path tmpDir;
 
     public static synchronized DockerChromeDriverHandler getInstance() {
         if (instance == null) {
@@ -82,9 +86,9 @@ public class DockerChromeDriverHandler {
             containers = new ArrayList<>();
         }
 
-        String selenoidImage = "aerokube/selenoid:1.3.7";
+        String selenoidImage = getString("sel.jup.selenoid.image");
         dockerService.pullImageIfNecessary(selenoidImage);
-        dockerService.pullImageIfNecessary("selenoid/vnc:chrome_61.0");
+        dockerService.pullImageIfNecessary("selenoid/vnc:chrome_63.0");
 
         String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
         Volume volume = new Volume(dockerDefaultSocket);
@@ -92,40 +96,19 @@ public class DockerChromeDriverHandler {
         List<Volume> volumes = asList(volume, resources);
 
         try {
-            String parent = null;
-            String browserJsonName = "browsers.json";
-            File jarFile = new File(getClass().getProtectionDomain()
-                    .getCodeSource().getLocation().getPath());
-
-            if (jarFile.isFile()) {
-                try (JarFile jar = new JarFile(jarFile)) {
-                    Enumeration<JarEntry> entries = jar.entries();
-                    while (entries.hasMoreElements()) {
-                        JarEntry jarEntry = entries.nextElement();
-                        if (jarEntry.getName().startsWith(browserJsonName)) {
-                            jar.getInputStream(jarEntry);
-                            Path tmpDir = createTempDirectory("browsersJson");
-                            parent = tmpDir.toFile().toString();
-                            File destination = new File(
-                                    parent + separator + browserJsonName);
-                            copyInputStreamToFile(jar.getInputStream(jarEntry),
-                                    destination);
-                            break;
-                        }
-                    }
-                }
-            } else { // Development
-                URL browsersJsonUrl = SeleniumExtension.class
-                        .getResource("/" + browserJsonName);
-                parent = Paths.get(browsersJsonUrl.toURI()).toFile()
-                        .getParent();
-            }
-
+            tmpDir = createTempDirectory(BROWSER_JSON_FILENAME);
+            SelenoidConfig selenoidConfig = new SelenoidConfig();
+            String browsersJson = selenoidConfig
+                    .getBrowsersJsonFromProperties();
+            writeStringToFile(
+                    new File(tmpDir + separator + BROWSER_JSON_FILENAME),
+                    browsersJson, defaultCharset());
             List<Bind> binds = asList(new Bind(dockerDefaultSocket, volume),
-                    new Bind(parent, resources));
+                    new Bind(tmpDir.toFile().toString(), resources));
+
             int freePort = dockerService.findRandomOpenPort();
             Binding bindPort = bindPort(freePort);
-            ExposedPort exposedPort = tcp(4444);
+            ExposedPort exposedPort = tcp(DOCKER_CONTAINER_PORT);
 
             List<PortBinding> portBindings = asList(
                     new PortBinding(bindPort, exposedPort));
@@ -145,16 +128,22 @@ public class DockerChromeDriverHandler {
             return webDriver;
 
         } catch (Exception e) {
-            String errorMessage = "Exception creating instance of DockerChromeDriver";
-            log.error(errorMessage, e);
-            throw new SeleniumJupiterException(errorMessage, e);
+            throw new SeleniumJupiterException(e);
         }
+
     }
 
     public void clearContainersIfNecessary() {
         if (containers != null && dockerService != null) {
             containers.forEach(dockerService::stopAndRemoveContainer);
             containers.clear();
+        }
+        if (tmpDir != null) {
+            try {
+                deleteDirectory(tmpDir.toFile());
+            } catch (IOException e) {
+                log.warn("Exception deleting temporal folder {}", tmpDir, e);
+            }
         }
     }
 
