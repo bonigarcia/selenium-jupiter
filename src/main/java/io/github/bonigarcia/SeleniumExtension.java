@@ -16,6 +16,9 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SelenoidBrowser.CHROME;
+import static io.github.bonigarcia.SelenoidBrowser.FIREFOX;
+import static io.github.bonigarcia.SelenoidBrowser.OPERA;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -42,7 +45,7 @@ import org.slf4j.Logger;
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
-import io.github.bonigarcia.handler.DockerChromeDriverHandler;
+import io.github.bonigarcia.handler.DockerDriverHandler;
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.handler.OperaDriverHandler;
@@ -116,8 +119,16 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                     testInstance);
 
         } else if (type == DockerChromeDriver.class) {
-            webDriver = DockerChromeDriverHandler.getInstance()
-                    .resolve(parameter, testInstance);
+            webDriver = DockerDriverHandler.getInstance().resolve(CHROME,
+                    parameter, testInstance);
+
+        } else if (type == DockerFirefoxDriver.class) {
+            webDriver = DockerDriverHandler.getInstance().resolve(FIREFOX,
+                    parameter, testInstance);
+
+        } else if (type == DockerOperaDriver.class) {
+            webDriver = DockerDriverHandler.getInstance().resolve(OPERA,
+                    parameter, testInstance);
 
         } else {
             // Other WebDriver type
@@ -144,7 +155,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         webDriverList.clear();
 
         AppiumDriverHandler.getInstance().closeLocalServiceIfNecessary();
-        DockerChromeDriverHandler.getInstance().clearContainersIfNecessary();
+        DockerDriverHandler.getInstance().clearContainersIfNecessary();
     }
 
     void logBase64Screenshot(WebDriver driver) {

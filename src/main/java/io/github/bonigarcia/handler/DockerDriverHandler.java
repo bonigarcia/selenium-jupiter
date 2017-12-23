@@ -19,7 +19,7 @@ package io.github.bonigarcia.handler;
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static io.github.bonigarcia.SelenoidConfig.DOCKER_CONTAINER_PORT;
+import static io.github.bonigarcia.SelenoidBrowser.getDockerContainerPort;
 import static java.io.File.separator;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -38,8 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import com.github.dockerjava.api.model.Bind;
@@ -49,37 +51,37 @@ import com.github.dockerjava.api.model.Ports.Binding;
 import com.github.dockerjava.api.model.Volume;
 
 import io.github.bonigarcia.AnnotationsReader;
-import io.github.bonigarcia.DockerChromeDriver;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.SelenoidBrowser;
 import io.github.bonigarcia.SelenoidConfig;
 
 /**
- * Resolver for DockerChromeDriver.
+ * Resolver for DockerDriver's.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class DockerChromeDriverHandler {
+public class DockerDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     final static String BROWSER_JSON_FILENAME = "browsers.json";
 
-    static DockerChromeDriverHandler instance;
+    static DockerDriverHandler instance;
     DockerService dockerService;
     List<String> containers;
     Path tmpDir;
 
-    public static synchronized DockerChromeDriverHandler getInstance() {
+    public static synchronized DockerDriverHandler getInstance() {
         if (instance == null) {
-            instance = new DockerChromeDriverHandler();
+            instance = new DockerDriverHandler();
         }
         return instance;
     }
 
-    public WebDriver resolve(Parameter parameter,
+    public WebDriver resolve(SelenoidBrowser browser, Parameter parameter,
             Optional<Object> testInstance) {
         WebDriver webDriver = null;
 
@@ -99,9 +101,9 @@ public class DockerChromeDriverHandler {
             String selenoidImage = getString("sel.jup.selenoid.image");
             String browserImage = version.isPresent()
                     && !version.get().isEmpty()
-                            ? selenoidConfig
-                                    .getChromeImageFromVersion(version.get())
-                            : selenoidConfig.getLatestChromeImage();
+                            ? selenoidConfig.getImageFromVersion(browser,
+                                    version.get())
+                            : selenoidConfig.getLatestImage(browser);
 
             dockerService.pullImageIfNecessary(selenoidImage);
             dockerService.pullImageIfNecessary(browserImage);
@@ -122,7 +124,7 @@ public class DockerChromeDriverHandler {
 
             int freePort = dockerService.findRandomOpenPort();
             Binding bindPort = bindPort(freePort);
-            ExposedPort exposedPort = tcp(DOCKER_CONTAINER_PORT);
+            ExposedPort exposedPort = tcp(getDockerContainerPort());
 
             List<PortBinding> portBindings = asList(
                     new PortBinding(bindPort, exposedPort));
@@ -135,10 +137,22 @@ public class DockerChromeDriverHandler {
             dockerService.startAndWaitContainer(dockerContainer);
             containers.add(selenoidContainerName);
 
-            webDriver = new DockerChromeDriver(
-                    new URL("http://" + dockerService.getDockerServerIp() + ":"
-                            + freePort + "/wd/hub"),
-                    DesiredCapabilities.chrome());
+            Class<? extends RemoteWebDriver> driverClass = browser
+                    .getDriverClass();
+            DesiredCapabilities capabilities = browser.getCapabilities();
+
+            if (version.isPresent()) {
+                capabilities.setCapability("version",
+                        selenoidConfig.getImageVersion(browser, version.get()));
+            }
+
+            webDriver = driverClass
+                    .getConstructor(URL.class, Capabilities.class)
+                    .newInstance(new URL(
+                            "http://" + dockerService.getDockerServerIp() + ":"
+                                    + freePort + "/wd/hub"),
+                            capabilities);
+
             return webDriver;
 
         } catch (Exception e) {

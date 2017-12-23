@@ -22,14 +22,14 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
- * Chrome in Docker.
+ * Firefox in Docker.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class DockerChromeDriver extends RemoteWebDriver {
+public class DockerFirefoxDriver extends RemoteWebDriver {
 
-    public DockerChromeDriver(URL remoteAddress,
+    public DockerFirefoxDriver(URL remoteAddress,
             Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
     }

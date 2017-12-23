@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static com.google.common.collect.Maps.difference;
+import static io.github.bonigarcia.SelenoidBrowser.getNextVersion;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static java.nio.charset.Charset.defaultCharset;
@@ -67,8 +68,7 @@ public class SelenoidConfigTest {
     @CsvSource({ "3.6, 4.0, 47.0", "46.0, 47.0, 47.0", "46, 47.0, 47" })
     void testNextVersion(String version, String expectedNextVersion,
             String latestVersion) {
-        String nextVersion = selenoidConfig.getNextVersion(version,
-                latestVersion);
+        String nextVersion = getNextVersion(version, latestVersion);
         assertThat(nextVersion, equalTo(expectedNextVersion));
     }
 
@@ -77,6 +77,7 @@ public class SelenoidConfigTest {
     void testBrowserConfig() throws IOException {
         String browsersJsonFromProperties = selenoidConfig
                 .getBrowsersJsonAsString();
+
         String expectedBrowsersJson = IOUtils.toString(
                 this.getClass().getResourceAsStream("/browsers-test.json"),
                 defaultCharset());
