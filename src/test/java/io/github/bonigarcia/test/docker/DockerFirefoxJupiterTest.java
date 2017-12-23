@@ -39,7 +39,7 @@ public class DockerFirefoxJupiterTest {
 
     @Test
     public void testVersion(
-            @BrowserVersion("62.0") DockerFirefoxDriver driver) {
+            @BrowserVersion("56.0") DockerFirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
