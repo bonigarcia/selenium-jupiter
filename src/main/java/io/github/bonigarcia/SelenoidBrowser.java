@@ -39,8 +39,6 @@ public enum SelenoidBrowser {
 
     CHROME, FIREFOX, OPERA;
 
-    public final static int DOCKER_CONTAINER_PORT = 4444;
-
     final static String CHROME_DOCKER_IMAGE = "selenoid/vnc:chrome_%s";
     final static String FIREFOX_DOCKER_IMAGE = "selenoid/vnc:firefox_%s";
     final static String OPERA_DOCKER_IMAGE = "selenoid/vnc:opera_%s";
@@ -126,10 +124,6 @@ public enum SelenoidBrowser {
             return null;
         }
         return String.valueOf(nextVersionInt) + ".0";
-    }
-
-    public static int getDockerContainerPort() {
-        return DOCKER_CONTAINER_PORT;
     }
 
 }

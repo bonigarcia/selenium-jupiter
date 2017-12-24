@@ -16,11 +16,10 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static io.github.bonigarcia.SelenoidBrowser.CHROME;
 import static io.github.bonigarcia.SelenoidBrowser.FIREFOX;
 import static io.github.bonigarcia.SelenoidBrowser.OPERA;
-import static io.github.bonigarcia.SelenoidBrowser.getDockerContainerPort;
-import static java.lang.String.valueOf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +82,7 @@ public class DockerBrowserConfig {
 
     public static class Browser {
         String image;
-        String port = valueOf(getDockerContainerPort());
+        String port = getString("sel.jup.selenoid.port");
 
         public Browser(String image) {
             this.image = image;

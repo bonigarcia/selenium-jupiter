@@ -19,8 +19,9 @@ package io.github.bonigarcia.handler;
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static io.github.bonigarcia.SelenoidBrowser.getDockerContainerPort;
+import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static java.io.File.separator;
+import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.createTempDirectory;
@@ -96,54 +97,16 @@ public class DockerDriverHandler {
             Optional<String> version = AnnotationsReader.getInstance()
                     .getVersion(parameter, testInstance);
 
-            SelenoidConfig selenoidConfig = new SelenoidConfig();
-
-            String selenoidImage = getString("sel.jup.selenoid.image");
-            String browserImage = version.isPresent()
-                    && !version.get().isEmpty()
-                            ? selenoidConfig.getImageFromVersion(browser,
-                                    version.get())
-                            : selenoidConfig.getLatestImage(browser);
-
-            dockerService.pullImageIfNecessary(selenoidImage);
-            dockerService.pullImageIfNecessary(browserImage);
-
-            String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
-            Volume volume = new Volume(dockerDefaultSocket);
-            Volume resources = new Volume("/etc/selenoid");
-            List<Volume> volumes = asList(volume, resources);
-
-            tmpDir = createTempDirectory(BROWSER_JSON_FILENAME);
-
-            String browsersJson = selenoidConfig.getBrowsersJsonAsString();
-            writeStringToFile(
-                    new File(tmpDir + separator + BROWSER_JSON_FILENAME),
-                    browsersJson, defaultCharset());
-            List<Bind> binds = asList(new Bind(dockerDefaultSocket, volume),
-                    new Bind(tmpDir.toFile().toString(), resources));
-
-            int freePort = dockerService.findRandomOpenPort();
-            Binding bindPort = bindPort(freePort);
-            ExposedPort exposedPort = tcp(getDockerContainerPort());
-
-            List<PortBinding> portBindings = asList(
-                    new PortBinding(bindPort, exposedPort));
-            String selenoidContainerName = dockerService
-                    .generateContainerName("selenoid");
-            DockerContainer selenoidContainer = DockerContainer
-                    .dockerBuilder(selenoidImage, selenoidContainerName)
-                    .portBindings(portBindings).volumes(volumes).binds(binds)
-                    .build();
-            dockerService.startAndWaitContainer(selenoidContainer);
-            containers.add(selenoidContainerName);
+            int selenoidPort = startDockerBrowser(browser, version);
+            int novncPort = startDockerNoVnc();
 
             Class<? extends RemoteWebDriver> driverClass = browser
                     .getDriverClass();
             DesiredCapabilities capabilities = browser.getCapabilities();
 
             if (version.isPresent()) {
-                capabilities.setCapability("version",
-                        selenoidConfig.getImageVersion(browser, version.get()));
+                capabilities.setCapability("version", SelenoidConfig
+                        .getInstance().getImageVersion(browser, version.get()));
             }
 
             capabilities.setCapability("enableVNC", true);
@@ -152,13 +115,14 @@ public class DockerDriverHandler {
                     .getConstructor(URL.class, Capabilities.class)
                     .newInstance(new URL(
                             "http://" + dockerService.getDockerServerIp() + ":"
-                                    + freePort + "/wd/hub"),
+                                    + selenoidPort + "/wd/hub"),
                             capabilities);
 
-            String vncUrlFormat = "http://%s:%d/vnc-autofocus.html"
+            String vncUrlFormat = "http://%s:%d/vnc.html"
                     + "?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=selenoid";
-            String vncUrl = String.format(vncUrlFormat, "localhost", 8080,
-                    dockerService.getDockerServerIp(), freePort,
+            String vncUrl = format(vncUrlFormat,
+                    dockerService.getDockerServerIp(), novncPort,
+                    dockerService.getDockerServerIp(), selenoidPort,
                     ((RemoteWebDriver) webDriver).getSessionId());
             log.debug("VNC URL {}", vncUrl);
 
@@ -168,6 +132,71 @@ public class DockerDriverHandler {
             throw new SeleniumJupiterException(e);
         }
 
+    }
+
+    private int startDockerNoVnc() {
+        String novncImage = getString("sel.jup.novnc.image");
+        dockerService.pullImageIfNecessary(novncImage);
+
+        int novncPort = dockerService.findRandomOpenPort();
+        Binding novncBindPort = bindPort(novncPort);
+        ExposedPort novncExposedPort = tcp(getInt("sel.jup.novnc.port"));
+        List<PortBinding> portBindings = asList(
+                new PortBinding(novncBindPort, novncExposedPort));
+        String novncContainerName = dockerService
+                .generateContainerName("novnc");
+        DockerContainer selenoidContainer = DockerContainer
+                .dockerBuilder(novncImage, novncContainerName)
+                .portBindings(portBindings).build();
+        dockerService.startAndWaitContainer(selenoidContainer);
+        containers.add(novncContainerName);
+
+        return novncPort;
+    }
+
+    private int startDockerBrowser(SelenoidBrowser browser,
+            Optional<String> version) throws IOException {
+        String selenoidImage = getString("sel.jup.selenoid.image");
+        String browserImage = version.isPresent() && !version.get().isEmpty()
+                ? SelenoidConfig.getInstance().getImageFromVersion(browser,
+                        version.get())
+                : SelenoidConfig.getInstance().getLatestImage(browser);
+
+        dockerService.pullImageIfNecessary(selenoidImage);
+        dockerService.pullImageIfNecessary(browserImage);
+
+        String dockerDefaultSocket = dockerService.getDockerDefaultSocket();
+        Volume volume = new Volume(dockerDefaultSocket);
+        Volume resources = new Volume("/etc/selenoid");
+        List<Volume> volumes = asList(volume, resources);
+
+        tmpDir = createTempDirectory(BROWSER_JSON_FILENAME);
+
+        String browsersJson = SelenoidConfig.getInstance()
+                .getBrowsersJsonAsString();
+        writeStringToFile(new File(tmpDir + separator + BROWSER_JSON_FILENAME),
+                browsersJson, defaultCharset());
+        List<Bind> binds = asList(new Bind(dockerDefaultSocket, volume),
+                new Bind(tmpDir.toFile().toString(), resources));
+
+        int selenoidPort = dockerService.findRandomOpenPort();
+        Binding selenoidBindPort = bindPort(selenoidPort);
+        ExposedPort selenoidExposedPort = tcp(getInt("sel.jup.selenoid.port"));
+        List<PortBinding> portBindings = asList(
+                new PortBinding(selenoidBindPort, selenoidExposedPort));
+        String selenoidContainerName = dockerService
+                .generateContainerName("selenoid");
+        DockerContainer selenoidContainer = DockerContainer
+                .dockerBuilder(selenoidImage, selenoidContainerName)
+                .portBindings(portBindings).volumes(volumes).binds(binds)
+                .build();
+        dockerService.startAndWaitContainer(selenoidContainer);
+        containers.add(selenoidContainerName);
+
+        dockerService.startAndWaitContainer(selenoidContainer);
+        containers.add(selenoidContainerName);
+
+        return selenoidPort;
     }
 
     public void clearContainersIfNecessary() {
