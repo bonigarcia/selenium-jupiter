@@ -19,9 +19,7 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
-import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
-import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
-import static org.openqa.selenium.remote.DesiredCapabilities.operaBlink;
+import static org.openqa.selenium.Platform.ANY;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -48,7 +46,6 @@ public enum BrowserType {
 
     String dockerImage;
     Class<? extends RemoteWebDriver> driverClass;
-    DesiredCapabilities capabilities;
     String latestVersion;
     String firstVersion;
     DriverHandler driverHandler;
@@ -61,7 +58,6 @@ public enum BrowserType {
             latestVersion = getString("sel.jup.firefox.latest.version");
             dockerImage = getString("sel.jup.firefox.image.format");
             driverClass = DockerFirefoxDriver.class;
-            capabilities = firefox();
             driverHandler = FirefoxDriverHandler.getInstance();
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             break;
@@ -70,7 +66,6 @@ public enum BrowserType {
             latestVersion = getString("sel.jup.opera.latest.version");
             dockerImage = getString("sel.jup.opera.image.format");
             driverClass = DockerOperaDriver.class;
-            capabilities = operaBlink();
             driverHandler = OperaDriverHandler.getInstance();
             optionsKey = OperaOptions.CAPABILITY;
             break;
@@ -80,7 +75,6 @@ public enum BrowserType {
             latestVersion = getString("sel.jup.chrome.latest.version");
             dockerImage = getString("sel.jup.chrome.image.format");
             driverClass = DockerChromeDriver.class;
-            capabilities = chrome();
             driverHandler = ChromeDriverHandler.getInstance();
             optionsKey = ChromeOptions.CAPABILITY;
             break;
@@ -113,7 +107,15 @@ public enum BrowserType {
     }
 
     public DesiredCapabilities getCapabilities() {
-        return capabilities;
+        switch (this) {
+        case FIREFOX:
+            return new DesiredCapabilities("firefox", "", ANY);
+        case OPERA:
+            return new DesiredCapabilities("operablink", "", ANY);
+        case CHROME:
+        default:
+            return new DesiredCapabilities("chrome", "", ANY);
+        }
     }
 
     public DriverHandler getDriverHandler() {
