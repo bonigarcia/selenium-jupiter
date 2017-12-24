@@ -69,8 +69,8 @@ public class OperaDriverHandler extends DriverHandler {
     }
 
     public OperaOptions getOperaOptions(Parameter parameter,
-            Optional<Object> testInstance) throws IOException,
-            IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
         OperaOptions operaOptions = new OperaOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

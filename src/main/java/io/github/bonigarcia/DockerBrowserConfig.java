@@ -51,8 +51,8 @@ public class DockerBrowserConfig {
             return firefox;
         case OPERA:
             return opera;
-        default:
         case CHROME:
+        default:
             return chrome;
         }
     }

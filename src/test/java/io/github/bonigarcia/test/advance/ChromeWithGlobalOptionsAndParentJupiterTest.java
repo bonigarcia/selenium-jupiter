@@ -16,10 +16,10 @@
  */
 package io.github.bonigarcia.test.advance;
 
+// tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,7 +28,7 @@ import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class ChromeWithGlobalOptionsAndParentJupiterTest
-        extends ChromeOptionsParentTest {
+        extends ChromeOptionsTestParent {
 
     @Test
     void chromeTest(ChromeDriver driver) {

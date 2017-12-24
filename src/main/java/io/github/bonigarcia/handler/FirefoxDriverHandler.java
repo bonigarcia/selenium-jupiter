@@ -72,8 +72,8 @@ public class FirefoxDriverHandler extends DriverHandler {
     }
 
     public FirefoxOptions getFirefoxOptions(Parameter parameter,
-            Optional<Object> testInstance) throws IOException,
-            IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

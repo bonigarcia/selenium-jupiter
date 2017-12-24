@@ -68,8 +68,7 @@ public class SafariDriverHandler extends DriverHandler {
     }
 
     public SafariOptions getSafariOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance) throws IllegalAccessException {
         SafariOptions safariOptions = new SafariOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

@@ -39,13 +39,13 @@ public enum SelenoidBrowser {
 
     CHROME, FIREFOX, OPERA;
 
-    final static String CHROME_DOCKER_IMAGE = "selenoid/vnc:chrome_%s";
-    final static String FIREFOX_DOCKER_IMAGE = "selenoid/vnc:firefox_%s";
-    final static String OPERA_DOCKER_IMAGE = "selenoid/vnc:opera_%s";
+    static final String CHROME_DOCKER_IMAGE = "selenoid/vnc:chrome_%s";
+    static final String FIREFOX_DOCKER_IMAGE = "selenoid/vnc:firefox_%s";
+    static final String OPERA_DOCKER_IMAGE = "selenoid/vnc:opera_%s";
 
-    final static String CHROME_FIRST_VERSION = "48.0";
-    final static String FIREFOX_FIRST_VERSION = "3.6";
-    final static String OPERA_FIRST_VERSION = "33.0";
+    static final String CHROME_FIRST_VERSION = "48.0";
+    static final String FIREFOX_FIRST_VERSION = "3.6";
+    static final String OPERA_FIRST_VERSION = "33.0";
 
     String dockerImage;
     Class<? extends RemoteWebDriver> driverClass;
@@ -69,8 +69,8 @@ public enum SelenoidBrowser {
             driverClass = DockerOperaDriver.class;
             capabilities = operaBlink();
             break;
-        default:
         case CHROME:
+        default:
             latestVersion = getString("sel.jup.chrome.latest.version");
             firstVersion = CHROME_FIRST_VERSION;
             dockerImage = CHROME_DOCKER_IMAGE;
@@ -110,11 +110,11 @@ public enum SelenoidBrowser {
     }
 
     public static String getNextVersion(String version, String latestVersion) {
-        int iVersion = version.indexOf(".");
+        int iVersion = version.indexOf('.');
         iVersion = iVersion != -1 ? iVersion : version.length();
         int nextVersionInt = parseInt(version.substring(0, iVersion)) + 1;
 
-        int iLatestVersion = latestVersion.indexOf(".");
+        int iLatestVersion = latestVersion.indexOf('.');
         iLatestVersion = iLatestVersion != -1 ? iLatestVersion
                 : latestVersion.length();
         int latestVersionInt = parseInt(

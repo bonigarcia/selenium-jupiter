@@ -43,6 +43,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
 import com.github.dockerjava.api.model.Bind;
@@ -68,7 +69,7 @@ public class DockerDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    final static String BROWSER_JSON_FILENAME = "browsers.json";
+    static final String BROWSER_JSON_FILENAME = "browsers.json";
 
     static DockerDriverHandler instance;
     DockerService dockerService;
@@ -95,7 +96,7 @@ public class DockerDriverHandler {
 
         try {
             Optional<String> version = AnnotationsReader.getInstance()
-                    .getVersion(parameter, testInstance);
+                    .getVersion(parameter);
 
             int selenoidPort = startDockerBrowser(browser, version);
             int novncPort = startDockerNoVnc();
@@ -111,20 +112,18 @@ public class DockerDriverHandler {
 
             capabilities.setCapability("enableVNC", true);
 
+            String dockerServerIp = dockerService.getDockerServerIp();
+            String selenoidHubUrl = format("http://%s:%d/wd/hub",
+                    dockerServerIp, selenoidPort);
             webDriver = driverClass
                     .getConstructor(URL.class, Capabilities.class)
-                    .newInstance(new URL(
-                            "http://" + dockerService.getDockerServerIp() + ":"
-                                    + selenoidPort + "/wd/hub"),
-                            capabilities);
-
-            String vncUrlFormat = "http://%s:%d/vnc.html"
-                    + "?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=selenoid";
-            String vncUrl = format(vncUrlFormat,
-                    dockerService.getDockerServerIp(), novncPort,
-                    dockerService.getDockerServerIp(), selenoidPort,
-                    ((RemoteWebDriver) webDriver).getSessionId());
-            log.debug("VNC URL {}", vncUrl);
+                    .newInstance(new URL(selenoidHubUrl), capabilities);
+            SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
+            String vncUrl = format(
+                    "http://%s:%d/vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
+                    dockerServerIp, novncPort, dockerServerIp, selenoidPort,
+                    sessionId, getString("sel.jup.selenoid.vnc.password"));
+            log.debug("Session {} VNC URL: {}", sessionId, vncUrl);
 
             return webDriver;
 

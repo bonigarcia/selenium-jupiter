@@ -65,8 +65,7 @@ public class EdgeDriverHandler extends DriverHandler {
     }
 
     public EdgeOptions getEdgeOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance) throws IllegalAccessException {
         EdgeOptions edgeOptions = new EdgeOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

@@ -20,7 +20,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.DriverOptions;
 
-public class ChromeOptionsParentTest {
+public class ChromeOptionsTestParent {
 
     @DriverOptions
     ChromeOptions chromeOptions = new ChromeOptions();

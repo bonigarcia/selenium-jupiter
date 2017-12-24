@@ -69,8 +69,8 @@ public class ChromeDriverHandler extends DriverHandler {
     }
 
     private ChromeOptions getChromeOptions(Parameter parameter,
-            Optional<Object> testInstance) throws IOException,
-            IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

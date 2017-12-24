@@ -53,8 +53,7 @@ public class AnnotationsReader {
     }
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance) throws IllegalAccessException {
         Optional<Capabilities> out = empty();
         DriverCapabilities driverCapabilities = parameter
                 .getAnnotation(DriverCapabilities.class);
@@ -80,10 +79,10 @@ public class AnnotationsReader {
         return out;
     }
 
-    public Optional<String> getVersion(Parameter parameter,
-            Optional<Object> testInstance) {
+    public Optional<String> getVersion(Parameter parameter) {
         Optional<String> out = empty();
-        BrowserVersion browserVersion = parameter.getAnnotation(BrowserVersion.class);
+        BrowserVersion browserVersion = parameter
+                .getAnnotation(BrowserVersion.class);
         if (browserVersion != null) {
             out = Optional.of(browserVersion.value());
         }
@@ -91,8 +90,8 @@ public class AnnotationsReader {
     }
 
     public Optional<URL> getUrl(Parameter parameter,
-            Optional<Object> testInstance) throws MalformedURLException,
-            IllegalArgumentException, IllegalAccessException {
+            Optional<Object> testInstance)
+            throws MalformedURLException, IllegalAccessException {
         Optional<URL> out = empty();
         String urlValue = null;
         DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
@@ -131,7 +130,7 @@ public class AnnotationsReader {
 
     public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
             Class<DriverOptions> annotationClass)
-            throws IllegalArgumentException, IllegalAccessException {
+            throws IllegalAccessException {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
                 annotationClass);

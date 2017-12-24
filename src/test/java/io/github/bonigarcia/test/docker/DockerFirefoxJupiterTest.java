@@ -32,13 +32,16 @@ import io.github.bonigarcia.SeleniumExtension;
 public class DockerFirefoxJupiterTest {
 
     @Test
-    public void testLatest(DockerChromeDriver driver) {
+    public void testLatest(DockerChromeDriver driver)
+            throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
+
+        Thread.sleep(50000);
     }
 
-    @Test
+    // @Test
     public void testVersion(
             @BrowserVersion("56.0") DockerFirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
