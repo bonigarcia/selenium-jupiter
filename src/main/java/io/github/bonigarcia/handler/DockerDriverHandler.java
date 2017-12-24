@@ -37,7 +37,9 @@ import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
@@ -75,7 +77,7 @@ public class DockerDriverHandler {
 
     static DockerDriverHandler instance;
     DockerService dockerService;
-    List<String> containers;
+    Map<String, String> containers;
     Path tmpDir;
 
     public static synchronized DockerDriverHandler getInstance() {
@@ -93,7 +95,7 @@ public class DockerDriverHandler {
             dockerService = new DockerService();
         }
         if (containers == null) {
-            containers = new ArrayList<>();
+            containers = new LinkedHashMap<>();
         }
 
         try {
@@ -183,7 +185,7 @@ public class DockerDriverHandler {
                 .dockerBuilder(novncImage, novncContainerName)
                 .portBindings(portBindings).build();
         dockerService.startAndWaitContainer(novncContainer);
-        containers.add(novncContainerName);
+        containers.put(novncImage, novncContainerName);
 
         return novncPort;
     }
@@ -248,7 +250,7 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer = dockerBuilder.build();
         dockerService.startAndWaitContainer(selenoidContainer);
-        containers.add(selenoidContainerName);
+        containers.put(selenoidImage, selenoidContainerName);
 
         return selenoidPort;
     }

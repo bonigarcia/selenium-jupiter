@@ -66,7 +66,8 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    private int dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
+    private int dockerWaitTimeoutSec = getInt(
+            "sel.jup.docker.wait.timeout.sec");
     private int dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
     private String dockerDefaultHostIp = getString(
             "sel.jup.docker.default.host");
@@ -125,8 +126,7 @@ public class DockerService {
     public void startAndWaitContainer(DockerContainer dockerContainer) {
         String containerName = dockerContainer.getContainerName();
         String imageId = dockerContainer.getImageId();
-        log.debug("Start docker container {} using image {}", containerName,
-                imageId);
+        log.debug("Starting Docker container {}", imageId);
 
         if (!isRunningContainer(containerName)) {
             pullImageIfNecessary(imageId);
@@ -192,8 +192,8 @@ public class DockerService {
         return exists;
     }
 
-    public void stopAndRemoveContainer(String containerName) {
-        log.debug("Stop and remove container {}", containerName);
+    public void stopAndRemoveContainer(String imageName, String containerName) {
+        log.debug("Stopping Docker container {}", imageName);
         stopContainer(containerName);
         removeContainer(containerName);
     }
