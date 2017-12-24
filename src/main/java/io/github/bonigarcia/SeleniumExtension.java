@@ -120,15 +120,15 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         } else if (type == DockerChromeDriver.class) {
             webDriver = DockerDriverHandler.getInstance().resolve(CHROME,
-                    parameter, testInstance);
+                    parameter);
 
         } else if (type == DockerFirefoxDriver.class) {
             webDriver = DockerDriverHandler.getInstance().resolve(FIREFOX,
-                    parameter, testInstance);
+                    parameter);
 
         } else if (type == DockerOperaDriver.class) {
             webDriver = DockerDriverHandler.getInstance().resolve(OPERA,
-                    parameter, testInstance);
+                    parameter);
 
         } else {
             // Other WebDriver type

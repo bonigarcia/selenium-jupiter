@@ -143,7 +143,7 @@ public class AnnotationsReader {
     public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
             Class<? extends Annotation> annotation)
-            throws IllegalArgumentException, IllegalAccessException {
+            throws IllegalAccessException {
         Optional<Object> out = empty();
         if (testInstance.isPresent()) {
             Object object = testInstance.get();
@@ -165,7 +165,7 @@ public class AnnotationsReader {
 
     private Optional<Object> getField(Class<? extends Annotation> annotation,
             Class<? extends Object> clazz, Object object)
-            throws IllegalArgumentException, IllegalAccessException {
+            throws IllegalAccessException {
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
             if (field.isAnnotationPresent(annotation)) {
