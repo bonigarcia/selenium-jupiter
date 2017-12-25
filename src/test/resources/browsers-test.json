@@ -293,7 +293,7 @@
          }
       }
    },
-   "opera": {
+   "operablink": {
       "default": "49.0",
       "versions": {
          "33.0": {
