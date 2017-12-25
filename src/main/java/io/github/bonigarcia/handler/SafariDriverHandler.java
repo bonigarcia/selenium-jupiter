@@ -24,6 +24,7 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
@@ -55,7 +56,7 @@ public class SafariDriverHandler extends DriverHandler {
         try {
             Optional<Capabilities> capabilities = AnnotationsReader
                     .getInstance().getCapabilities(parameter, testInstance);
-            SafariOptions safariOptions = getSafariOptions(parameter,
+            SafariOptions safariOptions = (SafariOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
                 safariOptions.merge(capabilities.get());
@@ -67,7 +68,8 @@ public class SafariDriverHandler extends DriverHandler {
         return driver;
     }
 
-    public SafariOptions getSafariOptions(Parameter parameter,
+    @Override
+    public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
         SafariOptions safariOptions = new SafariOptions();
         DriverOptions driverOptions = parameter

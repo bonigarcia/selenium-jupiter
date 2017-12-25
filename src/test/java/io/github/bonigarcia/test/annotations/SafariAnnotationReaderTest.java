@@ -53,8 +53,8 @@ public class SafariAnnotationReaderTest {
         Parameter parameter = testClass
                 .getMethod("safariTest", SafariDriver.class).getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
-        SafariOptions safariOptions = annotationsReader.getSafariOptions(
-                parameter, testInstance);
+        SafariOptions safariOptions = (SafariOptions) annotationsReader
+                .getOptions(parameter, testInstance);
 
         assertTrue(safariOptions.getUseCleanSession());
         assertFalse(safariOptions.getUseTechnologyPreview());

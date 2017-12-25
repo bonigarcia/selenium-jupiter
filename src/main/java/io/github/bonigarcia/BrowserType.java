@@ -23,11 +23,18 @@ import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 import static org.openqa.selenium.remote.DesiredCapabilities.operaBlink;
 
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowserConfig.Browser;
 import io.github.bonigarcia.DockerBrowserConfig.BrowserConfig;
+import io.github.bonigarcia.handler.ChromeDriverHandler;
+import io.github.bonigarcia.handler.DriverHandler;
+import io.github.bonigarcia.handler.FirefoxDriverHandler;
+import io.github.bonigarcia.handler.OperaDriverHandler;
 
 /**
  * Enumeration for Selenoid browsers.
@@ -52,6 +59,8 @@ public enum BrowserType {
     DesiredCapabilities capabilities;
     String latestVersion;
     String firstVersion;
+    DriverHandler driverHandler;
+    String optionsKey;
 
     public BrowserConfig getBrowserConfigFromProperties() {
         switch (this) {
@@ -61,6 +70,8 @@ public enum BrowserType {
             dockerImage = FIREFOX_DOCKER_IMAGE;
             driverClass = DockerFirefoxDriver.class;
             capabilities = firefox();
+            driverHandler = FirefoxDriverHandler.getInstance();
+            optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             break;
         case OPERA:
             latestVersion = getString("sel.jup.opera.latest.version");
@@ -68,6 +79,8 @@ public enum BrowserType {
             dockerImage = OPERA_DOCKER_IMAGE;
             driverClass = DockerOperaDriver.class;
             capabilities = operaBlink();
+            driverHandler = OperaDriverHandler.getInstance();
+            optionsKey = OperaOptions.CAPABILITY;
             break;
         case CHROME:
         default:
@@ -76,6 +89,8 @@ public enum BrowserType {
             dockerImage = CHROME_DOCKER_IMAGE;
             driverClass = DockerChromeDriver.class;
             capabilities = chrome();
+            driverHandler = ChromeDriverHandler.getInstance();
+            optionsKey = ChromeOptions.CAPABILITY;
             break;
         }
 
@@ -107,6 +122,14 @@ public enum BrowserType {
 
     public DesiredCapabilities getCapabilities() {
         return capabilities;
+    }
+
+    public DriverHandler getDriverHandler() {
+        return driverHandler;
+    }
+
+    public String getOptionsKey() {
+        return optionsKey;
     }
 
     public static String getNextVersion(String version, String latestVersion) {

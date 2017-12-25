@@ -27,6 +27,7 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -59,8 +60,8 @@ public class FirefoxDriverHandler extends DriverHandler {
         try {
             Optional<Capabilities> capabilities = AnnotationsReader
                     .getInstance().getCapabilities(parameter, testInstance);
-            FirefoxOptions firefoxOptions = getFirefoxOptions(parameter,
-                    testInstance);
+            FirefoxOptions firefoxOptions = (FirefoxOptions) getOptions(
+                    parameter, testInstance);
             if (capabilities.isPresent()) {
                 firefoxOptions.merge(capabilities.get());
             }
@@ -71,7 +72,8 @@ public class FirefoxDriverHandler extends DriverHandler {
         return driver;
     }
 
-    public FirefoxOptions getFirefoxOptions(Parameter parameter,
+    @Override
+    public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();

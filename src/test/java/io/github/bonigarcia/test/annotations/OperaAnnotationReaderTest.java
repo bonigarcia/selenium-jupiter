@@ -49,8 +49,8 @@ public class OperaAnnotationReaderTest {
     void testOperaOptions() throws Exception {
         Parameter parameter = OperaWithOptionsJupiterTest.class
                 .getMethod("operaTest", OperaDriver.class).getParameters()[0];
-        OperaOptions operaOptions = annotationsReader.getOperaOptions(parameter,
-                empty());
+        OperaOptions operaOptions = (OperaOptions) annotationsReader
+                .getOptions(parameter, empty());
 
         assertThat(operaOptions.asMap().get("operaOptions").toString(),
                 containsString("binary"));

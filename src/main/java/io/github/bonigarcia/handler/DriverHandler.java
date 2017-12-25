@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
@@ -69,6 +70,12 @@ public abstract class DriverHandler {
             }
         }
         return file;
+    }
+
+    public MutableCapabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
+        throw new IllegalAccessException("Not implemented");
     }
 
 }

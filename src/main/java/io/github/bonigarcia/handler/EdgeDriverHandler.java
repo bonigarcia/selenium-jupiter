@@ -18,10 +18,12 @@ package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
 
+import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -53,7 +55,8 @@ public class EdgeDriverHandler extends DriverHandler {
         try {
             Optional<Capabilities> capabilities = AnnotationsReader
                     .getInstance().getCapabilities(parameter, testInstance);
-            EdgeOptions edgeOptions = getEdgeOptions(parameter, testInstance);
+            EdgeOptions edgeOptions = (EdgeOptions) getOptions(parameter,
+                    testInstance);
             if (capabilities.isPresent()) {
                 edgeOptions.merge(capabilities.get());
             }
@@ -64,8 +67,10 @@ public class EdgeDriverHandler extends DriverHandler {
         return driver;
     }
 
-    public EdgeOptions getEdgeOptions(Parameter parameter,
-            Optional<Object> testInstance) throws IllegalAccessException {
+    @Override
+    public MutableCapabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
         EdgeOptions edgeOptions = new EdgeOptions();
         DriverOptions driverOptions = parameter
                 .getAnnotation(DriverOptions.class);

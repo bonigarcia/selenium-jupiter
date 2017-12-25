@@ -56,8 +56,8 @@ public class FirefoxAnnotationReaderTest {
                 .getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
 
-        FirefoxOptions firefoxOptions = annotationsReader
-                .getFirefoxOptions(parameter, testInstance);
+        FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader
+                .getOptions(parameter, testInstance);
         Map<String, Map<String, Boolean>> options = (Map<String, Map<String, Boolean>>) firefoxOptions
                 .asMap().get(FIREFOX_OPTIONS);
 

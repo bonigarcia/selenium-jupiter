@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -52,10 +53,10 @@ import com.github.dockerjava.api.model.Ports.Binding;
 import com.github.dockerjava.api.model.Volume;
 
 import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
-import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.SelenoidConfig;
 
 /**
@@ -80,7 +81,8 @@ public class DockerDriverHandler {
         return instance;
     }
 
-    public WebDriver resolve(BrowserType browser, Parameter parameter) {
+    public WebDriver resolve(BrowserType browser, Parameter parameter,
+            Optional<Object> testInstance) {
         WebDriver webDriver = null;
 
         if (dockerService == null) {
@@ -99,6 +101,7 @@ public class DockerDriverHandler {
 
             Class<? extends RemoteWebDriver> driverClass = browser
                     .getDriverClass();
+
             DesiredCapabilities capabilities = browser.getCapabilities();
 
             if (version.isPresent()) {
@@ -107,6 +110,15 @@ public class DockerDriverHandler {
             }
 
             capabilities.setCapability("enableVNC", true);
+
+            Optional<Capabilities> optionalCapabilities = AnnotationsReader
+                    .getInstance().getCapabilities(parameter, testInstance);
+            MutableCapabilities options = browser.getDriverHandler()
+                    .getOptions(parameter, testInstance);
+            if (optionalCapabilities.isPresent()) {
+                options.merge(optionalCapabilities.get());
+            }
+            capabilities.setCapability(browser.getOptionsKey(), options);
 
             String dockerServerIp = dockerService.getDockerServerIp();
             String selenoidHubUrl = format("http://%s:%d/wd/hub",

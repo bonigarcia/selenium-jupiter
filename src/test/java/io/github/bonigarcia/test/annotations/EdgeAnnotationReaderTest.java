@@ -52,8 +52,8 @@ public class EdgeAnnotationReaderTest {
         Parameter parameter = testClass.getMethod("edgeTest", EdgeDriver.class)
                 .getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
-        EdgeOptions edgeOptions = annotationsReader.getEdgeOptions(parameter,
-                testInstance);
+        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
+                .getOptions(parameter, testInstance);
         assertThat(edgeOptions.getCapability("pageLoadStrategy"),
                 equalTo("eager"));
     }

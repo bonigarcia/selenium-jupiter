@@ -25,6 +25,7 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -56,7 +57,7 @@ public class ChromeDriverHandler extends DriverHandler {
         try {
             Optional<Capabilities> capabilities = AnnotationsReader
                     .getInstance().getCapabilities(parameter, testInstance);
-            ChromeOptions chromeOptions = getChromeOptions(parameter,
+            ChromeOptions chromeOptions = (ChromeOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
                 chromeOptions.merge(capabilities.get());
@@ -68,7 +69,8 @@ public class ChromeDriverHandler extends DriverHandler {
         return driver;
     }
 
-    private ChromeOptions getChromeOptions(Parameter parameter,
+    @Override
+    public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
