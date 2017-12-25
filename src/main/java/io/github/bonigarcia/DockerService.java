@@ -114,7 +114,7 @@ public class DockerService {
                         dockerServerIp = dockerDefaultHostIp;
                     }
                 }
-                log.info("Docker server IP: {}", dockerServerIp);
+                log.trace("Docker server IP: {}", dockerServerIp);
             }
         } catch (Exception e) {
             throw new SeleniumJupiterException(
@@ -138,6 +138,8 @@ public class DockerService {
     public void startAndWaitContainer(DockerContainer dockerContainer) {
         String containerName = dockerContainer.getContainerName();
         String imageId = dockerContainer.getImageId();
+        log.debug("Start docker container {} using image {}", containerName,
+                imageId);
 
         if (!isRunningContainer(containerName)) {
             pullImageIfNecessary(imageId);
@@ -147,28 +149,28 @@ public class DockerService {
 
                 Optional<String> network = dockerContainer.getNetwork();
                 if (network.isPresent()) {
-                    log.info("Using network: {}", network.get());
+                    log.trace("Using network: {}", network.get());
                     createContainer.withNetworkMode(network.get());
                 }
                 Optional<List<PortBinding>> portBindings = dockerContainer
                         .getPortBindings();
                 if (portBindings.isPresent()) {
-                    log.info("Using port binding: {}", portBindings.get());
+                    log.trace("Using port binding: {}", portBindings.get());
                     createContainer.withPortBindings(portBindings.get());
                 }
                 Optional<List<Volume>> volumes = dockerContainer.getVolumes();
                 if (volumes.isPresent()) {
-                    log.info("Using volumes: {}", volumes.get());
+                    log.trace("Using volumes: {}", volumes.get());
                     createContainer.withVolumes(volumes.get());
                 }
                 Optional<List<Bind>> binds = dockerContainer.getBinds();
                 if (binds.isPresent()) {
-                    log.info("Using binds: {}", binds.get());
+                    log.trace("Using binds: {}", binds.get());
                     createContainer.withBinds(binds.get());
                 }
                 Optional<List<String>> envs = dockerContainer.getEnvs();
                 if (envs.isPresent()) {
-                    log.info("Using envs: {}", envs.get());
+                    log.trace("Using envs: {}", envs.get());
                     createContainer.withEnv(envs.get());
                 }
 
@@ -186,7 +188,7 @@ public class DockerService {
             log.info("Pulling Docker image {} ... please wait", imageId);
             dockerClient.pullImageCmd(imageId)
                     .exec(new PullImageResultCallback()).awaitSuccess();
-            log.info("Docker image {} downloaded", imageId);
+            log.trace("Docker image {} downloaded", imageId);
         }
     }
 
@@ -194,33 +196,34 @@ public class DockerService {
         boolean exists = true;
         try {
             dockerClient.inspectImageCmd(imageId).exec();
-            log.info("Docker image {} already exists", imageId);
+            log.trace("Docker image {} already exists", imageId);
 
         } catch (NotFoundException e) {
-            log.info("Image {} does not exist", imageId);
+            log.trace("Image {} does not exist", imageId);
             exists = false;
         }
         return exists;
     }
 
     public void stopAndRemoveContainer(String containerName) {
+        log.debug("Stop and remove container {}", containerName);
         stopContainer(containerName);
         removeContainer(containerName);
     }
 
     public void stopContainer(String containerName) {
         if (isRunningContainer(containerName)) {
-            log.info("Stopping container {}", containerName);
+            log.trace("Stopping container {}", containerName);
             dockerClient.stopContainerCmd(containerName).exec();
 
         } else {
-            log.info("Container {} is not running", containerName);
+            log.trace("Container {} is not running", containerName);
         }
     }
 
     public void removeContainer(String containerName) {
         if (existsContainer(containerName)) {
-            log.info("Removing container {}", containerName);
+            log.trace("Removing container {}", containerName);
             dockerClient.removeContainerCmd(containerName)
                     .withRemoveVolumes(true).exec();
         }
@@ -233,7 +236,7 @@ public class DockerService {
         String output = null;
         String commandStr = Arrays.toString(command);
 
-        log.info("Executing command {} in container {} (await completion {})",
+        log.debug("Executing command {} in container {} (await completion {})",
                 commandStr, containerName, awaitCompletion);
         if (existsContainer(containerName)) {
             ExecCreateCmdResponse exec = dockerClient
@@ -241,7 +244,7 @@ public class DockerService {
                     .withAttachStdin(true).withAttachStdout(true)
                     .withAttachStderr(true).exec();
 
-            log.info("Command executed. Exec id: {}", exec.getId());
+            log.trace("Command executed. Exec id: {}", exec.getId());
             OutputStream outputStream = new ByteArrayOutputStream();
             try (ExecStartResultCallback startResultCallback = dockerClient
                     .execStartCmd(exec.getId()).withDetach(false).withTty(true)
@@ -264,7 +267,7 @@ public class DockerService {
             String fileName) {
         InputStream inputStream = null;
         if (existsContainer(containerName)) {
-            log.info("Copying {} from container {}", fileName, containerName);
+            log.debug("Copying {} from container {}", fileName, containerName);
 
             inputStream = dockerClient
                     .copyArchiveFromContainerCmd(containerName, fileName)
@@ -289,7 +292,7 @@ public class DockerService {
                 }
 
                 // Wait poll time
-                log.info("Container {} is not still running ... waiting {} ms",
+                log.trace("Container {} is not still running ... waiting {} ms",
                         containerName, dockerPollTimeMs);
                 try {
                     sleep(dockerPollTimeMs);
@@ -308,7 +311,7 @@ public class DockerService {
         if (existsContainer(containerName)) {
             isRunning = dockerClient.inspectContainerCmd(containerName).exec()
                     .getState().getRunning();
-            log.info("Container {} is running: {}", containerName, isRunning);
+            log.trace("Container {} is running: {}", containerName, isRunning);
         }
 
         return isRunning;
@@ -318,10 +321,10 @@ public class DockerService {
         boolean exists = true;
         try {
             dockerClient.inspectContainerCmd(containerName).exec();
-            log.info("Container {} already exist", containerName);
+            log.trace("Container {} already exist", containerName);
 
         } catch (NotFoundException e) {
-            log.info("Container {} does not exist", containerName);
+            log.trace("Container {} does not exist", containerName);
             exists = false;
         }
         return exists;
@@ -332,7 +335,7 @@ public class DockerService {
                 SECONDS);
         long endTimeMillis = System.currentTimeMillis() + timeoutMillis;
 
-        log.info("Waiting for {} to be reachable (timeout {} seconds)", url,
+        log.debug("Waiting for {} to be reachable (timeout {} seconds)", url,
                 dockerWaitTimeoutSec);
         String errorMessage = "URL " + url + " not reachable in "
                 + dockerWaitTimeoutSec + " seconds";
@@ -389,16 +392,16 @@ public class DockerService {
                 responseCode = connection.getResponseCode();
 
                 if (responseCode == HTTP_OK) {
-                    log.info("URL already reachable");
+                    log.trace("URL already reachable");
                     break;
                 } else {
-                    log.info(
+                    log.trace(
                             "URL {} not reachable (response {}). Trying again in {} ms",
                             url, responseCode, dockerPollTimeMs);
                 }
 
             } catch (SSLHandshakeException | SocketException e) {
-                log.info("Error {} waiting URL {}, trying again in {} ms",
+                log.trace("Error {} waiting URL {}, trying again in {} ms",
                         e.getMessage(), url, dockerPollTimeMs);
 
             } finally {
@@ -440,7 +443,7 @@ public class DockerService {
             }
 
         } catch (IOException e) {
-            log.info("Not running inside a Docker container");
+            log.debug("Not running inside a Docker container");
         }
         return isRunningInContainer;
     }
@@ -453,9 +456,9 @@ public class DockerService {
         assert (command.length > 0);
 
         String commandStr = Arrays.toString(command);
-        log.info("Running command on the shell: {}", commandStr);
+        log.debug("Running command on the shell: {}", commandStr);
         String result = runAndWaitNoLog(command);
-        log.info("Result: {}", result);
+        log.trace("Result: {}", result);
         return result;
     }
 
