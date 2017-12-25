@@ -36,13 +36,13 @@ public class DockerBrowserConfig {
 
     BrowserConfig chrome;
     BrowserConfig firefox;
-    BrowserConfig opera;
+    BrowserConfig operablink;
 
     public DockerBrowserConfig() {
         // By default, initialize from properties
         this.chrome = CHROME.getBrowserConfigFromProperties();
         this.firefox = FIREFOX.getBrowserConfigFromProperties();
-        this.opera = OPERA.getBrowserConfigFromProperties();
+        this.operablink = OPERA.getBrowserConfigFromProperties();
     }
 
     public BrowserConfig getBrowser(BrowserType browser) {
@@ -50,7 +50,7 @@ public class DockerBrowserConfig {
         case FIREFOX:
             return firefox;
         case OPERA:
-            return opera;
+            return operablink;
         case CHROME:
         default:
             return chrome;

@@ -18,6 +18,7 @@ package io.github.bonigarcia.handler;
 
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
+import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.String.format;
@@ -41,6 +42,7 @@ import java.util.Optional;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -115,10 +117,19 @@ public class DockerDriverHandler {
                     .getInstance().getCapabilities(parameter, testInstance);
             MutableCapabilities options = browser.getDriverHandler()
                     .getOptions(parameter, testInstance);
+
+            // Due to bug in operablink the binary path must be set
+            if (browser == OPERA) {
+                ((OperaOptions) options).setBinary("/usr/bin/opera");
+            }
+
             if (optionalCapabilities.isPresent()) {
                 options.merge(optionalCapabilities.get());
             }
+
             capabilities.setCapability(browser.getOptionsKey(), options);
+
+            log.trace("Using capabilities for Docker browser {}", capabilities);
 
             String dockerServerIp = dockerService.getDockerServerIp();
             String selenoidHubUrl = format("http://%s:%d/wd/hub",
