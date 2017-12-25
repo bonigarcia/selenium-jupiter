@@ -35,7 +35,7 @@ import io.github.bonigarcia.DockerBrowserConfig.BrowserConfig;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public enum SelenoidBrowser {
+public enum BrowserType {
 
     CHROME, FIREFOX, OPERA;
 
@@ -53,7 +53,7 @@ public enum SelenoidBrowser {
     String latestVersion;
     String firstVersion;
 
-    public BrowserConfig getBrowserConfigFromProp() {
+    public BrowserConfig getBrowserConfigFromProperties() {
         switch (this) {
         case FIREFOX:
             latestVersion = getString("sel.jup.firefox.latest.version");

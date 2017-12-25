@@ -56,7 +56,7 @@ public class SelenoidConfig {
         return new Gson().toJson(browsers);
     }
 
-    public String getImageVersion(SelenoidBrowser browser, String version) {
+    public String getImageVersion(BrowserType browser, String version) {
         Map<String, Browser> versions = browsers.getBrowser(browser)
                 .getVersions();
 
@@ -75,12 +75,12 @@ public class SelenoidConfig {
 
     }
 
-    public String getImageFromVersion(SelenoidBrowser browser, String version) {
+    public String getImageFromVersion(BrowserType browser, String version) {
         return browsers.getBrowser(browser).getVersions()
                 .get(getImageVersion(browser, version)).getImage();
     }
 
-    public String getLatestImage(SelenoidBrowser browser) {
+    public String getLatestImage(BrowserType browser) {
         return format(browser.getDockerImage(),
                 browsers.getBrowser(browser).getDefaultBrowser());
     }

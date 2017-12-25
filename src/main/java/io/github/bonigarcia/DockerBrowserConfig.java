@@ -17,9 +17,9 @@
 package io.github.bonigarcia;
 
 import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static io.github.bonigarcia.SelenoidBrowser.CHROME;
-import static io.github.bonigarcia.SelenoidBrowser.FIREFOX;
-import static io.github.bonigarcia.SelenoidBrowser.OPERA;
+import static io.github.bonigarcia.BrowserType.CHROME;
+import static io.github.bonigarcia.BrowserType.FIREFOX;
+import static io.github.bonigarcia.BrowserType.OPERA;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,12 +40,12 @@ public class DockerBrowserConfig {
 
     public DockerBrowserConfig() {
         // By default, initialize from properties
-        this.chrome = CHROME.getBrowserConfigFromProp();
-        this.firefox = FIREFOX.getBrowserConfigFromProp();
-        this.opera = OPERA.getBrowserConfigFromProp();
+        this.chrome = CHROME.getBrowserConfigFromProperties();
+        this.firefox = FIREFOX.getBrowserConfigFromProperties();
+        this.opera = OPERA.getBrowserConfigFromProperties();
     }
 
-    public BrowserConfig getBrowser(SelenoidBrowser browser) {
+    public BrowserConfig getBrowser(BrowserType browser) {
         switch (browser) {
         case FIREFOX:
             return firefox;

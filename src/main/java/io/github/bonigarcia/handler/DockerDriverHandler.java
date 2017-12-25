@@ -55,7 +55,7 @@ import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
-import io.github.bonigarcia.SelenoidBrowser;
+import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.SelenoidConfig;
 
 /**
@@ -80,7 +80,7 @@ public class DockerDriverHandler {
         return instance;
     }
 
-    public WebDriver resolve(SelenoidBrowser browser, Parameter parameter) {
+    public WebDriver resolve(BrowserType browser, Parameter parameter) {
         WebDriver webDriver = null;
 
         if (dockerService == null) {
@@ -149,7 +149,7 @@ public class DockerDriverHandler {
         return novncPort;
     }
 
-    private int startDockerBrowser(SelenoidBrowser browser,
+    private int startDockerBrowser(BrowserType browser,
             Optional<String> version) throws IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String browserImage = version.isPresent() && !version.get().isEmpty()

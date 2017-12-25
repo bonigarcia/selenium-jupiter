@@ -16,9 +16,9 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SelenoidBrowser.CHROME;
-import static io.github.bonigarcia.SelenoidBrowser.FIREFOX;
-import static io.github.bonigarcia.SelenoidBrowser.OPERA;
+import static io.github.bonigarcia.BrowserType.CHROME;
+import static io.github.bonigarcia.BrowserType.FIREFOX;
+import static io.github.bonigarcia.BrowserType.OPERA;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;

@@ -17,7 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static com.google.common.collect.Maps.difference;
-import static io.github.bonigarcia.SelenoidBrowser.getNextVersion;
+import static io.github.bonigarcia.BrowserType.getNextVersion;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static java.nio.charset.Charset.defaultCharset;
