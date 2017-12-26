@@ -46,14 +46,6 @@ public enum BrowserType {
 
     CHROME, FIREFOX, OPERA;
 
-    static final String CHROME_DOCKER_IMAGE = "selenoid/vnc:chrome_%s";
-    static final String FIREFOX_DOCKER_IMAGE = "selenoid/vnc:firefox_%s";
-    static final String OPERA_DOCKER_IMAGE = "selenoid/vnc:opera_%s";
-
-    static final String CHROME_FIRST_VERSION = "48.0";
-    static final String FIREFOX_FIRST_VERSION = "3.6";
-    static final String OPERA_FIRST_VERSION = "33.0";
-
     String dockerImage;
     Class<? extends RemoteWebDriver> driverClass;
     DesiredCapabilities capabilities;
@@ -65,18 +57,18 @@ public enum BrowserType {
     public BrowserConfig getBrowserConfigFromProperties() {
         switch (this) {
         case FIREFOX:
+            firstVersion = getString("sel.jup.firefox.first.version");
             latestVersion = getString("sel.jup.firefox.latest.version");
-            firstVersion = FIREFOX_FIRST_VERSION;
-            dockerImage = FIREFOX_DOCKER_IMAGE;
+            dockerImage = getString("sel.jup.firefox.image.format");
             driverClass = DockerFirefoxDriver.class;
             capabilities = firefox();
             driverHandler = FirefoxDriverHandler.getInstance();
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             break;
         case OPERA:
+            firstVersion = getString("sel.jup.opera.first.version");
             latestVersion = getString("sel.jup.opera.latest.version");
-            firstVersion = OPERA_FIRST_VERSION;
-            dockerImage = OPERA_DOCKER_IMAGE;
+            dockerImage = getString("sel.jup.opera.image.format");
             driverClass = DockerOperaDriver.class;
             capabilities = operaBlink();
             driverHandler = OperaDriverHandler.getInstance();
@@ -84,9 +76,9 @@ public enum BrowserType {
             break;
         case CHROME:
         default:
+            firstVersion = getString("sel.jup.chrome.first.version");
             latestVersion = getString("sel.jup.chrome.latest.version");
-            firstVersion = CHROME_FIRST_VERSION;
-            dockerImage = CHROME_DOCKER_IMAGE;
+            dockerImage = getString("sel.jup.chrome.image.format");
             driverClass = DockerChromeDriver.class;
             capabilities = chrome();
             driverHandler = ChromeDriverHandler.getInstance();
