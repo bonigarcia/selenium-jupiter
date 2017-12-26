@@ -19,8 +19,8 @@ package io.github.bonigarcia.handler;
 import static com.github.dockerjava.api.model.ExposedPort.tcp;
 import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
 import static io.github.bonigarcia.BrowserType.OPERA;
-import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
+import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -58,6 +58,7 @@ import com.github.dockerjava.api.model.Volume;
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.DockerContainer;
+import io.github.bonigarcia.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.SelenoidConfig;
@@ -99,8 +100,9 @@ public class DockerDriverHandler {
             Optional<String> version = AnnotationsReader.getInstance()
                     .getVersion(parameter);
 
-            int selenoidPort = startDockerBrowser(browser, version);
             boolean enableVnc = getBoolean("sel.jup.docker.vnc");
+            boolean recording = getBoolean("sel.jup.docker.recording");
+            int selenoidPort = startDockerBrowser(browser, version, recording);
             int novncPort = 0;
             if (enableVnc) {
                 novncPort = startDockerNoVnc();
@@ -118,6 +120,10 @@ public class DockerDriverHandler {
 
             if (enableVnc) {
                 capabilities.setCapability("enableVNC", true);
+            }
+
+            if (recording) {
+                capabilities.setCapability("enableVideo", true);
             }
 
             Optional<Capabilities> optionalCapabilities = AnnotationsReader
@@ -183,8 +189,9 @@ public class DockerDriverHandler {
     }
 
     private int startDockerBrowser(BrowserType browser,
-            Optional<String> version) throws IOException {
+            Optional<String> version, boolean recording) throws IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
+        String recordingImage = getString("sel.jup.docker.recording.image");
         String browserImage = version.isPresent() && !version.get().isEmpty()
                 ? SelenoidConfig.getInstance().getImageFromVersion(browser,
                         version.get())
@@ -192,20 +199,36 @@ public class DockerDriverHandler {
 
         dockerService.pullImageIfNecessary(selenoidImage);
         dockerService.pullImageIfNecessary(browserImage);
+        if (recording) {
+            dockerService.pullImageIfNecessary(recordingImage);
+        }
 
         String defaultSocket = dockerService.getDockerDefaultSocket();
         Volume defaultSocketVolume = new Volume(defaultSocket);
         Volume selenoidConfigVolume = new Volume("/etc/selenoid");
-        List<Volume> volumes = asList(defaultSocketVolume,
-                selenoidConfigVolume);
+
+        List<Volume> volumes = new ArrayList<>();
+        volumes.add(defaultSocketVolume);
+        volumes.add(selenoidConfigVolume);
+        String video = "/opt/selenoid/video";
+        String hostVideo = new File(
+                getString("sel.jup.docker.recording.folder")).getAbsolutePath();
+        Volume videoVolume = new Volume(video);
+        if (recording) {
+            volumes.add(videoVolume);
+        }
 
         tmpDir = createTempDirectory("");
         String browsersJson = SelenoidConfig.getInstance()
                 .getBrowsersJsonAsString();
         writeStringToFile(new File(tmpDir.toFile(), "browsers.json"),
                 browsersJson, defaultCharset());
-        List<Bind> binds = asList(new Bind(defaultSocket, defaultSocketVolume),
-                new Bind(tmpDir.toFile().toString(), selenoidConfigVolume));
+        List<Bind> binds = new ArrayList<>();
+        binds.add(new Bind(defaultSocket, defaultSocketVolume));
+        binds.add(new Bind(tmpDir.toFile().toString(), selenoidConfigVolume));
+        if (recording) {
+            binds.add(new Bind(hostVideo, videoVolume));
+        }
 
         int selenoidPort = dockerService.findRandomOpenPort();
         Binding selenoidBindPort = bindPort(selenoidPort);
@@ -214,10 +237,16 @@ public class DockerDriverHandler {
                 new PortBinding(selenoidBindPort, selenoidExposedPort));
         String selenoidContainerName = dockerService
                 .generateContainerName("selenoid");
-        DockerContainer selenoidContainer = DockerContainer
+        DockerBuilder dockerBuilder = DockerContainer
                 .dockerBuilder(selenoidImage, selenoidContainerName)
-                .portBindings(portBindings).volumes(volumes).binds(binds)
-                .build();
+                .portBindings(portBindings).volumes(volumes).binds(binds);
+        if (recording) {
+            List<String> envs = asList(
+                    "OVERRIDE_VIDEO_OUTPUT_DIR=" + hostVideo);
+            dockerBuilder.envs(envs);
+        }
+
+        DockerContainer selenoidContainer = dockerBuilder.build();
         dockerService.startAndWaitContainer(selenoidContainer);
         containers.add(selenoidContainerName);
 
