@@ -22,9 +22,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.net.HttpURLConnection.HTTP_OK;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -36,24 +34,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
 import java.net.ServerSocket;
-import java.net.SocketException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.slf4j.Logger;
 
@@ -79,13 +66,12 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    private int dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout");
-    private int dockerPollTimeMs = getInt("sel.jup.docker.poll.time");
+    private int dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
+    private int dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
     private String dockerDefaultHostIp = getString(
             "sel.jup.docker.default.host");
     private String dockerDefaultSocket = getString(
             "sel.jup.docker.default.socket");
-    private String dockerServerUrl = getString("sel.jup.docker.server.url");
 
     private String dockerServerIp;
     private boolean runningInContainer = false;
@@ -94,7 +80,8 @@ public class DockerService {
     private DockerClient dockerClient;
 
     public DockerService() {
-        dockerClient = DockerClientBuilder.getInstance(dockerServerUrl).build();
+        dockerClient = DockerClientBuilder
+                .getInstance("unix://" + dockerDefaultSocket).build();
     }
 
     public String getDockerServerIp() {
@@ -328,91 +315,6 @@ public class DockerService {
             exists = false;
         }
         return exists;
-    }
-
-    public void waitForHostIsReachable(String url) {
-        long timeoutMillis = MILLISECONDS.convert(dockerWaitTimeoutSec,
-                SECONDS);
-        long endTimeMillis = System.currentTimeMillis() + timeoutMillis;
-
-        log.debug("Waiting for {} to be reachable (timeout {} seconds)", url,
-                dockerWaitTimeoutSec);
-        String errorMessage = "URL " + url + " not reachable in "
-                + dockerWaitTimeoutSec + " seconds";
-        TrustManager[] trustAllCerts = new TrustManager[] {
-                new X509TrustManager() {
-                    @Override
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return new X509Certificate[] {};
-                    }
-
-                    @Override
-                    public void checkClientTrusted(X509Certificate[] certs,
-                            String authType) {
-                        // No actions required
-                    }
-
-                    @Override
-                    public void checkServerTrusted(X509Certificate[] certs,
-                            String authType) {
-                        // No actions required
-                    }
-                } };
-
-        try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection
-                    .setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-            HostnameVerifier allHostsValid = (hostname, session) -> true;
-            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
-            waitUrl(url, timeoutMillis, endTimeMillis, errorMessage);
-
-        } catch (Exception e) {
-            // Not propagating multiple exceptions (NoSuchAlgorithmException,
-            // KeyManagementException, IOException, InterruptedException) to
-            // improve readability
-            throw new SeleniumJupiterException(errorMessage, e);
-        }
-
-    }
-
-    private void waitUrl(String url, long timeoutMillis, long endTimeMillis,
-            String errorMessage) throws IOException, InterruptedException {
-        int responseCode = 0;
-        while (true) {
-            try {
-                HttpURLConnection connection = (HttpURLConnection) new URL(url)
-                        .openConnection();
-                connection.setConnectTimeout((int) timeoutMillis);
-                connection.setReadTimeout((int) timeoutMillis);
-                connection.setRequestMethod("GET");
-                responseCode = connection.getResponseCode();
-
-                if (responseCode == HTTP_OK) {
-                    log.trace("URL already reachable");
-                    break;
-                } else {
-                    log.trace(
-                            "URL {} not reachable (response {}). Trying again in {} ms",
-                            url, responseCode, dockerPollTimeMs);
-                }
-
-            } catch (SSLHandshakeException | SocketException e) {
-                log.trace("Error {} waiting URL {}, trying again in {} ms",
-                        e.getMessage(), url, dockerPollTimeMs);
-
-            } finally {
-                // Polling to wait a consistent state
-                sleep(dockerPollTimeMs);
-            }
-
-            if (currentTimeMillis() > endTimeMillis) {
-                throw new SeleniumJupiterException(errorMessage);
-            }
-        }
     }
 
     public String generateContainerName(String prefix) {
