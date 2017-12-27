@@ -16,7 +16,8 @@
  */
 package io.github.bonigarcia.test.advance;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
+import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -38,7 +39,7 @@ public class EdgeSettingVersionJupiterTest {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("wdm.edgeVersion", "3.14393");
+        setProperty("wdm.edgeVersion", "3.14393");
     }
 
     @Test
