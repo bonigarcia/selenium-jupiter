@@ -164,7 +164,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                 String screenshotBase64 = ((TakesScreenshot) driver)
                         .getScreenshotAs(BASE64);
                 log.debug("Screenshot (in Base64) at the end of session {} "
-                        + "(copy&paste this string as URL in browser to watch it)\n"
+                        + "(copy&paste this string as URL in browser to watch it):\r\n"
                         + "data:image/png;base64,{}",
                         ((RemoteWebDriver) driver).getSessionId(),
                         screenshotBase64);
