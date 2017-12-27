@@ -23,10 +23,14 @@ import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.createTempDirectory;
 import static java.util.Arrays.asList;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -79,6 +83,9 @@ public class DockerDriverHandler {
     DockerService dockerService;
     Map<String, String> containers;
     Path tmpDir;
+    boolean recording;
+    File recordingFile;
+    String hostVideoFolder;
 
     public static synchronized DockerDriverHandler getInstance() {
         if (instance == null) {
@@ -103,7 +110,7 @@ public class DockerDriverHandler {
                     .getVersion(parameter);
 
             boolean enableVnc = getBoolean("sel.jup.docker.vnc");
-            boolean recording = getBoolean("sel.jup.docker.recording");
+            recording = getBoolean("sel.jup.docker.recording");
             int selenoidPort = startDockerBrowser(browser, version, recording);
             int novncPort = 0;
             if (enableVnc) {
@@ -152,14 +159,16 @@ public class DockerDriverHandler {
             webDriver = driverClass
                     .getConstructor(URL.class, Capabilities.class)
                     .newInstance(new URL(selenoidHubUrl), capabilities);
+            SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
             if (enableVnc) {
-                SessionId sessionId = ((RemoteWebDriver) webDriver)
-                        .getSessionId();
                 String vncUrl = format(
                         "http://%s:%d/vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
                         dockerServerIp, novncPort, dockerServerIp, selenoidPort,
                         sessionId, getString("sel.jup.selenoid.vnc.password"));
                 log.debug("Session {} VNC URL: {}", sessionId, vncUrl);
+            }
+            if (recording) {
+                recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
             }
 
             return webDriver;
@@ -203,6 +212,9 @@ public class DockerDriverHandler {
         dockerService.pullImageIfNecessary(browserImage);
         if (recording) {
             dockerService.pullImageIfNecessary(recordingImage);
+            hostVideoFolder = new File(
+                    getString("sel.jup.docker.recording.folder"))
+                            .getAbsolutePath();
         }
 
         String defaultSocket = dockerService.getDockerDefaultSocket();
@@ -212,14 +224,8 @@ public class DockerDriverHandler {
         List<Volume> volumes = new ArrayList<>();
         volumes.add(defaultSocketVolume);
         volumes.add(selenoidConfigVolume);
-        String video = "/opt/selenoid/video";
-        String hostVideo = new File(
-                getString("sel.jup.docker.recording.folder")).getAbsolutePath();
-        Volume videoVolume = new Volume(video);
-        if (recording) {
-            volumes.add(videoVolume);
-        }
-
+        String selenoidVideoFolder = "/opt/selenoid/video";
+        Volume selenoidVideoVolume = new Volume(selenoidVideoFolder);
         tmpDir = createTempDirectory("");
         String browsersJson = SelenoidConfig.getInstance()
                 .getBrowsersJsonAsString();
@@ -229,7 +235,7 @@ public class DockerDriverHandler {
         binds.add(new Bind(defaultSocket, defaultSocketVolume));
         binds.add(new Bind(tmpDir.toFile().toString(), selenoidConfigVolume));
         if (recording) {
-            binds.add(new Bind(hostVideo, videoVolume));
+            binds.add(new Bind(hostVideoFolder, selenoidVideoVolume));
         }
 
         int selenoidPort = dockerService.findRandomOpenPort();
@@ -244,7 +250,7 @@ public class DockerDriverHandler {
                 .portBindings(portBindings).volumes(volumes).binds(binds);
         if (recording) {
             List<String> envs = asList(
-                    "OVERRIDE_VIDEO_OUTPUT_DIR=" + hostVideo);
+                    "OVERRIDE_VIDEO_OUTPUT_DIR=" + hostVideoFolder);
             dockerBuilder.envs(envs);
         }
 
@@ -257,7 +263,14 @@ public class DockerDriverHandler {
 
     public void clearContainersIfNecessary() {
         if (containers != null && dockerService != null) {
-            containers.forEach(dockerService::stopAndRemoveContainer);
+            for (String imageName : containers.keySet()) {
+                if (recording && imageName
+                        .equals(getString("sel.jup.selenoid.image"))) {
+                    waitForRecording();
+                }
+                dockerService.stopAndRemoveContainer(imageName,
+                        containers.get(imageName));
+            }
             containers.clear();
         }
         if (tmpDir != null) {
@@ -265,6 +278,29 @@ public class DockerDriverHandler {
                 deleteDirectory(tmpDir.toFile());
             } catch (IOException e) {
                 log.warn("Exception deleting temporal folder {}", tmpDir, e);
+            }
+        }
+    }
+
+    public void waitForRecording() {
+        int dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
+        int dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
+        long timeoutMs = currentTimeMillis()
+                + SECONDS.toMillis(dockerWaitTimeoutSec);
+        log.debug("Waiting for recording {} to be available", recordingFile);
+        while (!recordingFile.exists()) {
+            if (currentTimeMillis() > timeoutMs) {
+                log.warn("Timeout of {} seconds waiting for file {}",
+                        dockerWaitTimeoutSec, recordingFile);
+            }
+            log.trace("Recording {} not present ... waiting {} ms",
+                    recordingFile, dockerPollTimeMs);
+            try {
+                sleep(dockerPollTimeMs);
+            } catch (InterruptedException e) {
+                log.warn("Interrupted Exception while waiting for container",
+                        e);
+                currentThread().interrupt();
             }
         }
     }
