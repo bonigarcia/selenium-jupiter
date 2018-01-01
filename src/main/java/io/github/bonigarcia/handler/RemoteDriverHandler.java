@@ -17,6 +17,7 @@
 package io.github.bonigarcia.handler;
 
 import java.lang.reflect.Parameter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -55,29 +56,35 @@ public class RemoteDriverHandler extends DriverHandler {
                         parameter, testInstance, annotationsReader);
 
             } else {
-                Optional<Capabilities> capabilities = annotationsReader
-                        .getCapabilities(parameter, testInstance);
+                driver = resolveRemote();
 
-                Optional<URL> url = annotationsReader.getUrl(parameter,
-                        testInstance);
-                if (url.isPresent() && capabilities.isPresent()) {
-                    driver = new RemoteWebDriver(url.get(), capabilities.get());
-                } else {
-                    String urlMessage = url.isPresent() ? ""
-                            : "URL not present ";
-                    String noCapsMessage = capabilities.isPresent() ? ""
-                            : "Capabilites not present";
-                    String errMessage = "Was not possible to instantiate RemoteWebDriver: "
-                            + urlMessage + noCapsMessage;
-                    if (throwExceptionWhenNoDriver()) {
-                        throw new SeleniumJupiterException(errMessage);
-                    } else {
-                        log.warn(errMessage);
-                    }
-                }
             }
         } catch (Exception e) {
             handleException(e);
+        }
+        return driver;
+    }
+
+    private WebDriver resolveRemote()
+            throws IllegalAccessException, MalformedURLException {
+        WebDriver driver = null;
+        Optional<Capabilities> capabilities = annotationsReader
+                .getCapabilities(parameter, testInstance);
+
+        Optional<URL> url = annotationsReader.getUrl(parameter, testInstance);
+        if (url.isPresent() && capabilities.isPresent()) {
+            driver = new RemoteWebDriver(url.get(), capabilities.get());
+        } else {
+            String urlMessage = url.isPresent() ? "" : "URL not present ";
+            String noCapsMessage = capabilities.isPresent() ? ""
+                    : "Capabilites not present";
+            String errMessage = "Was not possible to instantiate RemoteWebDriver: "
+                    + urlMessage + noCapsMessage;
+            if (throwExceptionWhenNoDriver()) {
+                throw new SeleniumJupiterException(errMessage);
+            } else {
+                log.warn(errMessage);
+            }
         }
         return driver;
     }

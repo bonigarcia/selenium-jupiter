@@ -172,13 +172,14 @@ public class DockerDriverHandler {
 
     public void cleanup() {
         if (containers != null && dockerService != null) {
-            for (String imageName : containers.keySet()) {
-                if (recording && imageName
+
+            for (Map.Entry<String, String> entry : containers.entrySet()) {
+                if (recording && entry.getKey()
                         .equals(getString("sel.jup.selenoid.image"))) {
                     waitForRecording();
                 }
-                dockerService.stopAndRemoveContainer(imageName,
-                        containers.get(imageName));
+                dockerService.stopAndRemoveContainer(entry.getKey(),
+                        entry.getValue());
             }
             containers.clear();
         }
