@@ -66,14 +66,12 @@ public class RemoteWebDriverJupiterTest {
     @Test
     void testWithRemoteChrome(
             @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver)
-            throws InterruptedException {
+                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver) {
         exercise(driver);
     }
 
     @Test
-    void testWithRemoteFirefox(RemoteWebDriver driver)
-            throws InterruptedException {
+    void testWithRemoteFirefox(RemoteWebDriver driver) {
         exercise(driver);
     }
 

@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.test.forced;
 
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
+import static io.github.bonigarcia.Option.Type.BINARY;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -41,8 +40,8 @@ public class ForcedBadFirefoxJupiterTest {
     }
 
     @Test
-    public void firefoxTest(@DriverOptions(options = {
-            @Option(name = BINARY, value = "/bad/path/to/firefox") }) FirefoxDriver driver) {
+    public void firefoxTest(
+            @Option(type = BINARY, value = "/bad/path/to/firefox") FirefoxDriver driver) {
         assertThat(driver, nullValue());
     }
 

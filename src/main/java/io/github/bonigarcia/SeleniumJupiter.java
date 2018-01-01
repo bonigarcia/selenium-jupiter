@@ -33,20 +33,6 @@ import io.github.bonigarcia.wdm.WebDriverManagerException;
  */
 public class SeleniumJupiter {
 
-    // Chrome, Firefox, Opera
-    public static final String ARGS = "args";
-    public static final String BINARY = "binary";
-
-    // Chrome, Firefox, Opera
-    public static final String EXTENSION = "extension";
-
-    // Edge
-    public static final String PAGE_LOAD_STRATEGY = "pageLoadStrategy";
-
-    // Safari
-    public static final String USE_CLEAN_SESSION = "useCleanSession";
-    public static final String USE_TECHNOLOGY_PREVIEW = "useTechnologyPreview";
-
     SeleniumJupiter() {
         throw new IllegalStateException("Utility class");
     }

@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.test.advance;
 
+import static io.github.bonigarcia.Option.Type.USE_CLEAN_SESSION;
+import static io.github.bonigarcia.Option.Type.USE_TECHNOLOGY_PREVIEW;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -34,9 +35,8 @@ import io.github.bonigarcia.SeleniumExtension;
 public class SafariWithOptionsJupiterTest {
 
     @Test
-    public void safariTest(@DriverOptions(options = {
-            @Option(name = "useCleanSession", value = "true"),
-            @Option(name = "useTechnologyPreview", value = "false") }) SafariDriver driver) {
+    public void safariTest(
+            @Option(type = USE_CLEAN_SESSION, value = "true") @Option(type = USE_TECHNOLOGY_PREVIEW, value = "false") SafariDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

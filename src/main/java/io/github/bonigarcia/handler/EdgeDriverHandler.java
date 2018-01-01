@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.PAGE_LOAD_STRATEGY;
+import static io.github.bonigarcia.Option.Type.PAGE_LOAD_STRATEGY;
 
 import java.io.IOException;
 import java.lang.reflect.Parameter;
@@ -28,8 +28,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
+import io.github.bonigarcia.Option.Options;
 
 /**
  * Resolver for EdgeDriver.
@@ -67,26 +67,26 @@ public class EdgeDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         EdgeOptions edgeOptions = new EdgeOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
+        Options options = parameter.getAnnotation(Options.class);
+        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
+        // Search first options annotation in parameter
+        if (allOptions.length > 0) {
+            for (Option option : allOptions) {
+                Option.Type type = option.type();
                 String value = option.value();
 
-                if (name.equals(PAGE_LOAD_STRATEGY)) {
+                if (type == PAGE_LOAD_STRATEGY) {
                     edgeOptions.setPageLoadStrategy(value);
                 } else {
-                    log.warn("Option {} not supported for Edge", name);
+                    log.warn("Option {} not supported for Edge", type);
                 }
             }
         } else {
-            // If not, search DriverOptions in any field
+            // If not, search options in any field
             Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance,
-                            DriverOptions.class);
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
             if (optionsFromAnnotatedField != null) {
                 edgeOptions = (EdgeOptions) optionsFromAnnotatedField;
             }

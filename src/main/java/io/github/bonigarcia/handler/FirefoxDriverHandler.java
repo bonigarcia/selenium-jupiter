@@ -16,9 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
 import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
 
@@ -33,8 +30,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
+import io.github.bonigarcia.Option.Options;
 
 /**
  * Resolver for FirefoxDriver.
@@ -76,15 +73,16 @@ public class FirefoxDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
+        Options options = parameter.getAnnotation(Options.class);
+        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
+        // Search first options annotation in parameter
+        if (allOptions.length > 0) {
+            for (Option option : allOptions) {
+                Option.Type type = option.type();
                 String value = option.value();
-                switch (name) {
+                switch (type) {
                 case ARGS:
                     firefoxOptions.addArguments(value);
                     break;
@@ -96,7 +94,8 @@ public class FirefoxDriverHandler extends DriverHandler {
                     firefoxProfile.addExtension(getExtension(value));
                     firefoxOptions.setProfile(firefoxProfile);
                     break;
-                default:
+                case PREFS:
+                    String name = option.name();
                     if (annotationsReader.isBoolean(value)) {
                         firefoxOptions.addPreference(name, valueOf(value));
                     } else if (annotationsReader.isNumeric(value)) {
@@ -104,13 +103,16 @@ public class FirefoxDriverHandler extends DriverHandler {
                     } else {
                         firefoxOptions.addPreference(name, value);
                     }
+                    break;
+                default:
+                    log.warn("Option {} not supported for Firefox", type);
                 }
+
             }
         } else {
-            // If not, search DriverOptions in any field
+            // If not, search options in any field
             Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance,
-                            DriverOptions.class);
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
             if (optionsFromAnnotatedField != null) {
                 firefoxOptions = (FirefoxOptions) optionsFromAnnotatedField;
             }

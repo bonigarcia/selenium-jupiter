@@ -26,13 +26,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class FirefoxWithGlobalOptionsJupiterTest {
 
-    @DriverOptions
+    @Options
     FirefoxOptions firefoxOptions = new FirefoxOptions();
     {
         // Flag to use fake media for WebRTC user media

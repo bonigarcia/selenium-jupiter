@@ -26,13 +26,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class ChromeWithGlobalOptionsJupiterTest {
 
-    @DriverOptions
+    @Options
     ChromeOptions chromeOptions = new ChromeOptions();
     {
         chromeOptions.addArguments("--use-fake-device-for-media-stream",

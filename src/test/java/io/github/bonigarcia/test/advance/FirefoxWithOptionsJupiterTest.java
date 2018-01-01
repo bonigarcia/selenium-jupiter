@@ -17,8 +17,9 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
+import static io.github.bonigarcia.Option.Type.ARGS;
+import static io.github.bonigarcia.Option.Type.EXTENSION;
+import static io.github.bonigarcia.Option.Type.PREFS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +29,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -36,10 +36,8 @@ import io.github.bonigarcia.SeleniumExtension;
 public class FirefoxWithOptionsJupiterTest {
 
     @Test
-    public void webrtcTest(@DriverOptions(options = {
-            @Option(name = "media.navigator.permission.disabled", value = "true"),
-            @Option(name = "media.navigator.streams.fake", value = "true"),
-            @Option(name = ARGS, value = "-private") }) FirefoxDriver driver) {
+    public void webrtcTest(
+            @Option(type = PREFS, name = "media.navigator.permission.disabled", value = "true") @Option(type = PREFS, name = "media.navigator.streams.fake", value = "true") @Option(type = ARGS, value = "-private") FirefoxDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),
@@ -47,8 +45,8 @@ public class FirefoxWithOptionsJupiterTest {
     }
 
     @Test
-    void extensionTest(@DriverOptions(options = {
-            @Option(name = EXTENSION, value = "hello_world.xpi") }) FirefoxDriver driver) {
+    void extensionTest(
+            @Option(type = EXTENSION, value = "hello_world.xpi") FirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

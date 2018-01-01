@@ -16,10 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
-
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -30,8 +26,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
+import io.github.bonigarcia.Option.Options;
 
 /**
  * Resolver for ChromeDriver.
@@ -40,7 +36,7 @@ import io.github.bonigarcia.Option;
  * @since 1.2.0
  */
 public class ChromeDriverHandler extends DriverHandler {
-    
+
     public ChromeDriverHandler() {
         super();
     }
@@ -58,6 +54,7 @@ public class ChromeDriverHandler extends DriverHandler {
                     .getCapabilities(parameter, testInstance);
             ChromeOptions chromeOptions = (ChromeOptions) getOptions(parameter,
                     testInstance);
+
             if (capabilities.isPresent()) {
                 chromeOptions.merge(capabilities.get());
             }
@@ -73,15 +70,16 @@ public class ChromeDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
+        Options options = parameter.getAnnotation(Options.class);
+        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
+        // Search first options annotation in parameter
+        if (allOptions.length > 0) {
+            for (Option option : allOptions) {
+                Option.Type type = option.type();
                 String value = option.value();
-                switch (name) {
+                switch (type) {
                 case ARGS:
                     chromeOptions.addArguments(value);
                     break;
@@ -92,14 +90,13 @@ public class ChromeDriverHandler extends DriverHandler {
                     chromeOptions.addExtensions(getExtension(value));
                     break;
                 default:
-                    chromeOptions.setExperimentalOption(name, value);
+                    log.warn("Option {} not supported for Chrome", type);
                 }
             }
         } else {
-            // If not, search DriverOptions in any field
+            // If not, search options in any field
             Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance,
-                            DriverOptions.class);
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
             if (optionsFromAnnotatedField != null) {
                 chromeOptions = (ChromeOptions) optionsFromAnnotatedField;
             }

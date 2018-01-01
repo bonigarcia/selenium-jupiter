@@ -18,11 +18,11 @@ package io.github.bonigarcia.test.advance;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 
 public class ChromeOptionsTestParent {
 
-    @DriverOptions
+    @Options
     ChromeOptions chromeOptions = new ChromeOptions();
     {
         chromeOptions.addArguments("--incognito");

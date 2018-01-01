@@ -16,10 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.ARGS;
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
-
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -30,8 +26,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
+import io.github.bonigarcia.Option.Options;
 
 /**
  * Resolver for OperaDriver.
@@ -73,15 +69,16 @@ public class OperaDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         OperaOptions operaOptions = new OperaOptions();
-        DriverOptions driverOptions = parameter
-                .getAnnotation(DriverOptions.class);
+        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
+        Options options = parameter.getAnnotation(Options.class);
+        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first DriverOptions annotation in parameter
-        if (driverOptions != null) {
-            for (Option option : driverOptions.options()) {
-                String name = option.name();
+        // Search first options annotation in parameter
+        if (allOptions.length > 0) {
+            for (Option option : allOptions) {
+                Option.Type type = option.type();
                 String value = option.value();
-                switch (name) {
+                switch (type) {
                 case ARGS:
                     operaOptions.addArguments(value);
                     break;
@@ -92,14 +89,14 @@ public class OperaDriverHandler extends DriverHandler {
                     operaOptions.addExtensions(getExtension(value));
                     break;
                 default:
-                    operaOptions.setExperimentalOption(name, value);
+                    log.warn("Option {} not supported for Opera", type);
                 }
+
             }
         } else {
-            // If not, search DriverOptions in any field
+            // If not, search options in any field
             Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance,
-                            DriverOptions.class);
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
             if (optionsFromAnnotatedField != null) {
                 operaOptions = (OperaOptions) optionsFromAnnotatedField;
             }

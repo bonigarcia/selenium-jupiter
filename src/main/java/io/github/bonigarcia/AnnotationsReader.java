@@ -32,6 +32,8 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.Option.Options;
+
 /**
  * Options/capabilities reader from annotated parameters or test instance to the
  * proper type (ChromeOptions, FirefoxOptions, Capabilities, etc).
@@ -110,8 +112,7 @@ public class AnnotationsReader {
     }
 
     public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
-            Class<DriverOptions> annotationClass)
-            throws IllegalAccessException {
+            Class<Options> annotationClass) throws IllegalAccessException {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
                 annotationClass);

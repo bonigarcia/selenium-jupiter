@@ -27,13 +27,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerChromeWithOptionsJupiterTest {
 
-    @DriverOptions
+    @Options
     ChromeOptions chromeOptions = new ChromeOptions();
     {
         chromeOptions.addArguments("--use-fake-device-for-media-stream",

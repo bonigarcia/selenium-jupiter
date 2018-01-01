@@ -26,14 +26,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @Disabled("Edge not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class EdgeWithGlobalOptionsJupiterTest {
 
-    @DriverOptions
+    @Options
     EdgeOptions edgeOptions = new EdgeOptions();
     {
         edgeOptions.setPageLoadStrategy("eager");

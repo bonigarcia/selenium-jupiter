@@ -16,8 +16,8 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static io.github.bonigarcia.SeleniumJupiter.BINARY;
-import static io.github.bonigarcia.SeleniumJupiter.EXTENSION;
+import static io.github.bonigarcia.Option.Type.BINARY;
+import static io.github.bonigarcia.Option.Type.EXTENSION;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
-import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -35,9 +34,8 @@ import io.github.bonigarcia.SeleniumExtension;
 public class OperaExtensionJupiterTest {
 
     @Test
-    void operaExtensionTest(@DriverOptions(options = {
-            @Option(name = BINARY, value = "C:\\Program Files\\Opera\\launcher.exe"),
-            @Option(name = EXTENSION, value = "atomizer.crx") }) OperaDriver driver) {
+    void operaExtensionTest(
+            @Option(type = BINARY, value = "C:\\Program Files\\Opera\\launcher.exe") @Option(type = EXTENSION, value = "atomizer.crx") OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

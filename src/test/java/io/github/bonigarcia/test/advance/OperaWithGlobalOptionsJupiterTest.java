@@ -28,14 +28,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
-import io.github.bonigarcia.DriverOptions;
+import io.github.bonigarcia.Option.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
 public class OperaWithGlobalOptionsJupiterTest {
 
-    @DriverOptions
+    @Options
     OperaOptions operaOptions = new OperaOptions();
     {
         operaOptions
