@@ -32,6 +32,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
@@ -44,8 +45,20 @@ public abstract class DriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    public abstract WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance);
+    Parameter parameter;
+    Optional<Object> testInstance;
+    AnnotationsReader annotationsReader = new AnnotationsReader();
+
+    public abstract WebDriver resolve();
+
+    public DriverHandler() {
+        // Default constructor
+    }
+
+    public DriverHandler(Parameter parameter, Optional<Object> testInstance) {
+        this.parameter = parameter;
+        this.testInstance = testInstance;
+    }
 
     void handleException(Exception e) {
         if (throwExceptionWhenNoDriver()) {
@@ -76,6 +89,10 @@ public abstract class DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         throw new IllegalAccessException("Not implemented");
+    }
+
+    public void cleanup() {
+        // Nothing by default
     }
 
 }

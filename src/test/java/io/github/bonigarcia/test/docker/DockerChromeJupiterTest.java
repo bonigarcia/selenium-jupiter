@@ -16,29 +16,32 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.CHROME;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.BrowserVersion;
-import io.github.bonigarcia.DockerChromeDriver;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerChromeJupiterTest {
 
     @Test
-    public void testLatest(DockerChromeDriver driver) {
+    public void testLatest(
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
     @Test
-    public void testVersion(@BrowserVersion("62.0") DockerChromeDriver driver) {
+    public void testVersion(
+            @DockerBrowser(type = CHROME, version = "62.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

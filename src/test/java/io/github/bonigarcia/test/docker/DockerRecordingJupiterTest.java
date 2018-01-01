@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -32,9 +33,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.DockerChromeDriver;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
@@ -58,7 +60,8 @@ public class DockerRecordingJupiterTest {
     }
 
     @Test
-    public void testLatest(DockerChromeDriver driver) {
+    public void testLatest(
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

@@ -16,22 +16,24 @@
  */
 package io.github.bonigarcia;
 
-import java.net.URL;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
- * Chrome in Docker.
+ * Annotation for browsers in Docker.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.2.0
  */
-public class DockerChromeDriver extends RemoteWebDriver {
+@Retention(RUNTIME)
+@Target(PARAMETER)
+public @interface DockerBrowser {
 
-    public DockerChromeDriver(URL remoteAddress,
-            Capabilities desiredCapabilities) {
-        super(remoteAddress, desiredCapabilities);
-    }
+    public BrowserType type();
+
+    public String version() default "";
 
 }

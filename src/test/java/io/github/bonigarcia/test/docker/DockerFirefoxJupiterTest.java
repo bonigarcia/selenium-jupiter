@@ -16,23 +16,23 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.FIREFOX;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.BrowserVersion;
-import io.github.bonigarcia.DockerChromeDriver;
-import io.github.bonigarcia.DockerFirefoxDriver;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerFirefoxJupiterTest {
 
     @Test
-    public void testLatest(DockerChromeDriver driver) {
+    public void testLatest(@DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
@@ -40,7 +40,7 @@ public class DockerFirefoxJupiterTest {
 
     @Test
     public void testVersion(
-            @BrowserVersion("56.0") DockerFirefoxDriver driver) {
+            @DockerBrowser(type = FIREFOX, version = "56.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

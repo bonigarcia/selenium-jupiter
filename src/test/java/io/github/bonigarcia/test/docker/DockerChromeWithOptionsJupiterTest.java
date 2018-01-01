@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -23,8 +24,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.DockerChromeDriver;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -39,7 +41,8 @@ public class DockerChromeWithOptionsJupiterTest {
     }
 
     @Test
-    public void webrtcTest(DockerChromeDriver driver) {
+    public void webrtcTest(
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),

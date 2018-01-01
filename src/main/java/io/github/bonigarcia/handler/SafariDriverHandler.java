@@ -29,7 +29,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
@@ -41,21 +40,17 @@ import io.github.bonigarcia.Option;
  */
 public class SafariDriverHandler extends DriverHandler {
 
-    static SafariDriverHandler instance;
-
-    public static synchronized SafariDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new SafariDriverHandler();
-        }
-        return instance;
+    public SafariDriverHandler(Parameter parameter,
+            Optional<Object> testInstance) {
+        super(parameter, testInstance);
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    @Override
+    public WebDriver resolve() {
         SafariDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             SafariOptions safariOptions = (SafariOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
@@ -81,12 +76,12 @@ public class SafariDriverHandler extends DriverHandler {
                 String value = option.value();
                 switch (name) {
                 case USE_CLEAN_SESSION:
-                    assert AnnotationsReader.getInstance().isBoolean(
+                    assert annotationsReader.isBoolean(
                             value) : "Invalid UseCleanSession vaue: " + value;
                     safariOptions.useCleanSession(valueOf(value));
                     break;
                 case USE_TECHNOLOGY_PREVIEW:
-                    assert AnnotationsReader.getInstance().isBoolean(
+                    assert annotationsReader.isBoolean(
                             value) : "Invalid UseTechnologyPreview value: "
                                     + value;
                     safariOptions.setUseTechnologyPreview(valueOf(value));
@@ -97,7 +92,7 @@ public class SafariDriverHandler extends DriverHandler {
             }
         } else {
             // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = AnnotationsReader.getInstance()
+            Object optionsFromAnnotatedField = annotationsReader
                     .getOptionsFromAnnotatedField(testInstance,
                             DriverOptions.class);
             if (optionsFromAnnotatedField != null) {

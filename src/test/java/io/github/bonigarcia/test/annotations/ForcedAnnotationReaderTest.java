@@ -88,7 +88,8 @@ public class ForcedAnnotationReaderTest {
                 .getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
         assertThrows(SeleniumJupiterException.class, () -> {
-            handler.newInstance().resolve(parameter, testInstance);
+            handler.getDeclaredConstructor(Parameter.class, Optional.class)
+                    .newInstance(parameter, testInstance).resolve();
         });
     }
 

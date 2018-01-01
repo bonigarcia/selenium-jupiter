@@ -33,7 +33,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
@@ -45,21 +44,21 @@ import io.github.bonigarcia.Option;
  */
 public class FirefoxDriverHandler extends DriverHandler {
 
-    static FirefoxDriverHandler instance;
-
-    public static synchronized FirefoxDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new FirefoxDriverHandler();
-        }
-        return instance;
+    public FirefoxDriverHandler() {
+        super();
     }
 
-    public WebDriver resolve(Parameter parameter,
+    public FirefoxDriverHandler(Parameter parameter,
             Optional<Object> testInstance) {
+        super(parameter, testInstance);
+    }
+
+    @Override
+    public WebDriver resolve() {
         FirefoxDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             FirefoxOptions firefoxOptions = (FirefoxOptions) getOptions(
                     parameter, testInstance);
             if (capabilities.isPresent()) {
@@ -98,10 +97,9 @@ public class FirefoxDriverHandler extends DriverHandler {
                     firefoxOptions.setProfile(firefoxProfile);
                     break;
                 default:
-                    if (AnnotationsReader.getInstance().isBoolean(value)) {
+                    if (annotationsReader.isBoolean(value)) {
                         firefoxOptions.addPreference(name, valueOf(value));
-                    } else if (AnnotationsReader.getInstance()
-                            .isNumeric(value)) {
+                    } else if (annotationsReader.isNumeric(value)) {
                         firefoxOptions.addPreference(name, parseInt(value));
                     } else {
                         firefoxOptions.addPreference(name, value);
@@ -110,7 +108,7 @@ public class FirefoxDriverHandler extends DriverHandler {
             }
         } else {
             // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = AnnotationsReader.getInstance()
+            Object optionsFromAnnotatedField = annotationsReader
                     .getOptionsFromAnnotatedField(testInstance,
                             DriverOptions.class);
             if (optionsFromAnnotatedField != null) {

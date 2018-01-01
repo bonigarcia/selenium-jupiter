@@ -30,7 +30,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
@@ -41,22 +40,22 @@ import io.github.bonigarcia.Option;
  * @since 1.2.0
  */
 public class ChromeDriverHandler extends DriverHandler {
-
-    static ChromeDriverHandler instance;
-
-    public static synchronized ChromeDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new ChromeDriverHandler();
-        }
-        return instance;
+    
+    public ChromeDriverHandler() {
+        super();
     }
 
-    public WebDriver resolve(Parameter parameter,
+    public ChromeDriverHandler(Parameter parameter,
             Optional<Object> testInstance) {
+        super(parameter, testInstance);
+    }
+
+    @Override
+    public WebDriver resolve() {
         ChromeDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             ChromeOptions chromeOptions = (ChromeOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
@@ -98,7 +97,7 @@ public class ChromeDriverHandler extends DriverHandler {
             }
         } else {
             // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = AnnotationsReader.getInstance()
+            Object optionsFromAnnotatedField = annotationsReader
                     .getOptionsFromAnnotatedField(testInstance,
                             DriverOptions.class);
             if (optionsFromAnnotatedField != null) {

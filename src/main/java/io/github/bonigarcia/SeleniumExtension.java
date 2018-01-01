@@ -16,9 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.BrowserType.CHROME;
-import static io.github.bonigarcia.BrowserType.FIREFOX;
-import static io.github.bonigarcia.BrowserType.OPERA;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -45,7 +42,7 @@ import org.slf4j.Logger;
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
-import io.github.bonigarcia.handler.DockerDriverHandler;
+import io.github.bonigarcia.handler.DriverHandler;
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.handler.OperaDriverHandler;
@@ -66,6 +63,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
+    private DriverHandler driverHandler;
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
@@ -87,55 +85,33 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             WebDriverManager.getInstance(type).setup();
         }
 
-        // Instantiate WebDriver
-        WebDriver webDriver = null;
-
+        // Handler
         if (type == ChromeDriver.class) {
-            webDriver = ChromeDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new ChromeDriverHandler(parameter, testInstance);
 
         } else if (type == FirefoxDriver.class) {
-            webDriver = FirefoxDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new FirefoxDriverHandler(parameter, testInstance);
 
         } else if (type == EdgeDriver.class) {
-            webDriver = EdgeDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new EdgeDriverHandler(parameter, testInstance);
 
         } else if (type == OperaDriver.class) {
-            webDriver = OperaDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new OperaDriverHandler(parameter, testInstance);
 
         } else if (type == SafariDriver.class) {
-            webDriver = SafariDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new SafariDriverHandler(parameter, testInstance);
 
         } else if (type == RemoteWebDriver.class) {
-            webDriver = RemoteDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new RemoteDriverHandler(parameter, testInstance);
 
         } else if (type == AppiumDriver.class) {
-            webDriver = AppiumDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
-
-        } else if (type == DockerChromeDriver.class) {
-            webDriver = DockerDriverHandler.getInstance().resolve(CHROME,
-                    parameter, testInstance);
-
-        } else if (type == DockerFirefoxDriver.class) {
-            webDriver = DockerDriverHandler.getInstance().resolve(FIREFOX,
-                    parameter, testInstance);
-
-        } else if (type == DockerOperaDriver.class) {
-            webDriver = DockerDriverHandler.getInstance().resolve(OPERA,
-                    parameter, testInstance);
+            driverHandler = new AppiumDriverHandler(parameter, testInstance);
 
         } else {
-            // Other WebDriver type
-            webDriver = OtherDriverHandler.getInstance().resolve(parameter,
-                    testInstance);
+            driverHandler = new OtherDriverHandler(parameter, testInstance);
         }
 
+        WebDriver webDriver = driverHandler.resolve();
         if (webDriver != null) {
             webDriverList.add(webDriver);
         }
@@ -154,8 +130,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         webDriverList.forEach(WebDriver::quit);
         webDriverList.clear();
 
-        AppiumDriverHandler.getInstance().closeLocalServiceIfNecessary();
-        DockerDriverHandler.getInstance().clearContainersIfNecessary();
+        driverHandler.cleanup();
     }
 
     void logBase64Screenshot(WebDriver driver) {

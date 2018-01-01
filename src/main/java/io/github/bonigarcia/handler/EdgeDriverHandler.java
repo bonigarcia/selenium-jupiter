@@ -28,7 +28,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
@@ -40,21 +39,17 @@ import io.github.bonigarcia.Option;
  */
 public class EdgeDriverHandler extends DriverHandler {
 
-    static EdgeDriverHandler instance;
-
-    public static synchronized EdgeDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new EdgeDriverHandler();
-        }
-        return instance;
+    public EdgeDriverHandler(Parameter parameter,
+            Optional<Object> testInstance) {
+        super(parameter, testInstance);
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    @Override
+    public WebDriver resolve() {
         EdgeDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             EdgeOptions edgeOptions = (EdgeOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
@@ -89,7 +84,7 @@ public class EdgeDriverHandler extends DriverHandler {
             }
         } else {
             // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = AnnotationsReader.getInstance()
+            Object optionsFromAnnotatedField = annotationsReader
                     .getOptionsFromAnnotatedField(testInstance,
                             DriverOptions.class);
             if (optionsFromAnnotatedField != null) {

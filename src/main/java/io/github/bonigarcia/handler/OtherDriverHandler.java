@@ -22,8 +22,6 @@ import java.util.Optional;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.AnnotationsReader;
-
 /**
  * Resolver for other drivers.
  *
@@ -32,18 +30,13 @@ import io.github.bonigarcia.AnnotationsReader;
  */
 public class OtherDriverHandler extends DriverHandler {
 
-    static OtherDriverHandler instance;
-    AnnotationsReader annotationsReader = new AnnotationsReader();
-
-    public static synchronized OtherDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new OtherDriverHandler();
-        }
-        return instance;
+    public OtherDriverHandler(Parameter parameter,
+            Optional<Object> testInstance) {
+        super(parameter, testInstance);
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    @Override
+    public WebDriver resolve() {
         WebDriver driver = null;
         try {
             Class<?> type = parameter.getType();

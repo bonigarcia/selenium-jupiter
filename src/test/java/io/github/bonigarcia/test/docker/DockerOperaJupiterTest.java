@@ -16,20 +16,22 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.OPERA;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.DockerOperaDriver;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerOperaJupiterTest {
 
     @Test
-    public void testOpera(DockerOperaDriver driver) {
+    public void testOpera(@DockerBrowser(type = OPERA) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

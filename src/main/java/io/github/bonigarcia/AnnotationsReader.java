@@ -43,15 +43,6 @@ public class AnnotationsReader {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    static AnnotationsReader instance;
-
-    public static synchronized AnnotationsReader getInstance() {
-        if (instance == null) {
-            instance = new AnnotationsReader();
-        }
-        return instance;
-    }
-
     public Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
         Optional<Capabilities> out = empty();
@@ -75,16 +66,6 @@ public class AnnotationsReader {
                 capabilities = (Capabilities) annotatedField.get();
                 out = Optional.of(capabilities);
             }
-        }
-        return out;
-    }
-
-    public Optional<String> getVersion(Parameter parameter) {
-        Optional<String> out = empty();
-        BrowserVersion browserVersion = parameter
-                .getAnnotation(BrowserVersion.class);
-        if (browserVersion != null) {
-            out = Optional.of(browserVersion.value());
         }
         return out;
     }
@@ -174,6 +155,16 @@ public class AnnotationsReader {
             }
         }
         return empty();
+    }
+
+    public Optional<DockerBrowser> getDocker(Parameter parameter) {
+        Optional<DockerBrowser> out = empty();
+        DockerBrowser dockerBrowser = parameter
+                .getAnnotation(DockerBrowser.class);
+        if (dockerBrowser != null) {
+            out = Optional.of(dockerBrowser);
+        }
+        return out;
     }
 
 }

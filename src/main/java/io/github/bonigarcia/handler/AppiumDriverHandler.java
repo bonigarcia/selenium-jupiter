@@ -25,7 +25,6 @@ import org.openqa.selenium.WebDriver;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
@@ -36,25 +35,22 @@ import io.github.bonigarcia.SeleniumJupiterException;
  */
 public class AppiumDriverHandler extends DriverHandler {
 
-    static AppiumDriverHandler instance;
     private AppiumDriverLocalService appiumDriverLocalService;
 
-    public static synchronized AppiumDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new AppiumDriverHandler();
-        }
-        return instance;
+    public AppiumDriverHandler(Parameter parameter,
+            Optional<Object> testInstance) {
+        super(parameter, testInstance);
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    @Override
+    public WebDriver resolve() {
         WebDriver webDriver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
 
-            Optional<URL> url = AnnotationsReader.getInstance()
-                    .getUrl(parameter, testInstance);
+            Optional<URL> url = annotationsReader.getUrl(parameter,
+                    testInstance);
             if (capabilities.isPresent()) {
                 URL appiumServerUrl;
                 if (url.isPresent()) {
@@ -82,7 +78,8 @@ public class AppiumDriverHandler extends DriverHandler {
         return webDriver;
     }
 
-    public void closeLocalServiceIfNecessary() {
+    @Override
+    public void cleanup() {
         if (appiumDriverLocalService != null) {
             appiumDriverLocalService.stop();
             appiumDriverLocalService = null;

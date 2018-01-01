@@ -24,7 +24,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
@@ -35,42 +35,58 @@ import io.github.bonigarcia.SeleniumJupiterException;
  */
 public class RemoteDriverHandler extends DriverHandler {
 
-    static RemoteDriverHandler instance;
+    private DockerDriverHandler dockerDriverHandler;
 
-    public static synchronized RemoteDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new RemoteDriverHandler();
-        }
-        return instance;
+    public RemoteDriverHandler(Parameter parameter,
+            Optional<Object> testInstance) {
+        super(parameter, testInstance);
     }
 
-    public WebDriver resolve(Parameter parameter,
-            Optional<Object> testInstance) {
+    @Override
+    public WebDriver resolve() {
         WebDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<DockerBrowser> dockerBrowser = annotationsReader
+                    .getDocker(parameter);
 
-            Optional<URL> url = AnnotationsReader.getInstance()
-                    .getUrl(parameter, testInstance);
-            if (url.isPresent() && capabilities.isPresent()) {
-                driver = new RemoteWebDriver(url.get(), capabilities.get());
+            if (dockerBrowser.isPresent()) {
+                dockerDriverHandler = new DockerDriverHandler();
+                driver = dockerDriverHandler.resolve(dockerBrowser.get(),
+                        parameter, testInstance, annotationsReader);
+
             } else {
-                String urlMessage = url.isPresent() ? "" : "URL not present ";
-                String noCapsMessage = capabilities.isPresent() ? ""
-                        : "Capabilites not present";
-                String errMessage = "Was not possible to instantiate RemoteWebDriver: "
-                        + urlMessage + noCapsMessage;
-                if (throwExceptionWhenNoDriver()) {
-                    throw new SeleniumJupiterException(errMessage);
+                Optional<Capabilities> capabilities = annotationsReader
+                        .getCapabilities(parameter, testInstance);
+
+                Optional<URL> url = annotationsReader.getUrl(parameter,
+                        testInstance);
+                if (url.isPresent() && capabilities.isPresent()) {
+                    driver = new RemoteWebDriver(url.get(), capabilities.get());
                 } else {
-                    log.warn(errMessage);
+                    String urlMessage = url.isPresent() ? ""
+                            : "URL not present ";
+                    String noCapsMessage = capabilities.isPresent() ? ""
+                            : "Capabilites not present";
+                    String errMessage = "Was not possible to instantiate RemoteWebDriver: "
+                            + urlMessage + noCapsMessage;
+                    if (throwExceptionWhenNoDriver()) {
+                        throw new SeleniumJupiterException(errMessage);
+                    } else {
+                        log.warn(errMessage);
+                    }
                 }
             }
         } catch (Exception e) {
             handleException(e);
         }
         return driver;
+    }
+
+    @Override
+    public void cleanup() {
+        if (dockerDriverHandler != null) {
+            dockerDriverHandler.cleanup();
+        }
     }
 
 }

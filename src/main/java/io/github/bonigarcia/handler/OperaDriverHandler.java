@@ -30,7 +30,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
-import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DriverOptions;
 import io.github.bonigarcia.Option;
 
@@ -42,21 +41,21 @@ import io.github.bonigarcia.Option;
  */
 public class OperaDriverHandler extends DriverHandler {
 
-    static OperaDriverHandler instance;
-
-    public static synchronized OperaDriverHandler getInstance() {
-        if (instance == null) {
-            instance = new OperaDriverHandler();
-        }
-        return instance;
+    public OperaDriverHandler() {
+        super();
     }
 
-    public WebDriver resolve(Parameter parameter,
+    public OperaDriverHandler(Parameter parameter,
             Optional<Object> testInstance) {
+        super(parameter, testInstance);
+    }
+
+    @Override
+    public WebDriver resolve() {
         OperaDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = AnnotationsReader
-                    .getInstance().getCapabilities(parameter, testInstance);
+            Optional<Capabilities> capabilities = annotationsReader
+                    .getCapabilities(parameter, testInstance);
             OperaOptions operaOptions = (OperaOptions) getOptions(parameter,
                     testInstance);
             if (capabilities.isPresent()) {
@@ -98,7 +97,7 @@ public class OperaDriverHandler extends DriverHandler {
             }
         } else {
             // If not, search DriverOptions in any field
-            Object optionsFromAnnotatedField = AnnotationsReader.getInstance()
+            Object optionsFromAnnotatedField = annotationsReader
                     .getOptionsFromAnnotatedField(testInstance,
                             DriverOptions.class);
             if (optionsFromAnnotatedField != null) {
