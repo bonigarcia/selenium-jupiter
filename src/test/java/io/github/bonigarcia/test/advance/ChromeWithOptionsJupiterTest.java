@@ -17,8 +17,6 @@
 package io.github.bonigarcia.test.advance;
 
 // tag::snippet-in-doc[]
-import static io.github.bonigarcia.Option.Type.ARGS;
-import static io.github.bonigarcia.Option.Type.EXTENSION;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,23 +26,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.Option;
+import io.github.bonigarcia.Arguments;
+import io.github.bonigarcia.Extensions;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class ChromeWithOptionsJupiterTest {
 
     @Test
-    void headlessTest(
-            @Option(type = ARGS, value = "--headless") ChromeDriver driver) {
+    void headlessTest(@Arguments("--headless") ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
     @Test
-    void webrtcTest(
-            @Option(type = ARGS, value = "--use-fake-device-for-media-stream") @Option(type = ARGS, value = "--use-fake-ui-for-media-stream") ChromeDriver driver) {
+    void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
+            "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),
@@ -52,8 +50,7 @@ public class ChromeWithOptionsJupiterTest {
     }
 
     @Test
-    void extensionTest(
-            @Option(type = EXTENSION, value = "hello_world.crx") ChromeDriver driver) {
+    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

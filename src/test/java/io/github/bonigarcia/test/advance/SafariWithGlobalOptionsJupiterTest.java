@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import io.github.bonigarcia.Option.Options;
+import io.github.bonigarcia.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")

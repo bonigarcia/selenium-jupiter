@@ -71,16 +71,20 @@ public abstract class DriverHandler {
         return getBoolean("sel.jup.exception.when.no.driver");
     }
 
-    File getExtension(String fileName) throws IOException {
+    File getExtension(String fileName) {
         File file = new File(fileName);
-        if (!file.exists()) {
-            InputStream inputStream = this.getClass()
-                    .getResourceAsStream("/" + file);
-            if (inputStream != null) {
-                file = createTempFile("tmp-", fileName);
-                file.deleteOnExit();
-                copyInputStreamToFile(inputStream, file);
+        try {
+            if (!file.exists()) {
+                InputStream inputStream = this.getClass()
+                        .getResourceAsStream("/" + file);
+                if (inputStream != null) {
+                    file = createTempFile("tmp-", fileName);
+                    file.deleteOnExit();
+                    copyInputStreamToFile(inputStream, file);
+                }
             }
+        } catch (Exception e) {
+            log.warn("There was a problem handling extension", e);
         }
         return file;
     }

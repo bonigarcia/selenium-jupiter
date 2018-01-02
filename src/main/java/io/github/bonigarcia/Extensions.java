@@ -16,49 +16,21 @@
  */
 package io.github.bonigarcia;
 
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import io.github.bonigarcia.Option.Options;
-
 /**
- * WebDriver options.
+ * WebDriver options (extensions).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
+ * @since 2.0.0
  */
-@Repeatable(Options.class)
 @Retention(RUNTIME)
-@Target({ PARAMETER, FIELD })
-public @interface Option {
-    public Type type();
+@Target(PARAMETER)
+public @interface Extensions {
+    public String[] value();
 
-    public String name() default "";
-
-    public String value();
-
-    @Retention(RUNTIME)
-    @Target({ PARAMETER, FIELD })
-    @interface Options {
-        Option[] value() default {};
-    }
-
-    public enum Type {
-        // Chrome, Firefox, Opera
-        ARGS, BINARY, EXTENSION,
-
-        // Firefox
-        PREFS,
-
-        // Edge
-        PAGE_LOAD_STRATEGY,
-
-        // Safari
-        USE_CLEAN_SESSION, USE_TECHNOLOGY_PREVIEW;
-    }
 }

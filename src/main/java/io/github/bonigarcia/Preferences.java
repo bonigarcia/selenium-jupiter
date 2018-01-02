@@ -14,18 +14,23 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.advance;
+package io.github.bonigarcia;
 
-import org.openqa.selenium.chrome.ChromeOptions;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import io.github.bonigarcia.Options;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-public class ChromeOptionsTestParent {
-
-    @Options
-    ChromeOptions chromeOptions = new ChromeOptions();
-    {
-        chromeOptions.addArguments("--incognito");
-    }
+/**
+ * WebDriver options (preferences).
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 2.0.0
+ */
+@Retention(RUNTIME)
+@Target(PARAMETER)
+public @interface Preferences {
+    public String[] value();
 
 }

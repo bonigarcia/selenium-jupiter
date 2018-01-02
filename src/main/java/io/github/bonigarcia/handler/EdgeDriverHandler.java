@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.Option.Type.PAGE_LOAD_STRATEGY;
-
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -28,14 +26,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import io.github.bonigarcia.Option;
-import io.github.bonigarcia.Option.Options;
+import io.github.bonigarcia.Options;
 
 /**
- * Resolver for EdgeDriver.
+ * Handler for Edge.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.2.0
+ * @since 2.0.0
  */
 public class EdgeDriverHandler extends DriverHandler {
 
@@ -67,29 +64,10 @@ public class EdgeDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         EdgeOptions edgeOptions = new EdgeOptions();
-        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
-        Options options = parameter.getAnnotation(Options.class);
-        Option[] allOptions = options != null ? options.value() : optionArr;
-
-        // Search first options annotation in parameter
-        if (allOptions.length > 0) {
-            for (Option option : allOptions) {
-                Option.Type type = option.type();
-                String value = option.value();
-
-                if (type == PAGE_LOAD_STRATEGY) {
-                    edgeOptions.setPageLoadStrategy(value);
-                } else {
-                    log.warn("Option {} not supported for Edge", type);
-                }
-            }
-        } else {
-            // If not, search options in any field
-            Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class);
-            if (optionsFromAnnotatedField != null) {
-                edgeOptions = (EdgeOptions) optionsFromAnnotatedField;
-            }
+        Object optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class);
+        if (optionsFromAnnotatedField != null) {
+            edgeOptions = (EdgeOptions) optionsFromAnnotatedField;
         }
         return edgeOptions;
     }

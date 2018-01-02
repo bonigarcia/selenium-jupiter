@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.handler;
 
+import static java.util.Arrays.stream;
+
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -26,8 +28,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
-import io.github.bonigarcia.Option;
-import io.github.bonigarcia.Option.Options;
+import io.github.bonigarcia.Arguments;
+import io.github.bonigarcia.Binary;
+import io.github.bonigarcia.Extensions;
+import io.github.bonigarcia.Options;
 
 /**
  * Resolver for OperaDriver.
@@ -69,38 +73,35 @@ public class OperaDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         OperaOptions operaOptions = new OperaOptions();
-        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
-        Options options = parameter.getAnnotation(Options.class);
-        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first options annotation in parameter
-        if (allOptions.length > 0) {
-            for (Option option : allOptions) {
-                Option.Type type = option.type();
-                String value = option.value();
-                switch (type) {
-                case ARGS:
-                    operaOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    operaOptions.setBinary(value);
-                    break;
-                case EXTENSION:
-                    operaOptions.addExtensions(getExtension(value));
-                    break;
-                default:
-                    log.warn("Option {} not supported for Opera", type);
-                }
+        // @Arguments
+        Arguments arguments = parameter.getAnnotation(Arguments.class);
+        if (arguments != null) {
+            stream(arguments.value()).forEach(operaOptions::addArguments);
+        }
 
-            }
-        } else {
-            // If not, search options in any field
-            Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class);
-            if (optionsFromAnnotatedField != null) {
-                operaOptions = (OperaOptions) optionsFromAnnotatedField;
+        // @Extensions
+        Extensions extensions = parameter.getAnnotation(Extensions.class);
+        if (extensions != null) {
+            for (String extension : extensions.value()) {
+                operaOptions.addExtensions(getExtension(extension));
             }
         }
+
+        // @Binary
+        Binary binary = parameter.getAnnotation(Binary.class);
+        if (binary != null) {
+            operaOptions.setBinary(binary.value());
+        }
+
+        // @Options
+        Object optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class);
+        if (optionsFromAnnotatedField != null) {
+            operaOptions = (OperaOptions) ((OperaOptions) optionsFromAnnotatedField)
+                    .merge(operaOptions);
+        }
+
         return operaOptions;
     }
 

@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static java.lang.Boolean.valueOf;
-
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -27,8 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import io.github.bonigarcia.Option;
-import io.github.bonigarcia.Option.Options;
+import io.github.bonigarcia.Options;
 
 /**
  * Resolver for SafariDriver.
@@ -65,38 +62,10 @@ public class SafariDriverHandler extends DriverHandler {
     public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
         SafariOptions safariOptions = new SafariOptions();
-        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
-        Options options = parameter.getAnnotation(Options.class);
-        Option[] allOptions = options != null ? options.value() : optionArr;
-
-        // Search first options annotation in parameter
-        if (allOptions.length > 0) {
-            for (Option option : allOptions) {
-                Option.Type type = option.type();
-                String value = option.value();
-                switch (type) {
-                case USE_CLEAN_SESSION:
-                    assert annotationsReader.isBoolean(
-                            value) : "Invalid UseCleanSession vaue: " + value;
-                    safariOptions.useCleanSession(valueOf(value));
-                    break;
-                case USE_TECHNOLOGY_PREVIEW:
-                    assert annotationsReader.isBoolean(
-                            value) : "Invalid UseTechnologyPreview value: "
-                                    + value;
-                    safariOptions.setUseTechnologyPreview(valueOf(value));
-                    break;
-                default:
-                    log.warn("Option {} not supported for Edge", type);
-                }
-            }
-        } else {
-            // If not, search options in any field
-            Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class);
-            if (optionsFromAnnotatedField != null) {
-                safariOptions = (SafariOptions) optionsFromAnnotatedField;
-            }
+        Object optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class);
+        if (optionsFromAnnotatedField != null) {
+            safariOptions = (SafariOptions) optionsFromAnnotatedField;
         }
         return safariOptions;
     }

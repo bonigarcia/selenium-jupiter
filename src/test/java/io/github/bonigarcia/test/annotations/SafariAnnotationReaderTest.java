@@ -32,7 +32,6 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.handler.SafariDriverHandler;
 import io.github.bonigarcia.test.advance.SafariWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.test.advance.SafariWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,8 +41,7 @@ public class SafariAnnotationReaderTest {
     SafariDriverHandler annotationsReader;
 
     static Stream<Class<?>> testClassProvider() {
-        return Stream.of(SafariWithOptionsJupiterTest.class,
-                SafariWithGlobalOptionsJupiterTest.class);
+        return Stream.of(SafariWithGlobalOptionsJupiterTest.class);
     }
 
     @ParameterizedTest

@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.handler;
 
+import static java.util.Arrays.stream;
+
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -26,8 +28,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.Option;
-import io.github.bonigarcia.Option.Options;
+import io.github.bonigarcia.Arguments;
+import io.github.bonigarcia.Binary;
+import io.github.bonigarcia.Extensions;
+import io.github.bonigarcia.Options;
 
 /**
  * Resolver for ChromeDriver.
@@ -70,36 +74,31 @@ public class ChromeDriverHandler extends DriverHandler {
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
-        Option[] optionArr = parameter.getAnnotationsByType(Option.class);
-        Options options = parameter.getAnnotation(Options.class);
-        Option[] allOptions = options != null ? options.value() : optionArr;
 
-        // Search first options annotation in parameter
-        if (allOptions.length > 0) {
-            for (Option option : allOptions) {
-                Option.Type type = option.type();
-                String value = option.value();
-                switch (type) {
-                case ARGS:
-                    chromeOptions.addArguments(value);
-                    break;
-                case BINARY:
-                    chromeOptions.setBinary(value);
-                    break;
-                case EXTENSION:
-                    chromeOptions.addExtensions(getExtension(value));
-                    break;
-                default:
-                    log.warn("Option {} not supported for Chrome", type);
-                }
-            }
-        } else {
-            // If not, search options in any field
-            Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class);
-            if (optionsFromAnnotatedField != null) {
-                chromeOptions = (ChromeOptions) optionsFromAnnotatedField;
-            }
+        // @Arguments
+        Arguments arguments = parameter.getAnnotation(Arguments.class);
+        if (arguments != null) {
+            stream(arguments.value()).forEach(chromeOptions::addArguments);
+        }
+
+        // @Extensions
+        Extensions extensions = parameter.getAnnotation(Extensions.class);
+        if (extensions != null) {
+            stream(extensions.value()).forEach((value) -> chromeOptions
+                    .addExtensions(getExtension(value)));
+        }
+
+        // @Binary
+        Binary binary = parameter.getAnnotation(Binary.class);
+        if (binary != null) {
+            chromeOptions.setBinary(binary.value());
+        }
+
+        // @Options
+        Object optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class);
+        if (optionsFromAnnotatedField != null) {
+            chromeOptions.merge((ChromeOptions) optionsFromAnnotatedField);
         }
 
         return chromeOptions;

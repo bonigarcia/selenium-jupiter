@@ -32,7 +32,6 @@ import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.test.advance.EdgeWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.test.advance.EdgeWithOptionsJupiterTest;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,8 +41,7 @@ public class EdgeAnnotationReaderTest {
     EdgeDriverHandler annotationsReader;
 
     static Stream<Class<?>> testClassProvider() {
-        return Stream.of(EdgeWithOptionsJupiterTest.class,
-                EdgeWithGlobalOptionsJupiterTest.class);
+        return Stream.of(EdgeWithGlobalOptionsJupiterTest.class);
     }
 
     @ParameterizedTest
