@@ -20,6 +20,7 @@ package io.github.bonigarcia.test.docker;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -39,7 +40,7 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class PerformenceDockerChromeJupiterTest {
 
-    static final int NUM_BROWSERS = 5;
+    static final int NUM_BROWSERS = 3;
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -66,7 +67,7 @@ public class PerformenceDockerChromeJupiterTest {
             });
         });
 
-        latch.await();
+        latch.await(50, SECONDS);
         executorService.shutdown();
     }
 
