@@ -29,7 +29,6 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
@@ -49,7 +48,7 @@ public abstract class DriverHandler {
     Optional<Object> testInstance;
     AnnotationsReader annotationsReader = new AnnotationsReader();
 
-    public abstract WebDriver resolve();
+    public abstract Object resolve();
 
     public DriverHandler() {
         // Default constructor

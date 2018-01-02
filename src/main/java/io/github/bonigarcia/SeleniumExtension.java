@@ -21,6 +21,8 @@ import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +47,7 @@ import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
+import io.github.bonigarcia.handler.ListDriverHandler;
 import io.github.bonigarcia.handler.OperaDriverHandler;
 import io.github.bonigarcia.handler.OtherDriverHandler;
 import io.github.bonigarcia.handler.RemoteDriverHandler;
@@ -69,9 +72,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     public boolean supportsParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
         Class<?> type = parameterContext.getParameter().getType();
-        return WebDriver.class.isAssignableFrom(type) && !type.isInterface();
+        return (WebDriver.class.isAssignableFrom(type) && !type.isInterface())
+                || List.class.isAssignableFrom(type);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
@@ -107,16 +112,38 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         } else if (type == AppiumDriver.class) {
             driverHandler = new AppiumDriverHandler(parameter, testInstance);
 
+        } else if (type == List.class) {
+            ParameterizedType parameterizedType = (ParameterizedType) parameter
+                    .getParameterizedType();
+            Type[] actualTypeArguments = parameterizedType
+                    .getActualTypeArguments();
+            if (actualTypeArguments.length == 1
+                    && actualTypeArguments[0] == RemoteWebDriver.class) {
+                driverHandler = new ListDriverHandler(parameter, testInstance);
+            } else {
+                log.warn(
+                        "Invalid type of argument {} (expected List<RemoteWebDriver>)",
+                        parameterizedType);
+            }
+
         } else {
             driverHandler = new OtherDriverHandler(parameter, testInstance);
         }
 
-        WebDriver webDriver = driverHandler.resolve();
-        if (webDriver != null) {
-            webDriverList.add(webDriver);
+        Object out = null;
+        if (type == List.class) {
+            out = (List<RemoteWebDriver>) driverHandler.resolve();
+            for (RemoteWebDriver driver : (List<RemoteWebDriver>) out) {
+                webDriverList.add(driver);
+            }
+        } else {
+            out = (WebDriver) driverHandler.resolve();
+            if (out != null) {
+                webDriverList.add((WebDriver) out);
+            }
         }
 
-        return webDriver;
+        return out;
     }
 
     @Override
@@ -130,7 +157,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         webDriverList.forEach(WebDriver::quit);
         webDriverList.clear();
 
-        driverHandler.cleanup();
+        if (driverHandler != null) {
+            driverHandler.cleanup();
+        }
     }
 
     void logBase64Screenshot(WebDriver driver) {

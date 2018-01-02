@@ -38,17 +38,9 @@ public class SelenoidConfig {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    static SelenoidConfig instance;
     DockerBrowserConfig browsers;
 
-    public static synchronized SelenoidConfig getInstance() {
-        if (instance == null) {
-            instance = new SelenoidConfig();
-        }
-        return instance;
-    }
-
-    SelenoidConfig() {
+    public SelenoidConfig() {
         browsers = new DockerBrowserConfig();
     }
 

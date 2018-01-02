@@ -192,7 +192,7 @@ public class DockerService {
         return exists;
     }
 
-    public void stopAndRemoveContainer(String imageName, String containerName) {
+    public void stopAndRemoveContainer(String containerName, String imageName) {
         log.debug("Stopping Docker container {}", imageName);
         stopContainer(containerName);
         removeContainer(containerName);

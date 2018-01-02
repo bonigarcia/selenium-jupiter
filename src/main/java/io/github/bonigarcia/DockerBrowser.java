@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * Annotation for browsers in Docker.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.2.0
+ * @since 2.0.0
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
@@ -35,5 +35,7 @@ public @interface DockerBrowser {
     public BrowserType type();
 
     public String version() default "";
+
+    public int size() default 0;
 
 }

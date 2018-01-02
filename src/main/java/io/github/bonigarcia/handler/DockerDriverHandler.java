@@ -30,6 +30,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.createTempDirectory;
 import static java.util.Arrays.asList;
+import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
@@ -45,6 +46,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
@@ -80,13 +83,13 @@ public class DockerDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    static DockerDriverHandler instance;
     DockerService dockerService;
     Map<String, String> containers;
     Path tmpDir;
     boolean recording;
     File recordingFile;
     String hostVideoFolder;
+    SelenoidConfig selenoidConfig;
 
     public WebDriver resolve(DockerBrowser dockerBrowser, Parameter parameter,
             Optional<Object> testInstance,
@@ -99,6 +102,9 @@ public class DockerDriverHandler {
         }
         if (containers == null) {
             containers = new LinkedHashMap<>();
+        }
+        if (selenoidConfig == null) {
+            selenoidConfig = new SelenoidConfig();
         }
 
         try {
@@ -115,8 +121,8 @@ public class DockerDriverHandler {
             DesiredCapabilities capabilities = browser.getCapabilities();
 
             if (!version.isEmpty()) {
-                capabilities.setCapability("version", SelenoidConfig
-                        .getInstance().getImageVersion(browser, version));
+                capabilities.setCapability("version",
+                        selenoidConfig.getImageVersion(browser, version));
             }
 
             if (enableVnc) {
@@ -171,25 +177,37 @@ public class DockerDriverHandler {
     }
 
     public void cleanup() {
-        if (containers != null && dockerService != null) {
-
-            for (Map.Entry<String, String> entry : containers.entrySet()) {
-                if (recording && entry.getKey()
-                        .equals(getString("sel.jup.selenoid.image"))) {
-                    waitForRecording();
+        try {
+            if (containers != null && dockerService != null) {
+                int numContainers = containers.size();
+                ExecutorService executorService = newFixedThreadPool(
+                        numContainers);
+                CountDownLatch latch = new CountDownLatch(numContainers);
+                for (Map.Entry<String, String> entry : containers.entrySet()) {
+                    executorService.submit(() -> {
+                        try {
+                            if (recording && entry.getValue().equals(
+                                    getString("sel.jup.selenoid.image"))) {
+                                waitForRecording();
+                            }
+                            dockerService.stopAndRemoveContainer(entry.getKey(),
+                                    entry.getValue());
+                        } finally {
+                            latch.countDown();
+                        }
+                    });
                 }
-                dockerService.stopAndRemoveContainer(entry.getKey(),
-                        entry.getValue());
+                containers.clear();
+                latch.await();
+                executorService.shutdown();
             }
-            containers.clear();
-        }
-        if (tmpDir != null) {
-            try {
+            if (tmpDir != null) {
                 deleteDirectory(tmpDir.toFile());
-            } catch (IOException e) {
-                log.warn("Exception deleting temporal folder {}", tmpDir, e);
             }
+        } catch (Exception e) {
+            log.warn("Exception cleaning DockerDriverHandler {}", e);
         }
+
     }
 
     private int startDockerNoVnc() {
@@ -207,7 +225,7 @@ public class DockerDriverHandler {
                 .dockerBuilder(novncImage, novncContainerName)
                 .portBindings(portBindings).build();
         dockerService.startAndWaitContainer(novncContainer);
-        containers.put(novncImage, novncContainerName);
+        containers.put(novncContainerName, novncImage);
 
         return novncPort;
     }
@@ -217,9 +235,8 @@ public class DockerDriverHandler {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String recordingImage = getString("sel.jup.docker.recording.image");
         String browserImage = !version.isEmpty()
-                ? SelenoidConfig.getInstance().getImageFromVersion(browser,
-                        version)
-                : SelenoidConfig.getInstance().getLatestImage(browser);
+                ? selenoidConfig.getImageFromVersion(browser, version)
+                : selenoidConfig.getLatestImage(browser);
 
         dockerService.pullImageIfNecessary(selenoidImage);
         dockerService.pullImageIfNecessary(browserImage);
@@ -240,8 +257,7 @@ public class DockerDriverHandler {
         String selenoidVideoFolder = "/opt/selenoid/video";
         Volume selenoidVideoVolume = new Volume(selenoidVideoFolder);
         tmpDir = createTempDirectory("");
-        String browsersJson = SelenoidConfig.getInstance()
-                .getBrowsersJsonAsString();
+        String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         writeStringToFile(new File(tmpDir.toFile(), "browsers.json"),
                 browsersJson, defaultCharset());
         List<Bind> binds = new ArrayList<>();
@@ -269,7 +285,7 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer = dockerBuilder.build();
         dockerService.startAndWaitContainer(selenoidContainer);
-        containers.put(selenoidImage, selenoidContainerName);
+        containers.put(selenoidContainerName, selenoidImage);
 
         return selenoidPort;
     }
