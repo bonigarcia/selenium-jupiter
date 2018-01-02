@@ -24,15 +24,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for capabilities.
+ * Key-value for the array of capabilities (used with DriverCapabilities
+ * annotation).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 1.0.0
+ * @since 2.0.0
  */
+
 @Retention(RUNTIME)
 @Target({ PARAMETER, FIELD })
 public @interface DriverCapabilities {
-
-    public Capability[] capability() default {};
-
+    public String[] value() default "";
 }

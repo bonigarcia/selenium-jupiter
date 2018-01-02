@@ -26,6 +26,7 @@ import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
@@ -53,9 +54,18 @@ public class AnnotationsReader {
         if (driverCapabilities != null) {
             // Search first DriverCapabilities annotation in parameter
             capabilities = new DesiredCapabilities();
-            for (Capability capability : driverCapabilities.capability()) {
-                ((DesiredCapabilities) capabilities)
-                        .setCapability(capability.name(), capability.value());
+            for (String capability : driverCapabilities.value()) {
+                StringTokenizer st = new StringTokenizer(capability, "=");
+                if (st.countTokens() != 2) {
+                    log.warn(
+                            "Invalid capability format in {} (expected capability=value)",
+                            capability);
+                } else {
+                    String name = st.nextToken();
+                    String value = st.nextToken();
+                    ((DesiredCapabilities) capabilities).setCapability(name,
+                            value);
+                }
             }
             out = Optional.of(capabilities);
         } else {

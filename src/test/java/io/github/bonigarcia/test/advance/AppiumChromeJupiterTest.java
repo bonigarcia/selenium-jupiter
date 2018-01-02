@@ -28,7 +28,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
-import io.github.bonigarcia.Capability;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -39,9 +38,9 @@ import io.github.bonigarcia.SeleniumExtension;
 public class AppiumChromeJupiterTest {
 
     @Test
-    void testWithAndroid(@DriverCapabilities(capability = {
-            @Capability(name = "browserName", value = "chrome"),
-            @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> driver)
+    void testWithAndroid(
+            @DriverCapabilities({ "browserName=chrome",
+                    "deviceName=Android" }) AppiumDriver<WebElement> driver)
             throws InterruptedException {
 
         String context = driver.getContext();

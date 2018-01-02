@@ -29,7 +29,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.Capability;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.DriverUrl;
 import io.github.bonigarcia.SeleniumExtension;
@@ -65,8 +64,7 @@ public class RemoteWebDriverJupiterTest {
 
     @Test
     void testWithRemoteChrome(
-            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities(capability = {
-                    @Capability(name = "browserName", value = "chrome") }) RemoteWebDriver driver) {
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
 

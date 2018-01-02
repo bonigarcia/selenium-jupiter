@@ -62,6 +62,7 @@ public class ChromeDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 chromeOptions.merge(capabilities.get());
             }
+
             driver = new ChromeDriver(chromeOptions);
         } catch (Exception e) {
             handleException(e);

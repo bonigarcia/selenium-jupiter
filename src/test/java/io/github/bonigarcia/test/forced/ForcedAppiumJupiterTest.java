@@ -28,7 +28,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
-import io.github.bonigarcia.Capability;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -46,9 +45,9 @@ public class ForcedAppiumJupiterTest {
     }
 
     @Test
-    public void appiumWithCapabilitiesTest(@DriverCapabilities(capability = {
-            @Capability(name = "browserName", value = "chrome"),
-            @Capability(name = "deviceName", value = "Android") }) AppiumDriver<WebElement> driver) {
+    public void appiumWithCapabilitiesTest(
+            @DriverCapabilities({ "browserName=chrome",
+                    "deviceName=Android" }) AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());
     }
 

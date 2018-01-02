@@ -19,15 +19,15 @@ package io.github.bonigarcia.test.advance;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
+import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
 
 import java.util.HashMap;
 import java.util.Map;
 
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.github.bonigarcia.DriverCapabilities;
@@ -37,13 +37,13 @@ import io.github.bonigarcia.SeleniumExtension;
 public class ChromeWithGlobalCapabilitiesJupiterTest {
 
     @DriverCapabilities
-    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+    DesiredCapabilities capabilities = chrome();
     {
         Map<String, String> mobileEmulation = new HashMap<String, String>();
         mobileEmulation.put("deviceName", "Nexus 5");
         Map<String, Object> chromeOptions = new HashMap<String, Object>();
         chromeOptions.put("mobileEmulation", mobileEmulation);
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        capabilities.setCapability(CAPABILITY, chromeOptions);
     }
 
     @Test
