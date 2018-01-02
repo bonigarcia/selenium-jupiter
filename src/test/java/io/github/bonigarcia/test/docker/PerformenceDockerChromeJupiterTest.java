@@ -39,7 +39,7 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class PerformenceDockerChromeJupiterTest {
 
-    static final int NUM_BROWSERS = 10;
+    static final int NUM_BROWSERS = 5;
 
     final Logger log = getLogger(lookup().lookupClass());
 
