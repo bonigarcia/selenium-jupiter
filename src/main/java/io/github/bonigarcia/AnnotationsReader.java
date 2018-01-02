@@ -60,12 +60,11 @@ public class AnnotationsReader {
                     log.warn(
                             "Invalid capability format in {} (expected capability=value)",
                             capability);
-                } else {
-                    String name = st.nextToken();
-                    String value = st.nextToken();
-                    ((DesiredCapabilities) capabilities).setCapability(name,
-                            value);
+                    continue;
                 }
+                String name = st.nextToken();
+                String value = st.nextToken();
+                ((DesiredCapabilities) capabilities).setCapability(name, value);
             }
             out = Optional.of(capabilities);
         } else {

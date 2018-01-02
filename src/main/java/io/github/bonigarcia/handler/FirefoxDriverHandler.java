@@ -110,16 +110,16 @@ public class FirefoxDriverHandler extends DriverHandler {
                     log.warn(
                             "Invalid preference format in {} (expected preference=value)",
                             preference);
+                    continue;
+                }
+                String name = st.nextToken();
+                String value = st.nextToken();
+                if (annotationsReader.isBoolean(value)) {
+                    firefoxOptions.addPreference(name, valueOf(value));
+                } else if (annotationsReader.isNumeric(value)) {
+                    firefoxOptions.addPreference(name, parseInt(value));
                 } else {
-                    String name = st.nextToken();
-                    String value = st.nextToken();
-                    if (annotationsReader.isBoolean(value)) {
-                        firefoxOptions.addPreference(name, valueOf(value));
-                    } else if (annotationsReader.isNumeric(value)) {
-                        firefoxOptions.addPreference(name, parseInt(value));
-                    } else {
-                        firefoxOptions.addPreference(name, value);
-                    }
+                    firefoxOptions.addPreference(name, value);
                 }
             }
         }
@@ -128,7 +128,7 @@ public class FirefoxDriverHandler extends DriverHandler {
         Object optionsFromAnnotatedField = annotationsReader
                 .getOptionsFromAnnotatedField(testInstance, Options.class);
         if (optionsFromAnnotatedField != null) {
-            firefoxOptions = (FirefoxOptions) ((FirefoxOptions) optionsFromAnnotatedField)
+            firefoxOptions = ((FirefoxOptions) optionsFromAnnotatedField)
                     .merge(firefoxOptions);
         }
 

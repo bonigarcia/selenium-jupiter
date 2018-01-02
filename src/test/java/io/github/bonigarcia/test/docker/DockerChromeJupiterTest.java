@@ -16,8 +16,8 @@
  */
 package io.github.bonigarcia.test.docker;
 
-import static io.github.bonigarcia.BrowserType.CHROME;
 // tag::snippet-in-doc[]
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
