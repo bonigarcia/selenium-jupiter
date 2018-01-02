@@ -128,7 +128,8 @@ public class FirefoxDriverHandler extends DriverHandler {
         Object optionsFromAnnotatedField = annotationsReader
                 .getOptionsFromAnnotatedField(testInstance, Options.class);
         if (optionsFromAnnotatedField != null) {
-            firefoxOptions.merge((FirefoxOptions) optionsFromAnnotatedField);
+            firefoxOptions = (FirefoxOptions) ((FirefoxOptions) optionsFromAnnotatedField)
+                    .merge(firefoxOptions);
         }
 
         return firefoxOptions;

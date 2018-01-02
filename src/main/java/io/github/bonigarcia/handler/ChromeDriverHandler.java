@@ -85,8 +85,9 @@ public class ChromeDriverHandler extends DriverHandler {
         // @Extensions
         Extensions extensions = parameter.getAnnotation(Extensions.class);
         if (extensions != null) {
-            stream(extensions.value()).forEach((value) -> chromeOptions
-                    .addExtensions(getExtension(value)));
+            for (String extension : extensions.value()) {
+                chromeOptions.addExtensions(getExtension(extension));
+            }
         }
 
         // @Binary
@@ -99,7 +100,8 @@ public class ChromeDriverHandler extends DriverHandler {
         Object optionsFromAnnotatedField = annotationsReader
                 .getOptionsFromAnnotatedField(testInstance, Options.class);
         if (optionsFromAnnotatedField != null) {
-            chromeOptions.merge((ChromeOptions) optionsFromAnnotatedField);
+            chromeOptions = (ChromeOptions) ((ChromeOptions) optionsFromAnnotatedField)
+                    .merge(chromeOptions);
         }
 
         return chromeOptions;
