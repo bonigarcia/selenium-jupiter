@@ -126,7 +126,7 @@ public class FirefoxDriverHandler extends DriverHandler {
                     continue;
                 }
                 String name = keyValue.get().get(0);
-                String value = keyValue.get().get(0);
+                String value = keyValue.get().get(1);
                 if (annotationsReader.isBoolean(value)) {
                     firefoxOptions.addPreference(name, valueOf(value));
                 } else if (annotationsReader.isNumeric(value)) {
