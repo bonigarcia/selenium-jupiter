@@ -128,10 +128,16 @@ public class DockerDriverHandler {
 
             if (enableVnc) {
                 capabilities.setCapability("enableVNC", true);
+                capabilities.setCapability("screenResolution",
+                        getString("sel.jup.docker.vnc.screen.resolution"));
             }
 
             if (recording) {
                 capabilities.setCapability("enableVideo", true);
+                capabilities.setCapability("videoScreenSize", getString(
+                        "sel.jup.docker.recording.video.screen.size"));
+                capabilities.setCapability("videoFrameRate",
+                        getInt("sel.jup.docker.recording.video.frame.rate"));
             }
 
             Optional<Capabilities> optionalCapabilities = annotationsReader
