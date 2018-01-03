@@ -17,7 +17,6 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
-import static java.lang.Runtime.getRuntime;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -74,7 +73,7 @@ public class ListDriverHandler extends DriverHandler {
                 int numBrowsers = dockerBrowser.get().size();
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
 
-                executorService = newFixedThreadPool(getRuntime().availableProcessors());
+                executorService = newFixedThreadPool(numBrowsers);
                 CountDownLatch latch = new CountDownLatch(numBrowsers);
                 for (int i = 0; i < numBrowsers; i++) {
                     executorService.submit(() -> {

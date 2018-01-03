@@ -20,7 +20,6 @@ package io.github.bonigarcia.test.docker;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
-import static java.lang.Runtime.getRuntime;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -32,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -62,8 +63,7 @@ public class PerformenceDockerChromeJupiterTest {
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
             throws InterruptedException {
 
-        ExecutorService executorService = newFixedThreadPool(
-                getRuntime().availableProcessors());
+        ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS);
         CountDownLatch latch = new CountDownLatch(NUM_BROWSERS);
 
         driverList.forEach((driver) -> {
