@@ -22,8 +22,8 @@ import static java.util.Arrays.stream;
 
 import java.io.IOException;
 import java.lang.reflect.Parameter;
+import java.util.List;
 import java.util.Optional;
-import java.util.StringTokenizer;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
@@ -102,27 +102,7 @@ public class FirefoxDriverHandler extends DriverHandler {
         }
 
         // @Preferences
-        Preferences preferences = parameter.getAnnotation(Preferences.class);
-        if (preferences != null) {
-            for (String preference : preferences.value()) {
-                StringTokenizer st = new StringTokenizer(preference, "=");
-                if (st.countTokens() != 2) {
-                    log.warn(
-                            "Invalid preference format in {} (expected preference=value)",
-                            preference);
-                    continue;
-                }
-                String name = st.nextToken();
-                String value = st.nextToken();
-                if (annotationsReader.isBoolean(value)) {
-                    firefoxOptions.addPreference(name, valueOf(value));
-                } else if (annotationsReader.isNumeric(value)) {
-                    firefoxOptions.addPreference(name, parseInt(value));
-                } else {
-                    firefoxOptions.addPreference(name, value);
-                }
-            }
-        }
+        managePreferences(firefoxOptions);
 
         // @Options
         Object optionsFromAnnotatedField = annotationsReader
@@ -133,6 +113,28 @@ public class FirefoxDriverHandler extends DriverHandler {
         }
 
         return firefoxOptions;
+    }
+
+    private void managePreferences(FirefoxOptions firefoxOptions) {
+        Preferences preferences = parameter.getAnnotation(Preferences.class);
+        if (preferences != null) {
+            for (String preference : preferences.value()) {
+                Optional<List<String>> keyValue = annotationsReader
+                        .getKeyValue(preference);
+                if (!keyValue.isPresent()) {
+                    continue;
+                }
+                String name = keyValue.get().get(0);
+                String value = keyValue.get().get(0);
+                if (annotationsReader.isBoolean(value)) {
+                    firefoxOptions.addPreference(name, valueOf(value));
+                } else if (annotationsReader.isNumeric(value)) {
+                    firefoxOptions.addPreference(name, parseInt(value));
+                } else {
+                    firefoxOptions.addPreference(name, value);
+                }
+            }
+        }
     }
 
 }

@@ -21,8 +21,6 @@ import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -113,18 +111,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             driverHandler = new AppiumDriverHandler(parameter, testInstance);
 
         } else if (type == List.class) {
-            ParameterizedType parameterizedType = (ParameterizedType) parameter
-                    .getParameterizedType();
-            Type[] actualTypeArguments = parameterizedType
-                    .getActualTypeArguments();
-            if (actualTypeArguments.length == 1
-                    && actualTypeArguments[0] == RemoteWebDriver.class) {
-                driverHandler = new ListDriverHandler(parameter, testInstance);
-            } else {
-                log.warn(
-                        "Invalid type of argument {} (expected List<RemoteWebDriver>)",
-                        parameterizedType);
-            }
+            driverHandler = new ListDriverHandler(parameter, testInstance);
 
         } else {
             driverHandler = new OtherDriverHandler(parameter, testInstance);
@@ -132,12 +119,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
         Object out = null;
         if (type == List.class) {
-            out = (List<RemoteWebDriver>) driverHandler.resolve();
+            out = driverHandler.resolve();
             for (RemoteWebDriver driver : (List<RemoteWebDriver>) out) {
                 webDriverList.add(driver);
             }
         } else {
-            out = (WebDriver) driverHandler.resolve();
+            out = driverHandler.resolve();
             if (out != null) {
                 webDriverList.add((WebDriver) out);
             }

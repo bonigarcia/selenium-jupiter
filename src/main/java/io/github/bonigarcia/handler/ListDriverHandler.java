@@ -16,11 +16,14 @@
  */
 package io.github.bonigarcia.handler;
 
+import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
+import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
  * Resolver for lists of RemoteWebDriver.
@@ -51,6 +55,16 @@ public class ListDriverHandler extends DriverHandler {
     @Override
     public List<RemoteWebDriver> resolve() {
         try {
+            ParameterizedType parameterizedType = (ParameterizedType) parameter
+                    .getParameterizedType();
+            Type[] actualTypeArguments = parameterizedType
+                    .getActualTypeArguments();
+            if (actualTypeArguments[0] != RemoteWebDriver.class) {
+                throw new SeleniumJupiterException(
+                        "Invalid type of argument " + parameterizedType
+                                + " (expected List<RemoteWebDriver>)");
+            }
+
             Optional<DockerBrowser> dockerBrowser = annotationsReader
                     .getDocker(parameter);
 
@@ -72,7 +86,13 @@ public class ListDriverHandler extends DriverHandler {
                         }
                     });
                 }
-                latch.await(numBrowsers * 2, SECONDS);
+                int timeout = numBrowsers
+                        * getInt("sel.jup.timeout.per.docker.brower.sec");
+                if (!latch.await(timeout, SECONDS)) {
+                    throw new SeleniumJupiterException("Timeout of " + timeout
+                            + " seconds waiting for start " + numBrowsers
+                            + " dockerized browsers");
+                }
                 return driverList;
 
             } else {

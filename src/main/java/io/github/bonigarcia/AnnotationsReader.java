@@ -17,6 +17,7 @@
 package io.github.bonigarcia;
 
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -25,6 +26,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
@@ -55,16 +57,11 @@ public class AnnotationsReader {
             // Search first DriverCapabilities annotation in parameter
             capabilities = new DesiredCapabilities();
             for (String capability : driverCapabilities.value()) {
-                StringTokenizer st = new StringTokenizer(capability, "=");
-                if (st.countTokens() != 2) {
-                    log.warn(
-                            "Invalid capability format in {} (expected capability=value)",
-                            capability);
-                    continue;
+                Optional<List<String>> keyValue = getKeyValue(capability);
+                if (keyValue.isPresent()) {
+                    ((DesiredCapabilities) capabilities).setCapability(
+                            keyValue.get().get(0), keyValue.get().get(1));
                 }
-                String name = st.nextToken();
-                String value = st.nextToken();
-                ((DesiredCapabilities) capabilities).setCapability(name, value);
             }
             out = Optional.of(capabilities);
         } else {
@@ -173,6 +170,15 @@ public class AnnotationsReader {
             out = Optional.of(dockerBrowser);
         }
         return out;
+    }
+
+    public Optional<List<String>> getKeyValue(String keyValue) {
+        StringTokenizer st = new StringTokenizer(keyValue, "=");
+        if (st.countTokens() != 2) {
+            log.warn("Invalid format in {} (expected key=value)", keyValue);
+            return empty();
+        }
+        return Optional.of(asList(st.nextToken(), st.nextToken()));
     }
 
 }
