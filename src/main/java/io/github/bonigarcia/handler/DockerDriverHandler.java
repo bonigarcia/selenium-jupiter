@@ -276,14 +276,23 @@ public class DockerDriverHandler {
 
         int selenoidPort = dockerService.findRandomOpenPort();
         Binding selenoidBindPort = bindPort(selenoidPort);
-        ExposedPort selenoidExposedPort = tcp(getInt("sel.jup.selenoid.port"));
+        int internalBrowserPort = getInt("sel.jup.selenoid.port");
+        ExposedPort selenoidExposedPort = tcp(internalBrowserPort);
         List<PortBinding> portBindings = asList(
                 new PortBinding(selenoidBindPort, selenoidExposedPort));
         String selenoidContainerName = dockerService
                 .generateContainerName("selenoid");
+
+        String browserTimeout = getString(
+                "sel.jup.docker.browser.timeout.duration");
+        List<String> cmd = asList("-listen", ":" + internalBrowserPort, "-conf",
+                "/etc/selenoid/browsers.json", "-video-output-dir",
+                "/opt/selenoid/video/", "-timeout", browserTimeout);
+
         DockerBuilder dockerBuilder = DockerContainer
                 .dockerBuilder(selenoidImage, selenoidContainerName)
-                .portBindings(portBindings).volumes(volumes).binds(binds);
+                .portBindings(portBindings).volumes(volumes).binds(binds)
+                .cmd(cmd);
         if (recording) {
             List<String> envs = asList(
                     "OVERRIDE_VIDEO_OUTPUT_DIR=" + hostVideoFolder);

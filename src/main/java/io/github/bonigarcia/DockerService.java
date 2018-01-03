@@ -160,6 +160,11 @@ public class DockerService {
                     log.trace("Using envs: {}", envs.get());
                     createContainer.withEnv(envs.get());
                 }
+                Optional<List<String>> cmd = dockerContainer.getCmd();
+                if (cmd.isPresent()) {
+                    log.trace("Using cmd: {}", cmd.get());
+                    createContainer.withCmd(cmd.get());
+                }
 
                 createContainer.exec();
                 dockerClient.startContainerCmd(containerName).exec();
