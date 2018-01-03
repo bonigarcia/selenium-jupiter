@@ -102,7 +102,7 @@ public class FirefoxDriverHandler extends DriverHandler {
         }
 
         // @Preferences
-        managePreferences(parameter, testInstance, firefoxOptions);
+        managePreferences(parameter, firefoxOptions);
 
         // @Options
         Object optionsFromAnnotatedField = annotationsReader
@@ -116,7 +116,7 @@ public class FirefoxDriverHandler extends DriverHandler {
     }
 
     private void managePreferences(Parameter parameter,
-            Optional<Object> testInstance, FirefoxOptions firefoxOptions) {
+            FirefoxOptions firefoxOptions) {
         Preferences preferences = parameter.getAnnotation(Preferences.class);
         if (preferences != null) {
             for (String preference : preferences.value()) {
