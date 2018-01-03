@@ -117,20 +117,20 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             driverHandler = new OtherDriverHandler(parameter, testInstance);
         }
 
-        Object out = null;
+        Object out = driverHandler.resolve();
         if (type == List.class) {
-            out = driverHandler.resolve();
-            for (RemoteWebDriver driver : (List<RemoteWebDriver>) out) {
-                webDriverList.add(driver);
-            }
+            ((List<RemoteWebDriver>) out).forEach(this::addWebDriverToList);
         } else {
-            out = driverHandler.resolve();
-            if (out != null) {
-                webDriverList.add((WebDriver) out);
-            }
+            addWebDriverToList((WebDriver) out);
         }
 
         return out;
+    }
+
+    private void addWebDriverToList(WebDriver webDriver) {
+        if (webDriver != null) {
+            webDriverList.add((WebDriver) webDriver);
+        }
     }
 
     @Override
