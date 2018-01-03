@@ -88,7 +88,7 @@ public class ListDriverHandler extends DriverHandler {
                     });
                 }
                 int timeout = numBrowsers
-                        * getInt("sel.jup.timeout.per.docker.brower.sec");
+                        * getInt("sel.jup.docker.timeout.per.brower.sec");
                 if (!latch.await(timeout, SECONDS)) {
                     throw new SeleniumJupiterException("Timeout of " + timeout
                             + " seconds waiting for start " + numBrowsers
