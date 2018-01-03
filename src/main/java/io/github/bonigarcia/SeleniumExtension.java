@@ -22,7 +22,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -65,6 +67,17 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
     private DriverHandler driverHandler;
+    private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
+    {
+        handlerMap.put(ChromeDriver.class, ChromeDriverHandler.class);
+        handlerMap.put(FirefoxDriver.class, FirefoxDriverHandler.class);
+        handlerMap.put(EdgeDriver.class, EdgeDriverHandler.class);
+        handlerMap.put(OperaDriver.class, OperaDriverHandler.class);
+        handlerMap.put(SafariDriver.class, SafariDriverHandler.class);
+        handlerMap.put(RemoteWebDriver.class, RemoteDriverHandler.class);
+        handlerMap.put(AppiumDriver.class, AppiumDriverHandler.class);
+        handlerMap.put(List.class, ListDriverHandler.class);
+    }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
@@ -89,32 +102,15 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         }
 
         // Handler
-        if (type == ChromeDriver.class) {
-            driverHandler = new ChromeDriverHandler(parameter, testInstance);
-
-        } else if (type == FirefoxDriver.class) {
-            driverHandler = new FirefoxDriverHandler(parameter, testInstance);
-
-        } else if (type == EdgeDriver.class) {
-            driverHandler = new EdgeDriverHandler(parameter, testInstance);
-
-        } else if (type == OperaDriver.class) {
-            driverHandler = new OperaDriverHandler(parameter, testInstance);
-
-        } else if (type == SafariDriver.class) {
-            driverHandler = new SafariDriverHandler(parameter, testInstance);
-
-        } else if (type == RemoteWebDriver.class) {
-            driverHandler = new RemoteDriverHandler(parameter, testInstance);
-
-        } else if (type == AppiumDriver.class) {
-            driverHandler = new AppiumDriverHandler(parameter, testInstance);
-
-        } else if (type == List.class) {
-            driverHandler = new ListDriverHandler(parameter, testInstance);
-
-        } else {
-            driverHandler = new OtherDriverHandler(parameter, testInstance);
+        Class<? extends DriverHandler> constructorClass = handlerMap
+                .containsKey(type) ? handlerMap.get(type)
+                        : OtherDriverHandler.class;
+        try {
+            driverHandler = constructorClass
+                    .getDeclaredConstructor(Parameter.class, Optional.class)
+                    .newInstance(parameter, testInstance);
+        } catch (Exception e) {
+            log.warn("Exception creating {}", constructorClass);
         }
 
         Object out = driverHandler.resolve();
