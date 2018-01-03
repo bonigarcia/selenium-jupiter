@@ -18,6 +18,7 @@ package io.github.bonigarcia.test.docker;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static java.lang.Runtime.getRuntime;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -49,7 +50,8 @@ public class PerformenceDockerChromeJupiterTest {
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
             throws InterruptedException {
 
-        ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS);
+        ExecutorService executorService = newFixedThreadPool(
+                getRuntime().availableProcessors());
         CountDownLatch latch = new CountDownLatch(NUM_BROWSERS);
 
         driverList.forEach((driver) -> {

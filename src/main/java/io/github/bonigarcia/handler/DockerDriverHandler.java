@@ -22,6 +22,7 @@ import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.Thread.currentThread;
@@ -181,7 +182,7 @@ public class DockerDriverHandler {
             if (containers != null && dockerService != null) {
                 int numContainers = containers.size();
                 ExecutorService executorService = newFixedThreadPool(
-                        numContainers);
+                        getRuntime().availableProcessors());
                 CountDownLatch latch = new CountDownLatch(numContainers);
                 for (Map.Entry<String, String> entry : containers.entrySet()) {
                     executorService.submit(() -> {
