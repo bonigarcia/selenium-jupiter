@@ -18,6 +18,8 @@ package io.github.bonigarcia.test.docker;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static java.lang.System.clearProperty;
+import static java.lang.System.setProperty;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -44,6 +46,16 @@ public class PerformenceDockerChromeJupiterTest {
     static final int NUM_BROWSERS = 3;
 
     final Logger log = getLogger(lookup().lookupClass());
+
+    @BeforeEach
+    void setup() {
+        setProperty("sel.jup.docker.vnc", "false");
+    }
+
+    @AfterEach
+    void teardown() {
+        clearProperty("sel.jup.docker.vnc");
+    }
 
     @Test
     public void testPerformance(
