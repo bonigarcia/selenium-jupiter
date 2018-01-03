@@ -141,11 +141,22 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
             webDriverList.forEach(this::logBase64Screenshot);
         }
 
-        webDriverList.forEach(WebDriver::quit);
+        for (WebDriver webDriver : webDriverList) {
+            try {
+                webDriver.quit();
+            } catch (Exception e) {
+                log.warn("Exception closing webdriver instance {}", webDriver,
+                        e);
+            }
+        }
         webDriverList.clear();
 
         if (driverHandler != null) {
-            driverHandler.cleanup();
+            try {
+                driverHandler.cleanup();
+            } catch (Exception e) {
+                log.warn("Exception cleaning handler {}", driverHandler, e);
+            }
         }
     }
 
