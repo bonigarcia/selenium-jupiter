@@ -307,6 +307,7 @@ public class DockerDriverHandler {
             if (currentTimeMillis() > timeoutMs) {
                 log.warn("Timeout of {} seconds waiting for file {}",
                         dockerWaitTimeoutSec, recordingFile);
+                break;
             }
             log.trace("Recording {} not present ... waiting {} ms",
                     recordingFile, dockerPollTimeMs);
