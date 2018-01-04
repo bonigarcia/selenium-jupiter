@@ -49,14 +49,14 @@ public class DockerRecordingJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.docker.recording", "true");
+        setProperty("sel.jup.recording", "true");
     }
 
     @AfterAll
     void teardown() {
         assertTrue(recording.exists());
         log.info("Deleting recording {} ... {}", recording, recording.delete());
-        clearProperty("sel.jup.docker.recording");
+        clearProperty("sel.jup.recording");
     }
 
     @Test

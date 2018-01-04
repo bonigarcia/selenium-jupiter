@@ -50,12 +50,12 @@ public class PerformenceDockerChromeJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.docker.vnc", "false");
+        setProperty("sel.jup.vnc", "false");
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.docker.vnc");
+        clearProperty("sel.jup.vnc");
     }
 
     @Test

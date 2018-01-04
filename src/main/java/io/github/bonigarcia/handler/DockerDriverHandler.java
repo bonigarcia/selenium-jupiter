@@ -117,8 +117,8 @@ public class DockerDriverHandler {
         try {
             String version = dockerBrowser.version();
 
-            boolean enableVnc = getBoolean("sel.jup.docker.vnc");
-            recording = getBoolean("sel.jup.docker.recording");
+            boolean enableVnc = getBoolean("sel.jup.vnc");
+            recording = getBoolean("sel.jup.recording");
             int selenoidPort = startDockerBrowser(browser, version, recording);
             int novncPort = 0;
             if (enableVnc) {
@@ -135,15 +135,15 @@ public class DockerDriverHandler {
             if (enableVnc) {
                 capabilities.setCapability("enableVNC", true);
                 capabilities.setCapability("screenResolution",
-                        getString("sel.jup.docker.vnc.screen.resolution"));
+                        getString("sel.jup.vnc.screen.resolution"));
             }
 
             if (recording) {
                 capabilities.setCapability("enableVideo", true);
                 capabilities.setCapability("videoScreenSize", getString(
-                        "sel.jup.docker.recording.video.screen.size"));
+                        "sel.jup.recording.video.screen.size"));
                 capabilities.setCapability("videoFrameRate",
-                        getInt("sel.jup.docker.recording.video.frame.rate"));
+                        getInt("sel.jup.recording.video.frame.rate"));
             }
 
             Optional<Capabilities> optionalCapabilities = annotationsReader
@@ -246,7 +246,7 @@ public class DockerDriverHandler {
     private int startDockerBrowser(BrowserType browser, String version,
             boolean recording) throws IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
-        String recordingImage = getString("sel.jup.docker.recording.image");
+        String recordingImage = getString("sel.jup.recording.image");
         String browserImage = !version.isEmpty()
                 ? selenoidConfig.getImageFromVersion(browser, version)
                 : selenoidConfig.getLatestImage(browser);
@@ -289,7 +289,7 @@ public class DockerDriverHandler {
                 .generateContainerName("selenoid");
 
         String browserTimeout = getString(
-                "sel.jup.docker.browser.timeout.duration");
+                "sel.jup.browser.session.timeout.duration");
         List<String> cmd = asList("-listen", ":" + internalBrowserPort, "-conf",
                 "/etc/selenoid/browsers.json", "-video-output-dir",
                 "/opt/selenoid/video/", "-timeout", browserTimeout);
