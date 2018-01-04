@@ -17,7 +17,6 @@
 package io.github.bonigarcia;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.openqa.selenium.OutputType.BASE64;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
@@ -31,7 +30,6 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -131,10 +129,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
 
     @Override
     public void afterEach(ExtensionContext context) {
-        Optional<Throwable> executionException = context
-                .getExecutionException();
-        if (executionException.isPresent()) {
-            webDriverList.forEach(this::logBase64Screenshot);
+        ScreenshotManager screenshotManager = new ScreenshotManager(context);
+
+        if (screenshotManager.isScreenshotRequired()) {
+            webDriverList.forEach(screenshotManager::makeScreenshot);
         }
 
         for (WebDriver webDriver : webDriverList) {
@@ -156,19 +154,4 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
         }
     }
 
-    void logBase64Screenshot(WebDriver driver) {
-        if (driver != null) {
-            try {
-                String screenshotBase64 = ((TakesScreenshot) driver)
-                        .getScreenshotAs(BASE64);
-                log.debug("Screenshot (in Base64) at the end of session {} "
-                        + "(copy&paste this string as URL in browser to watch it):\r\n"
-                        + "data:image/png;base64,{}",
-                        ((RemoteWebDriver) driver).getSessionId(),
-                        screenshotBase64);
-            } catch (Exception e) {
-                log.trace("Exception getting screenshot", e);
-            }
-        }
-    }
 }
