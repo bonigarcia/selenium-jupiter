@@ -21,6 +21,7 @@ import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
 import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
+import static io.github.bonigarcia.SeleniumJupiter.getOutputFolder;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
@@ -49,6 +50,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -90,6 +92,11 @@ public class DockerDriverHandler {
     File recordingFile;
     String hostVideoFolder;
     SelenoidConfig selenoidConfig;
+    ExtensionContext context;
+
+    public DockerDriverHandler(ExtensionContext context) {
+        this.context = context;
+    }
 
     public WebDriver resolve(DockerBrowser dockerBrowser, Parameter parameter,
             Optional<Object> testInstance,
@@ -248,9 +255,8 @@ public class DockerDriverHandler {
         dockerService.pullImageIfNecessary(browserImage);
         if (recording) {
             dockerService.pullImageIfNecessary(recordingImage);
-            hostVideoFolder = new File(
-                    getString("sel.jup.docker.recording.folder"))
-                            .getAbsolutePath();
+            hostVideoFolder = new File(getOutputFolder(context))
+                    .getAbsolutePath();
         }
 
         String defaultSocket = dockerService.getDockerDefaultSocket();

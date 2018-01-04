@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -88,9 +87,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     @SuppressWarnings("unchecked")
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
-            ExtensionContext extensionContext) {
+            ExtensionContext context) {
         Parameter parameter = parameterContext.getParameter();
-        Optional<Object> testInstance = extensionContext.getTestInstance();
         Class<?> type = parameter.getType();
 
         // WebDriverManager
@@ -105,8 +103,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
                         : OtherDriverHandler.class;
         try {
             driverHandler = constructorClass
-                    .getDeclaredConstructor(Parameter.class, Optional.class)
-                    .newInstance(parameter, testInstance);
+                    .getDeclaredConstructor(Parameter.class,
+                            ExtensionContext.class)
+                    .newInstance(parameter, context);
         } catch (Exception e) {
             log.warn("Exception creating {}", constructorClass);
         }

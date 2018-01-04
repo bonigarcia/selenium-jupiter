@@ -30,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
@@ -47,9 +48,8 @@ public class ListDriverHandler extends DriverHandler {
 
     private ExecutorService executorService;
 
-    public ListDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public ListDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ListDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                dockerDriverHandler = new DockerDriverHandler();
+                dockerDriverHandler = new DockerDriverHandler(context);
                 int numBrowsers = dockerBrowser.get().size();
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
 

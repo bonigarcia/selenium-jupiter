@@ -25,6 +25,7 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -50,9 +51,8 @@ public class FirefoxDriverHandler extends DriverHandler {
         super();
     }
 
-    public FirefoxDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public FirefoxDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override

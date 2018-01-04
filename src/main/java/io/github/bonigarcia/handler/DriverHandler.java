@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.MutableCapabilities;
 import org.slf4j.Logger;
 
@@ -45,6 +46,7 @@ public abstract class DriverHandler {
     final Logger log = getLogger(lookup().lookupClass());
 
     Parameter parameter;
+    ExtensionContext context;
     Optional<Object> testInstance;
     AnnotationsReader annotationsReader = new AnnotationsReader();
 
@@ -54,9 +56,10 @@ public abstract class DriverHandler {
         // Default constructor
     }
 
-    public DriverHandler(Parameter parameter, Optional<Object> testInstance) {
+    public DriverHandler(Parameter parameter, ExtensionContext context) {
         this.parameter = parameter;
-        this.testInstance = testInstance;
+        this.context = context;
+        this.testInstance = context.getTestInstance();
     }
 
     void handleException(Exception e) {

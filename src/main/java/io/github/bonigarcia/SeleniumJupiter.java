@@ -18,9 +18,15 @@ package io.github.bonigarcia;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.wdm.WdmConfig;
 import io.github.bonigarcia.wdm.WebDriverManagerException;
@@ -32,6 +38,8 @@ import io.github.bonigarcia.wdm.WebDriverManagerException;
  * @since 1.0.0
  */
 public class SeleniumJupiter {
+
+    static final Logger log = getLogger(lookup().lookupClass());
 
     SeleniumJupiter() {
         throw new IllegalStateException("Utility class");
@@ -57,6 +65,21 @@ public class SeleniumJupiter {
 
     public static boolean getBoolean(String key) {
         return parseBoolean(getString(key));
+    }
+
+    public static String getOutputFolder(ExtensionContext context) {
+        String outputFolder = getString("sel.jup.output.folder");
+        if (outputFolder.equalsIgnoreCase("surefire-reports")) {
+            outputFolder = "./target/surefire-reports/"
+                    + context.getTestClass().get().getName();
+        }
+        log.debug("Output folder {}", outputFolder);
+
+        File outputFolderFile = new File(outputFolder);
+        if (!outputFolderFile.exists()) {
+            outputFolderFile.mkdirs();
+        }
+        return outputFolder;
     }
 
     private static String getProperty(String key) {

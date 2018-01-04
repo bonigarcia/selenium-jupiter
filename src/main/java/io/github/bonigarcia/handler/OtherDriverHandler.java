@@ -19,6 +19,7 @@ package io.github.bonigarcia.handler;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 
@@ -30,9 +31,8 @@ import org.openqa.selenium.WebDriver;
  */
 public class OtherDriverHandler extends DriverHandler {
 
-    public OtherDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public OtherDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override

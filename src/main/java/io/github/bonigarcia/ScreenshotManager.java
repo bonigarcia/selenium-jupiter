@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.getOutputFolder;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
@@ -97,20 +98,10 @@ public class ScreenshotManager {
         try {
             File screenshotFile = ((TakesScreenshot) driver)
                     .getScreenshotAs(FILE);
-            String outputFolder = getString("sel.jup.output.folder");
-            if (outputFolder.equalsIgnoreCase("surefire-reports")) {
-                outputFolder = "./target/surefire-reports/"
-                        + context.getTestClass().get().getName();
-            }
-            log.debug("Output folder for screenshots {}", outputFolder);
-
-            File outputFolderFile = new File(outputFolder);
-            if (!outputFolderFile.exists()) {
-                outputFolderFile.mkdirs();
-            }
+            String outputFolder = getOutputFolder(context);
             String imageName = ((RemoteWebDriver) driver).getSessionId()
                     + ".png";
-            copyFile(screenshotFile, new File(outputFolderFile, imageName));
+            copyFile(screenshotFile, new File(outputFolder, imageName));
 
         } catch (Exception e) {
             log.trace("Exception getting screenshot as file", e);

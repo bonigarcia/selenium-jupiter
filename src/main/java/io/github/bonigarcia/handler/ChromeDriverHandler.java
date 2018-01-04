@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -45,9 +46,8 @@ public class ChromeDriverHandler extends DriverHandler {
         super();
     }
 
-    public ChromeDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public ChromeDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override

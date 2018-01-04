@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -38,9 +39,8 @@ public class RemoteDriverHandler extends DriverHandler {
 
     private DockerDriverHandler dockerDriverHandler;
 
-    public RemoteDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public RemoteDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RemoteDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                dockerDriverHandler = new DockerDriverHandler();
+                dockerDriverHandler = new DockerDriverHandler(context);
                 driver = dockerDriverHandler.resolve(dockerBrowser.get(),
                         parameter, testInstance, annotationsReader);
 

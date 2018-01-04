@@ -19,6 +19,7 @@ package io.github.bonigarcia.handler;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -35,9 +36,8 @@ import io.github.bonigarcia.Options;
  */
 public class SafariDriverHandler extends DriverHandler {
 
-    public SafariDriverHandler(Parameter parameter,
-            Optional<Object> testInstance) {
-        super(parameter, testInstance);
+    public SafariDriverHandler(Parameter parameter, ExtensionContext context) {
+        super(parameter, context);
     }
 
     @Override
