@@ -65,7 +65,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback {
     private List<Class<?>> typeList = new ArrayList<>();
     private DriverHandler driverHandler;
     private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
-    {
+
+    public SeleniumExtension() {
         handlerMap.put(ChromeDriver.class, ChromeDriverHandler.class);
         handlerMap.put(FirefoxDriver.class, FirefoxDriverHandler.class);
         handlerMap.put(EdgeDriver.class, EdgeDriverHandler.class);
