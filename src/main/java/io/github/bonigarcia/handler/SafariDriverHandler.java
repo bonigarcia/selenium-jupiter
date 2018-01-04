@@ -44,6 +44,7 @@ public class SafariDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         SafariDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             SafariOptions safariOptions = (SafariOptions) getOptions(parameter,

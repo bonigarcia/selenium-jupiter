@@ -59,6 +59,7 @@ public class FirefoxDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         FirefoxDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             FirefoxOptions firefoxOptions = (FirefoxOptions) getOptions(

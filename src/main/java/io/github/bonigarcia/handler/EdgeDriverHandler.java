@@ -45,6 +45,7 @@ public class EdgeDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         EdgeDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             EdgeOptions edgeOptions = (EdgeOptions) getOptions(parameter,

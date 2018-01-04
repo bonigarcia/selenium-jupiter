@@ -54,6 +54,7 @@ public class ChromeDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         ChromeDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             ChromeOptions chromeOptions = (ChromeOptions) getOptions(parameter,

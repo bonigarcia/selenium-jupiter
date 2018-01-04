@@ -39,6 +39,7 @@ public class OtherDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         WebDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Class<?> type = parameter.getType();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);

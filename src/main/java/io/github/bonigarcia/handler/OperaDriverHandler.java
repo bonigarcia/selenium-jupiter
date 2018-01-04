@@ -54,6 +54,7 @@ public class OperaDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         OperaDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             OperaOptions operaOptions = (OperaOptions) getOptions(parameter,

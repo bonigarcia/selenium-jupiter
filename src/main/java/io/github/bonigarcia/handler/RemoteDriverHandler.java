@@ -47,6 +47,7 @@ public class RemoteDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         WebDriver driver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<DockerBrowser> dockerBrowser = annotationsReader
                     .getDocker(parameter);
 
@@ -68,6 +69,7 @@ public class RemoteDriverHandler extends DriverHandler {
     private WebDriver resolveRemote()
             throws IllegalAccessException, MalformedURLException {
         WebDriver driver = null;
+        Optional<Object> testInstance = context.getTestInstance();
         Optional<Capabilities> capabilities = annotationsReader
                 .getCapabilities(parameter, testInstance);
 

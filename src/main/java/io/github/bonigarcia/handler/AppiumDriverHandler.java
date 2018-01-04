@@ -46,6 +46,7 @@ public class AppiumDriverHandler extends DriverHandler {
     public WebDriver resolve() {
         WebDriver webDriver = null;
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
 

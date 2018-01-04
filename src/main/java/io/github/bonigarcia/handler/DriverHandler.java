@@ -47,7 +47,6 @@ public abstract class DriverHandler {
 
     Parameter parameter;
     ExtensionContext context;
-    Optional<Object> testInstance;
     AnnotationsReader annotationsReader = new AnnotationsReader();
 
     public abstract Object resolve();
@@ -59,7 +58,6 @@ public abstract class DriverHandler {
     public DriverHandler(Parameter parameter, ExtensionContext context) {
         this.parameter = parameter;
         this.context = context;
-        this.testInstance = context.getTestInstance();
     }
 
     void handleException(Exception e) {

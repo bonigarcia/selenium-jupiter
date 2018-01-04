@@ -55,6 +55,7 @@ public class ListDriverHandler extends DriverHandler {
     @Override
     public List<RemoteWebDriver> resolve() {
         try {
+            Optional<Object> testInstance = context.getTestInstance();
             ParameterizedType parameterizedType = (ParameterizedType) parameter
                     .getParameterizedType();
             Type[] actualTypeArguments = parameterizedType
