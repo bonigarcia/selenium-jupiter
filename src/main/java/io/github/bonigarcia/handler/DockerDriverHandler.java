@@ -195,6 +195,7 @@ public class DockerDriverHandler {
             return webDriver;
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new SeleniumJupiterException(e);
         }
 
@@ -204,26 +205,29 @@ public class DockerDriverHandler {
         try {
             if (containers != null && dockerService != null) {
                 int numContainers = containers.size();
-                ExecutorService executorService = newFixedThreadPool(
-                        numContainers);
-                CountDownLatch latch = new CountDownLatch(numContainers);
-                for (Map.Entry<String, String> entry : containers.entrySet()) {
-                    executorService.submit(() -> {
-                        try {
-                            if (recording && entry.getValue().equals(
-                                    getString("sel.jup.selenoid.image"))) {
-                                waitForRecording();
+                if (numContainers > 0) {
+                    ExecutorService executorService = newFixedThreadPool(
+                            numContainers);
+                    CountDownLatch latch = new CountDownLatch(numContainers);
+                    for (Map.Entry<String, String> entry : containers
+                            .entrySet()) {
+                        executorService.submit(() -> {
+                            try {
+                                if (recording && entry.getValue().equals(
+                                        getString("sel.jup.selenoid.image"))) {
+                                    waitForRecording();
+                                }
+                                dockerService.stopAndRemoveContainer(
+                                        entry.getKey(), entry.getValue());
+                            } finally {
+                                latch.countDown();
                             }
-                            dockerService.stopAndRemoveContainer(entry.getKey(),
-                                    entry.getValue());
-                        } finally {
-                            latch.countDown();
-                        }
-                    });
+                        });
+                    }
+                    containers.clear();
+                    latch.await();
+                    executorService.shutdown();
                 }
-                containers.clear();
-                latch.await();
-                executorService.shutdown();
             }
             if (tmpDir != null) {
                 deleteDirectory(tmpDir.toFile());
@@ -258,9 +262,16 @@ public class DockerDriverHandler {
             boolean recording) throws IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String recordingImage = getString("sel.jup.recording.image");
-        String browserImage = !version.isEmpty()
-                ? selenoidConfig.getImageFromVersion(browser, version)
-                : selenoidConfig.getLatestImage(browser);
+
+        String browserImage;
+        if (version.isEmpty()) {
+            log.debug("Using {} version {} (latest)", browser,
+                    selenoidConfig.getDefaultBrowser(browser));
+            browserImage = selenoidConfig.getLatestImage(browser);
+        } else {
+            log.debug("Using {} version {}", browser, version);
+            browserImage = selenoidConfig.getImageFromVersion(browser, version);
+        }
 
         dockerService.pullImageIfNecessary(selenoidImage);
         dockerService.pullImageIfNecessary(browserImage);

@@ -13,6 +13,7 @@
         <appium-java-client.version>5.0.4</appium-java-client.version>
         <docker-java.version>3.0.14</docker-java.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <retrofit.version>2.3.0</retrofit.version>
 
         <!-- Test dependencies -->
         <junit.jupiter.version>5.0.2</junit.jupiter.version>
@@ -101,6 +102,21 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>adapter-rxjava</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>${retrofit.version}</version>
         </dependency>
 
         <!-- provided -->

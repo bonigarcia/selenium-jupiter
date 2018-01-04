@@ -73,7 +73,10 @@ public class SelenoidConfig {
     }
 
     public String getLatestImage(BrowserType browser) {
-        return format(browser.getDockerImage(),
-                browsers.getBrowser(browser).getDefaultBrowser());
+        return format(browser.getDockerImage(), getDefaultBrowser(browser));
+    }
+
+    public String getDefaultBrowser(BrowserType browser) {
+        return browsers.getBrowser(browser).getDefaultBrowser();
     }
 }

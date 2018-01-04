@@ -17,7 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static com.google.common.collect.Maps.difference;
-import static io.github.bonigarcia.BrowserType.getNextVersion;
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static java.nio.charset.Charset.defaultCharset;
@@ -68,7 +68,7 @@ public class SelenoidConfigTest {
     @CsvSource({ "3.6, 4.0, 47.0", "46.0, 47.0, 47.0", "46, 47.0, 47" })
     void testNextVersion(String version, String expectedNextVersion,
             String latestVersion) {
-        String nextVersion = getNextVersion(version, latestVersion);
+        String nextVersion = CHROME.getNextVersion(version, latestVersion);
         assertThat(nextVersion, equalTo(expectedNextVersion));
     }
 
