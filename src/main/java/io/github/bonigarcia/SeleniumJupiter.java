@@ -23,6 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -69,9 +70,13 @@ public class SeleniumJupiter {
 
     public static String getOutputFolder(ExtensionContext context) {
         String outputFolder = getString("sel.jup.output.folder");
-        if (outputFolder.equalsIgnoreCase("surefire-reports")) {
+        Optional<Class<?>> testInstance = context.getTestClass();
+        if (outputFolder.equalsIgnoreCase("surefire-reports")
+                && testInstance.isPresent()) {
             outputFolder = "./target/surefire-reports/"
-                    + context.getTestClass().get().getName();
+                    + testInstance.get().getName();
+        } else {
+            outputFolder = ".";
         }
         log.debug("Output folder {}", outputFolder);
 
