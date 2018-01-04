@@ -9,9 +9,9 @@
     <properties>
         <!-- Dependencies -->
         <selenium-java.version>3.8.1</selenium-java.version>
-        <webdrivermanager.version>2.0.1</webdrivermanager.version>
+        <webdrivermanager.version>2.1.0</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
-        <docker-java.version>3.0.9</docker-java.version>
+        <docker-java.version>3.0.14</docker-java.version>
         <slf4j.version>1.7.25</slf4j.version>
 
         <!-- Test dependencies -->
@@ -326,13 +326,5 @@
             </build>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>oss-sonatype</id>
-            <name>oss-sonatype</name>
-            <url>https://oss.sonatype.org/content/repositories/</url>
-        </repository>
-    </repositories>
 
 </project>
