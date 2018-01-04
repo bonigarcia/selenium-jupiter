@@ -19,9 +19,9 @@ package io.github.bonigarcia.test.annotations;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -86,10 +86,10 @@ public class ForcedAnnotationReaderTest {
             Class<?> driverClass, String testName) throws Exception {
         Parameter parameter = testClass.getMethod(testName, driverClass)
                 .getParameters()[0];
-        Optional<Object> testInstance = Optional.of(testClass.newInstance());
         assertThrows(SeleniumJupiterException.class, () -> {
-            handler.getDeclaredConstructor(Parameter.class, Optional.class)
-                    .newInstance(parameter, testInstance).resolve();
+            handler.getDeclaredConstructor(Parameter.class,
+                    ExtensionContext.class).newInstance(parameter, null)
+                    .resolve();
         });
     }
 
