@@ -68,8 +68,7 @@ public enum BrowserType {
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(firefoxPreffix))
                     .map(p -> p.getName().replace(firefoxPreffix, ""))
-                    .sorted((v1, v2) -> compareVersions(v1, v2))
-                    .collect(toList());
+                    .sorted(this::compareVersions).collect(toList());
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.firefox.image.format");
@@ -81,8 +80,7 @@ public enum BrowserType {
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(operaPreffix))
                     .map(p -> p.getName().replace(operaPreffix, ""))
-                    .sorted((v1, v2) -> compareVersions(v1, v2)).skip(1)
-                    .collect(toList());
+                    .sorted(this::compareVersions).skip(1).collect(toList());
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.opera.image.format");
@@ -95,8 +93,7 @@ public enum BrowserType {
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(chromePreffix))
                     .map(p -> p.getName().replace(chromePreffix, ""))
-                    .sorted((v1, v2) -> compareVersions(v1, v2))
-                    .collect(toList());
+                    .sorted(this::compareVersions).collect(toList());
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.chrome.image.format");

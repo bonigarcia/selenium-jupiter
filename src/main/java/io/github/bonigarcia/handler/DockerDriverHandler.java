@@ -195,7 +195,6 @@ public class DockerDriverHandler {
             return webDriver;
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new SeleniumJupiterException(e);
         }
 
