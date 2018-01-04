@@ -41,7 +41,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -140,8 +142,8 @@ public class DockerDriverHandler {
 
             if (recording) {
                 capabilities.setCapability("enableVideo", true);
-                capabilities.setCapability("videoScreenSize", getString(
-                        "sel.jup.recording.video.screen.size"));
+                capabilities.setCapability("videoScreenSize",
+                        getString("sel.jup.recording.video.screen.size"));
                 capabilities.setCapability("videoFrameRate",
                         getInt("sel.jup.recording.video.frame.rate"));
             }
@@ -176,6 +178,15 @@ public class DockerDriverHandler {
                         dockerServerIp, novncPort, dockerServerIp, selenoidPort,
                         sessionId, getString("sel.jup.selenoid.vnc.password"));
                 log.debug("Session {} VNC URL: {}", sessionId, vncUrl);
+
+                if (getBoolean("sel.jup.vnc.create.redirect.html.page")) {
+                    String outputFolder = getOutputFolder(context);
+                    String vncHtmlPage = format(
+                            "<html><body onload=\"window.location.href='%s'\"></html>",
+                            vncUrl);
+                    Files.write(Paths.get(outputFolder, sessionId + ".html"),
+                            vncHtmlPage.getBytes());
+                }
             }
             if (recording) {
                 recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
