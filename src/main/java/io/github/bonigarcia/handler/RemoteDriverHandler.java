@@ -26,6 +26,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import io.github.bonigarcia.Browsers.Browser;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 
@@ -38,9 +39,16 @@ import io.github.bonigarcia.SeleniumJupiterException;
 public class RemoteDriverHandler extends DriverHandler {
 
     private DockerDriverHandler dockerDriverHandler;
+    private Browser browser;
 
     public RemoteDriverHandler(Parameter parameter, ExtensionContext context) {
         super(parameter, context);
+    }
+
+    public RemoteDriverHandler(Parameter parameter, ExtensionContext context,
+            Browser browser) {
+        super(parameter, context);
+        this.browser = browser;
     }
 
     @Override
@@ -48,17 +56,21 @@ public class RemoteDriverHandler extends DriverHandler {
         WebDriver driver = null;
         try {
             Optional<Object> testInstance = context.getTestInstance();
-            Optional<DockerBrowser> dockerBrowser = annotationsReader
-                    .getDocker(parameter);
+            dockerDriverHandler = new DockerDriverHandler(context, parameter,
+                    testInstance, annotationsReader);
 
-            if (dockerBrowser.isPresent()) {
-                dockerDriverHandler = new DockerDriverHandler(context);
-                driver = dockerDriverHandler.resolve(dockerBrowser.get(),
-                        parameter, testInstance, annotationsReader);
-
+            if (browser != null) {
+                driver = dockerDriverHandler.resolve(browser.toBrowserType(),
+                        browser.getVersion());
             } else {
-                driver = resolveRemote();
+                Optional<DockerBrowser> dockerBrowser = annotationsReader
+                        .getDocker(parameter);
 
+                if (dockerBrowser.isPresent()) {
+                    driver = dockerDriverHandler.resolve(dockerBrowser.get());
+                } else {
+                    driver = resolveRemote();
+                }
             }
         } catch (Exception e) {
             handleException(e);

@@ -31,8 +31,16 @@ import org.openqa.selenium.WebDriver;
  */
 public class OtherDriverHandler extends DriverHandler {
 
+    private Class<?> type;
+
     public OtherDriverHandler(Parameter parameter, ExtensionContext context) {
         super(parameter, context);
+    }
+
+    public OtherDriverHandler(Parameter parameter, ExtensionContext context,
+            Class<?> type) {
+        super(parameter, context);
+        this.type = type;
     }
 
     @Override
@@ -40,7 +48,9 @@ public class OtherDriverHandler extends DriverHandler {
         WebDriver driver = null;
         try {
             Optional<Object> testInstance = context.getTestInstance();
-            Class<?> type = parameter.getType();
+            if (type == null) {
+                type = parameter.getType();
+            }
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             if (capabilities.isPresent()) {

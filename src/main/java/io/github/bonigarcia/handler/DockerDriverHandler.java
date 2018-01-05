@@ -95,15 +95,26 @@ public class DockerDriverHandler {
     String hostVideoFolder;
     SelenoidConfig selenoidConfig;
     ExtensionContext context;
+    Parameter parameter;
+    Optional<Object> testInstance;
+    AnnotationsReader annotationsReader;
 
-    public DockerDriverHandler(ExtensionContext context) {
-        this.context = context;
-    }
-
-    public WebDriver resolve(DockerBrowser dockerBrowser, Parameter parameter,
+    public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance,
             AnnotationsReader annotationsReader) {
+        this.context = context;
+        this.parameter = parameter;
+        this.testInstance = testInstance;
+        this.annotationsReader = annotationsReader;
+    }
+
+    public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browser = dockerBrowser.type();
+        String version = dockerBrowser.version();
+        return resolve(browser, version);
+    }
+
+    public WebDriver resolve(BrowserType browser, String version) {
         WebDriver webDriver = null;
 
         if (dockerService == null) {
@@ -117,8 +128,6 @@ public class DockerDriverHandler {
         }
 
         try {
-            String version = dockerBrowser.version();
-
             boolean enableVnc = getBoolean("sel.jup.vnc");
             recording = getBoolean("sel.jup.recording");
             int selenoidPort = startDockerBrowser(browser, version, recording);
@@ -129,7 +138,7 @@ public class DockerDriverHandler {
 
             DesiredCapabilities capabilities = browser.getCapabilities();
 
-            if (!version.isEmpty()) {
+            if (version != null && !version.isEmpty()) {
                 capabilities.setCapability("version",
                         selenoidConfig.getImageVersion(browser, version));
             }
@@ -263,7 +272,7 @@ public class DockerDriverHandler {
         String recordingImage = getString("sel.jup.recording.image");
 
         String browserImage;
-        if (version.isEmpty()) {
+        if (version == null || version.isEmpty()) {
             log.debug("Using {} version {} (latest)", browser,
                     selenoidConfig.getDefaultBrowser(browser));
             browserImage = selenoidConfig.getLatestImage(browser);

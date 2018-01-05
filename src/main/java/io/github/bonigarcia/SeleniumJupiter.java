@@ -88,16 +88,24 @@ public class SeleniumJupiter {
     }
 
     private static String getProperty(String key) {
+        String value = null;
         Properties properties = new Properties();
         try {
             InputStream inputStream = WdmConfig.class.getResourceAsStream(
                     System.getProperty("sel.jup.properties",
                             "/selenium-jupiter.properties"));
             properties.load(inputStream);
+            value = properties.getProperty(key);
         } catch (Exception e) {
             throw new WebDriverManagerException(e);
+        } finally {
+            if (value == null) {
+                log.trace("Property key {} not found, using default value",
+                        key);
+                value = "";
+            }
         }
-        return properties.getProperty(key);
+        return value;
     }
 
 }

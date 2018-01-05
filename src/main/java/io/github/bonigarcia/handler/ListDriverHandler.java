@@ -70,7 +70,8 @@ public class ListDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                dockerDriverHandler = new DockerDriverHandler(context);
+                dockerDriverHandler = new DockerDriverHandler(context,
+                        parameter, testInstance, annotationsReader);
                 int numBrowsers = dockerBrowser.get().size();
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
 
@@ -80,8 +81,7 @@ public class ListDriverHandler extends DriverHandler {
                     executorService.submit(() -> {
                         try {
                             driverList.add((RemoteWebDriver) dockerDriverHandler
-                                    .resolve(dockerBrowser.get(), parameter,
-                                            testInstance, annotationsReader));
+                                    .resolve(dockerBrowser.get()));
                         } finally {
                             latch.countDown();
                         }
