@@ -105,8 +105,7 @@ public class DockerService {
                 log.trace("Docker server IP: {}", dockerServerIp);
             }
         } catch (Exception e) {
-            throw new SeleniumJupiterException(
-                    "Exception geting Docker Server IP", e);
+            throw new SeleniumJupiterException(e);
         }
 
         return dockerServerIp;

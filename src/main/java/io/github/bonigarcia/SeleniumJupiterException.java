@@ -26,10 +26,6 @@ public class SeleniumJupiterException extends RuntimeException {
 
     private static final long serialVersionUID = -7026228903533825338L;
 
-    public SeleniumJupiterException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public SeleniumJupiterException(String message) {
         super(message);
     }
