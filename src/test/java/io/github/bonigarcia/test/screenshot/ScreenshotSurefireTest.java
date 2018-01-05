@@ -62,7 +62,7 @@ public class ScreenshotSurefireTest {
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
         imageName = new File(
-                "./target/surefire-reports/io.github.bonigarcia.test.screenshot.ScreenshotPngTest",
+                "./target/surefire-reports/io.github.bonigarcia.test.screenshot.ScreenshotSurefireTest",
                 driver.getSessionId() + ".png");
     }
 
