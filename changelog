@@ -1,3 +1,29 @@
+selenium-jupiter (2.0.0)
+
+  + Use of io.github.bonigarcia:webdrivermanager version 2.1.0
+  + Use of io.appium:java-client version 5.0.4
+  + Use of com.github.docker-java:docker-java version 3.0.14
+  + Use of com.codeborne:phantomjsdriver version 1.4.3
+  + Remove annotations @DriverOptions and @Option
+  + Include annotations @Arguments, @Binary, @Extensions, @Options, and @Preferences
+  + Support for dockerized browsers (Chrome, Firefox, Opera)
+  + Use of Selenoid docker images for dockerized browsers (http://aerokube.com/selenoid/latest/)
+  + Support for live session view of dockerized sessions using VNC
+  + Include config key sel.jup.docker.vnc to activate VNC in Docker containers
+  + Support for performance test asking for lists of dockerized browsers
+  + Read from Docker Hub the dockerized browsers images (https://hub.docker.com//v2/repositories/selenoid/vnc/tags/?page_size=1024)
+  + Support for recording dockerized sessions in MP4 format
+  + Include configuration keys for screen resolution, size, and frame rate
+  + Include configuration key for browser container timeout
+  + Support for test template based on JSON browser scenarios
+  + Write browser screenshot using config key (sel.jup.screenshot.at.the.end.of.tests=true|false|whenfailure)
+  + Select format for screenshot using config key (sel.jup.screenshot.format=base64|png|base64andpng)
+  + Select output folder (used for screenshots and images) using config key (sel.jup.output.folder=/abs/path|./rel/path|surefire-reports)
+  + Seamless integration with Jenkins attachment plugin (https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin) using surefire-reports
+
+ -- Boni Garcia <boni.gg@gmail.com>  Fri, 5 Jan 2018 05:23:00
+
+
 selenium-jupiter (1.2.0)
 
   + Use of org.seleniumhq.selenium:selenium-java version 3.8.1

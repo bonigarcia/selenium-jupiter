@@ -19,7 +19,7 @@ In order to include *selenium-jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>1.2.0</version>
+	<version>2.0.0</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ You can find more details about this extension taking a look to the [selenium-ju
 
 ## About
 
-selenium-jupiter (Copyright &copy; 2017) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][selenium-jupiter issues]!
+selenium-jupiter (Copyright &copy; 2018) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][selenium-jupiter issues]!
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Boni Garcia]: http://bonigarcia.github.io/
