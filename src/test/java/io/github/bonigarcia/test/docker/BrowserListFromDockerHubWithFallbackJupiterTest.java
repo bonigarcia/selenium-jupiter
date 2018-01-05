@@ -14,8 +14,9 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.forced;
+package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,26 +25,28 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ForcedBrowserListFromPropertiesJupiterTest {
+public class BrowserListFromDockerHubWithFallbackJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.browser.list.from.docker.hub", "false");
+        setProperty("sel.jup.docker.hub.url", "");
     }
 
     @Test
-    public void chromeTest(ChromeDriver driver) {
+    public void chromeTest(
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         assertThat(driver, notNullValue());
     }
 
     @AfterEach
     void teardown() {
-        setProperty("sel.jup.browser.list.from.docker.hub", "true");
+        setProperty("sel.jup.docker.hub.url", "https://hub.docker.com/");
     }
 
 }

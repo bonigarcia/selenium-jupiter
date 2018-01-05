@@ -19,6 +19,7 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static io.github.bonigarcia.BrowserType.OPERA;
+import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -49,8 +50,7 @@ public class DockerBrowserConfig {
     BrowserConfig operablink;
 
     public DockerBrowserConfig() {
-        if (!SeleniumJupiter
-                .getBoolean("sel.jup.browser.list.from.docker.hub")) {
+        if (!getBoolean("sel.jup.browser.list.from.docker.hub")) {
             initBrowserConfigFromProperties();
         } else {
             try {
