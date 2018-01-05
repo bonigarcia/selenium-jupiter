@@ -57,7 +57,7 @@ public class SelenoidConfig {
         }
 
         for (String v : versions.keySet()) {
-            if (version.startsWith(v)) {
+            if (v.startsWith(version)) {
                 return v;
             }
         }
