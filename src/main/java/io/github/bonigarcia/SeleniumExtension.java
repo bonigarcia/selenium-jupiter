@@ -55,7 +55,7 @@ import org.slf4j.Logger;
 import com.google.gson.Gson;
 
 import io.appium.java_client.AppiumDriver;
-import io.github.bonigarcia.Browsers.Browser;
+import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
@@ -211,17 +211,20 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @Override
     public boolean supportsTestTemplate(ExtensionContext context) {
-        boolean allWebDriver = context.getTestMethod().isPresent()
-                && !stream(context.getTestMethod().get().getParameterTypes())
-                        .map(s -> s.equals(WebDriver.class)).collect(toList())
-                        .contains(false);
+        boolean allWebDriver = false;
+        if (context.getTestMethod().isPresent()) {
+            allWebDriver = !stream(
+                    context.getTestMethod().get().getParameterTypes())
+                            .map(s -> s.equals(WebDriver.class))
+                            .collect(toList()).contains(false);
+        }
         return allWebDriver;
     }
 
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
             ExtensionContext context) {
-        Browsers browsers = null;
+        BrowsersTemplate browsers = null;
         try {
             String browserJsonContent = getString(
                     "sel.jup.browser.template.json.content");
@@ -242,7 +245,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 }
             }
 
-            browsers = new Gson().fromJson(browserJsonContent, Browsers.class);
+            browsers = new Gson().fromJson(browserJsonContent, BrowsersTemplate.class);
 
         } catch (IOException e) {
             throw new SeleniumJupiterException(e);

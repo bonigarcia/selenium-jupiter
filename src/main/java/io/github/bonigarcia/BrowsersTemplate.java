@@ -27,13 +27,13 @@ import java.util.stream.Stream;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 2.0.0
  */
-public class Browsers {
+public class BrowsersTemplate {
 
     List<Browser> browsers;
 
     @Override
     public String toString() {
-        return "Browsers [browsers=" + browsers + "]";
+        return "BrowsersTemplate [browsers=" + browsers + "]";
     }
 
     public Stream<Browser> getStream() {

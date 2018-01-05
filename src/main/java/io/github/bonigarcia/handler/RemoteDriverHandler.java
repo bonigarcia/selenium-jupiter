@@ -26,7 +26,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.Browsers.Browser;
+import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 
