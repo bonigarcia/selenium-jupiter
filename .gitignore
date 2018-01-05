@@ -7,3 +7,4 @@ target
 *.iml
 phantomjsdriver.log
 *.mp4
+*.png
