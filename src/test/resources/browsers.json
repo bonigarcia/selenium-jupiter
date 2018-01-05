@@ -2,6 +2,25 @@
    "browsers": [
       {
          "type": "chrome"
+      },
+      {
+         "type": "firefox"
+      },
+      {
+         "type": "phantomjs"
+      },
+      {
+         "type": "docker-chrome"
+      },
+      {
+         "type": "docker-chrome",
+         "version": "62.0"
+      },
+      {
+         "type": "docker-firefox"
+      },
+      {
+         "type": "docker-opera"
       }
    ]
 }

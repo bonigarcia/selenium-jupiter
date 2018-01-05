@@ -31,11 +31,6 @@ public class BrowsersTemplate {
 
     List<Browser> browsers;
 
-    @Override
-    public String toString() {
-        return "BrowsersTemplate [browsers=" + browsers + "]";
-    }
-
     public Stream<Browser> getStream() {
         return browsers.stream();
     }
