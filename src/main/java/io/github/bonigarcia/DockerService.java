@@ -30,7 +30,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -113,8 +112,7 @@ public class DockerService {
 
     public String getContainerIp() throws IOException {
         String ipRoute = runAndWait("sh", "-c", "/sbin/ip route");
-        String[] tokens = ipRoute.split("\\s");
-        return tokens[2];
+        return ipRoute.split("\\s")[2];
     }
 
     public String getDockerMachineIp() throws IOException {
@@ -235,7 +233,6 @@ public class DockerService {
                     .withAttachStdin(true).withAttachStdout(true)
                     .withAttachStderr(true).exec();
 
-            log.trace("Command executed. Exec id: {}", exec.getId());
             OutputStream outputStream = new ByteArrayOutputStream();
             try (ExecStartResultCallback startResultCallback = dockerClient
                     .execStartCmd(exec.getId()).withDetach(false).withTty(true)
@@ -246,25 +243,9 @@ public class DockerService {
                     startResultCallback.awaitCompletion();
                 }
                 output = outputStream.toString();
-
-            } finally {
-                log.info("Callback terminated. Result: {}", output);
             }
         }
         return output;
-    }
-
-    public InputStream getFileFromContainer(String containerName,
-            String fileName) {
-        InputStream inputStream = null;
-        if (existsContainer(containerName)) {
-            log.debug("Copying {} from container {}", fileName, containerName);
-
-            inputStream = dockerClient
-                    .copyArchiveFromContainerCmd(containerName, fileName)
-                    .exec();
-        }
-        return inputStream;
     }
 
     public void waitForContainer(String containerName) {
@@ -362,9 +343,9 @@ public class DockerService {
         assert (command.length > 0);
 
         String commandStr = Arrays.toString(command);
-        log.debug("Running command on the shell: {}", commandStr);
         String result = runAndWaitNoLog(command);
-        log.trace("Result: {}", result);
+        log.debug("Running command on the shell: {} -- result: ", commandStr,
+                result);
         return result;
     }
 
