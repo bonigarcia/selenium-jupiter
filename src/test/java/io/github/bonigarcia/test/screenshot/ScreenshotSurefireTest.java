@@ -35,18 +35,22 @@ import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
-public class ScreenshotPngTest {
+public class ScreenshotSurefireTest {
 
     File imageName;
 
     @BeforeAll
     void setup() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "true");
+        setProperty("sel.jup.screenshot.format", "base64andpng");
+        setProperty("sel.jup.output.folder", "surefire-reports");
     }
 
     @AfterAll
     void teardown() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "false");
+        setProperty("sel.jup.screenshot.format", "png");
+        setProperty("sel.jup.output.folder", ".");
         assertTrue(imageName.exists());
         imageName.delete();
     }
@@ -57,7 +61,9 @@ public class ScreenshotPngTest {
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
-        imageName = new File(driver.getSessionId() + ".png");
+        imageName = new File(
+                "./target/surefire-reports/io.github.bonigarcia.test.screenshot.ScreenshotPngTest",
+                driver.getSessionId() + ".png");
     }
 
 }

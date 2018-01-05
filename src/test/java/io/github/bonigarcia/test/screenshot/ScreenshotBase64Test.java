@@ -35,20 +35,21 @@ import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
-public class ScreenshotPngTest {
+public class ScreenshotBase64Test {
 
     File imageName;
 
     @BeforeAll
     void setup() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "true");
+        setProperty("sel.jup.screenshot.format", "base64");
     }
 
     @AfterAll
     void teardown() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "false");
-        assertTrue(imageName.exists());
-        imageName.delete();
+        setProperty("sel.jup.screenshot.format", "png");
+        assertTrue(!imageName.exists());
     }
 
     @Test
