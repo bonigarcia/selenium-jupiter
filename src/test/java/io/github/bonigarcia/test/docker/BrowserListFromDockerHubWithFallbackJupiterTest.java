@@ -38,15 +38,15 @@ public class BrowserListFromDockerHubWithFallbackJupiterTest {
         setProperty("sel.jup.docker.hub.url", "");
     }
 
+    @AfterEach
+    void teardown() {
+        setProperty("sel.jup.docker.hub.url", "https://hub.docker.com/");
+    }
+
     @Test
     public void chromeTest(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         assertThat(driver, notNullValue());
-    }
-
-    @AfterEach
-    void teardown() {
-        setProperty("sel.jup.docker.hub.url", "https://hub.docker.com/");
     }
 
 }

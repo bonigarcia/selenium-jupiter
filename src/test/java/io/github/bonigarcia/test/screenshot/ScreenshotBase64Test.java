@@ -37,7 +37,7 @@ import io.github.bonigarcia.SeleniumExtension;
 @TestInstance(PER_CLASS)
 public class ScreenshotBase64Test {
 
-    File imageName;
+    File imageFile;
 
     @BeforeAll
     void setup() {
@@ -49,7 +49,7 @@ public class ScreenshotBase64Test {
     void teardown() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "false");
         setProperty("sel.jup.screenshot.format", "png");
-        assertTrue(!imageName.exists());
+        assertTrue(!imageFile.exists());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ScreenshotBase64Test {
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
-        imageName = new File(driver.getSessionId() + ".png");
+        imageFile = new File(driver.getSessionId() + ".png");
     }
 
 }

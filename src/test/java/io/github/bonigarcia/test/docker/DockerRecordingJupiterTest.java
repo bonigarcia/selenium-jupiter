@@ -45,7 +45,7 @@ public class DockerRecordingJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    File recording;
+    File recordingFile;
 
     @BeforeEach
     void setup() {
@@ -54,8 +54,9 @@ public class DockerRecordingJupiterTest {
 
     @AfterAll
     void teardown() {
-        assertTrue(recording.exists());
-        log.info("Deleting recording {} ... {}", recording, recording.delete());
+        assertTrue(recordingFile.exists());
+        log.info("Deleting recording {} ... {}", recordingFile,
+                recordingFile.delete());
         clearProperty("sel.jup.recording");
     }
 
@@ -65,7 +66,7 @@ public class DockerRecordingJupiterTest {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
-        recording = new File(driver.getSessionId() + ".mp4");
+        recordingFile = new File(driver.getSessionId() + ".mp4");
     }
 
 }
