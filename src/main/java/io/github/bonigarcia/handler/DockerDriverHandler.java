@@ -26,6 +26,7 @@ import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.getProperty;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -288,7 +289,8 @@ public class DockerDriverHandler {
             hostVideoFolder = new File(getOutputFolder(context));
         }
 
-        tmpDir = new File("target", randomUUID().toString());
+        tmpDir = new File(getProperty("java.io.tmpdir"),
+                randomUUID().toString());
         tmpDir.mkdirs();
         String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         writeStringToFile(new File(tmpDir, "browsers.json"), browsersJson,

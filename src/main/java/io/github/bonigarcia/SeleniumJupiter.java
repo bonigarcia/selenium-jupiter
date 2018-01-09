@@ -78,7 +78,7 @@ public class SeleniumJupiter {
         } else {
             outputFolder = ".";
         }
-        log.debug("Output folder {}", outputFolder);
+        log.trace("Output folder {}", outputFolder);
 
         File outputFolderFile = new File(outputFolder);
         if (!outputFolderFile.exists()) {
