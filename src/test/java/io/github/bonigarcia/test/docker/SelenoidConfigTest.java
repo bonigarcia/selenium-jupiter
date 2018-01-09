@@ -54,7 +54,7 @@ public class SelenoidConfigTest {
     static void setup() {
         setProperty("sel.jup.chrome.latest.version", "63.0");
         setProperty("sel.jup.firefox.latest.version", "57.0");
-        setProperty("sel.jup.opera.latest.version", "49.0");
+        setProperty("sel.jup.opera.latest.version", "50.0");
         setProperty("sel.jup.browser.list.from.docker.hub", "false");
     }
 

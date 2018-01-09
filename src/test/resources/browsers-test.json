@@ -294,7 +294,7 @@
       }
    },
    "operablink": {
-      "default": "49.0",
+      "default": "50.0",
       "versions": {
          "33.0": {
             "image": "selenoid/vnc:opera_33.0",
@@ -362,6 +362,10 @@
          },
          "49.0": {
             "image": "selenoid/vnc:opera_49.0",
+            "port": "4444"
+         },
+         "50.0": {
+            "image": "selenoid/vnc:opera_50.0",
             "port": "4444"
          }
       }
