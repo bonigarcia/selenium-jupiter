@@ -30,8 +30,8 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.nio.file.Files.createTempDirectory;
 import static java.util.Arrays.asList;
+import static java.util.UUID.randomUUID;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -90,7 +89,7 @@ public class DockerDriverHandler {
 
     DockerService dockerService;
     Map<String, String> containers;
-    Path tmpDir;
+    File tmpDir;
     boolean recording;
     File recordingFile;
     File hostVideoFolder;
@@ -239,7 +238,7 @@ public class DockerDriverHandler {
                 }
             }
             if (tmpDir != null) {
-                deleteDirectory(tmpDir.toFile());
+                deleteDirectory(tmpDir);
             }
         } catch (Exception e) {
             log.warn("Exception cleaning DockerDriverHandler {}", e);
@@ -289,10 +288,11 @@ public class DockerDriverHandler {
             hostVideoFolder = new File(getOutputFolder(context));
         }
 
-        tmpDir = createTempDirectory("");
+        tmpDir = new File("target", randomUUID().toString());
+        tmpDir.mkdirs();
         String browsersJson = selenoidConfig.getBrowsersJsonAsString();
-        writeStringToFile(new File(tmpDir.toFile(), "browsers.json"),
-                browsersJson, defaultCharset());
+        writeStringToFile(new File(tmpDir, "browsers.json"), browsersJson,
+                defaultCharset());
 
         // volumes
         String defaultSocket = dockerService.getDockerDefaultSocket();
@@ -310,8 +310,7 @@ public class DockerDriverHandler {
         // binds
         List<Bind> binds = new ArrayList<>();
         binds.add(new Bind(defaultSocket, defaultSocketVolume));
-        binds.add(
-                new Bind(getDockerPath(tmpDir.toFile()), selenoidConfigVolume));
+        binds.add(new Bind(getDockerPath(tmpDir), selenoidConfigVolume));
         if (recording) {
             binds.add(new Bind(getDockerPath(hostVideoFolder),
                     selenoidVideoVolume));
