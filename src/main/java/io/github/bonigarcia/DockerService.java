@@ -23,20 +23,17 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.UUID.randomUUID;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,13 +42,11 @@ import org.slf4j.Logger;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerCmd;
-import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.command.ExecStartResultCallback;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.google.common.io.CharStreams;
 
@@ -224,36 +219,6 @@ public class DockerService {
         }
     }
 
-    public String execCommand(String containerName, boolean awaitCompletion,
-            String... command) throws IOException, InterruptedException {
-        assert (command.length > 0);
-
-        String output = null;
-        String commandStr = Arrays.toString(command);
-
-        log.debug("Executing command {} in container {} (await completion {})",
-                commandStr, containerName, awaitCompletion);
-        if (existsContainer(containerName)) {
-            ExecCreateCmdResponse exec = dockerClient
-                    .execCreateCmd(containerName).withCmd(command).withTty(true)
-                    .withAttachStdin(true).withAttachStdout(true)
-                    .withAttachStderr(true).exec();
-
-            OutputStream outputStream = new ByteArrayOutputStream();
-            try (ExecStartResultCallback startResultCallback = dockerClient
-                    .execStartCmd(exec.getId()).withDetach(false).withTty(true)
-                    .exec(new ExecStartResultCallback(outputStream,
-                            outputStream))) {
-
-                if (awaitCompletion) {
-                    startResultCallback.awaitCompletion();
-                }
-                output = outputStream.toString();
-            }
-        }
-        return output;
-    }
-
     public void waitForContainer(String containerName) {
         boolean isRunning = false;
         long timeoutMs = currentTimeMillis()
@@ -309,9 +274,7 @@ public class DockerService {
     }
 
     public String generateContainerName(String prefix) {
-        String randomSufix = new BigInteger(130, new SecureRandom())
-                .toString(32);
-        return prefix + randomSufix;
+        return prefix + randomUUID().toString();
     }
 
     public int findRandomOpenPort() {
@@ -342,28 +305,16 @@ public class DockerService {
     }
 
     public String runAndWait(String... command) throws IOException {
-        return runAndWaitArray(command);
-    }
-
-    public String runAndWaitArray(String[] command) throws IOException {
-        assert (command.length > 0);
-
-        String commandStr = Arrays.toString(command);
-        String result = runAndWaitNoLog(command);
-        log.trace("Running command on the shell: {} -- result: {}", commandStr,
-                result);
-        return result;
-    }
-
-    public String runAndWaitNoLog(String... command) throws IOException {
-        assert (command.length > 0);
-
         Process process = new ProcessBuilder(command).redirectErrorStream(true)
                 .start();
-        String output = CharStreams.toString(
+        String result = CharStreams.toString(
                 new InputStreamReader(process.getInputStream(), UTF_8));
         process.destroy();
-        return output;
+        if (log.isTraceEnabled()) {
+            log.trace("Running command on the shell: {} -- result: {}",
+                    Arrays.toString(command), result);
+        }
+        return result;
     }
 
     public String getDockerDefaultHost() {
