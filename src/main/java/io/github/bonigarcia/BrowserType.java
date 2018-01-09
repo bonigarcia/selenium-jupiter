@@ -104,7 +104,6 @@ public enum BrowserType {
 
         BrowserConfig browserConfig = new BrowserConfig(latestVersion);
         for (String version : browserList) {
-            log.trace("Adding {} version {}", this, version);
             browserConfig.addBrowser(version,
                     new Browser(format(dockerImage, version)));
         }

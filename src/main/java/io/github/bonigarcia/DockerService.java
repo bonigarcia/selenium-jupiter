@@ -65,49 +65,55 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    private int dockerWaitTimeoutSec = getInt(
-            "sel.jup.docker.wait.timeout.sec");
-    private int dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
-    private String dockerDefaultHostIp = getString(
-            "sel.jup.docker.default.host");
-    private String dockerDefaultSocket = getString(
-            "sel.jup.docker.default.socket");
-
-    private String dockerServerIp;
+    private String dockerServerHost;
     private boolean runningInContainer = false;
     private boolean containerCheked = false;
+    private String dockerDefaultHost;
+    private String dockerDefaultSocket;
+    private int dockerWaitTimeoutSec;
+    private int dockerPollTimeMs;
 
     private DockerClient dockerClient;
 
     public DockerService() {
-        dockerClient = DockerClientBuilder
-                .getInstance("unix://" + dockerDefaultSocket).build();
+        dockerDefaultHost = getString("sel.jup.docker.default.host");
+        dockerDefaultSocket = getString("sel.jup.docker.default.socket");
+        dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
+        dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
+
+        DockerClientBuilder dockerClientBuilder = DockerClientBuilder
+                .getInstance();
+        String dockerServerUrl = getString("sel.jup.docker.server.url");
+        if (!dockerServerUrl.isEmpty()) {
+            dockerClientBuilder = DockerClientBuilder
+                    .getInstance(dockerServerUrl);
+        }
+        dockerClient = dockerClientBuilder.build();
     }
 
-    public String getDockerServerIp() {
+    public String getDockerServerHost() {
         try {
-            if (dockerServerIp == null) {
+            if (dockerServerHost == null) {
                 if (IS_OS_WINDOWS) {
-                    dockerServerIp = getDockerMachineIp();
+                    dockerServerHost = getDockerMachineIp();
                 } else {
                     if (!containerCheked) {
                         runningInContainer = isRunningInContainer();
                         containerCheked = true;
                     }
                     if (runningInContainer) {
-                        dockerServerIp = getContainerIp();
-
+                        dockerServerHost = getContainerIp();
                     } else {
-                        dockerServerIp = dockerDefaultHostIp;
+                        dockerServerHost = getDockerDefaultHost();
                     }
                 }
-                log.trace("Docker server IP: {}", dockerServerIp);
+                log.trace("Docker server host: {}", dockerServerHost);
             }
         } catch (Exception e) {
             throw new SeleniumJupiterException(e);
         }
 
-        return dockerServerIp;
+        return dockerServerHost;
     }
 
     public String getContainerIp() throws IOException {
@@ -344,7 +350,7 @@ public class DockerService {
 
         String commandStr = Arrays.toString(command);
         String result = runAndWaitNoLog(command);
-        log.debug("Running command on the shell: {} -- result: ", commandStr,
+        log.trace("Running command on the shell: {} -- result: {}", commandStr,
                 result);
         return result;
     }
@@ -360,8 +366,20 @@ public class DockerService {
         return output;
     }
 
+    public String getDockerDefaultHost() {
+        return dockerDefaultHost;
+    }
+
     public String getDockerDefaultSocket() {
         return dockerDefaultSocket;
+    }
+
+    public int getDockerWaitTimeoutSec() {
+        return dockerWaitTimeoutSec;
+    }
+
+    public int getDockerPollTimeMs() {
+        return dockerPollTimeMs;
     }
 
 }
