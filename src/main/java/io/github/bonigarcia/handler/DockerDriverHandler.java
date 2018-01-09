@@ -351,7 +351,7 @@ public class DockerDriverHandler {
     }
 
     private String getDockerPath(File file) {
-        String fileString = file.getAbsolutePath().toString();
+        String fileString = file.getAbsolutePath();
         if (fileString.contains(":")) { // Windows
             fileString = toLowerCase(fileString.charAt(0))
                     + fileString.substring(1);
