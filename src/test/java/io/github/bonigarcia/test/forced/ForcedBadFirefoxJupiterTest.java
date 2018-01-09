@@ -38,15 +38,15 @@ public class ForcedBadFirefoxJupiterTest {
         setProperty("sel.jup.exception.when.no.driver", "false");
     }
 
+    @AfterEach
+    void teardown() {
+        clearProperty("sel.jup.exception.when.no.driver");
+    }
+
     @Test
     public void firefoxTest(
             @Binary("/bad/path/to/firefox") FirefoxDriver driver) {
         assertThat(driver, nullValue());
-    }
-
-    @AfterEach
-    void teardown() {
-        clearProperty("sel.jup.exception.when.no.driver");
     }
 
 }

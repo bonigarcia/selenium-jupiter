@@ -39,6 +39,11 @@ public class ForcedAppiumJupiterTest {
         setProperty("sel.jup.exception.when.no.driver", "false");
     }
 
+    @AfterEach
+    void teardown() {
+        clearProperty("sel.jup.exception.when.no.driver");
+    }
+
     @Test
     public void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());
@@ -49,11 +54,6 @@ public class ForcedAppiumJupiterTest {
             @DriverCapabilities({ "browserName=chrome",
                     "deviceName=Android" }) AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());
-    }
-
-    @AfterEach
-    void teardown() {
-        clearProperty("sel.jup.exception.when.no.driver");
     }
 
 }

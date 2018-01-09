@@ -40,16 +40,16 @@ public class ForcedEdgeJupiterTest {
         setProperty("wdm.forceOs", "WIN");
     }
 
-    @Test
-    public void edgeTest(EdgeDriver driver) {
-        assumeFalse(IS_OS_WINDOWS);
-        assertThat(driver, nullValue());
-    }
-
     @AfterEach
     void teardown() {
         clearProperty("sel.jup.exception.when.no.driver");
         clearProperty("wdm.forceOs");
+    }
+
+    @Test
+    public void edgeTest(EdgeDriver driver) {
+        assumeFalse(IS_OS_WINDOWS);
+        assertThat(driver, nullValue());
     }
 
 }

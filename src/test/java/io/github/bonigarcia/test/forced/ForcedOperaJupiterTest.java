@@ -37,14 +37,14 @@ public class ForcedOperaJupiterTest {
         setProperty("sel.jup.exception.when.no.driver", "false");
     }
 
-    @Test
-    public void operaTest(OperaDriver driver) {
-        assertThat(driver, nullValue());
-    }
-
     @AfterEach
     void teardown() {
         clearProperty("sel.jup.exception.when.no.driver");
+    }
+
+    @Test
+    public void operaTest(OperaDriver driver) {
+        assertThat(driver, nullValue());
     }
 
 }

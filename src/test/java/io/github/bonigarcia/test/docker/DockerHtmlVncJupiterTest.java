@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,7 +49,7 @@ public class DockerHtmlVncJupiterTest {
 
     @AfterAll
     void teardown() {
-        setProperty("sel.jup.vnc.create.redirect.html.page", "false");
+        clearProperty("sel.jup.vnc.create.redirect.html.page");
         assertTrue(htmlFile.exists());
         htmlFile.delete();
     }

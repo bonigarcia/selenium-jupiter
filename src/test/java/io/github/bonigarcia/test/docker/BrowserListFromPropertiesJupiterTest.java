@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,14 +39,14 @@ public class BrowserListFromPropertiesJupiterTest {
         setProperty("sel.jup.browser.list.from.docker.hub", "false");
     }
 
+    @AfterEach
+    void teardown() {
+        clearProperty("sel.jup.browser.list.from.docker.hub");
+    }
+
     @Test
     public void chromeTest(@DockerBrowser(type = CHROME) ChromeDriver driver) {
         assertThat(driver, notNullValue());
-    }
-
-    @AfterEach
-    void teardown() {
-        setProperty("sel.jup.browser.list.from.docker.hub", "true");
     }
 
 }

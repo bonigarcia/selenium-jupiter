@@ -38,14 +38,14 @@ public class ForcedBadChromeJupiterTest {
         setProperty("sel.jup.exception.when.no.driver", "false");
     }
 
-    @Test
-    public void chromeTest(@Binary("/bad/path/to/chrome") ChromeDriver driver) {
-        assertThat(driver, nullValue());
-    }
-
     @AfterEach
     void teardown() {
         clearProperty("sel.jup.exception.when.no.driver");
+    }
+
+    @Test
+    public void chromeTest(@Binary("/bad/path/to/chrome") ChromeDriver driver) {
+        assertThat(driver, nullValue());
     }
 
 }

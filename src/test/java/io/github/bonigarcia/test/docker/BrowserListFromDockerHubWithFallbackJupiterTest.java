@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,7 +41,7 @@ public class BrowserListFromDockerHubWithFallbackJupiterTest {
 
     @AfterEach
     void teardown() {
-        setProperty("sel.jup.docker.hub.url", "https://hub.docker.com/");
+        clearProperty("sel.jup.docker.hub.url");
     }
 
     @Test

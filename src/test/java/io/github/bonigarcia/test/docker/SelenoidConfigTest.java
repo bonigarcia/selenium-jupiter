@@ -55,6 +55,7 @@ public class SelenoidConfigTest {
         setProperty("sel.jup.chrome.latest.version", "63.0");
         setProperty("sel.jup.firefox.latest.version", "57.0");
         setProperty("sel.jup.opera.latest.version", "49.0");
+        setProperty("sel.jup.browser.list.from.docker.hub", "false");
     }
 
     @AfterAll
@@ -62,6 +63,7 @@ public class SelenoidConfigTest {
         clearProperty("sel.jup.chrome.latest.version");
         clearProperty("sel.jup.firefox.latest.version");
         clearProperty("sel.jup.opera.latest.version");
+        clearProperty("sel.jup.browser.list.from.docker.hub");
     }
 
     @ParameterizedTest
