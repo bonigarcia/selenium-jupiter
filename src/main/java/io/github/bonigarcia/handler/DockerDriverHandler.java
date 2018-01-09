@@ -37,6 +37,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
+import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -289,8 +290,13 @@ public class DockerDriverHandler {
             hostVideoFolder = new File(getOutputFolder(context));
         }
 
-        tmpDir = new File(getProperty("java.io.tmpdir"),
-                randomUUID().toString());
+        String tmpFolder = getProperty("java.io.tmpdir");
+        if (IS_OS_MAC || tmpFolder.isEmpty()) {
+            // Temporary folders on MAC are stored on /var/private and are
+            // problematic to be mounted as volumes
+            tmpFolder = getOutputFolder(context);
+        }
+        tmpDir = new File(tmpFolder, randomUUID().toString());
         tmpDir.mkdirs();
         String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         writeStringToFile(new File(tmpDir, "browsers.json"), browsersJson,

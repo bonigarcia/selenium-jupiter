@@ -75,7 +75,7 @@ public class SeleniumJupiter {
                 && testInstance.isPresent()) {
             outputFolder = "./target/surefire-reports/"
                     + testInstance.get().getName();
-        } else {
+        } else if (outputFolder.isEmpty()) {
             outputFolder = ".";
         }
         log.trace("Output folder {}", outputFolder);
