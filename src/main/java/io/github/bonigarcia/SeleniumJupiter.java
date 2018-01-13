@@ -75,40 +75,11 @@ public class SeleniumJupiter {
     public static String getOutputFolder(ExtensionContext context) {
         String outputFolder = getString("sel.jup.output.folder");
         Optional<Method> testMethod = context.getTestMethod();
-        if (testMethod.isPresent()) {
-            Annotation[] annotations = testMethod.get().getAnnotations();
-            Optional<Class<?>> testInstance = context.getTestClass();
-
-            if (outputFolder.equalsIgnoreCase("surefire-reports")
-                    && testInstance.isPresent()) {
-                StringBuilder stringBuilder = new StringBuilder(
-                        "./target/surefire-reports/");
-
-                boolean isTestTemplate = stream(annotations)
-                        .map(Annotation::annotationType)
-                        .anyMatch(a -> a == TestTemplate.class);
-                log.trace("Is test template? {}", isTestTemplate);
-
-                if (isTestTemplate) {
-                    stringBuilder.append(testMethod.get().getName());
-                    stringBuilder.append("(");
-
-                    Class<?>[] parameterTypes = testMethod.get()
-                            .getParameterTypes();
-                    for (int i = 0; i < parameterTypes.length; i++) {
-                        if (i != 0) {
-                            stringBuilder.append(", ");
-                        }
-                        stringBuilder.append(parameterTypes[i].getSimpleName());
-                        outputFolder += parameterTypes[i].getSimpleName();
-                    }
-                    stringBuilder.append(")/");
-
-                } else {
-                    stringBuilder.append(testInstance.get().getName());
-                }
-                outputFolder = stringBuilder.toString();
-
+        Optional<Class<?>> testInstance = context.getTestClass();
+        if (testMethod.isPresent() && testInstance.isPresent()) {
+            if (outputFolder.equalsIgnoreCase("surefire-reports")) {
+                outputFolder = getSurefireOutputFolder(testMethod.get(),
+                        testInstance.get());
             } else if (outputFolder.isEmpty()) {
                 outputFolder = ".";
             }
@@ -120,6 +91,36 @@ public class SeleniumJupiter {
             outputFolderFile.mkdirs();
         }
         return outputFolder;
+    }
+
+    private static String getSurefireOutputFolder(Method testMethod,
+            Class<?> testInstance) {
+        Annotation[] annotations = testMethod.getAnnotations();
+        StringBuilder stringBuilder = new StringBuilder(
+                "./target/surefire-reports/");
+
+        boolean isTestTemplate = stream(annotations)
+                .map(Annotation::annotationType)
+                .anyMatch(a -> a == TestTemplate.class);
+        log.trace("Is test template? {}", isTestTemplate);
+
+        if (isTestTemplate) {
+            stringBuilder.append(testMethod.getName());
+            stringBuilder.append("(");
+
+            Class<?>[] parameterTypes = testMethod.getParameterTypes();
+            for (int i = 0; i < parameterTypes.length; i++) {
+                if (i != 0) {
+                    stringBuilder.append(", ");
+                }
+                stringBuilder.append(parameterTypes[i].getSimpleName());
+            }
+            stringBuilder.append(")/");
+
+        } else {
+            stringBuilder.append(testInstance.getName());
+        }
+        return stringBuilder.toString();
     }
 
     private static String getProperty(String key) {
