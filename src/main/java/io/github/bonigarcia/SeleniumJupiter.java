@@ -19,13 +19,17 @@ package io.github.bonigarcia;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 
@@ -69,12 +73,34 @@ public class SeleniumJupiter {
     }
 
     public static String getOutputFolder(ExtensionContext context) {
+        Optional<Method> testMethod = context.getTestMethod();
+        Annotation[] annotations = testMethod.get().getAnnotations();
+
         String outputFolder = getString("sel.jup.output.folder");
         Optional<Class<?>> testInstance = context.getTestClass();
         if (outputFolder.equalsIgnoreCase("surefire-reports")
                 && testInstance.isPresent()) {
-            outputFolder = "./target/surefire-reports/"
-                    + testInstance.get().getName();
+            outputFolder = "./target/surefire-reports/";
+            boolean isTestTemplate = stream(annotations)
+                    .map(Annotation::annotationType)
+                    .anyMatch(a -> a == TestTemplate.class);
+            log.trace("Is test template? {}", isTestTemplate);
+            if (isTestTemplate) {
+                outputFolder += testMethod.get().getName() + "(";
+
+                Class<?>[] parameterTypes = testMethod.get()
+                        .getParameterTypes();
+                for (int i = 0; i < parameterTypes.length; i++) {
+                    if (i != 0) {
+                        outputFolder += ", ";
+                    }
+                    outputFolder += parameterTypes[i].getSimpleName();
+                }
+                outputFolder += ")/";
+            } else {
+                outputFolder += testInstance.get().getName();
+            }
+
         } else if (outputFolder.isEmpty()) {
             outputFolder = ".";
         }
