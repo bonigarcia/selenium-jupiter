@@ -73,39 +73,48 @@ public class SeleniumJupiter {
     }
 
     public static String getOutputFolder(ExtensionContext context) {
-        Optional<Method> testMethod = context.getTestMethod();
-        Annotation[] annotations = testMethod.get().getAnnotations();
-
         String outputFolder = getString("sel.jup.output.folder");
-        Optional<Class<?>> testInstance = context.getTestClass();
-        if (outputFolder.equalsIgnoreCase("surefire-reports")
-                && testInstance.isPresent()) {
-            outputFolder = "./target/surefire-reports/";
-            boolean isTestTemplate = stream(annotations)
-                    .map(Annotation::annotationType)
-                    .anyMatch(a -> a == TestTemplate.class);
-            log.trace("Is test template? {}", isTestTemplate);
-            if (isTestTemplate) {
-                outputFolder += testMethod.get().getName() + "(";
+        Optional<Method> testMethod = context.getTestMethod();
+        if (testMethod.isPresent()) {
+            Annotation[] annotations = testMethod.get().getAnnotations();
+            Optional<Class<?>> testInstance = context.getTestClass();
 
-                Class<?>[] parameterTypes = testMethod.get()
-                        .getParameterTypes();
-                for (int i = 0; i < parameterTypes.length; i++) {
-                    if (i != 0) {
-                        outputFolder += ", ";
+            if (outputFolder.equalsIgnoreCase("surefire-reports")
+                    && testInstance.isPresent()) {
+                StringBuilder stringBuilder = new StringBuilder(
+                        "./target/surefire-reports/");
+
+                boolean isTestTemplate = stream(annotations)
+                        .map(Annotation::annotationType)
+                        .anyMatch(a -> a == TestTemplate.class);
+                log.trace("Is test template? {}", isTestTemplate);
+
+                if (isTestTemplate) {
+                    stringBuilder.append(testMethod.get().getName());
+                    stringBuilder.append("(");
+
+                    Class<?>[] parameterTypes = testMethod.get()
+                            .getParameterTypes();
+                    for (int i = 0; i < parameterTypes.length; i++) {
+                        if (i != 0) {
+                            stringBuilder.append(", ");
+                        }
+                        stringBuilder.append(parameterTypes[i].getSimpleName());
+                        outputFolder += parameterTypes[i].getSimpleName();
                     }
-                    outputFolder += parameterTypes[i].getSimpleName();
+                    stringBuilder.append(")/");
+
+                } else {
+                    stringBuilder.append(testInstance.get().getName());
                 }
-                outputFolder += ")/";
-            } else {
-                outputFolder += testInstance.get().getName();
+                outputFolder = stringBuilder.toString();
+
+            } else if (outputFolder.isEmpty()) {
+                outputFolder = ".";
             }
-
-        } else if (outputFolder.isEmpty()) {
-            outputFolder = ".";
         }
-        log.trace("Output folder {}", outputFolder);
 
+        log.trace("Output folder {}", outputFolder);
         File outputFolderFile = new File(outputFolder);
         if (!outputFolderFile.exists()) {
             outputFolderFile.mkdirs();
