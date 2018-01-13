@@ -48,7 +48,7 @@ public class BrowsersTemplate {
         }
 
         public BrowserType toBrowserType() {
-            return valueOf(getType().replace("docker-", "").toUpperCase());
+            return valueOf(getType().replace("-in-docker", "").toUpperCase());
 
         }
 

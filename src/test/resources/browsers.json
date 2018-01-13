@@ -10,17 +10,17 @@
          "type": "phantomjs"
       },
       {
-         "type": "docker-chrome"
+         "type": "chrome-in-docker"
       },
       {
-         "type": "docker-chrome",
+         "type": "chrome-in-docker",
          "version": "62.0"
       },
       {
-         "type": "docker-firefox"
+         "type": "firefox-in-docker"
       },
       {
-         "type": "docker-opera"
+         "type": "opera-in-docker"
       }
    ]
 }
