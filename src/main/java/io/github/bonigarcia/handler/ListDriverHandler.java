@@ -23,6 +23,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -43,8 +44,7 @@ import io.github.bonigarcia.SeleniumJupiterException;
  */
 public class ListDriverHandler extends DriverHandler {
 
-    private DockerDriverHandler dockerDriverHandler;
-
+    private List<DockerDriverHandler> dockerDriverHandlerList = new ArrayList<>();
     private ExecutorService executorService;
 
     public ListDriverHandler(Parameter parameter, ExtensionContext context) {
@@ -69,16 +69,19 @@ public class ListDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                dockerDriverHandler = new DockerDriverHandler(context,
-                        parameter, testInstance, annotationsReader);
                 int numBrowsers = dockerBrowser.get().size();
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
 
                 executorService = newFixedThreadPool(numBrowsers);
                 CountDownLatch latch = new CountDownLatch(numBrowsers);
                 for (int i = 0; i < numBrowsers; i++) {
+                    String index = "_" + i;
                     executorService.submit(() -> {
                         try {
+                            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
+                                    context, parameter, testInstance,
+                                    annotationsReader, index);
+                            dockerDriverHandlerList.add(dockerDriverHandler);
                             driverList.add((RemoteWebDriver) dockerDriverHandler
                                     .resolve(dockerBrowser.get()));
                         } finally {
@@ -106,8 +109,9 @@ public class ListDriverHandler extends DriverHandler {
 
     @Override
     public void cleanup() {
-        if (dockerDriverHandler != null) {
-            dockerDriverHandler.cleanup();
+        if (!dockerDriverHandlerList.isEmpty()) {
+            dockerDriverHandlerList.forEach(DockerDriverHandler::cleanup);
+            dockerDriverHandlerList.clear();
         }
         if (executorService != null) {
             executorService.shutdown();

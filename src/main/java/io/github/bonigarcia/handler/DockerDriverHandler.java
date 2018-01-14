@@ -104,6 +104,7 @@ public class DockerDriverHandler {
     Parameter parameter;
     Optional<Object> testInstance;
     AnnotationsReader annotationsReader;
+    String index;
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance,
@@ -112,6 +113,13 @@ public class DockerDriverHandler {
         this.parameter = parameter;
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
+    }
+
+    public DockerDriverHandler(ExtensionContext context, Parameter parameter,
+            Optional<Object> testInstance, AnnotationsReader annotationsReader,
+            String index) {
+        this(context, parameter, testInstance, annotationsReader);
+        this.index = index;
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -193,6 +201,9 @@ public class DockerDriverHandler {
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
                 name = testMethod.get().getName() + "_" + name;
+            }
+            if (index != null) {
+                name += index;
             }
 
             if (enableVnc) {
