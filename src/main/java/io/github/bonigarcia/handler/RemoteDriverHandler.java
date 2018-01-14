@@ -52,30 +52,37 @@ public class RemoteDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        WebDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             dockerDriverHandler = new DockerDriverHandler(context, parameter,
                     testInstance, annotationsReader);
 
             if (browser != null) {
-                driver = dockerDriverHandler.resolve(browser.toBrowserType(),
+                object = dockerDriverHandler.resolve(browser.toBrowserType(),
                         browser.getVersion());
             } else {
                 Optional<DockerBrowser> dockerBrowser = annotationsReader
                         .getDocker(parameter);
 
                 if (dockerBrowser.isPresent()) {
-                    driver = dockerDriverHandler.resolve(dockerBrowser.get());
+                    object = dockerDriverHandler.resolve(dockerBrowser.get());
                 } else {
-                    driver = resolveRemote();
+                    object = resolveRemote();
                 }
             }
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
+    }
+
+    @Override
+    public String getName() {
+        if (dockerDriverHandler != null) {
+            return dockerDriverHandler.getName();
+        } else {
+            return super.getName();
+        }
     }
 
     private WebDriver resolveRemote()

@@ -22,7 +22,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
@@ -43,8 +42,7 @@ public class AppiumDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        WebDriver webDriver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -63,7 +61,7 @@ public class AppiumDriverHandler extends DriverHandler {
                     appiumServerUrl = appiumDriverLocalService.getUrl();
                 }
 
-                webDriver = new AndroidDriver<>(appiumServerUrl,
+                object = new AndroidDriver<>(appiumServerUrl,
                         capabilities.get());
             } else {
                 String noCapsMessage = "Was not possible to instantiate AppiumDriver: Capabilites not present";
@@ -76,7 +74,6 @@ public class AppiumDriverHandler extends DriverHandler {
         } catch (Exception e) {
             handleException(e);
         }
-        return webDriver;
     }
 
     @Override

@@ -28,7 +28,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -56,8 +55,7 @@ public class FirefoxDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        FirefoxDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -67,11 +65,10 @@ public class FirefoxDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 firefoxOptions.merge(capabilities.get());
             }
-            driver = new FirefoxDriver(firefoxOptions);
+            object = new FirefoxDriver(firefoxOptions);
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
     @Override

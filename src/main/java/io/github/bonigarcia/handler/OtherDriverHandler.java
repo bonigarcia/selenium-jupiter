@@ -21,7 +21,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
 
 /**
  * Resolver for other drivers.
@@ -44,8 +43,7 @@ public class OtherDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        WebDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             if (type == null) {
@@ -54,16 +52,14 @@ public class OtherDriverHandler extends DriverHandler {
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
             if (capabilities.isPresent()) {
-                driver = (WebDriver) type
-                        .getDeclaredConstructor(Capabilities.class)
+                object = type.getDeclaredConstructor(Capabilities.class)
                         .newInstance(capabilities.get());
             } else {
-                driver = (WebDriver) type.newInstance();
+                object = type.newInstance();
             }
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
 }

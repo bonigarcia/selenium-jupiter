@@ -22,7 +22,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -41,8 +40,7 @@ public class SafariDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        SafariDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -52,11 +50,10 @@ public class SafariDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 safariOptions.merge(capabilities.get());
             }
-            driver = new SafariDriver(safariOptions);
+            object = new SafariDriver(safariOptions);
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
     @Override

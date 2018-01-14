@@ -17,7 +17,6 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
-import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -53,7 +52,7 @@ public class ListDriverHandler extends DriverHandler {
     }
 
     @Override
-    public List<RemoteWebDriver> resolve() {
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             ParameterizedType parameterizedType = (ParameterizedType) parameter
@@ -94,7 +93,7 @@ public class ListDriverHandler extends DriverHandler {
                             + " seconds waiting for start " + numBrowsers
                             + " dockerized browsers");
                 }
-                return driverList;
+                object = driverList;
 
             } else {
                 log.warn("Annotation @DockerBrowser should be declared");
@@ -103,8 +102,6 @@ public class ListDriverHandler extends DriverHandler {
         } catch (Exception e) {
             handleException(e);
         }
-
-        return emptyList();
     }
 
     @Override

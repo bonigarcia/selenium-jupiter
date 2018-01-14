@@ -25,6 +25,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -48,8 +49,9 @@ public abstract class DriverHandler {
     Parameter parameter;
     ExtensionContext context;
     AnnotationsReader annotationsReader = new AnnotationsReader();
+    Object object;
 
-    public abstract Object resolve();
+    public abstract void resolve();
 
     public DriverHandler() {
         // Default constructor
@@ -58,6 +60,20 @@ public abstract class DriverHandler {
     public DriverHandler(Parameter parameter, ExtensionContext context) {
         this.parameter = parameter;
         this.context = context;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public String getName() {
+        String name = "";
+        Optional<Method> testMethod = context.getTestMethod();
+        if (testMethod.isPresent()) {
+            name = testMethod.get().getName();
+        }
+        return name + "_" + parameter.getName() + "_"
+                + object.getClass().getSimpleName();
     }
 
     void handleException(Exception e) {

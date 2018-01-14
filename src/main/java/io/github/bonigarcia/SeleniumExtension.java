@@ -81,7 +81,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     static final String CLASSPATH_PREFIX = "classpath:";
 
-    private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
     private List<DriverHandler> driverHandlerList = new ArrayList<>();
     private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
@@ -119,7 +118,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 || type.equals(List.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext context) {
@@ -167,48 +165,44 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             log.warn("Exception creating {}", constructorClass);
         }
 
-        Object out = driverHandler.resolve();
-        if (type == List.class) {
-            ((List<RemoteWebDriver>) out).forEach(this::addWebDriverToList);
-        } else {
-            addWebDriverToList((WebDriver) out);
-        }
-
-        return out;
+        driverHandler.resolve();
+        return driverHandler.getObject();
     }
 
-    private void addWebDriverToList(WebDriver webDriver) {
-        if (webDriver != null) {
-            webDriverList.add((WebDriver) webDriver);
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     @Override
     public void afterEach(ExtensionContext context) {
         ScreenshotManager screenshotManager = new ScreenshotManager(context);
-
-        if (screenshotManager.isScreenshotRequired()) {
-            webDriverList.forEach(screenshotManager::makeScreenshot);
-        }
-
-        for (WebDriver webDriver : webDriverList) {
-
-            try {
-                webDriver.quit();
-            } catch (Exception e) {
-                log.warn("Exception closing webdriver instance {}", webDriver,
-                        e);
-            }
-        }
-        webDriverList.clear();
-
         for (DriverHandler driverHandler : driverHandlerList) {
+            // Make screenshots if required and close browsers
+            try {
+                Object object = driverHandler.getObject();
+                if (object.getClass() == List.class) {
+                    List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
+                    for (int i = 0; i < webDriverList.size(); i++) {
+                        screenshotManager.makeScreenshot(webDriverList.get(i),
+                                driverHandler.getName() + "_" + i);
+                        webDriverList.get(i).quit();
+                    }
+
+                } else {
+                    WebDriver webDriver = (WebDriver) object;
+                    screenshotManager.makeScreenshot(webDriver,
+                            driverHandler.getName());
+                    webDriver.quit();
+                }
+            } catch (Exception e) {
+                log.warn("Exception closing webdriver instance", e);
+            }
+
+            // Clean handlers
             try {
                 driverHandler.cleanup();
             } catch (Exception e) {
                 log.warn("Exception cleaning handler {}", driverHandler, e);
             }
         }
+        driverHandlerList.clear();
     }
 
     @Override

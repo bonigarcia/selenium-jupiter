@@ -25,7 +25,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -51,8 +50,7 @@ public class ChromeDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        ChromeDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -64,11 +62,10 @@ public class ChromeDriverHandler extends DriverHandler {
                 chromeOptions.merge(capabilities.get());
             }
 
-            driver = new ChromeDriver(chromeOptions);
+            object = new ChromeDriver(chromeOptions);
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
     @Override

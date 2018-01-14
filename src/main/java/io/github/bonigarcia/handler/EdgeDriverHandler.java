@@ -23,7 +23,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
@@ -42,8 +41,7 @@ public class EdgeDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        EdgeDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -53,11 +51,10 @@ public class EdgeDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 edgeOptions.merge(capabilities.get());
             }
-            driver = new EdgeDriver(edgeOptions);
+            object = new EdgeDriver(edgeOptions);
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
     @Override

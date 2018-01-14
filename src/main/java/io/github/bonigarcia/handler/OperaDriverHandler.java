@@ -25,7 +25,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
@@ -51,8 +50,7 @@ public class OperaDriverHandler extends DriverHandler {
     }
 
     @Override
-    public WebDriver resolve() {
-        OperaDriver driver = null;
+    public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
@@ -62,11 +60,10 @@ public class OperaDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 operaOptions.merge(capabilities.get());
             }
-            driver = new OperaDriver(operaOptions);
+            object = new OperaDriver(operaOptions);
         } catch (Exception e) {
             handleException(e);
         }
-        return driver;
     }
 
     @Override
