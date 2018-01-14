@@ -76,15 +76,15 @@ public abstract class DriverHandler {
                 + object.getClass().getSimpleName();
     }
 
+    public boolean throwExceptionWhenNoDriver() {
+        return getBoolean("sel.jup.exception.when.no.driver");
+    }
+
     void handleException(Exception e) {
         if (throwExceptionWhenNoDriver()) {
             throw new SeleniumJupiterException(e);
         }
         log.warn("Error creating WebDriver object", e);
-    }
-
-    boolean throwExceptionWhenNoDriver() {
-        return getBoolean("sel.jup.exception.when.no.driver");
     }
 
     File getExtension(String fileName) {

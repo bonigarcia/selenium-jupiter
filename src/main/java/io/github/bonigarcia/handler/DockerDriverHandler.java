@@ -150,44 +150,8 @@ public class DockerDriverHandler {
                 novncPort = startDockerNoVnc();
             }
 
-            DesiredCapabilities capabilities = browser.getCapabilities();
-            String imageVersion;
-            if (version != null && !version.isEmpty()) {
-                imageVersion = selenoidConfig.getImageVersion(browser, version);
-                capabilities.setCapability("version", imageVersion);
-            } else {
-                imageVersion = selenoidConfig.getDefaultBrowser(browser);
-            }
-
-            if (enableVnc) {
-                capabilities.setCapability("enableVNC", true);
-                capabilities.setCapability("screenResolution",
-                        getString("sel.jup.vnc.screen.resolution"));
-            }
-
-            if (recording) {
-                capabilities.setCapability("enableVideo", true);
-                capabilities.setCapability("videoScreenSize",
-                        getString("sel.jup.recording.video.screen.size"));
-                capabilities.setCapability("videoFrameRate",
-                        getInt("sel.jup.recording.video.frame.rate"));
-            }
-
-            Optional<Capabilities> optionalCapabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            MutableCapabilities options = browser.getDriverHandler()
-                    .getOptions(parameter, testInstance);
-
-            // Due to bug in operablink the binary path must be set
-            if (browser == OPERA) {
-                ((OperaOptions) options).setBinary("/usr/bin/opera");
-            }
-
-            if (optionalCapabilities.isPresent()) {
-                options.merge(optionalCapabilities.get());
-            }
-            capabilities.setCapability(browser.getOptionsKey(), options);
-            log.trace("Using capabilities for Docker browser {}", capabilities);
+            DesiredCapabilities capabilities = getCapabilities(browser,
+                    enableVnc);
 
             String dockerServerIp = dockerService.getDockerServerHost();
             String selenoidHubUrl = format("http://%s:%d/wd/hub",
@@ -197,6 +161,13 @@ public class DockerDriverHandler {
             SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
 
             String parameterName = parameter.getName();
+            String imageVersion;
+            if (version != null && !version.isEmpty()) {
+                imageVersion = selenoidConfig.getImageVersion(browser, version);
+                capabilities.setCapability("version", imageVersion);
+            } else {
+                imageVersion = selenoidConfig.getDefaultBrowser(browser);
+            }
             name = parameterName + "_" + browser + "_" + imageVersion;
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
@@ -233,6 +204,41 @@ public class DockerDriverHandler {
             throw new SeleniumJupiterException(e);
         }
 
+    }
+
+    private DesiredCapabilities getCapabilities(BrowserType browser,
+            boolean enableVnc) throws IllegalAccessException, IOException {
+        DesiredCapabilities capabilities = browser.getCapabilities();
+        if (enableVnc) {
+            capabilities.setCapability("enableVNC", true);
+            capabilities.setCapability("screenResolution",
+                    getString("sel.jup.vnc.screen.resolution"));
+        }
+
+        if (recording) {
+            capabilities.setCapability("enableVideo", true);
+            capabilities.setCapability("videoScreenSize",
+                    getString("sel.jup.recording.video.screen.size"));
+            capabilities.setCapability("videoFrameRate",
+                    getInt("sel.jup.recording.video.frame.rate"));
+        }
+
+        Optional<Capabilities> optionalCapabilities = annotationsReader
+                .getCapabilities(parameter, testInstance);
+        MutableCapabilities options = browser.getDriverHandler()
+                .getOptions(parameter, testInstance);
+
+        // Due to bug in operablink the binary path must be set
+        if (browser == OPERA) {
+            ((OperaOptions) options).setBinary("/usr/bin/opera");
+        }
+
+        if (optionalCapabilities.isPresent()) {
+            options.merge(optionalCapabilities.get());
+        }
+        capabilities.setCapability(browser.getOptionsKey(), options);
+        log.trace("Using capabilities for Docker browser {}", capabilities);
+        return capabilities;
     }
 
     public String getName() {
@@ -429,7 +435,7 @@ public class DockerDriverHandler {
             }
         }
 
-        log.trace("Renaming {} to {}", recordingFile, name + ".mp4");
+        log.trace("Renaming {} to {}.mp4", recordingFile, name);
         move(recordingFile.toPath(),
                 recordingFile.toPath().resolveSibling(name + ".mp4"),
                 REPLACE_EXISTING);
