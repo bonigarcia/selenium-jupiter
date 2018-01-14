@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.template;
 
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,8 +40,7 @@ public class TemplateFileTest {
 
     @AfterAll
     static void teardown() {
-        setProperty("sel.jup.browser.template.json.file",
-                "classpath:browsers.json");
+        clearProperty("sel.jup.browser.template.json.file");
     }
 
     @TestTemplate

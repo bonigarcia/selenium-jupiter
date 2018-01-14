@@ -57,7 +57,8 @@ public class ScreenshotPngTest {
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
-        imageFile = new File("screenshotTest_arg0_ChromeDriver.png");
+        imageFile = new File("screenshotTest_arg0_ChromeDriver_"
+                + driver.getSessionId() + ".png");
     }
 
 }

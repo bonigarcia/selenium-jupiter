@@ -85,7 +85,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private List<DriverHandler> driverHandlerList = new ArrayList<>();
     private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
-    private Browser browser;
+    private List<Browser> browser;
 
     public SeleniumExtension() {
         handlerMap.put(ChromeDriver.class, ChromeDriverHandler.class);
@@ -125,8 +125,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         Class<?> type = parameter.getType();
 
         // Check template
+        Integer index = null;
         if (type.equals(WebDriver.class)) {
-            type = templateHandlerMap.get(browser.getType());
+            index = Integer.valueOf(parameter.getName().replaceAll("arg", ""));
+            type = templateHandlerMap.get(browser.get(index).getType());
         }
 
         // WebDriverManager
@@ -145,7 +147,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 driverHandler = constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class, Browser.class)
-                        .newInstance(parameter, context, browser);
+                        .newInstance(parameter, context, browser.get(index));
 
             } else if (browser != null && type.equals(PhantomJSDriver.class)) {
                 driverHandler = constructorClass
@@ -259,8 +261,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return browsers.getStream().map(b -> invocationContext(b, this));
     }
 
-    private TestTemplateInvocationContext invocationContext(Browser browser,
-            SeleniumExtension parent) {
+    private TestTemplateInvocationContext invocationContext(
+            List<Browser> browser, SeleniumExtension parent) {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {

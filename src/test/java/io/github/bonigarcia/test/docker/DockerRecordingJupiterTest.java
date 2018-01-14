@@ -66,7 +66,8 @@ public class DockerRecordingJupiterTest {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
-        recordingFile = new File("testLatest_arg0_CHROME_63.0.mp4");
+        recordingFile = new File("testLatest_arg0_CHROME_63.0_"
+                + driver.getSessionId() + ".mp4");
     }
 
 }

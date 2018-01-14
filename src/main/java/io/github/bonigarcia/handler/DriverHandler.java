@@ -31,6 +31,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
@@ -72,8 +74,12 @@ public abstract class DriverHandler {
         if (testMethod.isPresent()) {
             name = testMethod.get().getName();
         }
-        return name + "_" + parameter.getName() + "_"
+        name += "_" + parameter.getName() + "_"
                 + object.getClass().getSimpleName();
+        if (WebDriver.class.isAssignableFrom(object.getClass())) {
+            name += "_" + ((RemoteWebDriver) object).getSessionId();
+        }
+        return name;
     }
 
     public boolean throwExceptionWhenNoDriver() {

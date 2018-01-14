@@ -168,7 +168,8 @@ public class DockerDriverHandler {
             } else {
                 imageVersion = selenoidConfig.getDefaultBrowser(browser);
             }
-            name = parameterName + "_" + browser + "_" + imageVersion;
+            name = parameterName + "_" + browser + "_" + imageVersion + "_"
+                    + ((RemoteWebDriver) webDriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
                 name = testMethod.get().getName() + "_" + name;

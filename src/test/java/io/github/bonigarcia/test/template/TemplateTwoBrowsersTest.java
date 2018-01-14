@@ -14,55 +14,43 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.docker;
+package io.github.bonigarcia.test.template;
 
-import static io.github.bonigarcia.BrowserType.CHROME;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
-
-import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-@TestInstance(PER_CLASS)
-public class DockerHtmlVncJupiterTest {
-
-    File htmlFile;
+public class TemplateTwoBrowsersTest {
 
     @BeforeAll
-    void setup() {
-        setProperty("sel.jup.vnc.create.redirect.html.page", "true");
+    static void setup() {
+        setProperty("sel.jup.browser.template.json.file",
+                "./src/test/resources/browsers-two.json");
     }
 
     @AfterAll
-    void teardown() {
-        clearProperty("sel.jup.vnc.create.redirect.html.page");
-        assertTrue(htmlFile.exists());
-        htmlFile.delete();
+    static void teardown() {
+        clearProperty("sel.jup.browser.template.json.file");
     }
 
-    @Test
-    public void testHtmlVnc(
-            @DockerBrowser(type = CHROME, version = "63.0") RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
+    @TestTemplate
+    void templateTest(WebDriver driver1, WebDriver driver2) {
+        driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver1.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
-
-        htmlFile = new File("testHtmlVnc_arg0_CHROME_63.0_"
-                + driver.getSessionId() + ".html");
+        assertThat(driver2.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
 }

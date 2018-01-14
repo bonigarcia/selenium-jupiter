@@ -29,9 +29,9 @@ import java.util.stream.Stream;
  */
 public class BrowsersTemplate {
 
-    List<Browser> browsers;
+    List<List<Browser>> browsers;
 
-    public Stream<Browser> getStream() {
+    public Stream<List<Browser>> getStream() {
         return browsers.stream();
     }
 

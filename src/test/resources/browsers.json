@@ -1,26 +1,29 @@
 {
    "browsers": [
-      {
-         "type": "chrome"
-      },
-      {
-         "type": "firefox"
-      },
-      {
-         "type": "phantomjs"
-      },
-      {
-         "type": "chrome-in-docker"
-      },
-      {
-         "type": "chrome-in-docker",
-         "version": "62.0"
-      },
-      {
-         "type": "firefox-in-docker"
-      },
-      {
-         "type": "opera-in-docker"
-      }
+      [
+         {
+            "type": "chrome"
+         },
+         {
+            "type": "firefox"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker"
+         },
+         {
+            "type": "firefox-in-docker"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "62.0"
+         },
+         {
+            "type": "opera-in-docker"
+         }
+      ]
    ]
 }

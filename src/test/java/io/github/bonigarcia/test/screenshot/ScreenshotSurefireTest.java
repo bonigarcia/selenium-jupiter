@@ -63,7 +63,8 @@ public class ScreenshotSurefireTest {
 
         imageName = new File(
                 "./target/surefire-reports/io.github.bonigarcia.test.screenshot.ScreenshotSurefireTest",
-                "screenshotTest_arg0_ChromeDriver.png");
+                "screenshotTest_arg0_ChromeDriver_" + driver.getSessionId()
+                        + ".png");
     }
 
 }

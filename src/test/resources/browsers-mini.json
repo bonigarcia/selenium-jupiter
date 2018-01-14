@@ -1,7 +1,9 @@
 {
    "browsers": [
-      {
-         "type": "phantomjs"
-      }
+      [
+         {
+            "type": "phantomjs"
+         }
+      ]
    ]
 }
