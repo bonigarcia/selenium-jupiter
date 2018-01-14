@@ -83,7 +83,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     private List<WebDriver> webDriverList = new ArrayList<>();
     private List<Class<?>> typeList = new ArrayList<>();
-    private DriverHandler driverHandler;
+    private List<DriverHandler> driverHandlerList = new ArrayList<>();
     private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
     private Browser browser;
@@ -138,6 +138,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
 
         // Handler
+        DriverHandler driverHandler = null;
         Class<? extends DriverHandler> constructorClass = handlerMap
                 .containsKey(type) ? handlerMap.get(type)
                         : OtherDriverHandler.class;
@@ -161,6 +162,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .newInstance(parameter, context);
 
             }
+            driverHandlerList.add(driverHandler);
         } catch (Exception e) {
             log.warn("Exception creating {}", constructorClass);
         }
@@ -200,7 +202,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
         webDriverList.clear();
 
-        if (driverHandler != null) {
+        for (DriverHandler driverHandler : driverHandlerList) {
             try {
                 driverHandler.cleanup();
             } catch (Exception e) {
@@ -245,7 +247,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 }
             }
 
-            browsers = new Gson().fromJson(browserJsonContent, BrowsersTemplate.class);
+            browsers = new Gson().fromJson(browserJsonContent,
+                    BrowsersTemplate.class);
 
         } catch (IOException e) {
             throw new SeleniumJupiterException(e);

@@ -31,6 +31,7 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.nio.file.Files.write;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -42,11 +43,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +93,9 @@ public class DockerDriverHandler {
 
     DockerService dockerService;
     Map<String, String> containers;
+    Map<SessionId, List<File>> recordings;
     File tmpDir;
     boolean recording;
-    File recordingFile;
     File hostVideoFolder;
     SelenoidConfig selenoidConfig;
     ExtensionContext context;
@@ -125,6 +127,9 @@ public class DockerDriverHandler {
         if (containers == null) {
             containers = new LinkedHashMap<>();
         }
+        if (recordings == null) {
+            recordings = new HashMap<>();
+        }
         if (selenoidConfig == null) {
             selenoidConfig = new SelenoidConfig();
         }
@@ -139,10 +144,12 @@ public class DockerDriverHandler {
             }
 
             DesiredCapabilities capabilities = browser.getCapabilities();
-
+            String imageVersion;
             if (version != null && !version.isEmpty()) {
-                capabilities.setCapability("version",
-                        selenoidConfig.getImageVersion(browser, version));
+                imageVersion = selenoidConfig.getImageVersion(browser, version);
+                capabilities.setCapability("version", imageVersion);
+            } else {
+                imageVersion = selenoidConfig.getDefaultBrowser(browser);
             }
 
             if (enableVnc) {
@@ -183,6 +190,15 @@ public class DockerDriverHandler {
             webDriver = new RemoteWebDriver(new URL(selenoidHubUrl),
                     capabilities);
             SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
+            String parameterName = parameter.getName();
+
+            String finalName = parameterName + "_" + browser + "_"
+                    + imageVersion;
+            Optional<Method> testMethod = context.getTestMethod();
+            if (testMethod.isPresent()) {
+                finalName = testMethod.get().getName() + "_" + finalName;
+            }
+
             if (enableVnc) {
                 String vncUrl = format(
                         "http://%s:%d/vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
@@ -195,12 +211,15 @@ public class DockerDriverHandler {
                     String vncHtmlPage = format(
                             "<html><body onload=\"window.location.href='%s'\"></html>",
                             vncUrl);
-                    Files.write(Paths.get(outputFolder, sessionId + ".html"),
+                    write(Paths.get(outputFolder, finalName + ".html"),
                             vncHtmlPage.getBytes());
                 }
             }
+
             if (recording) {
-                recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
+                recordings.put(sessionId,
+                        asList(new File(hostVideoFolder, sessionId + ".mp4"),
+                                new File(hostVideoFolder, finalName + ".mp4")));
             }
 
             return webDriver;
@@ -213,6 +232,25 @@ public class DockerDriverHandler {
 
     public void cleanup() {
         try {
+            // Wait for recordings
+            if (recording) {
+                ExecutorService recExecutorService = newFixedThreadPool(
+                        recordings.size());
+                CountDownLatch recLatch = new CountDownLatch(recordings.size());
+
+                for (List<File> files : recordings.values()) {
+                    try {
+                        waitForRecording(files);
+                    } finally {
+                        recLatch.countDown();
+                    }
+                }
+                recLatch.await();
+                recExecutorService.shutdown();
+
+            }
+
+            // Stop containers
             if (containers != null && dockerService != null) {
                 int numContainers = containers.size();
                 if (numContainers > 0) {
@@ -223,10 +261,6 @@ public class DockerDriverHandler {
                             .entrySet()) {
                         executorService.submit(() -> {
                             try {
-                                if (recording && entry.getValue().equals(
-                                        getString("sel.jup.selenoid.image"))) {
-                                    waitForRecording();
-                                }
                                 dockerService.stopAndRemoveContainer(
                                         entry.getKey(), entry.getValue());
                             } finally {
@@ -236,9 +270,12 @@ public class DockerDriverHandler {
                     }
                     containers.clear();
                     latch.await();
+
                     executorService.shutdown();
                 }
             }
+
+            // Delete temporal folder
             if (tmpDir != null) {
                 deleteDirectory(tmpDir);
             }
@@ -372,11 +409,13 @@ public class DockerDriverHandler {
         return fileString;
     }
 
-    private void waitForRecording() {
+    private void waitForRecording(List<File> recording) {
         int dockerWaitTimeoutSec = dockerService.getDockerWaitTimeoutSec();
         int dockerPollTimeMs = dockerService.getDockerPollTimeMs();
         long timeoutMs = currentTimeMillis()
                 + SECONDS.toMillis(dockerWaitTimeoutSec);
+
+        File recordingFile = recording.get(0);
         log.debug("Waiting for recording {} to be available", recordingFile);
         while (!recordingFile.exists()) {
             if (currentTimeMillis() > timeoutMs) {
@@ -393,6 +432,12 @@ public class DockerDriverHandler {
                         e);
                 currentThread().interrupt();
             }
+        }
+        File destRecordingName = recording.get(1);
+        log.trace("Renaming {} to {}", recordingFile, destRecordingName);
+        if (!recordingFile.renameTo(destRecordingName)) {
+            log.warn("There was an error renaming {} to {}", recordingFile,
+                    destRecordingName);
         }
     }
 
