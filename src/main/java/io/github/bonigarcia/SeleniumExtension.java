@@ -162,10 +162,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             }
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
-            if (driverHandler.throwExceptionWhenNoDriver()) {
+            if (driverHandler != null
+                    && driverHandler.throwExceptionWhenNoDriver()) {
                 throw new SeleniumJupiterException(e);
             } else {
-                log.warn("Exception creating {}", constructorClass);
+                log.warn("Exception creating {}", constructorClass, e);
             }
         }
 
