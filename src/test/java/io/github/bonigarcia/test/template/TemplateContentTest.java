@@ -35,7 +35,7 @@ public class TemplateContentTest {
     @BeforeAll
     static void setup() {
         setProperty("sel.jup.browser.template.json.content",
-                "{ \"browsers\": [ { \"type\": \"chrome\" } ] }");
+                "{ \"browsers\": [ [ { \"type\": \"chrome\" } ] ] }");
     }
 
     @AfterAll
