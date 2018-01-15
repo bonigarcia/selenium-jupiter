@@ -113,6 +113,9 @@ public class DockerDriverHandler {
         this.parameter = parameter;
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
+        this.dockerService = new DockerService();
+        this.containers = new LinkedHashMap<>();
+        this.selenoidConfig = new SelenoidConfig();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
@@ -129,18 +132,6 @@ public class DockerDriverHandler {
     }
 
     public WebDriver resolve(BrowserType browser, String version) {
-        WebDriver webDriver = null;
-
-        if (dockerService == null) {
-            dockerService = new DockerService();
-        }
-        if (containers == null) {
-            containers = new LinkedHashMap<>();
-        }
-        if (selenoidConfig == null) {
-            selenoidConfig = new SelenoidConfig();
-        }
-
         try {
             boolean enableVnc = getBoolean("sel.jup.vnc");
             recording = getBoolean("sel.jup.recording");
@@ -169,14 +160,14 @@ public class DockerDriverHandler {
             String dockerServerIp = dockerService.getDockerServerHost();
             String selenoidHubUrl = format("http://%s:%d/wd/hub",
                     dockerServerIp, selenoidPort);
-            webDriver = new RemoteWebDriver(new URL(selenoidHubUrl),
+            WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHubUrl),
                     capabilities);
-            SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
+            SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
 
             String parameterName = parameter.getName();
 
             name = parameterName + "_" + browser + "_" + imageVersion + "_"
-                    + ((RemoteWebDriver) webDriver).getSessionId();
+                    + ((RemoteWebDriver) webdriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
                 name = testMethod.get().getName() + "_" + name;
@@ -206,7 +197,7 @@ public class DockerDriverHandler {
                 recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
             }
 
-            return webDriver;
+            return webdriver;
 
         } catch (Exception e) {
             throw new SeleniumJupiterException(e);
