@@ -20,8 +20,9 @@ selenium-jupiter (2.0.0)
   + Select format for screenshot using config key (sel.jup.screenshot.format=base64|png|base64andpng)
   + Select output folder (used for screenshots and images) using config key (sel.jup.output.folder=/abs/path|./rel/path|surefire-reports)
   + Seamless integration with Jenkins attachment plugin (https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin) using surefire-reports
+  + Include labels "latest" and "latest-*" for version of browsers in Docker
 
- -- Boni Garcia <boni.gg@gmail.com>  Fri, 5 Jan 2018 05:23:00
+ -- Boni Garcia <boni.gg@gmail.com>  Mon, 15 Jan 2018 05:23:00
 
 
 selenium-jupiter (1.2.0)
