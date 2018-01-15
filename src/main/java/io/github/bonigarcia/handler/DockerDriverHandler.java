@@ -144,14 +144,27 @@ public class DockerDriverHandler {
         try {
             boolean enableVnc = getBoolean("sel.jup.vnc");
             recording = getBoolean("sel.jup.recording");
+            DesiredCapabilities capabilities = getCapabilities(browser,
+                    enableVnc);
+
+            String imageVersion;
+            if (version != null && !version.isEmpty()
+                    && !version.equalsIgnoreCase("latest")) {
+                if (version.startsWith("latest-")) {
+                    version = selenoidConfig.getVersionFromLabel(browser,
+                            version);
+                }
+                imageVersion = selenoidConfig.getImageVersion(browser, version);
+                capabilities.setCapability("version", imageVersion);
+            } else {
+                imageVersion = selenoidConfig.getDefaultBrowser(browser);
+            }
+
             int selenoidPort = startDockerBrowser(browser, version, recording);
             int novncPort = 0;
             if (enableVnc) {
                 novncPort = startDockerNoVnc();
             }
-
-            DesiredCapabilities capabilities = getCapabilities(browser,
-                    enableVnc);
 
             String dockerServerIp = dockerService.getDockerServerHost();
             String selenoidHubUrl = format("http://%s:%d/wd/hub",
@@ -161,13 +174,7 @@ public class DockerDriverHandler {
             SessionId sessionId = ((RemoteWebDriver) webDriver).getSessionId();
 
             String parameterName = parameter.getName();
-            String imageVersion;
-            if (version != null && !version.isEmpty()) {
-                imageVersion = selenoidConfig.getImageVersion(browser, version);
-                capabilities.setCapability("version", imageVersion);
-            } else {
-                imageVersion = selenoidConfig.getDefaultBrowser(browser);
-            }
+
             name = parameterName + "_" + browser + "_" + imageVersion + "_"
                     + ((RemoteWebDriver) webDriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
@@ -314,7 +321,8 @@ public class DockerDriverHandler {
         String recordingImage = getString("sel.jup.recording.image");
 
         String browserImage;
-        if (version == null || version.isEmpty()) {
+        if (version == null || version.isEmpty()
+                || version.equalsIgnoreCase("latest")) {
             log.debug("Using {} version {} (latest)", browser,
                     selenoidConfig.getDefaultBrowser(browser));
             browserImage = selenoidConfig.getLatestImage(browser);

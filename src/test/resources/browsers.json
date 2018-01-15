@@ -2,27 +2,20 @@
    "browsers": [
       [
          {
-            "type": "chrome"
-         },
-         {
-            "type": "firefox"
-         }
-      ],
-      [
-         {
-            "type": "chrome-in-docker"
-         },
-         {
-            "type": "firefox-in-docker"
+            "type": "chrome-in-docker",
+            "version": "latest"
          }
       ],
       [
          {
             "type": "chrome-in-docker",
-            "version": "62.0"
-         },
+            "version": "latest-1"
+         }
+      ],
+      [
          {
-            "type": "opera-in-docker"
+            "type": "chrome-in-docker",
+            "version": "latest-2"
          }
       ]
    ]

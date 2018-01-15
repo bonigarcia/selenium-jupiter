@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -48,6 +49,16 @@ public class SelenoidConfig {
         return new Gson().toJson(browsers);
     }
 
+    public String getVersionFromLabel(BrowserType browser, String label) {
+        int beforeVersion = Integer.parseInt(label.replace("latest-", ""));
+        String latestVersion = getLatestImage(browser);
+        String previousVersion = getPreviousVersion(beforeVersion,
+                latestVersion);
+        log.debug("Version {} for {} (latest version {}) = {}", label, browser,
+                latestVersion, previousVersion);
+        return previousVersion;
+    }
+
     public String getImageVersion(BrowserType browser, String version) {
         Map<String, Browser> versions = browsers.getBrowser(browser)
                 .getVersions();
@@ -78,5 +89,16 @@ public class SelenoidConfig {
 
     public String getDefaultBrowser(BrowserType browser) {
         return browsers.getBrowser(browser).getDefaultBrowser();
+    }
+
+    private String getPreviousVersion(int beforeVersion, String latestVersion) {
+        int iLatestVersion = latestVersion.indexOf('_') + 1;
+        int jLatestVersion = latestVersion.indexOf('.');
+        int latestVersionInt = parseInt(
+                latestVersion.substring(iLatestVersion, jLatestVersion));
+        if (beforeVersion > latestVersionInt) {
+            return null;
+        }
+        return String.valueOf(latestVersionInt - beforeVersion) + ".0";
     }
 }
