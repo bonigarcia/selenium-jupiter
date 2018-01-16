@@ -188,5 +188,41 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  <<< FAILURE!
 
 _selenium_jupiter_ provides seamless integration with Jenkins through one of its plugins: the https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin[Jenkins attachment plugin]. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in _selenium_jupiter_ setting the configuration key `sel.jup.output.folder` to an special value: `surefire-reports`.
 
-When this configuration key is configured with that value, _selenium_jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI.
+When this configuration key is configured with that value, _selenium_jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerFirefoxWithOptionsJupiterTest.java[test], when is executed in Jenkins (with the attachment plugin) and the following configuration:
 
+[source]
+----
+mvn clean test -Dtest=DockerFirefoxWithOptionsJupiterTest -Dsel.jup.recording=true -Dsel.jup.output.folder=surefire-reports -Dsel.jup.screenshot.at.the.end.of.tests=true
+----
+
+In this case, at the the execution of this test, two recordings in MP4 and two screenshots in PNG will be attached to the job as follows. 
+
+[.thumb]
+.Example of test execution through Jenkins with attachements
+image::jenkins-attachements-test.png[scaledwidth=100%]
+
+We can watch the recording simply clicking in the attached MP4 files.
+
+[.thumb]
+.Example of test execution through Jenkins with attachements
+image::jenkins-attachements-test-mp4.png[scaledwidth=100%]
+
+Test template are also compatible with this feature. For instance, the following test
+https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/template/TemplateTest.java[test], when is executed in Jenkins using the the following configuration:
+
+[source]
+----
+mvn clean test -Dtest=TemplateTest -Dsel.jup.recording=true -Dsel.jup.output.folder=surefire-reports -Dsel.jup.screenshot.at.the.end.of.tests=true
+----
+
+... will result in the following attachements:
+
+[.thumb]
+.Example of template test execution through Jenkins with attachements
+image::jenkins-attachements-template.png[scaledwidth=100%]
+
+... and we can see the recording, for instace:
+
+[.thumb]
+.Example of template test execution through Jenkins with attachements
+image::jenkins-attachements-template-mp4.png[scaledwidth=100%]
