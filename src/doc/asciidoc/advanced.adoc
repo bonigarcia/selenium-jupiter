@@ -1,6 +1,74 @@
-== Advanced
+== Advanced features
 
-So far, we have discovered how to use different browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:
+=== Template tests
+
+_selenium_jupiter_ takes advantage on the standard feature of JUnit 5 called http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates[test templates]. Test templates can be seen as an special kind of parameterized tests, in which the test is executed several times according to the data provided by some extension. In our case, the extension is _selenium_jupiter_ itself, and the test template is configured using a custom file in JSON called *browsers scenario*. 
+
+Let's see some examples. Consider the following test. A couple of things are new in this test. First of all, instead of declaring the method with the usual `@Test` annotation, we are using the JUnit 5's annotation `@TestTemplate`. With this we are saying to JUnit that this method is not a regular test case but a template. Second, the parameter type of the method `templateTest` is `WebDriver`. This is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver`, `FirefoxDriver`, `RemoteWebDriver`, etc.) will be determined by _selenium_jupiter_ in runtime.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/template/TemplateTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The last piece we need in this test template is what we call _browser scenario_. As introduced before, this scenario is defined in a JSOn file following a simple notation. 
+
+The path of the JSON browser scenario is established in the configuration key called `sel.jup.browser.template.json.file`. By default, this key has the value `classpath:browsers.json`. This means that the JSON scenario is defined in a file called `browsers.json` located in the classpath (see section link:#configuration[Configuration] for further details about configuration).
+
+NOTE: If the configuration key `sel.jup.browser.template.json.file` do not start with the word `classpath:`, the file will be searched using relative of absolute paths. 
+
+Now imagine that the content of the file `browsers.json` is as follows:
+
+[source,json]
+----
+include::../../test/resources/browsers.json[indent=0]
+----
+
+When we execute the template test, in this case we will have three actual tests: the first using the _latest_ version of Chrome, the second using the previous to stable version of Chrome (`latest-1`), and third using two versions older than the current stable (`latest-2`). For instance, if we run the test in Eclipse, we will get the following output:
+
+[.thumb]
+.Example of test template execution (with one parameter) with Eclipse
+image::test-template-01.png[scaledwidth=100%]
+
+Generally speaking, a browser within the JSON scenario is defined using two parameters:
+
+- `type`: Type of browsers. The accepted values are:
+   * `chrome`: For local Chrome browsers.
+   * `firefox`: For local Firefox browsers.
+   * `edge`: For local Edge browsers.
+   * `opera`: For local Opera browsers.
+   * `safari`: For local Safari browsers.
+   * `appium`: For local mobile emulated devices.
+   * `phantomjs`: For local PhtanomJS headless browsers.
+   * `chrome-in-docker`: For Chrome browsers in Docker.
+   * `firefox-in-docker`: For Firefox browsers in Docker.
+   * `opera-in-docker`: For Opera browsers in Docker.
+- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser).
+ 
+Finally, more than one parameters can be defined in the test template. For instance, consider the following test in which a couple of `WebDriver` parameters are declared in the test template.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/template/TemplateTwoBrowsersTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The JSON scenario should be defined accordingly. Each browser array in this case (for each test template execution) should declare two browsers. For instance, using the following JSON scenario, the first execution will be based on Chrome in Docker (first parameter) and Firefox in Docker (second parameter); and the second exection will be based on the headless browser PhantomJS (first parameter) and Opera in Docker (second paramter).
+
+[source,json]
+----
+include::../../test/resources/browsers-two.json[indent=0]
+----
+
+If we execute this test using in GUI, the JUnit tab shows two tests executed with the values defined in the JSON scenario.
+
+[.thumb]
+.Example of test template execution (with two parameters) with Eclipse
+image::test-template-02.png[scaledwidth=100%]
+
+
+=== Using options
+
+So far, we have discovered how to use different local browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) of Docker browsers (Chrome, Firefox, Opera) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:
 
 * What if I need to specify options (e.g. `ChromeOptions`, `FirefoxOptions`, etc) to my WebDriver object?
 * What if need to specify desired capabilities (e.g. browser type, version, platform)?
@@ -8,22 +76,24 @@ So far, we have discovered how to use different browsers (Chrome, Firefox, Edge,
 
 In order to support the advance features of Selenium WebDriver, _selenium-jupiter_ provides several annotations aimed to allow a fine-grained control of the WebDriver object instantiation. These annotations are:
 
-* `DriverOptions`: Annotation to configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
-* `DriverCapabilities`: Annotation to configure the desired _capabilities_ (WebDriver's object `DesiredCapabilities`).
-* `DriverUrl`: Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object.
+* `Arguments` (_parameter-level_) : Used to add arguments to the options.
+* `Preferences` (_parameter-level_) : Used to set preferences to the options.
+* `Binary` (_parameter-level_) : Used to set the location of the browser binary.
+* `Extensions` (_parameter-level_) : User to add extensions to the browser.
+ * `Options` (_field-level_): Annotation to configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
+* `DriverCapabilities` (_parameter-level_ or _field-level_): Annotation to configure the desired _capabilities_ (WebDriver's object `DesiredCapabilities`).
+* `DriverUrl` (_parameter-level_ or _field-level_): Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object.
 
-All these 3 annotation can be used both at _parameter-level_ (applied to a single WebDriver parameter), and also at _field-level_ (applied globally in a test class). Keep reading to find out several examples about that.
+The annotations marked as _parameter-level_ are applied to a single WebDriver parameter. The annotations marked as _field-level_ are applied globally in a test class. Keep reading to find out several examples about that.
 
-=== Using options
-
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. To that aim, the annotation `@DriverOptions` is used to set a collection of options. This array of options is configured using the annotation `@Option` declaring the parameters `name` and `value`). In the example, the annotation `@DriverOptions` is used at _parameter-level_. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we are adding an extension to Chrome using the `@Option` named `EXTENSION`. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we are adding an extension to Chrome using the `@Extensions` annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
 
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-As introduced before, this annotation `@DriverOptions` can be used also at _field-level_, as shown in this other https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[example]. This test is setting to `true` the Firefox preferences `media.navigator.streams.fake` and `media.navigator.permission.disabled`, used also for WebRTC.
+As introduced before, this annotation `@Options` can be used also at _field-level_, as shown in this other https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[example]. This test is setting to `true` the Firefox preferences `media.navigator.streams.fake` and `media.navigator.permission.disabled`, used also for WebRTC.
 
 [source,java]
 ----
@@ -67,7 +137,7 @@ include::../../test/java/io/github/bonigarcia/test/advance/AppiumApkJupiterTest.
 
 === Tuning WebDriverManager
 
-As introduced before, _selenium-jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
+As introduced before, _selenium-jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
 
 In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:
 
@@ -84,9 +154,19 @@ include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest
 ----
 
 
-=== Debugging
+=== Screenshots
 
-As of version 1.2.0, _selenium-jupiter_ provides a built-in feature for debugging purposes. When a JUnit 5 test using this extension fails, _selenium-jupiter_ will make an *screenshot* for each of the browser sessions at the end of the test. These screenshots, encoded in *Base 64*, are logged using the *debug* level of (https://www.slf4j.org/)[Simple Logging Facade for Java (SLF4J)]. You can copy&paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot. All in all, this capability allows to watch what was the status of the web under test just after the test is declared as failure, which can help to identify the cause of the test failure.
+_selenium-jupiter_ provides several built-in features for making *screenshots* for each of the browser sessions at the end of the test. These screenshots, can be encoded as *Base64* or stored as *PNG* images. The following configuration keys are used to control the way and format in which screenshots are made:
+
+- `sel.jup.screenshot.at.the.end.of.tests`: This key indicates whether or not screenshots will be made at the end of every browser session. The accepted valued for this configuration key are:
+   * `true` : Screenshots are always taken at the end of tests.
+   * `false` : Screenshots are not taken at the end of tests.
+   * `whenfailure` : Screenshots are only taken if the test fails.
+- `sel.jup.screenshot.format`: Format for the screenshot. The accepted values for this key are two:
+   * `base64` : Base64 screenshots are logged using the *debug* level of (https://www.slf4j.org/)[Simple Logging Facade for Java (SLF4J)]. You can copy&paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot.
+   * `png` : Screenshots are stored as PNG images. The output folder for these images is configured using the configuration key `sel.jup.output.folder` (the default value of this property is `.`, i.e. the local folder).
+ 
+Take into account that a big `base64` string will be added to your logs if this option if configured. This feature can be especially useful for build server in the cloud (such as Travis CI), in which we don't have access to the server file system but can track easily the test output log. 
 
 [source]
 ----
@@ -102,4 +182,11 @@ nr2SgWY2TMdyRZMNENknWYTIo75WxuUWNCij9k178gCKO3BHLtkeQjiMYEgXy66/8f5nl+x57/98mYAv
 Tests run: 2, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 7.219 sec <<< FAILURE! - in io.github.bonigarcia.test.basic.ChromeJupiterTest
 testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  <<< FAILURE!
 ----
+
+
+=== Integration with Jenkins
+
+_selenium_jupiter_ provides seamless integration with Jenkins through one of its plugins: the https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin[Jenkins attachment plugin]. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in _selenium_jupiter_ setting the configuration key `sel.jup.output.folder` to an special value: `surefire-reports`.
+
+When this configuration key is configured with that value, _selenium_jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI.
 

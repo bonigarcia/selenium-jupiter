@@ -28,12 +28,12 @@ In order to simplify the life of Java WebDriver users, in March 2015 the utility
 
 [source,java]
 ----
-ChromeDriverManager.getInstance().setup();
-FirefoxDriverManager.getInstance().setup();
-OperaDriverManager.getInstance().setup();
-PhantomJsDriverManager.getInstance().setup();
-EdgeDriverManager.getInstance().setup();
-InternetExplorerDriverManager.getInstance().setup();
+WebDriverManager.chromedriver().setup();
+WebDriverManager.firefoxdriver().setup();
+WebDriverManager.operadriver().setup();
+WebDriverManager.phantomjs().setup();
+WebDriverManager.edgedriver().setup();
+WebDriverManager.iedriver().setup();;
 ----
 
 The solution implemented by WebDriverManager is today supported by similar tools for other languages, such as https://github.com/angular/webdriver-manager[webdriver-manager] for *Node.js* or https://github.com/rosolko/WebDriverManager.Net[WebDriverManager.Net] for *.NET*.

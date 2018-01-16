@@ -8,11 +8,11 @@ Using _selenium-jupiter_ it's easy as pie. First, you need to import the depende
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>1.2.0</version>
+	<version>2.0.0</version>
 	<scope>test</scope>
 </dependency>
 
-NOTE: _selenium-jupiter_ 1.2.0 depends on *_selenium-java_ 3.8.1*, *_webdrivermanager_ 2.0.1*, and *appium java-client 5.0.4*. Therefore, by using the _selenium-jupiter_ dependency, those libraries (_selenium-java_, _webdrivermanager_, and _appium java-client_) will be added as transitive dependencies to your project.
+NOTE: _selenium-jupiter_ 2.0.0 depends on *_selenium-java_ 3.8.1*, *_webdrivermanager_ 2.1.0*, *appium java-client 5.0.4*, and *docker-java 3.0.14*. Therefore, by using the _selenium-jupiter_ dependency, those libraries (_selenium-java_, _webdrivermanager_, _appium java-client_, and _docker-java_) will be added as transitive dependencies to your project.
 
 Then, you need to declare _selenium-jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _selenium-jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
 

@@ -1,6 +1,6 @@
-== Examples
+== Local browsers
 
-This section contains a comprehensive collection of examples demonstrating the basic usage of _seleniun-jupiter_ in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of https://github.com/bonigarcia/selenium-jupiter[_selenium-jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI].
+This section contains a comprehensive collection of basuc examples demonstrating the basic usage of _seleniun-jupiter_ in JUnit 5 tests using different types of local browsers. All these examples are part of the test suite of https://github.com/bonigarcia/selenium-jupiter[_selenium-jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI].
 
 === Chrome
 

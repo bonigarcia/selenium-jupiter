@@ -13,9 +13,13 @@ include::quick-reference.adoc[]
 
 include::motivation.adoc[]
 
-include::examples.adoc[]
+include::local-browsers.adoc[]
+
+include::docker-browsers.adoc[]
 
 include::advanced.adoc[]
+
+include::configuration.adoc[]
 
 include::support.adoc[]
 

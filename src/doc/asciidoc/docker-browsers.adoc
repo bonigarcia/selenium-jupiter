@@ -1,0 +1,81 @@
+== Docker browsers 
+
+As of version 2.0.0, _selenium-jupiter_ allows to ask for browsers in https://www.docker.com/[Docker] containers. The only requirement to use this feature is to install https://www.docker.com/get-docker[Docker Engine] in the machine running the tests. Internally, _selenium-jupiter_ uses a https://github.com/docker-java/docker-java[docker-java] as Docker client and the Docker images for browsers provided by http://aerokube.com/selenoid/latest/[Selenoid].
+
+As shown in the following section, the mode of operation is similar to local browser. We simply asks for browsers in Docker simply declaring parameters in our `@Test` methods, and _selenium-jupiter_ will make magic for us: it downloads the proper Docker image for the browser, start it, and instantiate the object of type `RemoteWebDriver` to control the browser from our test. The annotation `@DockerBrowser` need to be declared in the parameter to mark the WebDriver object as a browser in Docker.    
+
+=== Chrome
+
+The following example contains a simple test example using Chrome browsers in Docker. Check out the code https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java[here]. As you can see, the first `@Test` method (called `testChrome`) declares a parameter of type `RemoteWebDriver`. This parameter is annotated with `@DockerBrowser`. This annotation requires to set the browser type, in this case `CHROME`. If no version is specified, then the latest version of the browser will be used. This feature is known as *ever green browsers*, and it is implementing by consuming the REST API of https://hub.docker.com/[Docker Hub], asking for the list of https://hub.docker.com/u/selenoid/[Selenoid] browsers. On the other hand, the second `@Test` (called `testChromeWithVersion`) a fixed version is set, in this case `62.0`.  
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+In this other example, wildcards will be used to set the browser version. In the first `@Test` (method `testLatestChrome`), we use the literal `latest` to mark the use of the latest version (in fact the use of `latest` is exactly the same that not declaring the `version` attribute). The second `@Test` (method `testFormerChrome`) sets the version as `latest-1`. This should be read as _latest version minus one_, in other words, the previous version to the stable version at the time of the test execution. Notice that the concrete versions for both test will evolve in time, since new versions are released constantly. All in all, you have the certainty of using the latest versions of the browser without any kind of extra configuration nor maintainance of the underlying infraestructure.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/docker/DockerChromeLatestJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+NOTE: The label _latest-*_ is supported, where _*_ is a number for a former version to the current stable. For instance, _latest-2_ means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, _latest-2_ will mean version 61.0).
+
+=== Firefox
+
+The use of Firefox is equivalent. With respect to the previous example, it simply change the type of browser. Versioning works exactly the same.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/docker/DockerFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+NOTE: Notice that the version of the second test is simply `56`. The actual version of the image is `56.0`, but _selenium_jupiter_ supposes that version is `.0` if not specified.
+
+=== Opera
+
+Again, the use of Opera browsers in Docker is the same, simply changing the browser type to `OPERA`.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/docker/DockerOperaJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+=== Remote sessions (VNC)
+
+_selenium_jupiter_ allows to track the evolution of our browsers in Docker using Virtual Network Computing (VNC) sessions. By default, always a browser in Docker is started by _selenium_jupiter_, the VNC URL is printed in the test log, concretely using the _DEBUG_ level (see example below). Simply copying and pasting that URL in a real browser we can take a look to the browser while the test is being executed. We can even interact with the Docker browser.
+
+[source]
+----
+2018-01-16 00:57:04 [main] DEBUG i.g.b.handler.DockerDriverHandler - Session a19b446bdffef1783edd737f48c7266d VNC URL: http://192.168.99.100:61231/vnc.html?host=192.168.99.100&port=61222&path=vnc/94fce597b678e94eeb86f148d9ea2d95&resize=scale&autoconnect=true&password=selenoid
+----  
+
+[.thumb]
+.Example of VNC session on Chrome
+image::vnc_chrome_in_docker.png[scaledwidth=100%]
+
+NOTE: This capability can be deactivated using the configuration key `sel.jup.vnc` (more info on section link:#configuration[Configuration]).
+
+=== Recordings
+
+_selenium_jupiter_ allows to record the sessions of browsers in Docker. This capability is not activated by default, but it activated simply setting the configuration key `sel.jup.recording` to `true` (see section link:#configuration[Configuration] for further details about configuration).
+
+This way, a recording in MP4 format will be stored at the end of the test which uses one or several browsers in Docker. The output folder in which the recording is stored is configured by means of the configuration key `sel.jup.output.folder`, whose default value is `.` (i.e. the current folder in which the test is executed). The following picture shows an example of recording.
+
+[.thumb]
+.Example of recording played in VLC
+image::recording_chrome_in_docker.png[scaledwidth=100%]
+
+
+=== Performance tests
+
+Another important new feature of browsers in Docker is the possibility of asking for _many of them_ by the same test. This can be used to implement performance tests in a seamless way. To use this feature, we need into account two aspects. First of all, the attribute `size` of the annotation `@DockerBrowser` should be declared. This numeric value sets the number of browsers demanded by the test. Second, instead of a type of `RemoteWebDriver`, the test will declare a `List<RemoteWebDriver>`. For example as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/docker/PerformenceDockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly. In this case, it might be interesting reduce the resource consumption by deactivating the VNC remote sessions setting the configuration key `sel.jup.vnc` to `false`.
+
