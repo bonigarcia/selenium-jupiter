@@ -1,3 +1,60 @@
 == Configuration
 
-To do.
+Configuration parameters for _selenium_jupiter_ are set in the https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties[selenium-jupiter.properties] file. The following table summarizes all the configuration keys available.
+
+.Configuration keys in _selenium_jupiter_
+[width="100%",options="header"]
+|==========================
+|Configuration key | Description | Default value
+|`sel.jup.vnc` | Check VNC session for Docker browsers |`true`
+|`sel.jup.vnc.screen.resolution` | Screen resolution of VNC sessions (format _<width>x<height>x<colors-depth>_)|`1920x1080x24`
+|`sel.jup.vnc.create.redirect.html.page` | Redirect VNC URL to HTML page |`false`
+|`sel.jup.recording` | Record Docker browser session (in MP4 format) |`false`
+|`sel.jup.recording.video.screen.size` | Video screen size for recordings (width and height) |`1024x768`
+|`sel.jup.recording.video.frame.rate` | Video frame rate for recordings |`12`
+|`sel.jup.recording.image` | Docker image for recordings |`selenoid/video-recorder:latest`
+|`sel.jup.output.folder` | Output folder for recordings, screenshots, and HTML redirect pages |`.`
+|`sel.jup.screenshot.at.the.end.of.tests` | Make screenshots at the end of the test |`whenfailure`
+|`sel.jup.screenshot.format` | Format for screenshots |`png`
+|`sel.jup.exception.when.no.driver` | Throw exception in case of exception or not |`true`
+|`sel.jup.browser.template.json.file` | Browsers scenario (JSON) path |`classpath:browsers.json`
+|`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
+|`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
+|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.4.3`
+|`sel.jup.selenoid.port` | Selenoid port |`4444`
+|`sel.jup.selenoid.vnc.password` | VNC password for Selenoid sessions |`selenoid`
+|`sel.jup.novnc.image` | noVNC Docker image |`psharkey/novnc:3.3-t6`
+|`sel.jup.novnc.port` | noVNC Docker port  |`8080`
+|`sel.jup.chrome.image.format` | Selenoid Docker images format for Chrome with VNC |`selenoid/vnc:chrome_%s`
+|`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
+|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`63.0`
+|`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
+|`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
+|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`57.0`
+|`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
+|`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
+|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`50.0`
+|`sel.jup.docker.server.url` | URL to connect with the Docker Host |``
+|`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`
+|`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
+|`sel.jup.docker.default.socket` | Default Docker socket path |`/var/run/docker.sock`
+|`sel.jup.docker.default.host` | Default Docker host IP |`127.0.0.1`
+|`sel.jup.docker.hub.url` | Docker Hub URL |`https://hub.docker.com/`
+|`sel.jup.properties` | Location of the properties files (in the project classpath)|`/selenium-jupiter.properties`
+|==========================
+
+
+These properties can be overwritten by Java system properties, for example:
+
+[source,java]
+----
+System.setProperty("sel.jup.recording", "true");
+----
+... or by command line, for example:
+
+[source]
+----
+-Dsel.jup.recording=true
+----
+
+The value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable `SEL_JUP_RECORDING`. 
