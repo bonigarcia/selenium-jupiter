@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.docker;
 
+// tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.OPERA;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,3 +39,4 @@ public class DockerOperaJupiterTest {
     }
 
 }
+// end::snippet-in-doc[]

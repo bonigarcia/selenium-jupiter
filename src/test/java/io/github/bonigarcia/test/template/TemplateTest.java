@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.template;
 
+// tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -36,3 +37,4 @@ public class TemplateTest {
     }
 
 }
+// end::snippet-in-doc[]

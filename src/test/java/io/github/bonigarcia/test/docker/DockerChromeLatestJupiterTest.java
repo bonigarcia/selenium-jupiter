@@ -17,10 +17,13 @@
 package io.github.bonigarcia.test.docker;
 
 // tag::snippet-in-doc[]
-import static io.github.bonigarcia.BrowserType.FIREFOX;
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+// end::snippet-in-doc[]
+import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -28,20 +31,23 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
+// end::snippet-in-doc[]
+@Disabled("Redudant test, only needed for doc")
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class DockerFirefoxJupiterTest {
+public class DockerChromeLatestJupiterTest {
 
     @Test
-    public void testLatest(
-            @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
+    public void testLatestChrome(
+            @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
     }
 
     @Test
-    public void testVersion(
-            @DockerBrowser(type = FIREFOX, version = "56") RemoteWebDriver driver) {
+    public void testFormerChrome(
+            @DockerBrowser(type = CHROME, version = "latest-1") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));

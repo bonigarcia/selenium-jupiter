@@ -7,6 +7,14 @@
          {
             "type": "firefox-in-docker"
          }
+      ],
+      [
+         {
+            "type": "phantomjs"
+         },
+         {
+            "type": "opera-in-docker"
+         }
       ]
    ]
 }

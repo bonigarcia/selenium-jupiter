@@ -18,11 +18,14 @@ package io.github.bonigarcia.test.template;
 
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
+// tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -32,6 +35,7 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class TemplateTwoBrowsersTest {
 
+    // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
         setProperty("sel.jup.browser.template.json.file",
@@ -43,6 +47,7 @@ public class TemplateTwoBrowsersTest {
         clearProperty("sel.jup.browser.template.json.file");
     }
 
+    // tag::snippet-in-doc[]
     @TestTemplate
     void templateTest(WebDriver driver1, WebDriver driver2) {
         driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
@@ -54,3 +59,4 @@ public class TemplateTwoBrowsersTest {
     }
 
 }
+// end::snippet-in-doc[]

@@ -16,36 +16,29 @@
  */
 package io.github.bonigarcia.test.docker;
 
-// tag::snippet-in-doc[]
-import static io.github.bonigarcia.BrowserType.FIREFOX;
-import static org.hamcrest.CoreMatchers.containsString;
+import static io.github.bonigarcia.BrowserType.CHROME;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import io.github.bonigarcia.Arguments;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerFirefoxJupiterTest {
+public class DockerChromeWithArgumentsJupiterTest {
 
     @Test
-    public void testLatest(
-            @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
-    }
-
-    @Test
-    public void testVersion(
-            @DockerBrowser(type = FIREFOX, version = "56") RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+    public void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
+            "--use-fake-ui-for-media-stream" }) @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+        driver.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName(),
+                equalTo("video"));
     }
 
 }
-// end::snippet-in-doc[]

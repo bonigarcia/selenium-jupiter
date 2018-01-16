@@ -32,7 +32,7 @@ import io.github.bonigarcia.SeleniumExtension;
 public class DockerChromeJupiterTest {
 
     @Test
-    public void testLatest(
+    public void testChrome(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
@@ -40,7 +40,7 @@ public class DockerChromeJupiterTest {
     }
 
     @Test
-    public void testVersion(
+    public void testChromeWithVersion(
             @DockerBrowser(type = CHROME, version = "62.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
