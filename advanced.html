@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<title>Advanced</title>
+<title>Advanced features</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -783,13 +783,15 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#advanced">Advanced</a>
+<li><a href="#advanced-features">Advanced features</a>
 <ul class="sectlevel2">
+<li><a href="#template-tests">Template tests</a></li>
 <li><a href="#using-options">Using options</a></li>
 <li><a href="#using-capabilities">Using capabilities</a></li>
 <li><a href="#appiumdriver">AppiumDriver</a></li>
 <li><a href="#tuning-webdrivermanager">Tuning WebDriverManager</a></li>
-<li><a href="#debugging">Debugging</a></li>
+<li><a href="#screenshots">Screenshots</a></li>
+<li><a href="#integration-with-jenkins">Integration with Jenkins</a></li>
 </ul>
 </li>
 </ul>
@@ -797,10 +799,214 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="advanced"><a class="anchor" href="#advanced"></a>Advanced</h2>
+<h2 id="advanced-features"><a class="anchor" href="#advanced-features"></a>Advanced features</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="template-tests"><a class="anchor" href="#template-tests"></a>Template tests</h3>
 <div class="paragraph">
-<p>So far, we have discovered how to use different browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:</p>
+<p><em>selenium_jupiter</em> takes advantage on the standard feature of JUnit 5 called <a href="http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates">test templates</a>. Test templates can be seen as an special kind of parameterized tests, in which the test is executed several times according to the data provided by some extension. In our case, the extension is <em>selenium_jupiter</em> itself, and the test template is configured using a custom file in JSON called <strong>browsers scenario</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see some examples. Consider the following test. A couple of things are new in this test. First of all, instead of declaring the method with the usual <code>@Test</code> annotation, we are using the JUnit 5&#8217;s annotation <code>@TestTemplate</code>. With this we are saying to JUnit that this method is not a regular test case but a template. Second, the parameter type of the method <code>templateTest</code> is <code>WebDriver</code>. This is the generic interface of Selenium WebDriver, and the concise type (i.e. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, <code>RemoteWebDriver</code>, etc.) will be determined by <em>selenium_jupiter</em> in runtime.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.TestTemplate</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateTest</span> {
+
+    <span class="annotation">@TestTemplate</span>
+    <span class="type">void</span> templateTest(WebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The last piece we need in this test template is what we call <em>browser scenario</em>. As introduced before, this scenario is defined in a JSOn file following a simple notation.</p>
+</div>
+<div class="paragraph">
+<p>The path of the JSON browser scenario is established in the configuration key called <code>sel.jup.browser.template.json.file</code>. By default, this key has the value <code>classpath:browsers.json</code>. This means that the JSON scenario is defined in a file called <code>browsers.json</code> located in the classpath (see section <a href="#configuration">Configuration</a> for further details about configuration).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the configuration key <code>sel.jup.browser.template.json.file</code> do not start with the word <code>classpath:</code>, the file will be searched using relative of absolute paths.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now imagine that the content of the file <code>browsers.json</code> is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+   <span class="key"><span class="delimiter">&quot;</span><span class="content">browsers</span><span class="delimiter">&quot;</span></span>: [
+      [
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">latest</span><span class="delimiter">&quot;</span></span>
+         }
+      ],
+      [
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">latest-1</span><span class="delimiter">&quot;</span></span>
+         }
+      ],
+      [
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">latest-2</span><span class="delimiter">&quot;</span></span>
+         }
+      ]
+   ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When we execute the template test, in this case we will have three actual tests: the first using the <em>latest</em> version of Chrome, the second using the previous to stable version of Chrome (<code>latest-1</code>), and third using two versions older than the current stable (<code>latest-2</code>). For instance, if we run the test in Eclipse, we will get the following output:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/test-template-01.png" alt="test template 01">
+</div>
+<div class="title">Figure 1. Example of test template execution (with one parameter) with Eclipse</div>
+</div>
+<div class="paragraph">
+<p>Generally speaking, a browser within the JSON scenario is defined using two parameters:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>type</code>: Type of browsers. The accepted values are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>chrome</code>: For local Chrome browsers.</p>
+</li>
+<li>
+<p><code>firefox</code>: For local Firefox browsers.</p>
+</li>
+<li>
+<p><code>edge</code>: For local Edge browsers.</p>
+</li>
+<li>
+<p><code>opera</code>: For local Opera browsers.</p>
+</li>
+<li>
+<p><code>safari</code>: For local Safari browsers.</p>
+</li>
+<li>
+<p><code>appium</code>: For local mobile emulated devices.</p>
+</li>
+<li>
+<p><code>phantomjs</code>: For local PhtanomJS headless browsers.</p>
+</li>
+<li>
+<p><code>chrome-in-docker</code>: For Chrome browsers in Docker.</p>
+</li>
+<li>
+<p><code>firefox-in-docker</code>: For Firefox browsers in Docker.</p>
+</li>
+<li>
+<p><code>opera-in-docker</code>: For Opera browsers in Docker.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>version</code>: Optional value for the version. Wildcard for latest versions (<code>latest</code>, <code>latest-1</code>, etc) are accepted. Concrete versions are also valid (e.g. <code>63.0</code>, <code>57.0</code>, etc., depending of the browser).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Finally, more than one parameters can be defined in the test template. For instance, consider the following test in which a couple of <code>WebDriver</code> parameters are declared in the test template.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.TestTemplate</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateTwoBrowsersTest</span> {
+
+    <span class="annotation">@TestTemplate</span>
+    <span class="type">void</span> templateTest(WebDriver driver1, WebDriver driver2) {
+        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver1.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+        assertThat(driver2.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The JSON scenario should be defined accordingly. Each browser array in this case (for each test template execution) should declare two browsers. For instance, using the following JSON scenario, the first execution will be based on Chrome in Docker (first parameter) and Firefox in Docker (second parameter); and the second exection will be based on the headless browser PhantomJS (first parameter) and Opera in Docker (second paramter).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+   <span class="key"><span class="delimiter">&quot;</span><span class="content">browsers</span><span class="delimiter">&quot;</span></span>: [
+      [
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>
+         },
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">firefox-in-docker</span><span class="delimiter">&quot;</span></span>
+         }
+      ],
+      [
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs</span><span class="delimiter">&quot;</span></span>
+         },
+         {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">opera-in-docker</span><span class="delimiter">&quot;</span></span>
+         }
+      ]
+   ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we execute this test using in GUI, the JUnit tab shows two tests executed with the values defined in the JSON scenario.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/test-template-02.png" alt="test template 02">
+</div>
+<div class="title">Figure 2. Example of test template execution (with two parameters) with Eclipse</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-options"><a class="anchor" href="#using-options"></a>Using options</h3>
+<div class="paragraph">
+<p>So far, we have discovered how to use different local browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) of Docker browsers (Chrome, Firefox, Opera) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -821,29 +1027,37 @@ table.CodeRay td.code>pre{padding:0}
 <div class="ulist">
 <ul>
 <li>
-<p><code>DriverOptions</code>: Annotation to configure <em>options</em> (e.g. <code>ChromeOptions</code> for Chrome, <code>FirefoOptions</code> for Firefox, <code>EdgeOptions</code> for Edge, <code>OperaOptions</code> for Opera, and <code>SafariOptions</code> for Safari).</p>
+<p><code>Arguments</code> (<em>parameter-level</em>) : Used to add arguments to the options.</p>
 </li>
 <li>
-<p><code>DriverCapabilities</code>: Annotation to configure the desired <em>capabilities</em> (WebDriver&#8217;s object <code>DesiredCapabilities</code>).</p>
+<p><code>Preferences</code> (<em>parameter-level</em>) : Used to set preferences to the options.</p>
 </li>
 <li>
-<p><code>DriverUrl</code>: Annotation used to identify the URL value needed to instantiate a <code>RemoteWebDriver</code> object.</p>
+<p><code>Binary</code> (<em>parameter-level</em>) : Used to set the location of the browser binary.</p>
+</li>
+<li>
+<p><code>Extensions</code> (<em>parameter-level</em>) : User to add extensions to the browser.</p>
+</li>
+<li>
+<p><code>Options</code> (<em>field-level</em>): Annotation to configure <em>options</em> (e.g. <code>ChromeOptions</code> for Chrome, <code>FirefoOptions</code> for Firefox, <code>EdgeOptions</code> for Edge, <code>OperaOptions</code> for Opera, and <code>SafariOptions</code> for Safari).</p>
+</li>
+<li>
+<p><code>DriverCapabilities</code> (<em>parameter-level</em> or <em>field-level</em>): Annotation to configure the desired <em>capabilities</em> (WebDriver&#8217;s object <code>DesiredCapabilities</code>).</p>
+</li>
+<li>
+<p><code>DriverUrl</code> (<em>parameter-level</em> or <em>field-level</em>): Annotation used to identify the URL value needed to instantiate a <code>RemoteWebDriver</code> object.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>All these 3 annotation can be used both at <em>parameter-level</em> (applied to a single WebDriver parameter), and also at <em>field-level</em> (applied globally in a test class). Keep reading to find out several examples about that.</p>
+<p>The annotations marked as <em>parameter-level</em> are applied to a single WebDriver parameter. The annotations marked as <em>field-level</em> are applied globally in a test class. Keep reading to find out several examples about that.</p>
 </div>
-<div class="sect2">
-<h3 id="using-options"><a class="anchor" href="#using-options"></a>Using options</h3>
 <div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java">example</a> shows how to specify options for Chrome. To that aim, the annotation <code>@DriverOptions</code> is used to set a collection of options. This array of options is configured using the annotation <code>@Option</code> declaring the parameters <code>name</code> and <code>value</code>). In the example, the annotation <code>@DriverOptions</code> is used at <em>parameter-level</em>. In the first test (called <code>headlessTest</code>), we are setting the argument <code>--headless</code>, used in Chrome to work as a headless browser. In the second test (<code>webrtcTest</code>), we are using two different arguments: <code>--use-fake-device-for-media-stream</code> and <code>--use-fake-ui-for-media-stream</code>, used to fake user media (i.e. camera and microphone) in <a href="https://webrtc.org/">WebRTC</a> applications. In the third test (<code>extensionTest</code>), we are adding an extension to Chrome using the <code>@Option</code> named <code>EXTENSION</code>. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java">example</a> shows how to specify options for Chrome. In the first test (called <code>headlessTest</code>), we are setting the argument <code>--headless</code>, used in Chrome to work as a headless browser. In the second test (<code>webrtcTest</code>), we are using two different arguments: <code>--use-fake-device-for-media-stream</code> and <code>--use-fake-ui-for-media-stream</code>, used to fake user media (i.e. camera and microphone) in <a href="https://webrtc.org/">WebRTC</a> applications. In the third test (<code>extensionTest</code>), we are adding an extension to Chrome using the <code>@Extensions</code> annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.SeleniumJupiter.ARGS</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.SeleniumJupiter.EXTENSION</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
@@ -852,25 +1066,23 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverOptions</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Option</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Arguments</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Extensions</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithOptionsJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> headlessTest(<span class="annotation">@DriverOptions</span>(options = {
-            <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--headless</span><span class="delimiter">&quot;</span></span>) }) ChromeDriver driver) {
+    <span class="type">void</span> headlessTest(<span class="annotation">@Arguments</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">--headless</span><span class="delimiter">&quot;</span></span>) ChromeDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> webrtcTest(<span class="annotation">@DriverOptions</span>(options = {
-            <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-device-for-media-stream</span><span class="delimiter">&quot;</span></span>),
-            <span class="annotation">@Option</span>(name = ARGS, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-ui-for-media-stream</span><span class="delimiter">&quot;</span></span>) }) ChromeDriver driver) {
+    <span class="type">void</span> webrtcTest(<span class="annotation">@Arguments</span>({ <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-device-for-media-stream</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">--use-fake-ui-for-media-stream</span><span class="delimiter">&quot;</span></span> }) ChromeDriver driver) {
         driver.get(
                 <span class="string"><span class="delimiter">&quot;</span><span class="content">https://webrtc.github.io/samples/src/content/devices/input-output/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">video</span><span class="delimiter">&quot;</span></span>)).getTagName(),
@@ -878,8 +1090,7 @@ table.CodeRay td.code>pre{padding:0}
     }
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> extensionTest(<span class="annotation">@DriverOptions</span>(options = {
-            <span class="annotation">@Option</span>(name = EXTENSION, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">hello_world.crx</span><span class="delimiter">&quot;</span></span>) }) ChromeDriver driver) {
+    <span class="type">void</span> extensionTest(<span class="annotation">@Extensions</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">hello_world.crx</span><span class="delimiter">&quot;</span></span>) ChromeDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
@@ -889,23 +1100,26 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="paragraph">
-<p>As introduced before, this annotation <code>@DriverOptions</code> can be used also at <em>field-level</em>, as shown in this other <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java">example</a>. This test is setting to <code>true</code> the Firefox preferences <code>media.navigator.streams.fake</code> and <code>media.navigator.permission.disabled</code>, used also for WebRTC.</p>
+<p>As introduced before, this annotation <code>@Options</code> can be used also at <em>field-level</em>, as shown in this other <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java">example</a>. This test is setting to <code>true</code> the Firefox preferences <code>media.navigator.streams.fake</code> and <code>media.navigator.permission.disabled</code>, used also for WebRTC.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxOptions</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverOptions</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Options</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxWithGlobalOptionsJupiterTest</span> {
 
-    <span class="annotation">@DriverOptions</span>
+    <span class="annotation">@Options</span>
     FirefoxOptions firefoxOptions = <span class="keyword">new</span> FirefoxOptions();
     {
         <span class="comment">// Flag to use fake media for WebRTC user media</span>
@@ -950,7 +1164,6 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Capability</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverUrl</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
@@ -986,15 +1199,12 @@ table.CodeRay td.code>pre{padding:0}
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> testWithRemoteChrome(
-            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(capability = {
-                    <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>) }) RemoteWebDriver driver)
-            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         exercise(driver);
     }
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> testWithRemoteFirefox(RemoteWebDriver driver)
-            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+    <span class="type">void</span> testWithRemoteFirefox(RemoteWebDriver driver) {
         exercise(driver);
     }
 
@@ -1014,6 +1224,8 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions.CAPABILITY</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities.chrome</span>;
 
 <span class="keyword">import</span> <span class="include">java.util.HashMap</span>;
 <span class="keyword">import</span> <span class="include">java.util.Map</span>;
@@ -1021,7 +1233,6 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
@@ -1031,13 +1242,13 @@ table.CodeRay td.code>pre{padding:0}
 <span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithGlobalCapabilitiesJupiterTest</span> {
 
     <span class="annotation">@DriverCapabilities</span>
-    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+    DesiredCapabilities capabilities = chrome();
     {
         <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt; mobileEmulation = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt;();
         mobileEmulation.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus 5</span><span class="delimiter">&quot;</span></span>);
         <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; chromeOptions = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;();
         chromeOptions.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">mobileEmulation</span><span class="delimiter">&quot;</span></span>, mobileEmulation);
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        capabilities.setCapability(CAPABILITY, chromeOptions);
     }
 
     <span class="annotation">@Test</span>
@@ -1066,7 +1277,6 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
 
 <span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.Capability</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
@@ -1074,9 +1284,9 @@ table.CodeRay td.code>pre{padding:0}
 <span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> testWithAndroid(<span class="annotation">@DriverCapabilities</span>(capability = {
-            <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>),
-            <span class="annotation">@Capability</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>) }) AppiumDriver&lt;WebElement&gt; driver)
+    <span class="type">void</span> testWithAndroid(
+            <span class="annotation">@DriverCapabilities</span>({ <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>,
+                    <span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName=Android</span><span class="delimiter">&quot;</span></span> }) AppiumDriver&lt;WebElement&gt; driver)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
         <span class="predefined-type">String</span> context = driver.getContext();
@@ -1147,14 +1357,15 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="tuning-webdrivermanager"><a class="anchor" href="#tuning-webdrivermanager"></a>Tuning WebDriverManager</h3>
 <div class="paragraph">
-<p>As introduced before, <em>selenium-jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
+<p>As introduced before, <em>selenium-jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
 </div>
 <div class="paragraph">
 <p>In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.System.setProperty</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
@@ -1169,7 +1380,7 @@ table.CodeRay td.code>pre{padding:0}
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        <span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">wdm.edgeVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
+        setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">wdm.edgeVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
@@ -1218,9 +1429,45 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="debugging"><a class="anchor" href="#debugging"></a>Debugging</h3>
+<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>Screenshots</h3>
 <div class="paragraph">
-<p>As of version 1.2.0, <em>selenium-jupiter</em> provides a built-in feature for debugging purposes. When a JUnit 5 test using this extension fails, <em>selenium-jupiter</em> will make an <strong>screenshot</strong> for each of the browser sessions at the end of the test. These screenshots, encoded in <strong>Base 64</strong>, are logged using the <strong>debug</strong> level of (<a href="https://www.slf4j.org/)">Simple Logging Facade for Java (SLF4J)</a>. You can copy&amp;paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot. All in all, this capability allows to watch what was the status of the web under test just after the test is declared as failure, which can help to identify the cause of the test failure.</p>
+<p><em>selenium-jupiter</em> provides several built-in features for making <strong>screenshots</strong> for each of the browser sessions at the end of the test. These screenshots, can be encoded as <strong>Base64</strong> or stored as <strong>PNG</strong> images. The following configuration keys are used to control the way and format in which screenshots are made:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sel.jup.screenshot.at.the.end.of.tests</code>: This key indicates whether or not screenshots will be made at the end of every browser session. The accepted valued for this configuration key are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>true</code> : Screenshots are always taken at the end of tests.</p>
+</li>
+<li>
+<p><code>false</code> : Screenshots are not taken at the end of tests.</p>
+</li>
+<li>
+<p><code>whenfailure</code> : Screenshots are only taken if the test fails.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>sel.jup.screenshot.format</code>: Format for the screenshot. The accepted values for this key are two:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>base64</code> : Base64 screenshots are logged using the <strong>debug</strong> level of (<a href="https://www.slf4j.org/)">Simple Logging Facade for Java (SLF4J)</a>. You can copy&amp;paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot.</p>
+</li>
+<li>
+<p><code>png</code> : Screenshots are stored as PNG images. The output folder for these images is configured using the configuration key <code>sel.jup.output.folder</code> (the default value of this property is <code>.</code>, i.e. the local folder).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Take into account that a big <code>base64</code> string will be added to your logs if this option if configured. This feature can be especially useful for build server in the cloud (such as Travis CI), in which we don&#8217;t have access to the server file system but can track easily the test output log.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1238,12 +1485,79 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="integration-with-jenkins"><a class="anchor" href="#integration-with-jenkins"></a>Integration with Jenkins</h3>
+<div class="paragraph">
+<p><em>selenium_jupiter</em> provides seamless integration with Jenkins through one of its plugins: the <a href="https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin">Jenkins attachment plugin</a>. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in <em>selenium_jupiter</em> setting the configuration key <code>sel.jup.output.folder</code> to an special value: <code>surefire-reports</code>.</p>
+</div>
+<div class="paragraph">
+<p>When this configuration key is configured with that value, <em>selenium_jupiter</em> will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerFirefoxWithOptionsJupiterTest.java">test</a>, when is executed in Jenkins (with the attachment plugin) and the following configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>mvn clean test -Dtest=DockerFirefoxWithOptionsJupiterTest -Dsel.jup.recording=true -Dsel.jup.output.folder=surefire-reports -Dsel.jup.screenshot.at.the.end.of.tests=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case, at the the execution of this test, two recordings in MP4 and two screenshots in PNG will be attached to the job as follows.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/jenkins-attachements-test.png" alt="jenkins attachements test">
+</div>
+<div class="title">Figure 3. Example of test execution through Jenkins with attachements</div>
+</div>
+<div class="paragraph">
+<p>We can watch the recording simply clicking in the attached MP4 files.</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/jenkins-attachements-test-mp4.png" alt="jenkins attachements test mp4">
+</div>
+<div class="title">Figure 4. Example of test execution through Jenkins with attachements</div>
+</div>
+<div class="paragraph">
+<p>Test template are also compatible with this feature. For instance, the following test
+<a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/template/TemplateTest.java">test</a>, when is executed in Jenkins using the the following configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>mvn clean test -Dtest=TemplateTest -Dsel.jup.recording=true -Dsel.jup.output.folder=surefire-reports -Dsel.jup.screenshot.at.the.end.of.tests=true</code></pre>
+</div>
+</div>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>will result in the following attachements:</p>
+</li>
+</ol>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/jenkins-attachements-template.png" alt="jenkins attachements template">
+</div>
+<div class="title">Figure 5. Example of template test execution through Jenkins with attachements</div>
+</div>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>and we can see the recording, for instace:</p>
+</li>
+</ol>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/jenkins-attachements-template-mp4.png" alt="jenkins attachements template mp4">
+</div>
+<div class="title">Figure 6. Example of template test execution through Jenkins with attachements</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-12-13 03:26:27 CET
+Last updated 2018-01-16 05:01:59 CET
 </div>
 </div>
 </body>
