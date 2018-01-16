@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<title>Quick reference</title>
+<title>Local browsers</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -783,131 +783,275 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#quick-reference">Quick reference</a></li>
+<li><a href="#local-browsers">Local browsers</a>
+<ul class="sectlevel2">
+<li><a href="#chrome">Chrome</a></li>
+<li><a href="#firefox">Firefox</a></li>
+<li><a href="#edge">Edge</a></li>
+<li><a href="#opera">Opera</a></li>
+<li><a href="#safari">Safari</a></li>
+<li><a href="#phamtomjs">PhamtomJS</a></li>
+<li><a href="#htmlunit">HtmlUnit</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="quick-reference"><a class="anchor" href="#quick-reference"></a>Quick reference</h2>
+<h2 id="local-browsers"><a class="anchor" href="#local-browsers"></a>Local browsers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong><em>selenium-jupiter</em></strong> has been built using the <a href="http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection">dependency injection</a> capability provided by the extension model of JUnit 5. Thank to this feature, different types objects can be injected in JUnit 5 in <code>@Test</code> methods as parameters. Concretely, <em>selenium-jupiter</em> allows to inject subtypes of the <strong>WebDriver</strong> interface (e.g. <em>ChromeDriver</em>, <em>FirefoxDriver</em>, and so on).</p>
+<p>This section contains a comprehensive collection of basuc examples demonstrating the basic usage of <em>seleniun-jupiter</em> in JUnit 5 tests using different types of local browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>selenium-jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
 </div>
+<div class="sect2">
+<h3 id="chrome"><a class="anchor" href="#chrome"></a>Chrome</h3>
 <div class="paragraph">
-<p>Using <em>selenium-jupiter</em> it&#8217;s easy as pie. First, you need to import the dependency in your project (typically as <em>test</em> dependency). In Maven, it is done as follows:</p>
+<p>The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java">GitHub</a>. Notice that this class contains two tests (methods annotated with <code>@Test</code>). The first one (<code>testWithOneChrome</code>) declares just one <code>ChromeDriver</code> parameter, and therefore this test controls a single Chrome browser. On the other hand, the second <code>@Test</code> (<code>testWithTwoChromes</code>) declares two different <code>ChromeDriver</code> parameters, and so, it controls two Chrome browsers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
-        <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
-        <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>2.0.0<span class="tag">&lt;/version&gt;</span>
-        <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
-<span class="tag">&lt;/dependency&gt;</span></code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<em>selenium-jupiter</em> 2.0.0 depends on <strong><em>selenium-java</em> 3.8.1</strong>, <strong><em>webdrivermanager</em> 2.1.0</strong>, <strong>appium java-client 5.0.4</strong>, and <strong>docker-java 3.0.14</strong>. Therefore, by using the <em>selenium-jupiter</em> dependency, those libraries (<em>selenium-java</em>, <em>webdrivermanager</em>, <em>appium java-client</em>, and <em>docker-java</em>) will be added as transitive dependencies to your project.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Then, you need to declare <em>selenium-jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumExtension.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods whose types implements the <code>WebDriver</code> interface (e.g. <code>ChromeDriver</code> to use Chrome, <code>FirefoxDriver</code> for Firefox, and so for). That&#8217;s it. <em>selenium-jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test to drive the browser(s) you want. For example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chromeDriver) {
-        <span class="comment">// using Chrome in this test</span>
+    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithFirefox(FirefoxDriver firefoxDriver) {
-        <span class="comment">// using Firefox in this test</span>
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chromeDriver,
-            FirefoxDriver firefoxDriver) {
-        <span class="comment">// using Chrome and Firefox in this test</span>
+    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
+        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
+        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="firefox"><a class="anchor" href="#firefox"></a>Firefox</h3>
 <div class="paragraph">
-<p>The <code>WebDriver</code> subtypes supported by <em>selenium-jupiter</em> are the following:</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java">test</a> uses Firefox as browser(s). To that aim, <code>@Test</code> methods simply need to include <code>FirefoxDriver</code> parameters.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>ChromeDriver</code>: Used to control Google Chrome browser.</p>
-</li>
-<li>
-<p><code>FirefoxDriver</code>: Used to control Firefox browser.</p>
-</li>
-<li>
-<p><code>EdgeDriver</code>: Used to control Microsoft Edge browser.</p>
-</li>
-<li>
-<p><code>OperaDriver</code>: Used to control Opera browser.</p>
-</li>
-<li>
-<p><code>SafariDriver</code>: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).</p>
-</li>
-<li>
-<p><code>HtmlUnitDriver</code>: Used to control HtmlUnit (headless browser).</p>
-</li>
-<li>
-<p><code>PhantomJSDriver</code>: Used to control PhantomJS (headless browser).</p>
-</li>
-<li>
-<p><code>InternetExplorerDriver</code>: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.</p>
-</li>
-<li>
-<p><code>RemoteWebDriver</code>: Used to control remote browsers (<em>Selenium Grid</em>).</p>
-</li>
-<li>
-<p><code>AppiumDriver</code>: Used to control mobile devices (Android, iOS).</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testWithOneFirefox(FirefoxDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver driver1,
+            FirefoxDriver driver2) {
+        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
+        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
 </div>
-<div class="admonitionblock warning">
+</div>
+</div>
+<div class="sect2">
+<h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
+<div class="paragraph">
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> edgeTest(EdgeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-The browser to be used must be installed in the machine running the test beforehand (except in the case of <code>RemoteWebDriver</code>, in which the requirement is to known a Selenium Server URL). In the case of mobile devices (<code>AppiumDriver</code>), the emulator should be up and running in local or available in a Appium Server identified by an URL.
+The required version of <em>MicrosoftWebDriver.exe</em> depends on the version on Edge to be used (more info <a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">here</a>). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the <a href="advanced">advance examples section</a> to find out how to setup the different options of WebDriverManager.
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
+<div class="paragraph">
+<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>selenium-jupiter</em>, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="safari"><a class="anchor" href="#safari"></a>Safari</h3>
+<div class="paragraph">
+<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>selenium-jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.safari.SafariDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SafariJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(SafariDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="phamtomjs"><a class="anchor" href="#phamtomjs"></a>PhamtomJS</h3>
+<div class="paragraph">
+<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>selenium-jupiter</em>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.notNullValue</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.phantomjs.PhantomJSDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(PhantomJSDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getPageSource(), notNullValue());
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="htmlunit"><a class="anchor" href="#htmlunit"></a>HtmlUnit</h3>
+<div class="paragraph">
+<p>HtmlUnit is another headless browser that can be used easily in a Jupiter test, for <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/HtmlUnitJupiterTest.java">example</a> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.htmlunit.HtmlUnitDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(HtmlUnitDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-01-15 23:47:39 CET
+Last updated 2018-01-15 23:50:44 CET
 </div>
 </div>
 </body>

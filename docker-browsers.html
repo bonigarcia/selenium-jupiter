@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<title>Examples</title>
+<title>Docker browsers</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -783,15 +783,14 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#examples">Examples</a>
+<li><a href="#docker-browsers">Docker browsers</a>
 <ul class="sectlevel2">
 <li><a href="#chrome">Chrome</a></li>
 <li><a href="#firefox">Firefox</a></li>
-<li><a href="#edge">Edge</a></li>
 <li><a href="#opera">Opera</a></li>
-<li><a href="#safari">Safari</a></li>
-<li><a href="#phamtomjs">PhamtomJS</a></li>
-<li><a href="#htmlunit">HtmlUnit</a></li>
+<li><a href="#remote-sessions-vnc">Remote sessions (VNC)</a></li>
+<li><a href="#recordings">Recordings</a></li>
+<li><a href="#performance-tests">Performance tests</a></li>
 </ul>
 </li>
 </ul>
@@ -799,112 +798,137 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+<h2 id="docker-browsers"><a class="anchor" href="#docker-browsers"></a>Docker browsers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section contains a comprehensive collection of examples demonstrating the basic usage of <em>seleniun-jupiter</em> in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>selenium-jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
+<p>As of version 2.0.0, <em>selenium-jupiter</em> allows to ask for browsers in <a href="https://www.docker.com/">Docker</a> containers. The only requirement to use this feature is to install <a href="https://www.docker.com/get-docker">Docker Engine</a> in the machine running the tests. Internally, <em>selenium-jupiter</em> uses a <a href="https://github.com/docker-java/docker-java">docker-java</a> as Docker client and the Docker images for browsers provided by <a href="http://aerokube.com/selenoid/latest/">Selenoid</a>.</p>
+</div>
+<div class="paragraph">
+<p>As shown in the following section, the mode of operation is similar to local browser. We simply asks for browsers in Docker simply declaring parameters in our <code>@Test</code> methods, and <em>selenium-jupiter</em> will make magic for us: it downloads the proper Docker image for the browser, start it, and instantiate the object of type <code>RemoteWebDriver</code> to control the browser from our test. The annotation <code>@DockerBrowser</code> need to be declared in the parameter to mark the WebDriver object as a browser in Docker.</p>
 </div>
 <div class="sect2">
 <h3 id="chrome"><a class="anchor" href="#chrome"></a>Chrome</h3>
 <div class="paragraph">
-<p>The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java">GitHub</a>. Notice that this class contains two tests (methods annotated with <code>@Test</code>). The first one (<code>testWithOneChrome</code>) declares just one <code>ChromeDriver</code> parameter, and therefore this test controls a single Chrome browser. On the other hand, the second <code>@Test</code> (<code>testWithTwoChromes</code>) declares two different <code>ChromeDriver</code> parameters, and so, it controls two Chrome browsers.</p>
+<p>The following example contains a simple test example using Chrome browsers in Docker. Check out the code <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java">here</a>. As you can see, the first <code>@Test</code> method (called <code>testChrome</code>) declares a parameter of type <code>RemoteWebDriver</code>. This parameter is annotated with <code>@DockerBrowser</code>. This annotation requires to set the browser type, in this case <code>CHROME</code>. If no version is specified, then the latest version of the browser will be used. This feature is known as <strong>ever green browsers</strong>, and it is implementing by consuming the REST API of <a href="https://hub.docker.com/">Docker Hub</a>, asking for the list of <a href="https://hub.docker.com/u/selenoid/">Selenoid</a> browsers. On the other hand, the second <code>@Test</code> (called <code>testChromeWithVersion</code>) a fixed version is set, in this case <code>62.0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
+    <span class="directive">public</span> <span class="type">void</span> testChrome(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
-        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
-        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">62.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>In this other example, wildcards will be used to set the browser version. In the first <code>@Test</code> (method <code>testLatestChrome</code>), we use the literal <code>latest</code> to mark the use of the latest version (in fact the use of <code>latest</code> is exactly the same that not declaring the <code>version</code> attribute). The second <code>@Test</code> (method <code>testFormerChrome</code>) sets the version as <code>latest-1</code>. This should be read as <em>latest version minus one</em>, in other words, the previous version to the stable version at the time of the test execution. Notice that the concrete versions for both test will evolve in time, since new versions are released constantly. All in all, you have the certainty of using the latest versions of the browser without any kind of extra configuration nor maintainance of the underlying infraestructure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerChromeLatestJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testLatestChrome(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">latest</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testFormerChrome(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">latest-1</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The label <em>latest-*</em> is supported, where <em>*</em> is a number for a former version to the current stable. For instance, <em>latest-2</em> means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, <em>latest-2</em> will mean version 61.0).
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
 <h3 id="firefox"><a class="anchor" href="#firefox"></a>Firefox</h3>
 <div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java">test</a> uses Firefox as browser(s). To that aim, <code>@Test</code> methods simply need to include <code>FirefoxDriver</code> parameters.</p>
+<p>The use of Firefox is equivalent. With respect to the previous example, it simply change the type of browser. Versioning works exactly the same.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.equalTo</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.startsWith</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.FIREFOX</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerFirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneFirefox(FirefoxDriver driver) {
+    <span class="directive">public</span> <span class="type">void</span> testLatest(
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver driver1,
-            FirefoxDriver driver2) {
-        driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
-        assertThat(driver2.getTitle(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5</span><span class="delimiter">&quot;</span></span>));
-    }
-
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
-<div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
-
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
-
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
-
-    <span class="annotation">@Test</span>
-    <span class="type">void</span> edgeTest(EdgeDriver driver) {
+    <span class="directive">public</span> <span class="type">void</span> testVersion(
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">56</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
@@ -913,14 +937,14 @@ table.CodeRay td.code>pre{padding:0}
 }</code></pre>
 </div>
 </div>
-<div class="admonitionblock tip">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The required version of <em>MicrosoftWebDriver.exe</em> depends on the version on Edge to be used (more info <a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">here</a>). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the <a href="advanced">advance examples section</a> to find out how to setup the different options of WebDriverManager.
+Notice that the version of the second test is simply <code>56</code>. The actual version of the image is <code>56.0</code>, but <em>selenium_jupiter</em> supposes that version is <code>.0</code> if not specified.
 </td>
 </tr>
 </table>
@@ -929,24 +953,26 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
 <div class="paragraph">
-<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>selenium-jupiter</em>, as follows:</p>
+<p>Again, the use of Opera browsers in Docker is the same, simply changing the browser type to <code>OPERA</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.OPERA</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerOperaJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+    <span class="directive">public</span> <span class="type">void</span> testOpera(<span class="annotation">@DockerBrowser</span>(type = OPERA) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
@@ -957,92 +983,115 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 </div>
 <div class="sect2">
-<h3 id="safari"><a class="anchor" href="#safari"></a>Safari</h3>
+<h3 id="remote-sessions-vnc"><a class="anchor" href="#remote-sessions-vnc"></a>Remote sessions (VNC)</h3>
 <div class="paragraph">
-<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>selenium-jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
+<p><em>selenium_jupiter</em> allows to track the evolution of our browsers in Docker using Virtual Network Computing (VNC) sessions. By default, always a browser in Docker is started by <em>selenium_jupiter</em>, the VNC URL is printed in the test log, concretely using the <em>DEBUG</em> level (see example below). Simply copying and pasting that URL in a real browser we can take a look to the browser while the test is being executed. We can even interact with the Docker browser.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
-
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.safari.SafariDriver</span>;
-
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SafariJupiterTest</span> {
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(SafariDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver.getTitle(),
-                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
-    }
-
-}</code></pre>
+<pre class="CodeRay highlight"><code>2018-01-16 00:57:04 [main] DEBUG i.g.b.handler.DockerDriverHandler - Session a19b446bdffef1783edd737f48c7266d VNC URL: http://192.168.99.100:61231/vnc.html?host=192.168.99.100&amp;port=61222&amp;path=vnc/94fce597b678e94eeb86f148d9ea2d95&amp;resize=scale&amp;autoconnect=true&amp;password=selenoid</code></pre>
 </div>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/vnc_chrome_in_docker.png" alt="vnc chrome in docker">
+</div>
+<div class="title">Figure 1. Example of VNC session on Chrome</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This capability can be deactivated using the configuration key <code>sel.jup.vnc</code> (more info on section <a href="#configuration">Configuration</a>).
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="phamtomjs"><a class="anchor" href="#phamtomjs"></a>PhamtomJS</h3>
+<h3 id="recordings"><a class="anchor" href="#recordings"></a>Recordings</h3>
 <div class="paragraph">
-<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>selenium-jupiter</em>.</p>
+<p><em>selenium_jupiter</em> allows to record the sessions of browsers in Docker. This capability is not activated by default, but it activated simply setting the configuration key <code>sel.jup.recording</code> to <code>true</code> (see section <a href="#configuration">Configuration</a> for further details about configuration).</p>
 </div>
-<div class="listingblock">
+<div class="paragraph">
+<p>This way, a recording in MP4 format will be stored at the end of the test which uses one or several browsers in Docker. The output folder in which the recording is stored is configured by means of the configuration key <code>sel.jup.output.folder</code>, whose default value is <code>.</code> (i.e. the current folder in which the test is executed). The following picture shows an example of recording.</p>
+</div>
+<div class="imageblock thumb">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.notNullValue</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
-
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.phantomjs.PhantomJSDriver</span>;
-
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(PhantomJSDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver.getPageSource(), notNullValue());
-    }
-
-}</code></pre>
+<img src="./img/recording_chrome_in_docker.png" alt="recording chrome in docker">
 </div>
+<div class="title">Figure 2. Example of recording played in VLC</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="htmlunit"><a class="anchor" href="#htmlunit"></a>HtmlUnit</h3>
+<h3 id="performance-tests"><a class="anchor" href="#performance-tests"></a>Performance tests</h3>
 <div class="paragraph">
-<p>HtmlUnit is another headless browser that can be used easily in a Jupiter test, for <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/HtmlUnitJupiterTest.java">example</a> like this:</p>
+<p>Another important new feature of browsers in Docker is the possibility of asking for <em>many of them</em> by the same test. This can be used to implement performance tests in a seamless way. To use this feature, we need into account two aspects. First of all, the attribute <code>size</code> of the annotation <code>@DockerBrowser</code> should be declared. This numeric value sets the number of browsers demanded by the test. Second, instead of a type of <code>RemoteWebDriver</code>, the test will declare a <code>List&lt;RemoteWebDriver&gt;</code>. For example as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">java.util.concurrent.Executors.newFixedThreadPool</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">java.util.concurrent.TimeUnit.SECONDS</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
+<span class="keyword">import</span> <span class="include">java.util.concurrent.CountDownLatch</span>;
+<span class="keyword">import</span> <span class="include">java.util.concurrent.ExecutorService</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.htmlunit.HtmlUnitDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
 
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">PerformenceDockerChromeJupiterTest</span> {
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="type">int</span> NUM_BROWSERS = <span class="integer">3</span>;
+
+    <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(HtmlUnitDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver.getTitle(),
-                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+    <span class="directive">public</span> <span class="type">void</span> testPerformance(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+
+        <span class="predefined-type">ExecutorService</span> executorService = newFixedThreadPool(NUM_BROWSERS);
+        <span class="predefined-type">CountDownLatch</span> latch = <span class="keyword">new</span> <span class="predefined-type">CountDownLatch</span>(NUM_BROWSERS);
+
+        driverList.forEach((driver) -&gt; {
+            executorService.submit(() -&gt; {
+                <span class="keyword">try</span> {
+                    log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Session id {}</span><span class="delimiter">&quot;</span></span>,
+                            ((RemoteWebDriver) driver).getSessionId());
+                    driver.get(
+                            <span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+                    assertThat(driver.getTitle(), containsString(
+                            <span class="string"><span class="delimiter">&quot;</span><span class="content">A JUnit 5 extension for Selenium WebDriver</span><span class="delimiter">&quot;</span></span>));
+                } <span class="keyword">finally</span> {
+                    latch.countDown();
+                }
+            });
+        });
+
+        latch.await(<span class="integer">50</span>, SECONDS);
+        executorService.shutdown();
     }
 
 }</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly. In this case, it might be interesting reduce the resource consumption by deactivating the VNC remote sessions setting the configuration key <code>sel.jup.vnc</code> to <code>false</code>.</p>
 </div>
 </div>
 </div>
@@ -1050,7 +1099,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-12-13 03:26:27 CET
+Last updated 2018-01-16 03:15:36 CET
 </div>
 </div>
 </body>
