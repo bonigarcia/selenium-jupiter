@@ -188,6 +188,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             // Make screenshots if required and close browsers
             try {
                 Object object = driverHandler.getObject();
+                if (object == null) {
+                    continue;
+                }
                 if (List.class.isAssignableFrom(object.getClass())) {
                     List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
                     for (int i = 0; i < webDriverList.size(); i++) {
