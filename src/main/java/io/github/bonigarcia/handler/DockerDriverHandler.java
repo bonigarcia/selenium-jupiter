@@ -158,8 +158,11 @@ public class DockerDriverHandler {
             }
 
             String dockerServerIp = dockerService.getDockerServerHost();
+            int hubPort = dockerService.isRunningInContainer()
+                    ? getInt("sel.jup.selenoid.port")
+                    : selenoidPort;
             String selenoidHubUrl = format("http://%s:%d/wd/hub",
-                    dockerServerIp, selenoidPort);
+                    dockerServerIp, hubPort);
             WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHubUrl),
                     capabilities);
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
