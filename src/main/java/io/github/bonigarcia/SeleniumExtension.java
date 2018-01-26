@@ -88,26 +88,27 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private List<Browser> browser;
 
     public SeleniumExtension() {
-        handlerMap.put(ChromeDriver.class, ChromeDriverHandler.class);
-        handlerMap.put(FirefoxDriver.class, FirefoxDriverHandler.class);
-        handlerMap.put(EdgeDriver.class, EdgeDriverHandler.class);
-        handlerMap.put(OperaDriver.class, OperaDriverHandler.class);
-        handlerMap.put(SafariDriver.class, SafariDriverHandler.class);
-        handlerMap.put(RemoteWebDriver.class, RemoteDriverHandler.class);
-        handlerMap.put(AppiumDriver.class, AppiumDriverHandler.class);
-        handlerMap.put(List.class, ListDriverHandler.class);
-        handlerMap.put(PhantomJSDriver.class, OtherDriverHandler.class);
+        addHandler(ChromeDriver.class, ChromeDriverHandler.class);
+        addHandler(ChromeDriver.class, ChromeDriverHandler.class);
+        addHandler(FirefoxDriver.class, FirefoxDriverHandler.class);
+        addHandler(EdgeDriver.class, EdgeDriverHandler.class);
+        addHandler(OperaDriver.class, OperaDriverHandler.class);
+        addHandler(SafariDriver.class, SafariDriverHandler.class);
+        addHandler(RemoteWebDriver.class, RemoteDriverHandler.class);
+        addHandler(AppiumDriver.class, AppiumDriverHandler.class);
+        addHandler(List.class, ListDriverHandler.class);
+        addHandler(PhantomJSDriver.class, OtherDriverHandler.class);
 
-        templateHandlerMap.put("chrome", ChromeDriver.class);
-        templateHandlerMap.put("firefox", FirefoxDriver.class);
-        templateHandlerMap.put("edge", EdgeDriver.class);
-        templateHandlerMap.put("opera", OperaDriver.class);
-        templateHandlerMap.put("safari", SafariDriver.class);
-        templateHandlerMap.put("appium", AppiumDriver.class);
-        templateHandlerMap.put("phantomjs", PhantomJSDriver.class);
-        templateHandlerMap.put("chrome-in-docker", RemoteWebDriver.class);
-        templateHandlerMap.put("firefox-in-docker", RemoteWebDriver.class);
-        templateHandlerMap.put("opera-in-docker", RemoteWebDriver.class);
+        addTemplateHandler("chrome", ChromeDriver.class);
+        addTemplateHandler("firefox", FirefoxDriver.class);
+        addTemplateHandler("edge", EdgeDriver.class);
+        addTemplateHandler("opera", OperaDriver.class);
+        addTemplateHandler("safari", SafariDriver.class);
+        addTemplateHandler("appium", AppiumDriver.class);
+        addTemplateHandler("phantomjs", PhantomJSDriver.class);
+        addTemplateHandler("chrome-in-docker", RemoteWebDriver.class);
+        addTemplateHandler("firefox-in-docker", RemoteWebDriver.class);
+        addTemplateHandler("opera-in-docker", RemoteWebDriver.class);
     }
 
     @Override
@@ -294,6 +295,25 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 });
             }
         };
+    }
+
+    private void addHandler(Class<?> key,
+            Class<? extends DriverHandler> value) {
+        try {
+            handlerMap.put(key, value);
+        } catch (Exception e) {
+            log.warn("Exception adding {}={} to handler map ({})", key, value,
+                    e.getMessage());
+        }
+    }
+
+    private void addTemplateHandler(String key, Class<?> value) {
+        try {
+            templateHandlerMap.put(key, value);
+        } catch (Exception e) {
+            log.warn("Exception adding {}={} to template handler map ({})", key,
+                    value, e.getMessage());
+        }
     }
 
 }
