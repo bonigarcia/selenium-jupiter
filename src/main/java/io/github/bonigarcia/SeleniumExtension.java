@@ -83,32 +83,40 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     private List<Class<?>> typeList = new ArrayList<>();
     private List<DriverHandler> driverHandlerList = new ArrayList<>();
-    private Map<Class<?>, Class<? extends DriverHandler>> handlerMap = new HashMap<>();
+    private Map<String, Class<?>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
     private List<Browser> browser;
 
     public SeleniumExtension() {
-        addHandler(ChromeDriver.class, ChromeDriverHandler.class);
-        addHandler(ChromeDriver.class, ChromeDriverHandler.class);
-        addHandler(FirefoxDriver.class, FirefoxDriverHandler.class);
-        addHandler(EdgeDriver.class, EdgeDriverHandler.class);
-        addHandler(OperaDriver.class, OperaDriverHandler.class);
-        addHandler(SafariDriver.class, SafariDriverHandler.class);
-        addHandler(RemoteWebDriver.class, RemoteDriverHandler.class);
-        addHandler(AppiumDriver.class, AppiumDriverHandler.class);
-        addHandler(List.class, ListDriverHandler.class);
-        addHandler(PhantomJSDriver.class, OtherDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
+                ChromeDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.firefox.FirefoxDriver",
+                FirefoxDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.edge.EdgeDriver",
+                EdgeDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.opera.OperaDriver",
+                OperaDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.safari.SafariDriver",
+                SafariDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.remote.RemoteWebDriver",
+                RemoteDriverHandler.class);
+        addEntry(handlerMap, "io.appium.java_client.AppiumDriver",
+                AppiumDriverHandler.class);
+        addEntry(handlerMap, "java.util.List", ListDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.phantomjs.PhantomJSDriver",
+                OtherDriverHandler.class);
 
-        addTemplateHandler("chrome", ChromeDriver.class);
-        addTemplateHandler("firefox", FirefoxDriver.class);
-        addTemplateHandler("edge", EdgeDriver.class);
-        addTemplateHandler("opera", OperaDriver.class);
-        addTemplateHandler("safari", SafariDriver.class);
-        addTemplateHandler("appium", AppiumDriver.class);
-        addTemplateHandler("phantomjs", PhantomJSDriver.class);
-        addTemplateHandler("chrome-in-docker", RemoteWebDriver.class);
-        addTemplateHandler("firefox-in-docker", RemoteWebDriver.class);
-        addTemplateHandler("opera-in-docker", RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "chrome", ChromeDriver.class);
+        addEntry(templateHandlerMap, "firefox", FirefoxDriver.class);
+        addEntry(templateHandlerMap, "edge", EdgeDriver.class);
+        addEntry(templateHandlerMap, "opera", OperaDriver.class);
+        addEntry(templateHandlerMap, "safari", SafariDriver.class);
+        addEntry(templateHandlerMap, "appium", AppiumDriver.class);
+        addEntry(templateHandlerMap, "phantomjs", PhantomJSDriver.class);
+        addEntry(templateHandlerMap, "chrome-in-docker", RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "firefox-in-docker",
+                RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "opera-in-docker", RemoteWebDriver.class);
     }
 
     @Override
@@ -140,24 +148,24 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Handler
         DriverHandler driverHandler = null;
-        Class<? extends DriverHandler> constructorClass = handlerMap
-                .containsKey(type) ? handlerMap.get(type)
-                        : OtherDriverHandler.class;
+        Class<?> constructorClass = handlerMap.containsKey(type.toString())
+                ? handlerMap.get(type.toString())
+                : OtherDriverHandler.class;
         try {
             if (browser != null && type.equals(RemoteWebDriver.class)) {
-                driverHandler = constructorClass
+                driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class, Browser.class)
                         .newInstance(parameter, context, browser.get(index));
 
             } else if (browser != null && type.equals(PhantomJSDriver.class)) {
-                driverHandler = constructorClass
+                driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class, Class.class)
                         .newInstance(parameter, context, type);
 
             } else {
-                driverHandler = constructorClass
+                driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class)
                         .newInstance(parameter, context);
@@ -297,22 +305,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         };
     }
 
-    private void addHandler(Class<?> key,
-            Class<? extends DriverHandler> value) {
+    private void addEntry(Map<String, Class<?>> map, String key,
+            Class<?> value) {
         try {
-            handlerMap.put(key, value);
+            map.put(key, value);
         } catch (Exception e) {
             log.warn("Exception adding {}={} to handler map ({})", key, value,
                     e.getMessage());
-        }
-    }
-
-    private void addTemplateHandler(String key, Class<?> value) {
-        try {
-            templateHandlerMap.put(key, value);
-        } catch (Exception e) {
-            log.warn("Exception adding {}={} to template handler map ({})", key,
-                    value, e.getMessage());
         }
     }
 
