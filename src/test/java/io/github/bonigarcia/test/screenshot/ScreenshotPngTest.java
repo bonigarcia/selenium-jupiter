@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.screenshot;
 
+import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,11 +43,13 @@ public class ScreenshotPngTest {
     @BeforeAll
     void setup() {
         setProperty("sel.jup.screenshot.at.the.end.of.tests", "true");
+        setProperty("sel.jup.screenshot.format", "png");
     }
 
     @AfterAll
     void teardown() {
-        setProperty("sel.jup.screenshot.at.the.end.of.tests", "false");
+        clearProperty("sel.jup.screenshot.at.the.end.of.tests");
+        clearProperty("sel.jup.screenshot.format");
         assertTrue(imageFile.exists());
         imageFile.delete();
     }

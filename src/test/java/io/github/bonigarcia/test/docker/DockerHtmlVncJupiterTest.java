@@ -44,11 +44,13 @@ public class DockerHtmlVncJupiterTest {
 
     @BeforeAll
     void setup() {
+        setProperty("sel.jup.vnc", "true");
         setProperty("sel.jup.vnc.create.redirect.html.page", "true");
     }
 
     @AfterAll
     void teardown() {
+        clearProperty("sel.jup.vnc");
         clearProperty("sel.jup.vnc.create.redirect.html.page");
         assertTrue(htmlFile.exists());
         htmlFile.delete();
