@@ -148,8 +148,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Handler
         DriverHandler driverHandler = null;
-        Class<?> constructorClass = handlerMap.containsKey(type.toString())
-                ? handlerMap.get(type.toString())
+
+        Class<?> constructorClass = handlerMap.containsKey(type.getName())
+                ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
         try {
             if (browser != null && type.equals(RemoteWebDriver.class)) {
