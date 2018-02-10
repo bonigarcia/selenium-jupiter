@@ -188,9 +188,11 @@ public class DockerDriverHandler {
 
                 if (getBoolean("sel.jup.vnc.create.redirect.html.page")) {
                     String outputFolder = getOutputFolder(context);
-                    String vncHtmlPage = format(
-                            "<html><body onload=\"window.location.href='%s'\"></html>",
-                            vncUrl);
+                    String vncHtmlPage = format("<!DOCTYPE html>\n" + "<html>\n"
+                            + "<head>\n"
+                            + "<meta http-equiv=\"refresh\" content=\"0; url=%s\">\n"
+                            + "</head>\n" + "<body>\n" + "</body>\n"
+                            + "</html>", vncUrl);
                     write(Paths.get(outputFolder, name + ".html"),
                             vncHtmlPage.getBytes());
                 }
