@@ -174,8 +174,6 @@ public class DockerService {
                 dockerClient.startContainerCmd(containerName).exec();
                 waitForContainer(containerName);
             }
-        } else {
-            log.warn("Container {} already running", containerName);
         }
     }
 

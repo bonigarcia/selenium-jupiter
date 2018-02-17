@@ -300,7 +300,7 @@ public class DockerDriverHandler {
     }
 
     private int startDockerBrowser(BrowserType browser, String version,
-            boolean recording) throws IOException {
+            boolean recording) {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String recordingImage = getString("sel.jup.recording.image");
 
