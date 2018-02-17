@@ -25,6 +25,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.UUID.randomUUID;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -140,7 +141,10 @@ public class DockerService {
                 Optional<List<PortBinding>> portBindings = dockerContainer
                         .getPortBindings();
                 if (portBindings.isPresent()) {
-                    log.trace("Using port binding: {}", portBindings.get());
+                    portBindings.get().stream()
+                            .peek(pb -> log.trace("Using port binding {}:{}",
+                                    pb.getBinding(), pb.getExposedPort()))
+                            .collect(toList());
                     createContainer.withPortBindings(portBindings.get());
                 }
                 Optional<List<Volume>> volumes = dockerContainer.getVolumes();
