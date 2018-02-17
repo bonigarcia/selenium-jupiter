@@ -163,6 +163,12 @@ public class DockerService {
                     log.trace("Using cmd: {}", cmd.get());
                     createContainer.withCmd(cmd.get());
                 }
+                Optional<List<String>> entryPoint = dockerContainer
+                        .getEntryPoint();
+                if (entryPoint.isPresent()) {
+                    log.trace("Using entryPoint: {}", entryPoint.get());
+                    createContainer.withEntrypoint(entryPoint.get());
+                }
 
                 createContainer.exec();
                 dockerClient.startContainerCmd(containerName).exec();

@@ -41,6 +41,7 @@ public class DockerContainer {
     private final Optional<List<String>> envs;
     private final Optional<String> network;
     private final Optional<List<String>> cmd;
+    private final Optional<List<String>> entryPoint;
 
     private DockerContainer(DockerBuilder builder) {
         this.imageId = builder.imageId;
@@ -53,6 +54,8 @@ public class DockerContainer {
         this.envs = builder.envs != null ? of(builder.envs) : empty();
         this.network = builder.network != null ? of(builder.network) : empty();
         this.cmd = builder.cmd != null ? of(builder.cmd) : empty();
+        this.entryPoint = builder.entryPoint != null ? of(builder.entryPoint)
+                : empty();
     }
 
     public static DockerBuilder dockerBuilder(String imageId,
@@ -92,6 +95,10 @@ public class DockerContainer {
         return cmd;
     }
 
+    public Optional<List<String>> getEntryPoint() {
+        return entryPoint;
+    }
+
     public static class DockerBuilder {
         private String imageId;
         private String containerName;
@@ -101,6 +108,7 @@ public class DockerContainer {
         private List<String> envs;
         private List<String> cmd;
         private String network;
+        private List<String> entryPoint;
 
         public DockerBuilder(String imageId, String containerName) {
             this.imageId = imageId;
@@ -134,6 +142,11 @@ public class DockerContainer {
 
         public DockerBuilder cmd(List<String> cmd) {
             this.cmd = cmd;
+            return this;
+        }
+
+        public DockerBuilder entryPoint(List<String> entryPoint) {
+            this.entryPoint = entryPoint;
             return this;
         }
 

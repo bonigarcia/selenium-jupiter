@@ -26,21 +26,15 @@ import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
-import static java.lang.System.getProperty;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.move;
 import static java.nio.file.Files.write;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.apache.commons.io.FileUtils.deleteDirectory;
-import static org.apache.commons.io.FileUtils.writeStringToFile;
-import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -96,7 +90,6 @@ public class DockerDriverHandler {
     Map<String, String> containers;
     File recordingFile;
     String name;
-    File tmpDir;
     boolean recording;
     File hostVideoFolder;
     SelenoidConfig selenoidConfig;
@@ -280,11 +273,6 @@ public class DockerDriverHandler {
                     executorService.shutdown();
                 }
             }
-
-            // Delete temporal folder
-            if (tmpDir != null) {
-                deleteDirectory(tmpDir);
-            }
         } catch (Exception e) {
             log.warn("Exception cleaning DockerDriverHandler {}", e);
         }
@@ -334,35 +322,19 @@ public class DockerDriverHandler {
             hostVideoFolder = new File(getOutputFolder(context));
         }
 
-        String tmpFolder = getProperty("java.io.tmpdir");
-        if (IS_OS_MAC || tmpFolder.isEmpty()) {
-            // Temporary folders on MAC are stored on /var/private and are
-            // problematic to be mounted as volumes
-            tmpFolder = getOutputFolder(context);
-        }
-        tmpDir = new File(tmpFolder, randomUUID().toString());
-        tmpDir.mkdirs();
-        String browsersJson = selenoidConfig.getBrowsersJsonAsString();
-        writeStringToFile(new File(tmpDir, "browsers.json"), browsersJson,
-                defaultCharset());
-
-        // volumes
+        // volumes & binds
         String defaultSocket = dockerService.getDockerDefaultSocket();
         Volume defaultSocketVolume = new Volume(defaultSocket);
-        Volume selenoidConfigVolume = new Volume("/etc/selenoid");
         Volume selenoidVideoVolume = new Volume("/opt/selenoid/video");
 
         List<Volume> volumes = new ArrayList<>();
         volumes.add(defaultSocketVolume);
-        volumes.add(selenoidConfigVolume);
         if (recording) {
             volumes.add(selenoidVideoVolume);
         }
 
-        // binds
         List<Bind> binds = new ArrayList<>();
         binds.add(new Bind(defaultSocket, defaultSocketVolume));
-        binds.add(new Bind(getDockerPath(tmpDir), selenoidConfigVolume));
         if (recording) {
             binds.add(new Bind(getDockerPath(hostVideoFolder),
                     selenoidVideoVolume));
@@ -378,17 +350,21 @@ public class DockerDriverHandler {
         String selenoidContainerName = dockerService
                 .generateContainerName("selenoid");
 
-        // cmd
+        // entrypoint & cmd
+        List<String> entryPoint = asList("");
+        String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         String browserTimeout = getString(
                 "sel.jup.browser.session.timeout.duration");
-        List<String> cmd = asList("-listen", ":" + internalBrowserPort, "-conf",
-                "/etc/selenoid/browsers.json", "-video-output-dir",
-                "/opt/selenoid/video/", "-timeout", browserTimeout);
+        List<String> cmd = asList("sh", "-c", "mkdir -p /etc/selenoid/; echo '"
+                + browsersJson + "' > /etc/selenoid/browsers.json; "
+                + "/usr/bin/selenoid -listen :" + internalBrowserPort
+                + " -conf /etc/selenoid/browsers.json -video-output-dir /opt/selenoid/video/ -timeout "
+                + browserTimeout);
 
         DockerBuilder dockerBuilder = DockerContainer
                 .dockerBuilder(selenoidImage, selenoidContainerName)
                 .portBindings(portBindings).volumes(volumes).binds(binds)
-                .cmd(cmd);
+                .cmd(cmd).entryPoint(entryPoint);
         if (recording) {
             List<String> envs = asList("OVERRIDE_VIDEO_OUTPUT_DIR="
                     + getDockerPath(hostVideoFolder));
