@@ -176,6 +176,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         } catch (Exception e) {
             if (driverHandler != null
                     && driverHandler.throwExceptionWhenNoDriver()) {
+                log.error("Exception resolving {}", parameter, e);
                 throw new SeleniumJupiterException(e);
             } else {
                 log.warn("Exception creating {}", constructorClass, e);
