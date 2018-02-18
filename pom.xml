@@ -11,7 +11,7 @@
         <selenium-java.version>3.9.1</selenium-java.version>
         <webdrivermanager.version>2.1.0</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
-        <docker-java.version>3.0.14</docker-java.version>
+        <docker-client.version>8.11.1</docker-client.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <slf4j.version>1.7.25</slf4j.version>
         <retrofit.version>2.3.0</retrofit.version>
@@ -94,9 +94,9 @@
             <version>${appium-java-client.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java</artifactId>
-            <version>${docker-java.version}</version>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-client</artifactId>
+            <version>${docker-client.version}</version>
         </dependency>
         <dependency>
             <groupId>com.codeborne</groupId>

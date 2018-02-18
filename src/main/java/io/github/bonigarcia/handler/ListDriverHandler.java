@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutorService;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 
@@ -84,6 +86,8 @@ public class ListDriverHandler extends DriverHandler {
                             dockerDriverHandlerList.add(dockerDriverHandler);
                             driverList.add((RemoteWebDriver) dockerDriverHandler
                                     .resolve(dockerBrowser.get()));
+                        } catch (DockerCertificateException e) {
+                            log.error("Exception in docker handler", e);
                         } finally {
                             latch.countDown();
                         }

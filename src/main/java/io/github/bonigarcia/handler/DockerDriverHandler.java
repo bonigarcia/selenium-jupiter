@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
-import static com.github.dockerjava.api.model.ExposedPort.tcp;
-import static com.github.dockerjava.api.model.Ports.Binding.bindPort;
+import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
@@ -44,6 +43,7 @@ import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,11 +61,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
-import com.github.dockerjava.api.model.Bind;
-import com.github.dockerjava.api.model.ExposedPort;
-import com.github.dockerjava.api.model.PortBinding;
-import com.github.dockerjava.api.model.Ports.Binding;
-import com.github.dockerjava.api.model.Volume;
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerException;
+import com.spotify.docker.client.messages.PortBinding;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.BrowserType;
@@ -100,8 +98,8 @@ public class DockerDriverHandler {
     String index;
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
-            Optional<Object> testInstance,
-            AnnotationsReader annotationsReader) {
+            Optional<Object> testInstance, AnnotationsReader annotationsReader)
+            throws DockerCertificateException {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
@@ -113,7 +111,7 @@ public class DockerDriverHandler {
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
-            String index) {
+            String index) throws DockerCertificateException {
         this(context, parameter, testInstance, annotationsReader);
         this.index = index;
     }
@@ -144,14 +142,15 @@ public class DockerDriverHandler {
                 imageVersion = selenoidConfig.getDefaultBrowser(browser);
             }
 
-            int selenoidPort = startDockerBrowser(browser, version, recording);
-            int novncPort = 0;
+            String selenoidPort = startDockerBrowser(browser, version,
+                    recording);
+            String novncPort = "";
             if (enableVnc) {
                 novncPort = startDockerNoVnc();
             }
 
             String dockerServerIp = dockerService.getDockerServerHost();
-            String selenoidHubUrl = format("http://%s:%d/wd/hub",
+            String selenoidHubUrl = format("http://%s:%s/wd/hub",
                     dockerServerIp, selenoidPort);
             log.trace("Using URL for hub {}", selenoidHubUrl);
 
@@ -173,7 +172,7 @@ public class DockerDriverHandler {
 
             if (enableVnc) {
                 String vncUrl = format(
-                        "http://%s:%d/vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
+                        "http://%s:%s/vnc.html?host=%s&port=%s&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
                         dockerServerIp, novncPort, dockerServerIp, selenoidPort,
                         sessionId, getString("sel.jup.selenoid.vnc.password"));
                 log.debug("Session {} VNC URL: {}", sessionId, vncUrl);
@@ -233,7 +232,7 @@ public class DockerDriverHandler {
             options.merge(optionalCapabilities.get());
         }
         capabilities.setCapability(browser.getOptionsKey(), options);
-        log.trace("Using capabilities for Docker browser {}", capabilities);
+        log.debug("Using capabilities for Docker browser {}", capabilities);
         return capabilities;
     }
 
@@ -259,8 +258,12 @@ public class DockerDriverHandler {
                             .entrySet()) {
                         executorService.submit(() -> {
                             try {
-                                dockerService.stopAndRemoveContainer(
-                                        entry.getKey(), entry.getValue());
+                                try {
+                                    dockerService.stopAndRemoveContainer(
+                                            entry.getKey(), entry.getValue());
+                                } catch (Exception e) {
+                                    log.warn("Exception stopping container", e);
+                                }
                             } finally {
                                 latch.countDown();
                             }
@@ -278,28 +281,8 @@ public class DockerDriverHandler {
 
     }
 
-    private int startDockerNoVnc() {
-        String novncImage = getString("sel.jup.novnc.image");
-        dockerService.pullImageIfNecessary(novncImage);
-
-        int novncPort = dockerService.findRandomOpenPort();
-        Binding novncBindPort = bindPort(novncPort);
-        ExposedPort novncExposedPort = tcp(getInt("sel.jup.novnc.port"));
-        List<PortBinding> portBindings = asList(
-                new PortBinding(novncBindPort, novncExposedPort));
-        String novncContainerName = dockerService
-                .generateContainerName("novnc");
-        DockerContainer novncContainer = DockerContainer
-                .dockerBuilder(novncImage, novncContainerName)
-                .portBindings(portBindings).build();
-        dockerService.startAndWaitContainer(novncContainer);
-        containers.put(novncContainerName, novncImage);
-
-        return novncPort;
-    }
-
-    private int startDockerBrowser(BrowserType browser, String version,
-            boolean recording) {
+    private String startDockerBrowser(BrowserType browser, String version,
+            boolean recording) throws DockerException, InterruptedException {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String recordingImage = getString("sel.jup.recording.image");
 
@@ -321,36 +304,21 @@ public class DockerDriverHandler {
             hostVideoFolder = new File(getOutputFolder(context));
         }
 
-        // volumes & binds
-        String defaultSocket = dockerService.getDockerDefaultSocket();
-        Volume defaultSocketVolume = new Volume(defaultSocket);
-        Volume selenoidVideoVolume = new Volume("/opt/selenoid/video");
-
-        List<Volume> volumes = new ArrayList<>();
-        volumes.add(defaultSocketVolume);
-        if (recording) {
-            volumes.add(selenoidVideoVolume);
-        }
-
-        List<Bind> binds = new ArrayList<>();
-        binds.add(new Bind(defaultSocket, defaultSocketVolume));
-        if (recording) {
-            binds.add(new Bind(getDockerPath(hostVideoFolder),
-                    selenoidVideoVolume));
-        }
-
         // portBindings
-        int selenoidPort = dockerService.findRandomOpenPort();
-        Binding selenoidBindPort = bindPort(selenoidPort);
-        int internalBrowserPort = getInt("sel.jup.selenoid.port");
-        ExposedPort selenoidExposedPort = tcp(internalBrowserPort);
-        List<PortBinding> portBindings = asList(
-                new PortBinding(selenoidBindPort, selenoidExposedPort));
-        String selenoidContainerName = dockerService
-                .generateContainerName("selenoid");
+        Map<String, List<PortBinding>> portBindings = new HashMap<>();
+        String internalSelenoidPort = getString("sel.jup.selenoid.port");
+        portBindings.put(internalSelenoidPort, asList(randomPort("0.0.0.0")));
 
+        // binds
+        String defaultSocket = dockerService.getDockerDefaultSocket();
+        List<String> binds = new ArrayList<>();
+        binds.add(defaultSocket + ":" + defaultSocket);
+        if (recording) {
+            binds.add(getDockerPath(hostVideoFolder) + ":/opt/selenoid/video");
+        }
         // entrypoint & cmd
         List<String> entryPoint = asList("");
+        int internalBrowserPort = getInt("sel.jup.selenoid.port");
         String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         String browserTimeout = getString(
                 "sel.jup.browser.session.timeout.duration");
@@ -361,9 +329,8 @@ public class DockerDriverHandler {
                 + browserTimeout);
 
         DockerBuilder dockerBuilder = DockerContainer
-                .dockerBuilder(selenoidImage, selenoidContainerName)
-                .portBindings(portBindings).volumes(volumes).binds(binds)
-                .cmd(cmd).entryPoint(entryPoint);
+                .dockerBuilder(selenoidImage).portBindings(portBindings)
+                .binds(binds).cmd(cmd).entryPoint(entryPoint);
         if (recording) {
             List<String> envs = asList("OVERRIDE_VIDEO_OUTPUT_DIR="
                     + getDockerPath(hostVideoFolder));
@@ -371,10 +338,31 @@ public class DockerDriverHandler {
         }
 
         DockerContainer selenoidContainer = dockerBuilder.build();
-        dockerService.startAndWaitContainer(selenoidContainer);
-        containers.put(selenoidContainerName, selenoidImage);
+        String containerId = dockerService
+                .startAndWaitContainer(selenoidContainer);
+        containers.put(containerId, selenoidImage);
 
-        return selenoidPort;
+        return dockerService.getBindPort(containerId,
+                internalSelenoidPort + "/tcp");
+    }
+
+    private String startDockerNoVnc()
+            throws DockerException, InterruptedException {
+        String novncImage = getString("sel.jup.novnc.image");
+        dockerService.pullImageIfNecessary(novncImage);
+
+        Map<String, List<PortBinding>> portBindings = new HashMap<>();
+        String internalNoVncPort = getString("sel.jup.novnc.port");
+        portBindings.put(internalNoVncPort, asList(randomPort("0.0.0.0")));
+
+        DockerContainer novncContainer = DockerContainer
+                .dockerBuilder(novncImage).portBindings(portBindings).build();
+        String containerId = dockerService
+                .startAndWaitContainer(novncContainer);
+        containers.put(containerId, novncImage);
+
+        return dockerService.getBindPort(containerId,
+                internalNoVncPort + "/tcp");
     }
 
     private String getDockerPath(File file) {

@@ -20,11 +20,10 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import com.github.dockerjava.api.model.Bind;
-import com.github.dockerjava.api.model.PortBinding;
-import com.github.dockerjava.api.model.Volume;
+import com.spotify.docker.client.messages.PortBinding;
 
 /**
  * Docker Container.
@@ -34,10 +33,8 @@ import com.github.dockerjava.api.model.Volume;
  */
 public class DockerContainer {
     private final String imageId;
-    private final String containerName;
-    private final Optional<List<PortBinding>> portBindings;
-    private final Optional<List<Volume>> volumes;
-    private final Optional<List<Bind>> binds;
+    private final Optional<Map<String, List<PortBinding>>> portBindings;
+    private final Optional<List<String>> binds;
     private final Optional<List<String>> envs;
     private final Optional<String> network;
     private final Optional<List<String>> cmd;
@@ -45,11 +42,9 @@ public class DockerContainer {
 
     private DockerContainer(DockerBuilder builder) {
         this.imageId = builder.imageId;
-        this.containerName = builder.containerName;
         this.portBindings = builder.portBindings != null
                 ? of(builder.portBindings)
                 : empty();
-        this.volumes = builder.volumes != null ? of(builder.volumes) : empty();
         this.binds = builder.binds != null ? of(builder.binds) : empty();
         this.envs = builder.envs != null ? of(builder.envs) : empty();
         this.network = builder.network != null ? of(builder.network) : empty();
@@ -58,28 +53,19 @@ public class DockerContainer {
                 : empty();
     }
 
-    public static DockerBuilder dockerBuilder(String imageId,
-            String containerName) {
-        return new DockerBuilder(imageId, containerName);
+    public static DockerBuilder dockerBuilder(String imageId) {
+        return new DockerBuilder(imageId);
     }
 
     public String getImageId() {
         return imageId;
     }
 
-    public String getContainerName() {
-        return containerName;
-    }
-
-    public Optional<List<PortBinding>> getPortBindings() {
+    public Optional<Map<String, List<PortBinding>>> getPortBindings() {
         return portBindings;
     }
 
-    public Optional<List<Volume>> getVolumes() {
-        return volumes;
-    }
-
-    public Optional<List<Bind>> getBinds() {
+    public Optional<List<String>> getBinds() {
         return binds;
     }
 
@@ -101,31 +87,24 @@ public class DockerContainer {
 
     public static class DockerBuilder {
         private String imageId;
-        private String containerName;
-        private List<PortBinding> portBindings;
-        private List<Volume> volumes;
-        private List<Bind> binds;
+        private Map<String, List<PortBinding>> portBindings;
+        private List<String> binds;
         private List<String> envs;
         private List<String> cmd;
         private String network;
         private List<String> entryPoint;
 
-        public DockerBuilder(String imageId, String containerName) {
+        public DockerBuilder(String imageId) {
             this.imageId = imageId;
-            this.containerName = containerName;
         }
 
-        public DockerBuilder portBindings(List<PortBinding> portBindings) {
+        public DockerBuilder portBindings(
+                Map<String, List<PortBinding>> portBindings) {
             this.portBindings = portBindings;
             return this;
         }
 
-        public DockerBuilder volumes(List<Volume> volumes) {
-            this.volumes = volumes;
-            return this;
-        }
-
-        public DockerBuilder binds(List<Bind> binds) {
+        public DockerBuilder binds(List<String> binds) {
             this.binds = binds;
             return this;
         }
