@@ -139,7 +139,7 @@ public class DockerService {
         Optional<Map<String, List<PortBinding>>> portBindings = dockerContainer
                 .getPortBindings();
         if (portBindings.isPresent()) {
-            log.trace("Using port binding {}:{}", portBindings.get());
+            log.trace("Using port bindings: {}", portBindings.get());
             hostConfigBuilder.portBindings(portBindings.get());
             containerConfigBuilder.exposedPorts(portBindings.get().keySet());
         }
