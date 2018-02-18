@@ -18,12 +18,8 @@ package io.github.bonigarcia;
 
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static java.lang.System.currentTimeMillis;
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -211,81 +207,18 @@ public class DockerService {
         removeContainer(containerName);
     }
 
-    public void stopContainer(String containerName)
+    public void stopContainer(String containerId)
             throws DockerException, InterruptedException {
-        if (isRunningContainer(containerName)) {
-            int stopTimeoutSec = getInt("sel.jup.docker.stop.timeout.sec");
-            log.trace("Stopping container {} (timeout {} seconds)",
-                    containerName, stopTimeoutSec);
-            dockerClient.stopContainer(containerName, stopTimeoutSec);
-
-        } else {
-            log.trace("Container {} is not running", containerName);
-        }
+        int stopTimeoutSec = getInt("sel.jup.docker.stop.timeout.sec");
+        log.trace("Stopping container {} (timeout {} seconds)", containerId,
+                stopTimeoutSec);
+        dockerClient.stopContainer(containerId, stopTimeoutSec);
     }
 
-    public void removeContainer(String containerName)
+    public void removeContainer(String containerId)
             throws DockerException, InterruptedException {
-        if (existsContainer(containerName)) {
-            log.trace("Removing container {}", containerName);
-            dockerClient.removeContainer(containerName);
-        }
-    }
-
-    public void waitForContainer(String containerName)
-            throws DockerException, InterruptedException {
-        boolean isRunning = false;
-        long timeoutMs = currentTimeMillis()
-                + SECONDS.toMillis(dockerWaitTimeoutSec);
-        do {
-            isRunning = isRunningContainer(containerName);
-            if (!isRunning) {
-                // Check timeout
-                if (currentTimeMillis() > timeoutMs) {
-                    throw new SeleniumJupiterException(
-                            "Timeout of " + dockerWaitTimeoutSec
-                                    + " seconds waiting for container "
-                                    + containerName);
-                }
-
-                // Wait poll time
-                log.trace("Container {} is not still running ... waiting {} ms",
-                        containerName, dockerPollTimeMs);
-                try {
-                    sleep(dockerPollTimeMs);
-                } catch (InterruptedException e) {
-                    log.warn(
-                            "Interrupted Exception while waiting for container",
-                            e);
-                    currentThread().interrupt();
-                }
-            }
-        } while (!isRunning);
-    }
-
-    public boolean isRunningContainer(String containerId)
-            throws DockerException, InterruptedException {
-        boolean isRunning = false;
-        if (existsContainer(containerId)) {
-            isRunning = dockerClient.inspectContainer(containerId).state()
-                    .running();
-            log.trace("Container {} is running: {}", containerId, isRunning);
-        }
-
-        return isRunning;
-    }
-
-    public boolean existsContainer(String containerName) {
-        boolean exists = true;
-        try {
-            dockerClient.inspectContainer(containerName);
-            log.trace("Container {} already exist", containerName);
-
-        } catch (Exception e) {
-            log.trace("Container {} does not exist", containerName);
-            exists = false;
-        }
-        return exists;
+        log.trace("Removing container {}", containerId);
+        dockerClient.removeContainer(containerId);
     }
 
     public boolean isRunningInContainer() {
