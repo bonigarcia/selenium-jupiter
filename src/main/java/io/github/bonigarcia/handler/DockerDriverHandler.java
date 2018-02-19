@@ -318,6 +318,7 @@ public class DockerDriverHandler {
         if (recording) {
             binds.add(getDockerPath(hostVideoFolder) + ":/opt/selenoid/video");
         }
+
         // entrypoint & cmd
         List<String> entryPoint = asList("");
         int internalBrowserPort = getInt("sel.jup.selenoid.port");
@@ -330,14 +331,19 @@ public class DockerDriverHandler {
                 + " -conf /etc/selenoid/browsers.json -video-output-dir /opt/selenoid/video/ -timeout "
                 + browserTimeout);
 
+        // envs
+        List<String> envs = new ArrayList<>();
+        envs.add("DOCKER_API_VERSION="
+                + getString("sel.jup.docker.api.version"));
+
+        if (recording) {
+            envs.add("OVERRIDE_VIDEO_OUTPUT_DIR="
+                    + getDockerPath(hostVideoFolder));
+        }
+
         DockerBuilder dockerBuilder = DockerContainer
                 .dockerBuilder(selenoidImage).portBindings(portBindings)
-                .binds(binds).cmd(cmd).entryPoint(entryPoint);
-        if (recording) {
-            List<String> envs = asList("OVERRIDE_VIDEO_OUTPUT_DIR="
-                    + getDockerPath(hostVideoFolder));
-            dockerBuilder.envs(envs);
-        }
+                .binds(binds).cmd(cmd).entryPoint(entryPoint).envs(envs);
 
         DockerContainer selenoidContainer = dockerBuilder.build();
         String containerId = dockerService
