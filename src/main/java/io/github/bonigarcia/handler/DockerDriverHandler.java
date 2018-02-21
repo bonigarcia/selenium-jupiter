@@ -242,7 +242,9 @@ public class DockerDriverHandler {
             if (recording) {
                 waitForRecording();
             }
-
+        } catch (Exception e) {
+            log.warn("Exception waiting for recording {}", e.getMessage());
+        } finally {
             // Stop containers
             if (containers != null && dockerService != null) {
                 int numContainers = containers.size();
@@ -254,27 +256,26 @@ public class DockerDriverHandler {
                             .entrySet()) {
                         executorService.submit(() -> {
                             try {
-                                try {
-                                    dockerService.stopAndRemoveContainer(
-                                            entry.getKey(), entry.getValue());
-                                } catch (Exception e) {
-                                    log.warn("Exception stopping container", e);
-                                }
+                                dockerService.stopAndRemoveContainer(
+                                        entry.getKey(), entry.getValue());
+                            } catch (Exception e) {
+                                log.warn("Exception stopping container", e);
                             } finally {
                                 latch.countDown();
                             }
                         });
                     }
                     containers.clear();
-                    latch.await();
-
+                    try {
+                        latch.await();
+                    } catch (InterruptedException e) {
+                        log.warn("Exception cleaning Docker containers {}",
+                                e.getMessage());
+                    }
                     executorService.shutdown();
                 }
             }
-        } catch (Exception e) {
-            log.warn("Exception cleaning DockerDriverHandler {}", e);
         }
-
     }
 
     private String startDockerBrowser(BrowserType browser, String version,
