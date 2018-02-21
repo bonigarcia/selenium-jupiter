@@ -16,11 +16,16 @@
  */
 package io.github.bonigarcia;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +33,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.CharStreams;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerClient;
@@ -67,9 +73,10 @@ public class DockerService {
     }
 
     public String getDockerGateway(String containerId, String network)
-            throws DockerException, InterruptedException {
-        return dockerClient.inspectContainer(containerId).networkSettings()
-                .networks().get(network).gateway();
+            throws DockerException, InterruptedException, IOException {
+        return IS_OS_WINDOWS ? getDockerMachineIp()
+                : dockerClient.inspectContainer(containerId).networkSettings()
+                        .networks().get(network).gateway();
     }
 
     public String startContainer(DockerContainer dockerContainer)
@@ -170,6 +177,25 @@ public class DockerService {
             throws DockerException, InterruptedException {
         log.trace("Removing container {}", containerId);
         dockerClient.removeContainer(containerId);
+    }
+
+    public String getDockerMachineIp() throws IOException {
+        return runAndWait("docker-machine", "ip");
+    }
+
+    public String runAndWait(String... command) throws IOException {
+        Process process = new ProcessBuilder(command).redirectErrorStream(true)
+                .start();
+        String result = CharStreams
+                .toString(
+                        new InputStreamReader(process.getInputStream(), UTF_8))
+                .replaceAll("\\r", "").replaceAll("\\n", "");
+        process.destroy();
+        if (log.isTraceEnabled()) {
+            log.trace("Running command on the shell: {} -- result: {}",
+                    Arrays.toString(command), result);
+        }
+        return result;
     }
 
     public String getDockerDefaultSocket() {

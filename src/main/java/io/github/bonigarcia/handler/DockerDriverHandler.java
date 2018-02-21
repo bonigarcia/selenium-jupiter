@@ -279,7 +279,8 @@ public class DockerDriverHandler {
     }
 
     private String startDockerBrowser(BrowserType browser, String version,
-            boolean recording) throws DockerException, InterruptedException {
+            boolean recording)
+            throws DockerException, InterruptedException, IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
         String recordingImage = getString("sel.jup.recording.image");
         String network = getString("sel.jup.docker.network");
@@ -344,8 +345,7 @@ public class DockerDriverHandler {
                 .network(network);
 
         DockerContainer selenoidContainer = dockerBuilder.build();
-        String containerId = dockerService
-                .startContainer(selenoidContainer);
+        String containerId = dockerService.startContainer(selenoidContainer);
         containers.put(containerId, selenoidImage);
 
         String selenoidHost = dockerService.getDockerGateway(containerId,
@@ -357,7 +357,7 @@ public class DockerDriverHandler {
 
     private String startDockerNoVnc(String selenoidHost, int selenoidPort,
             String sessionId, String novncPassword)
-            throws DockerException, InterruptedException {
+            throws DockerException, InterruptedException, IOException {
         String novncImage = getString("sel.jup.novnc.image");
         dockerService.pullImageIfNecessary(novncImage);
 
@@ -369,8 +369,7 @@ public class DockerDriverHandler {
         DockerContainer novncContainer = DockerContainer
                 .dockerBuilder(novncImage).portBindings(portBindings)
                 .network(network).build();
-        String containerId = dockerService
-                .startContainer(novncContainer);
+        String containerId = dockerService.startContainer(novncContainer);
         containers.put(containerId, novncImage);
 
         String novncHost = dockerService.getDockerGateway(containerId, network);
