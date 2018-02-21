@@ -52,9 +52,9 @@ public class SelenoidConfigTest {
 
     @BeforeAll
     static void setup() {
-        setProperty("sel.jup.chrome.latest.version", "63.0");
-        setProperty("sel.jup.firefox.latest.version", "57.0");
-        setProperty("sel.jup.opera.latest.version", "50.0");
+        setProperty("sel.jup.chrome.latest.version", "64.0");
+        setProperty("sel.jup.firefox.latest.version", "58.0");
+        setProperty("sel.jup.opera.latest.version", "51.0");
         setProperty("sel.jup.browser.list.from.docker.hub", "false");
     }
 
@@ -67,7 +67,7 @@ public class SelenoidConfigTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "3.6, 4.0, 47.0", "46.0, 47.0, 47.0", "46, 47.0, 47" })
+    @CsvSource({ "3.6, 4.0, 48.0", "46.0, 47.0, 48.0", "46, 47.0, 48" })
     void testNextVersion(String version, String expectedNextVersion,
             String latestVersion) {
         String nextVersion = CHROME.getNextVersion(version, latestVersion);
