@@ -16,11 +16,10 @@
  */
 package io.github.bonigarcia;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -72,9 +71,15 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getDockerGateway(String containerId, String network)
+    public String getGateway(String containerId, String network)
             throws DockerException, InterruptedException, IOException {
-        return IS_OS_WINDOWS ? getDockerMachineIp()
+        String dockerMachineIp = null;
+        try {
+            dockerMachineIp = getDockerMachineIp();
+        } catch (Exception e) {
+            log.trace("Docker machine not installed in this host");
+        }
+        return dockerMachineIp != null ? dockerMachineIp
                 : dockerClient.inspectContainer(containerId).networkSettings()
                         .networks().get(network).gateway();
     }
