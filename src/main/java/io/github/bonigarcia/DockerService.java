@@ -158,11 +158,14 @@ public class DockerService {
         return exists;
     }
 
-    public void stopAndRemoveContainer(String containerName, String imageName)
-            throws DockerException, InterruptedException {
+    public void stopAndRemoveContainer(String containerName, String imageName) {
         log.debug("Stopping Docker container {}", imageName);
-        stopContainer(containerName);
-        removeContainer(containerName);
+        try {
+            stopContainer(containerName);
+            removeContainer(containerName);
+        } catch (Exception e) {
+            log.warn("Exception stopping container {}", imageName, e);
+        }
     }
 
     public void stopContainer(String containerId)

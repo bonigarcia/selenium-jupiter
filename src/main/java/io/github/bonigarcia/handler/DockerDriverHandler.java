@@ -255,14 +255,9 @@ public class DockerDriverHandler {
                     for (Map.Entry<String, String> entry : containers
                             .entrySet()) {
                         executorService.submit(() -> {
-                            try {
-                                dockerService.stopAndRemoveContainer(
-                                        entry.getKey(), entry.getValue());
-                            } catch (Exception e) {
-                                log.warn("Exception stopping container", e);
-                            } finally {
-                                latch.countDown();
-                            }
+                            dockerService.stopAndRemoveContainer(entry.getKey(),
+                                    entry.getValue());
+                            latch.countDown();
                         });
                     }
                     containers.clear();
@@ -271,6 +266,7 @@ public class DockerDriverHandler {
                     } catch (InterruptedException e) {
                         log.warn("Exception cleaning Docker containers {}",
                                 e.getMessage());
+                        currentThread().interrupt();
                     }
                     executorService.shutdown();
                 }
