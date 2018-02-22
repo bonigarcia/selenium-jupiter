@@ -19,16 +19,8 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,14 +28,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.CharStreams;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.ContainerCreation;
 import com.spotify.docker.client.messages.HostConfig;
 import com.spotify.docker.client.messages.PortBinding;
 
@@ -57,18 +47,12 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    private String dockerServerHost;
-    private boolean runningInContainer = false;
-    private boolean containerCheked = false;
-    private String dockerDefaultHost;
     private String dockerDefaultSocket;
     private int dockerWaitTimeoutSec;
     private int dockerPollTimeMs;
-
     private DockerClient dockerClient;
 
     public DockerService() throws DockerCertificateException {
-        dockerDefaultHost = getString("sel.jup.docker.default.host");
         dockerDefaultSocket = getString("sel.jup.docker.default.socket");
         dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
         dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
@@ -82,46 +66,16 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getDockerServerHost() {
-        try {
-            if (dockerServerHost == null) {
-                if (IS_OS_WINDOWS) {
-                    dockerServerHost = getDockerMachineIp();
-                } else {
-                    if (!containerCheked) {
-                        runningInContainer = isRunningInContainer();
-                        containerCheked = true;
-                    }
-                    if (runningInContainer) {
-                        dockerServerHost = getContainerIp();
-                    } else {
-                        dockerServerHost = getDockerDefaultHost();
-                    }
-                }
-                log.trace("Docker server host: {}", dockerServerHost);
-            }
-        } catch (Exception e) {
-            throw new SeleniumJupiterException(e);
-        }
-
-        return dockerServerHost;
+    public String getDockerGateway(String containerId, String network)
+            throws DockerException, InterruptedException {
+        return dockerClient.inspectContainer(containerId).networkSettings()
+                .networks().get(network).gateway();
     }
 
-    public String getContainerIp() throws IOException {
-        String ipRoute = runAndWait("sh", "-c", "/sbin/ip route");
-        return ipRoute.split("\\s")[2];
-    }
-
-    public String getDockerMachineIp() throws IOException {
-        return runAndWait("docker-machine", "ip").replaceAll("\\r", "")
-                .replaceAll("\\n", "");
-    }
-
-    public String startAndWaitContainer(DockerContainer dockerContainer)
+    public String startContainer(DockerContainer dockerContainer)
             throws DockerException, InterruptedException {
         String imageId = dockerContainer.getImageId();
         log.debug("Starting Docker container {}", imageId);
-        pullImageIfNecessary(imageId);
         com.spotify.docker.client.messages.HostConfig.Builder hostConfigBuilder = HostConfig
                 .builder();
         com.spotify.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
@@ -162,10 +116,7 @@ public class DockerService {
 
         ContainerConfig createContainer = containerConfigBuilder.image(imageId)
                 .hostConfig(hostConfigBuilder.build()).build();
-
-        ContainerCreation createContainer2 = dockerClient
-                .createContainer(createContainer);
-        String containerId = createContainer2.id();
+        String containerId = dockerClient.createContainer(createContainer).id();
         dockerClient.startContainer(containerId);
 
         return containerId;
@@ -219,41 +170,6 @@ public class DockerService {
             throws DockerException, InterruptedException {
         log.trace("Removing container {}", containerId);
         dockerClient.removeContainer(containerId);
-    }
-
-    public boolean isRunningInContainer() {
-        boolean isRunningInContainer = false;
-        try (BufferedReader br = Files
-                .newBufferedReader(Paths.get("/proc/1/cgroup"), UTF_8)) {
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("/docker")) {
-                    return true;
-                }
-                isRunningInContainer = false;
-            }
-
-        } catch (IOException e) {
-            log.debug("Not running inside a Docker container");
-        }
-        return isRunningInContainer;
-    }
-
-    public String runAndWait(String... command) throws IOException {
-        Process process = new ProcessBuilder(command).redirectErrorStream(true)
-                .start();
-        String result = CharStreams.toString(
-                new InputStreamReader(process.getInputStream(), UTF_8));
-        process.destroy();
-        if (log.isTraceEnabled()) {
-            log.trace("Running command on the shell: {} -- result: {}",
-                    Arrays.toString(command), result);
-        }
-        return result;
-    }
-
-    public String getDockerDefaultHost() {
-        return dockerDefaultHost;
     }
 
     public String getDockerDefaultSocket() {

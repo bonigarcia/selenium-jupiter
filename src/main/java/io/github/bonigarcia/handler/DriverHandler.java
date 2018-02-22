@@ -88,6 +88,7 @@ public abstract class DriverHandler {
 
     void handleException(Exception e) {
         if (throwExceptionWhenNoDriver()) {
+            log.trace("Internal error in selenium-jupiter", e);
             throw new SeleniumJupiterException(e);
         }
         log.warn("Error creating WebDriver object", e);
