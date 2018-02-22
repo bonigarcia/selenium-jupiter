@@ -343,7 +343,8 @@ public class DockerDriverHandler {
 
         DockerBuilder dockerBuilder = DockerContainer
                 .dockerBuilder(selenoidImage).portBindings(portBindings)
-                .binds(binds).cmd(cmd).entryPoint(entryPoint).envs(envs);
+                .binds(binds).cmd(cmd).entryPoint(entryPoint).envs(envs)
+                .network(getString("sel.jup.docker.network"));
 
         DockerContainer selenoidContainer = dockerBuilder.build();
         String containerId = dockerService
@@ -364,7 +365,8 @@ public class DockerDriverHandler {
         portBindings.put(internalNoVncPort, asList(randomPort("0.0.0.0")));
 
         DockerContainer novncContainer = DockerContainer
-                .dockerBuilder(novncImage).portBindings(portBindings).build();
+                .dockerBuilder(novncImage).portBindings(portBindings)
+                .network(getString("sel.jup.docker.network")).build();
         String containerId = dockerService
                 .startAndWaitContainer(novncContainer);
         containers.put(containerId, novncImage);
