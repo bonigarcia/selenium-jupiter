@@ -79,9 +79,12 @@ public class DockerService {
         } catch (Exception e) {
             log.trace("Docker machine not installed in this host");
         }
-        return dockerMachineIp != null ? dockerMachineIp
-                : dockerClient.inspectContainer(containerId).networkSettings()
-                        .networks().get(network).gateway();
+        return dockerMachineIp != null
+                && !dockerMachineIp.contains("Host is not running")
+                        ? dockerMachineIp
+                        : dockerClient.inspectContainer(containerId)
+                                .networkSettings().networks().get(network)
+                                .gateway();
     }
 
     public String startContainer(DockerContainer dockerContainer)
