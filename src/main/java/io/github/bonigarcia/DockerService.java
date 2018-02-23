@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia;
 
+import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
+
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -71,7 +73,7 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getGateway(String containerId, String network)
+    public String getIpAddress(String containerId, String network)
             throws DockerException, InterruptedException, IOException {
         String dockerMachineIp = null;
         try {
@@ -79,12 +81,16 @@ public class DockerService {
         } catch (Exception e) {
             log.trace("Docker machine not installed in this host");
         }
-        return dockerMachineIp != null
-                && !dockerMachineIp.contains("Host is not running")
-                        ? dockerMachineIp
-                        : dockerClient.inspectContainer(containerId)
-                                .networkSettings().networks().get(network)
-                                .gateway();
+        if (dockerMachineIp == null
+                || dockerMachineIp.contains("Host is not running")) {
+            if (IS_OS_MAC) {
+                dockerMachineIp = "127.0.0.1";
+            } else {
+                dockerMachineIp = dockerClient.inspectContainer(containerId)
+                        .networkSettings().networks().get(network).gateway();
+            }
+        }
+        return dockerMachineIp;
     }
 
     public String startContainer(DockerContainer dockerContainer)
