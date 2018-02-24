@@ -61,7 +61,7 @@ public class SelenoidConfig {
     }
 
     public String getImageVersion(BrowserType browser, String version) {
-        Map<String, Browser> versions = browsers.getBrowser(browser)
+        Map<String, Browser> versions = browsers.getBrowserConfig(browser)
                 .getVersions();
 
         if (versions.containsKey(version)) {
@@ -80,7 +80,7 @@ public class SelenoidConfig {
     }
 
     public String getImageFromVersion(BrowserType browser, String version) {
-        return browsers.getBrowser(browser).getVersions()
+        return browsers.getBrowserConfig(browser).getVersions()
                 .get(getImageVersion(browser, version)).getImage();
     }
 
@@ -89,7 +89,7 @@ public class SelenoidConfig {
     }
 
     public String getDefaultBrowser(BrowserType browser) {
-        return browsers.getBrowser(browser).getDefaultBrowser();
+        return browsers.getBrowserConfig(browser).getDefaultBrowser();
     }
 
     private String getPreviousVersion(int beforeVersion, String latestVersion) {

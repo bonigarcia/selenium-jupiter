@@ -60,7 +60,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
 
@@ -101,8 +100,7 @@ public class DockerDriverHandler {
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
             Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig)
-            throws DockerCertificateException {
+            DockerService dockerService, SelenoidConfig selenoidConfig) {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
@@ -110,16 +108,6 @@ public class DockerDriverHandler {
         this.containerMap = containerMap;
         this.dockerService = dockerService;
         this.selenoidConfig = selenoidConfig;
-    }
-
-    public DockerDriverHandler(ExtensionContext context, Parameter parameter,
-            Optional<Object> testInstance, AnnotationsReader annotationsReader,
-            Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig,
-            String index) throws DockerCertificateException {
-        this(context, parameter, testInstance, annotationsReader, containerMap,
-                dockerService, selenoidConfig);
-        this.index = index;
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -489,6 +477,10 @@ public class DockerDriverHandler {
 
     public Map<String, DockerContainer> getContainerMap() {
         return containerMap;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
 }

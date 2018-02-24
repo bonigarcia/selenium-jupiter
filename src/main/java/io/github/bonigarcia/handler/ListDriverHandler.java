@@ -33,8 +33,6 @@ import java.util.concurrent.ExecutorService;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
-
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 
@@ -77,7 +75,8 @@ public class ListDriverHandler extends DriverHandler {
 
                 DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                         context, parameter, testInstance, annotationsReader,
-                        containerMap, dockerService, selenoidConfig, "_0");
+                        containerMap, dockerService, selenoidConfig);
+                firstDockerDriverHandler.setIndex("_0");
                 firstDockerDriverHandler.startSelenoidContainer();
                 firstDockerDriverHandler.startNoVncContainer();
                 containerMap = firstDockerDriverHandler.getContainerMap();
@@ -117,12 +116,11 @@ public class ListDriverHandler extends DriverHandler {
                     ? firstDockerDriverHandler
                     : new DockerDriverHandler(context, parameter, testInstance,
                             annotationsReader, containerMap, dockerService,
-                            selenoidConfig, "_" + index);
+                            selenoidConfig);
+            dockerDriverHandler.setIndex("_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler
                     .resolve(dockerBrowser));
-        } catch (DockerCertificateException e) {
-            log.error("Exception in docker handler", e);
         } finally {
             latch.countDown();
         }

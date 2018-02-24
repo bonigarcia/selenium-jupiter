@@ -19,13 +19,9 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
-import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.util.stream.Collectors.toList;
 import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
-
-import java.util.List;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -33,9 +29,6 @@ import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.DockerBrowserConfig.Browser;
-import io.github.bonigarcia.DockerBrowserConfig.BrowserConfig;
-import io.github.bonigarcia.DockerHubTags.DockerHubTag;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
@@ -54,136 +47,36 @@ public enum BrowserType {
     final Logger log = getLogger(lookup().lookupClass());
 
     String dockerImage;
-    String latestVersion;
-    String firstVersion;
     String path;
     DriverHandler driverHandler;
     String optionsKey;
+    DesiredCapabilities capabilities;
 
-    public BrowserConfig getBrowserConfigFromDockerHub(
-            List<DockerHubTag> dockerHubTags) {
-        List<String> browserList = null;
+    public void init() {
         switch (this) {
         case FIREFOX:
-            final String firefoxPreffix = "firefox_";
-            browserList = dockerHubTags.stream()
-                    .filter(p -> p.getName().startsWith(firefoxPreffix))
-                    .map(p -> p.getName().replace(firefoxPreffix, ""))
-                    .sorted(this::compareVersions).collect(toList());
-            firstVersion = browserList.get(0);
-            latestVersion = browserList.get(browserList.size() - 1);
-            dockerImage = getString("sel.jup.firefox.image.format");
-            path = getString("sel.jup.firefox.path");
-            driverHandler = new FirefoxDriverHandler();
-            optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
+            setDockerImage(getString("sel.jup.firefox.image.format"));
+            setPath(getString("sel.jup.firefox.path"));
+            setDriverHandler(new FirefoxDriverHandler());
+            setOptionsKey(FirefoxOptions.FIREFOX_OPTIONS);
+            setCapabilities(new DesiredCapabilities("firefox", "", ANY));
             break;
         case OPERA:
-            final String operaPreffix = "opera_";
-            browserList = dockerHubTags.stream()
-                    .filter(p -> p.getName().startsWith(operaPreffix))
-                    .map(p -> p.getName().replace(operaPreffix, ""))
-                    .sorted(this::compareVersions).skip(1).collect(toList());
-            firstVersion = browserList.get(0);
-            latestVersion = browserList.get(browserList.size() - 1);
-            dockerImage = getString("sel.jup.opera.image.format");
-            path = getString("sel.jup.opera.path");
-            driverHandler = new OperaDriverHandler();
-            optionsKey = OperaOptions.CAPABILITY;
+            setDockerImage(getString("sel.jup.opera.image.format"));
+            setPath(getString("sel.jup.opera.path"));
+            setDriverHandler(new OperaDriverHandler());
+            setOptionsKey(OperaOptions.CAPABILITY);
+            setCapabilities(new DesiredCapabilities("operablink", "", ANY));
             break;
         case CHROME:
         default:
-            final String chromePreffix = "chrome_";
-            browserList = dockerHubTags.stream()
-                    .filter(p -> p.getName().startsWith(chromePreffix))
-                    .map(p -> p.getName().replace(chromePreffix, ""))
-                    .sorted(this::compareVersions).collect(toList());
-            firstVersion = browserList.get(0);
-            latestVersion = browserList.get(browserList.size() - 1);
-            dockerImage = getString("sel.jup.chrome.image.format");
-            path = getString("sel.jup.chrome.path");
-            driverHandler = new ChromeDriverHandler();
-            optionsKey = ChromeOptions.CAPABILITY;
+            setDockerImage(getString("sel.jup.chrome.image.format"));
+            setPath(getString("sel.jup.chrome.path"));
+            setDriverHandler(new ChromeDriverHandler());
+            setOptionsKey(ChromeOptions.CAPABILITY);
+            setCapabilities(new DesiredCapabilities("chrome", "", ANY));
             break;
         }
-
-        BrowserConfig browserConfig = new BrowserConfig(latestVersion);
-        for (String version : browserList) {
-            browserConfig.addBrowser(version,
-                    new Browser(format(dockerImage, version), path));
-        }
-
-        return browserConfig;
-    }
-
-    public BrowserConfig getBrowserConfigFromProperties() {
-        switch (this) {
-        case FIREFOX:
-            firstVersion = getString("sel.jup.firefox.first.version");
-            latestVersion = getString("sel.jup.firefox.latest.version");
-            dockerImage = getString("sel.jup.firefox.image.format");
-            path = getString("sel.jup.firefox.path");
-            driverHandler = new FirefoxDriverHandler();
-            optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
-            break;
-        case OPERA:
-            firstVersion = getString("sel.jup.opera.first.version");
-            latestVersion = getString("sel.jup.opera.latest.version");
-            dockerImage = getString("sel.jup.opera.image.format");
-            path = getString("sel.jup.opera.path");
-            driverHandler = new OperaDriverHandler();
-            optionsKey = OperaOptions.CAPABILITY;
-            break;
-        case CHROME:
-        default:
-            firstVersion = getString("sel.jup.chrome.first.version");
-            latestVersion = getString("sel.jup.chrome.latest.version");
-            dockerImage = getString("sel.jup.chrome.image.format");
-            path = getString("sel.jup.chrome.path");
-            driverHandler = new ChromeDriverHandler();
-            optionsKey = ChromeOptions.CAPABILITY;
-            break;
-        }
-
-        BrowserConfig browserConfig = new BrowserConfig(latestVersion);
-        String version = firstVersion;
-        do {
-            browserConfig.addBrowser(version,
-                    new Browser(format(dockerImage, version), path));
-            if (version.equals(latestVersion)) {
-                break;
-            }
-            version = getNextVersion(version, latestVersion);
-        } while (version != null);
-
-        return browserConfig;
-    }
-
-    public String getDockerImage(String version) {
-        return String.format(getDockerImage(), version);
-    }
-
-    public String getDockerImage() {
-        return dockerImage;
-    }
-
-    public DesiredCapabilities getCapabilities() {
-        switch (this) {
-        case FIREFOX:
-            return new DesiredCapabilities("firefox", "", ANY);
-        case OPERA:
-            return new DesiredCapabilities("operablink", "", ANY);
-        case CHROME:
-        default:
-            return new DesiredCapabilities("chrome", "", ANY);
-        }
-    }
-
-    public DriverHandler getDriverHandler() {
-        return driverHandler;
-    }
-
-    public String getOptionsKey() {
-        return optionsKey;
     }
 
     public String getNextVersion(String version, String latestVersion) {
@@ -218,6 +111,50 @@ public enum BrowserType {
             }
         }
         return 0;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setDockerImage(String dockerImage) {
+        this.dockerImage = dockerImage;
+    }
+
+    public DriverHandler getDriverHandler() {
+        return driverHandler;
+    }
+
+    public void setDriverHandler(DriverHandler driverHandler) {
+        this.driverHandler = driverHandler;
+    }
+
+    public String getOptionsKey() {
+        return optionsKey;
+    }
+
+    public void setOptionsKey(String optionsKey) {
+        this.optionsKey = optionsKey;
+    }
+
+    public String getDockerImage(String version) {
+        return String.format(getDockerImage(), version);
+    }
+
+    public String getDockerImage() {
+        return dockerImage;
+    }
+
+    public DesiredCapabilities getCapabilities() {
+        return capabilities;
+    }
+
+    public void setCapabilities(DesiredCapabilities capabilities) {
+        this.capabilities = capabilities;
     }
 
 }

@@ -21,7 +21,9 @@ import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -67,18 +69,98 @@ public class DockerBrowserConfig {
     public void initBrowserConfigFromDockerHub() throws IOException {
         DockerHubService dockerHubService = new DockerHubService();
         List<DockerHubTag> listTags = dockerHubService.listTags();
-        chrome = CHROME.getBrowserConfigFromDockerHub(listTags);
-        firefox = FIREFOX.getBrowserConfigFromDockerHub(listTags);
-        operablink = OPERA.getBrowserConfigFromDockerHub(listTags);
+        chrome = getBrowserConfigFromDockerHub(CHROME, listTags);
+        firefox = getBrowserConfigFromDockerHub(FIREFOX, listTags);
+        operablink = getBrowserConfigFromDockerHub(OPERA, listTags);
     }
 
     public void initBrowserConfigFromProperties() {
-        chrome = CHROME.getBrowserConfigFromProperties();
-        firefox = FIREFOX.getBrowserConfigFromProperties();
-        operablink = OPERA.getBrowserConfigFromProperties();
+        chrome = getBrowserConfigFromProperties(CHROME);
+        firefox = getBrowserConfigFromProperties(FIREFOX);
+        operablink = getBrowserConfigFromProperties(OPERA);
     }
 
-    public BrowserConfig getBrowser(BrowserType browser) {
+    public BrowserConfig getBrowserConfigFromDockerHub(BrowserType browserType,
+            List<DockerHubTag> dockerHubTags) {
+        List<String> browserList = null;
+        String latestVersion = null;
+        browserType.init();
+        switch (browserType) {
+        case FIREFOX:
+            final String firefoxPreffix = "firefox_";
+            browserList = dockerHubTags.stream()
+                    .filter(p -> p.getName().startsWith(firefoxPreffix))
+                    .map(p -> p.getName().replace(firefoxPreffix, ""))
+                    .sorted(browserType::compareVersions).collect(toList());
+            latestVersion = browserList.get(browserList.size() - 1);
+            break;
+        case OPERA:
+            final String operaPreffix = "opera_";
+            browserList = dockerHubTags.stream()
+                    .filter(p -> p.getName().startsWith(operaPreffix))
+                    .map(p -> p.getName().replace(operaPreffix, ""))
+                    .sorted(browserType::compareVersions).skip(1)
+                    .collect(toList());
+            latestVersion = browserList.get(browserList.size() - 1);
+            break;
+        case CHROME:
+        default:
+            final String chromePreffix = "chrome_";
+            browserList = dockerHubTags.stream()
+                    .filter(p -> p.getName().startsWith(chromePreffix))
+                    .map(p -> p.getName().replace(chromePreffix, ""))
+                    .sorted(browserType::compareVersions).collect(toList());
+            latestVersion = browserList.get(browserList.size() - 1);
+            break;
+        }
+
+        BrowserConfig browserConfig = new BrowserConfig(latestVersion);
+        for (String version : browserList) {
+            browserConfig.addBrowser(version,
+                    new Browser(format(browserType.getDockerImage(), version),
+                            browserType.getPath()));
+        }
+
+        return browserConfig;
+    }
+
+    private BrowserConfig getBrowserConfigFromProperties(
+            BrowserType browserType) {
+        String firstVersion = null;
+        String latestVersion = null;
+        browserType.init();
+        switch (browserType) {
+        case FIREFOX:
+            firstVersion = getString("sel.jup.firefox.first.version");
+            latestVersion = getString("sel.jup.firefox.latest.version");
+            break;
+        case OPERA:
+            firstVersion = getString("sel.jup.opera.first.version");
+            latestVersion = getString("sel.jup.opera.latest.version");
+            break;
+        case CHROME:
+        default:
+            firstVersion = getString("sel.jup.chrome.first.version");
+            latestVersion = getString("sel.jup.chrome.latest.version");
+            break;
+        }
+
+        BrowserConfig browserConfig = new BrowserConfig(latestVersion);
+        String version = firstVersion;
+        do {
+            browserConfig.addBrowser(version,
+                    new Browser(format(browserType.getDockerImage(), version),
+                            browserType.getPath()));
+            if (version.equals(latestVersion)) {
+                break;
+            }
+            version = browserType.getNextVersion(version, latestVersion);
+        } while (version != null);
+
+        return browserConfig;
+    }
+
+    public BrowserConfig getBrowserConfig(BrowserType browser) {
         switch (browser) {
         case FIREFOX:
             return firefox;
