@@ -74,16 +74,20 @@ public class ListDriverHandler extends DriverHandler {
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
                 int numBrowsers = dockerBrowser.get().size();
                 CountDownLatch latch = new CountDownLatch(numBrowsers);
-                resolveDockerBrowser(testInstance, dockerBrowser.get(),
-                        driverList, latch, "_0");
+
+                DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
+                        context, parameter, testInstance, annotationsReader,
+                        containerMap, "_0");
+                firstDockerDriverHandler.startSelenoidContainer();
+                firstDockerDriverHandler.startNoVncContainer();
+                containerMap = firstDockerDriverHandler.getContainerMap();
 
                 executorService = newFixedThreadPool(numBrowsers);
-                for (int i = 1; i < numBrowsers; i++) {
-                    String index = "_" + i;
-                    executorService
-                            .submit(() -> resolveDockerBrowser(testInstance,
-                                    dockerBrowser.get(), driverList, latch,
-                                    index));
+                for (int i = 0; i < numBrowsers; i++) {
+                    final int index = i;
+                    executorService.submit(() -> resolveDockerBrowser(
+                            firstDockerDriverHandler, testInstance,
+                            dockerBrowser.get(), driverList, latch, index));
                 }
                 int timeout = numBrowsers
                         * getInt("sel.jup.docker.wait.timeout.sec");
@@ -103,13 +107,16 @@ public class ListDriverHandler extends DriverHandler {
         }
     }
 
-    private void resolveDockerBrowser(Optional<Object> testInstance,
-            DockerBrowser dockerBrowser, final List<RemoteWebDriver> driverList,
-            CountDownLatch latch, String index) {
+    private void resolveDockerBrowser(
+            DockerDriverHandler firstDockerDriverHandler,
+            Optional<Object> testInstance, DockerBrowser dockerBrowser,
+            final List<RemoteWebDriver> driverList, CountDownLatch latch,
+            int index) {
         try {
-            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                    context, parameter, testInstance, annotationsReader,
-                    containerMap, index);
+            DockerDriverHandler dockerDriverHandler = index == 0
+                    ? firstDockerDriverHandler
+                    : new DockerDriverHandler(context, parameter, testInstance,
+                            annotationsReader, containerMap, "_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler
                     .resolve(dockerBrowser));
