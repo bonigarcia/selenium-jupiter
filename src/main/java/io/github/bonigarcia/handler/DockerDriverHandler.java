@@ -84,11 +84,11 @@ public class DockerDriverHandler {
     final Logger log = getLogger(lookup().lookupClass());
 
     DockerService dockerService;
+    SelenoidConfig selenoidConfig;
     Map<String, DockerContainer> containerMap;
     File recordingFile;
     String name;
     File hostVideoFolder;
-    SelenoidConfig selenoidConfig;
     ExtensionContext context;
     Parameter parameter;
     Optional<Object> testInstance;
@@ -100,22 +100,25 @@ public class DockerDriverHandler {
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
-            Map<String, DockerContainer> containerMap)
+            Map<String, DockerContainer> containerMap,
+            DockerService dockerService, SelenoidConfig selenoidConfig)
             throws DockerCertificateException {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
         this.containerMap = containerMap;
-        this.dockerService = new DockerService();
-        this.selenoidConfig = new SelenoidConfig();
+        this.dockerService = dockerService;
+        this.selenoidConfig = selenoidConfig;
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
-            Map<String, DockerContainer> containerMap, String index)
-            throws DockerCertificateException {
-        this(context, parameter, testInstance, annotationsReader, containerMap);
+            Map<String, DockerContainer> containerMap,
+            DockerService dockerService, SelenoidConfig selenoidConfig,
+            String index) throws DockerCertificateException {
+        this(context, parameter, testInstance, annotationsReader, containerMap,
+                dockerService, selenoidConfig);
         this.index = index;
     }
 

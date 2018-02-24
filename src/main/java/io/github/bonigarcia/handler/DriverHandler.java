@@ -38,7 +38,9 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DockerContainer;
+import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.SelenoidConfig;
 
 /**
  * Abstract resolver.
@@ -53,6 +55,8 @@ public abstract class DriverHandler {
     Parameter parameter;
     ExtensionContext context;
     Map<String, DockerContainer> containerMap;
+    DockerService dockerService;
+    SelenoidConfig selenoidConfig;
     Object object;
     AnnotationsReader annotationsReader = new AnnotationsReader();
 
@@ -127,6 +131,14 @@ public abstract class DriverHandler {
 
     public void setContainerMap(Map<String, DockerContainer> containerMap) {
         this.containerMap = containerMap;
+    }
+
+    public void setDockerService(DockerService dockerService) {
+        this.dockerService = dockerService;
+    }
+
+    public void setSelenoidConfig(SelenoidConfig selenoidConfig) {
+        this.selenoidConfig = selenoidConfig;
     }
 
 }

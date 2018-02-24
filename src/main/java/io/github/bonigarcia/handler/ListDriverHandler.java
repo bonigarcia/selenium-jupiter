@@ -77,7 +77,7 @@ public class ListDriverHandler extends DriverHandler {
 
                 DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                         context, parameter, testInstance, annotationsReader,
-                        containerMap, "_0");
+                        containerMap, dockerService, selenoidConfig, "_0");
                 firstDockerDriverHandler.startSelenoidContainer();
                 firstDockerDriverHandler.startNoVncContainer();
                 containerMap = firstDockerDriverHandler.getContainerMap();
@@ -116,7 +116,8 @@ public class ListDriverHandler extends DriverHandler {
             DockerDriverHandler dockerDriverHandler = index == 0
                     ? firstDockerDriverHandler
                     : new DockerDriverHandler(context, parameter, testInstance,
-                            annotationsReader, containerMap, "_" + index);
+                            annotationsReader, containerMap, dockerService,
+                            selenoidConfig, "_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler
                     .resolve(dockerBrowser));

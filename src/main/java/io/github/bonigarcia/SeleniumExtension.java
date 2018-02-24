@@ -54,6 +54,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
 import com.google.gson.Gson;
+import com.spotify.docker.client.exceptions.DockerCertificateException;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.BrowsersTemplate.Browser;
@@ -88,6 +89,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
     private List<Browser> browser;
     private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
+    private DockerService dockerService;
+    private SelenoidConfig selenoidConfig;
 
     public SeleniumExtension() {
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
@@ -175,7 +178,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
             }
             if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
-                driverHandler.setContainerMap(containerMap);
+                initHandlerForDocker(driverHandler);
             }
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
@@ -188,6 +191,24 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         } else {
             return null;
         }
+    }
+
+    private void initHandlerForDocker(DriverHandler driverHandler)
+            throws DockerCertificateException {
+        if (containerMap == null) {
+            containerMap = new LinkedHashMap<>();
+        }
+        driverHandler.setContainerMap(containerMap);
+
+        if (dockerService == null) {
+            dockerService = new DockerService();
+        }
+        driverHandler.setDockerService(dockerService);
+
+        if (selenoidConfig == null) {
+            selenoidConfig = new SelenoidConfig();
+        }
+        driverHandler.setSelenoidConfig(selenoidConfig);
     }
 
     private void handleException(Parameter parameter,
