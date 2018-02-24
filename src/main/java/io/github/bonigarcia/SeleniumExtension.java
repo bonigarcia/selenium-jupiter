@@ -174,20 +174,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .newInstance(parameter, context);
 
             }
-
             if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
                 driverHandler.setContainerMap(containerMap);
             }
-
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
-            if (driverHandler != null
-                    && driverHandler.throwExceptionWhenNoDriver()) {
-                log.error("Exception resolving {}", parameter, e);
-                throw new SeleniumJupiterException(e);
-            } else {
-                log.warn("Exception creating {}", constructorClass, e);
-            }
+            handleException(parameter, driverHandler, constructorClass, e);
         }
 
         if (driverHandler != null) {
@@ -195,6 +187,18 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             return driverHandler.getObject();
         } else {
             return null;
+        }
+    }
+
+    private void handleException(Parameter parameter,
+            DriverHandler driverHandler, Class<?> constructorClass,
+            Exception e) {
+        if (driverHandler != null
+                && driverHandler.throwExceptionWhenNoDriver()) {
+            log.error("Exception resolving {}", parameter, e);
+            throw new SeleniumJupiterException(e);
+        } else {
+            log.warn("Exception creating {}", constructorClass, e);
         }
     }
 

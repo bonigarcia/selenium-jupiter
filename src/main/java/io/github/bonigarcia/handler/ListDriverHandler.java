@@ -74,16 +74,16 @@ public class ListDriverHandler extends DriverHandler {
                 final List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
                 int numBrowsers = dockerBrowser.get().size();
                 CountDownLatch latch = new CountDownLatch(numBrowsers);
-                resolveDockerBrowser(testInstance, dockerBrowser, driverList,
-                        latch, "_0");
+                resolveDockerBrowser(testInstance, dockerBrowser.get(),
+                        driverList, latch, "_0");
 
                 executorService = newFixedThreadPool(numBrowsers);
                 for (int i = 1; i < numBrowsers; i++) {
                     String index = "_" + i;
-                    executorService.submit(() -> {
-                        resolveDockerBrowser(testInstance, dockerBrowser,
-                                driverList, latch, index);
-                    });
+                    executorService
+                            .submit(() -> resolveDockerBrowser(testInstance,
+                                    dockerBrowser.get(), driverList, latch,
+                                    index));
                 }
                 int timeout = numBrowsers
                         * getInt("sel.jup.docker.wait.timeout.sec");
@@ -104,16 +104,15 @@ public class ListDriverHandler extends DriverHandler {
     }
 
     private void resolveDockerBrowser(Optional<Object> testInstance,
-            Optional<DockerBrowser> dockerBrowser,
-            final List<RemoteWebDriver> driverList, CountDownLatch latch,
-            String index) {
+            DockerBrowser dockerBrowser, final List<RemoteWebDriver> driverList,
+            CountDownLatch latch, String index) {
         try {
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                     context, parameter, testInstance, annotationsReader,
                     containerMap, index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler
-                    .resolve(dockerBrowser.get()));
+                    .resolve(dockerBrowser));
         } catch (DockerCertificateException e) {
             log.error("Exception in docker handler", e);
         } finally {

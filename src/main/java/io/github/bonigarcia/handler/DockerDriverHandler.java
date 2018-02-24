@@ -376,18 +376,21 @@ public class DockerDriverHandler {
 
     private int calculateLimit() {
         int limit = 0;
-        Parameter[] parameters = context.getTestMethod().get().getParameters();
-        for (Parameter parameter : parameters) {
-            Class<?> type = parameter.getType();
-            if (WebDriver.class.isAssignableFrom(type)) {
-                limit++;
-            } else if (type.isAssignableFrom(List.class)) {
-                DockerBrowser dockerBrowser = parameter
-                        .getAnnotation(DockerBrowser.class);
-                limit += dockerBrowser.size();
+        Optional<Method> testMethod = context.getTestMethod();
+        if (testMethod.isPresent()) {
+            Parameter[] parameters = testMethod.get().getParameters();
+            for (Parameter param : parameters) {
+                Class<?> type = param.getType();
+                if (WebDriver.class.isAssignableFrom(type)) {
+                    limit++;
+                } else if (type.isAssignableFrom(List.class)) {
+                    DockerBrowser dockerBrowser = param
+                            .getAnnotation(DockerBrowser.class);
+                    limit += dockerBrowser.size();
+                }
             }
+            log.trace("Selenoid limit = {}", limit);
         }
-        log.trace("Selenoid limit = {}", limit);
         return limit;
     }
 
