@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
+import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getInt;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -78,7 +79,9 @@ public class ListDriverHandler extends DriverHandler {
                         containerMap, dockerService, selenoidConfig);
                 firstDockerDriverHandler.setIndex("_0");
                 firstDockerDriverHandler.startSelenoidContainer();
-                firstDockerDriverHandler.startNoVncContainer();
+                if (getBoolean("sel.jup.vnc")) {
+                    firstDockerDriverHandler.startNoVncContainer();
+                }
                 containerMap = firstDockerDriverHandler.getContainerMap();
 
                 executorService = newFixedThreadPool(numBrowsers);
