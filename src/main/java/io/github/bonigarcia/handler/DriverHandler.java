@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -36,6 +37,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.SeleniumJupiterException;
 
 /**
@@ -50,8 +52,9 @@ public abstract class DriverHandler {
 
     Parameter parameter;
     ExtensionContext context;
-    AnnotationsReader annotationsReader = new AnnotationsReader();
+    Map<String, DockerContainer> containerMap;
     Object object;
+    AnnotationsReader annotationsReader = new AnnotationsReader();
 
     public abstract void resolve();
 
@@ -120,6 +123,10 @@ public abstract class DriverHandler {
 
     public void cleanup() {
         // Nothing by default
+    }
+
+    public void setContainerMap(Map<String, DockerContainer> containerMap) {
+        this.containerMap = containerMap;
     }
 
 }

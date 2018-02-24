@@ -44,7 +44,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -85,7 +84,7 @@ public class DockerDriverHandler {
     final Logger log = getLogger(lookup().lookupClass());
 
     DockerService dockerService;
-    Map<String, String> containers;
+    Map<String, DockerContainer> containerMap;
     File recordingFile;
     String name;
     boolean recording;
@@ -98,21 +97,23 @@ public class DockerDriverHandler {
     String index;
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
-            Optional<Object> testInstance, AnnotationsReader annotationsReader)
+            Optional<Object> testInstance, AnnotationsReader annotationsReader,
+            Map<String, DockerContainer> containerMap)
             throws DockerCertificateException {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
+        this.containerMap = containerMap;
         this.dockerService = new DockerService();
-        this.containers = new LinkedHashMap<>();
         this.selenoidConfig = new SelenoidConfig();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
-            String index) throws DockerCertificateException {
-        this(context, parameter, testInstance, annotationsReader);
+            Map<String, DockerContainer> containerMap, String index)
+            throws DockerCertificateException {
+        this(context, parameter, testInstance, annotationsReader, containerMap);
         this.index = index;
     }
 
@@ -246,21 +247,22 @@ public class DockerDriverHandler {
             log.warn("Exception waiting for recording {}", e.getMessage());
         } finally {
             // Stop containers
-            if (containers != null && dockerService != null) {
-                int numContainers = containers.size();
+            if (!containerMap.isEmpty() && dockerService != null) {
+                int numContainers = containerMap.size();
                 if (numContainers > 0) {
                     ExecutorService executorService = newFixedThreadPool(
                             numContainers);
                     CountDownLatch latch = new CountDownLatch(numContainers);
-                    for (Map.Entry<String, String> entry : containers
+                    for (Map.Entry<String, DockerContainer> entry : containerMap
                             .entrySet()) {
                         executorService.submit(() -> {
-                            dockerService.stopAndRemoveContainer(entry.getKey(),
-                                    entry.getValue());
+                            dockerService.stopAndRemoveContainer(
+                                    entry.getValue().getContainerId(),
+                                    entry.getKey());
                             latch.countDown();
                         });
                     }
-                    containers.clear();
+                    containerMap.clear();
                     try {
                         latch.await();
                     } catch (InterruptedException e) {
@@ -278,8 +280,6 @@ public class DockerDriverHandler {
             boolean recording)
             throws DockerException, InterruptedException, IOException {
         String selenoidImage = getString("sel.jup.selenoid.image");
-        String recordingImage = getString("sel.jup.recording.image");
-        String network = getString("sel.jup.docker.network");
 
         String browserImage;
         if (version == null || version.isEmpty()
@@ -291,14 +291,32 @@ public class DockerDriverHandler {
             log.debug("Using {} version {}", browser, version);
             browserImage = selenoidConfig.getImageFromVersion(browser, version);
         }
-
-        dockerService.pullImageIfNecessary(selenoidImage);
         dockerService.pullImageIfNecessary(browserImage);
-        if (recording) {
-            dockerService.pullImageIfNecessary(recordingImage);
-            hostVideoFolder = new File(getOutputFolder(context));
+
+        String selenoidUrl = null;
+        if (containerMap.containsKey(selenoidImage)) {
+            log.debug("Selenoid container already available");
+            selenoidUrl = containerMap.get(selenoidImage).getContainerUrl();
+
+        } else {
+            dockerService.pullImageIfNecessary(selenoidImage);
+
+            String recordingImage = getString("sel.jup.recording.image");
+            if (recording) {
+                dockerService.pullImageIfNecessary(recordingImage);
+                hostVideoFolder = new File(getOutputFolder(context));
+            }
+
+            selenoidUrl = startBrowserContainer(recording, selenoidImage);
         }
 
+        return selenoidUrl;
+    }
+
+    private String startBrowserContainer(boolean recording,
+            String selenoidImage)
+            throws DockerException, InterruptedException, IOException {
+        String selenoidUrl;
         // portBindings
         Map<String, List<PortBinding>> portBindings = new HashMap<>();
         String defaultSelenoidPort = getString("sel.jup.selenoid.port");
@@ -319,11 +337,14 @@ public class DockerDriverHandler {
         String browsersJson = selenoidConfig.getBrowsersJsonAsString();
         String browserTimeout = getString(
                 "sel.jup.browser.session.timeout.duration");
+        String network = getString("sel.jup.docker.network");
+
         List<String> cmd = asList("sh", "-c", "mkdir -p /etc/selenoid/; echo '"
                 + browsersJson + "' > /etc/selenoid/browsers.json; "
                 + "/usr/bin/selenoid -listen :" + internalBrowserPort
                 + " -conf /etc/selenoid/browsers.json -video-output-dir /opt/selenoid/video/ -timeout "
-                + browserTimeout + " -container-network " + network);
+                + browserTimeout + " -container-network " + network + " -limit "
+                + calculateLimit());
 
         // envs
         List<String> envs = new ArrayList<>();
@@ -342,38 +363,69 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer = dockerBuilder.build();
         String containerId = dockerService.startContainer(selenoidContainer);
-        containers.put(containerId, selenoidImage);
-
         String selenoidHost = dockerService.getIpAddress(containerId, network);
         String selenoidPort = dockerService.getBindPort(containerId,
                 internalSelenoidPort + "/tcp");
-        return format("http://%s:%s/wd/hub", selenoidHost, selenoidPort);
+        selenoidUrl = format("http://%s:%s/wd/hub", selenoidHost, selenoidPort);
+        selenoidContainer.setContainerId(containerId);
+        selenoidContainer.setContainerUrl(selenoidUrl);
+        containerMap.put(selenoidImage, selenoidContainer);
+
+        return selenoidUrl;
+    }
+
+    private int calculateLimit() {
+        int limit = 0;
+        Parameter[] parameters = context.getTestMethod().get().getParameters();
+        for (Parameter parameter : parameters) {
+            Class<?> type = parameter.getType();
+            if (WebDriver.class.isAssignableFrom(type)) {
+                limit++;
+            } else if (type.isAssignableFrom(List.class)) {
+                DockerBrowser dockerBrowser = parameter
+                        .getAnnotation(DockerBrowser.class);
+                limit += dockerBrowser.size();
+            }
+        }
+        log.trace("Selenoid limit = {}", limit);
+        return limit;
     }
 
     private String startDockerNoVnc(String selenoidHost, int selenoidPort,
             String sessionId, String novncPassword)
             throws DockerException, InterruptedException, IOException {
         String novncImage = getString("sel.jup.novnc.image");
-        dockerService.pullImageIfNecessary(novncImage);
 
-        Map<String, List<PortBinding>> portBindings = new HashMap<>();
-        String defaultNovncPort = getString("sel.jup.novnc.port");
-        portBindings.put(defaultNovncPort, asList(randomPort("0.0.0.0")));
+        String novncUrl = null;
 
-        String network = getString("sel.jup.docker.network");
-        DockerContainer novncContainer = DockerContainer
-                .dockerBuilder(novncImage).portBindings(portBindings)
-                .network(network).build();
-        String containerId = dockerService.startContainer(novncContainer);
-        containers.put(containerId, novncImage);
+        if (containerMap.containsKey(novncImage)) {
+            log.debug("noVNC container already available");
+            novncUrl = containerMap.get(novncImage).getContainerUrl();
 
-        String novncHost = dockerService.getIpAddress(containerId, network);
-        String novncPort = dockerService.getBindPort(containerId,
-                defaultNovncPort + "/tcp");
-        return format(
-                "http://%s:%s/vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
-                novncHost, novncPort, selenoidHost, selenoidPort, sessionId,
-                novncPassword);
+        } else {
+            dockerService.pullImageIfNecessary(novncImage);
+
+            Map<String, List<PortBinding>> portBindings = new HashMap<>();
+            String defaultNovncPort = getString("sel.jup.novnc.port");
+            portBindings.put(defaultNovncPort, asList(randomPort("0.0.0.0")));
+
+            String network = getString("sel.jup.docker.network");
+            DockerContainer novncContainer = DockerContainer
+                    .dockerBuilder(novncImage).portBindings(portBindings)
+                    .network(network).build();
+            String containerId = dockerService.startContainer(novncContainer);
+            String novncHost = dockerService.getIpAddress(containerId, network);
+            String novncPort = dockerService.getBindPort(containerId,
+                    defaultNovncPort + "/tcp");
+            novncUrl = format("http://%s:%s/", novncHost, novncPort);
+            novncContainer.setContainerId(containerId);
+            novncContainer.setContainerUrl(novncUrl);
+            containerMap.put(novncImage, novncContainer);
+
+        }
+        return format(novncUrl
+                + "vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
+                selenoidHost, selenoidPort, sessionId, novncPassword);
     }
 
     private String getDockerPath(File file) {

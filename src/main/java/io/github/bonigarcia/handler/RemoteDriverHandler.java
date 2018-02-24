@@ -56,7 +56,7 @@ public class RemoteDriverHandler extends DriverHandler {
         try {
             Optional<Object> testInstance = context.getTestInstance();
             dockerDriverHandler = new DockerDriverHandler(context, parameter,
-                    testInstance, annotationsReader);
+                    testInstance, annotationsReader, containerMap);
 
             if (browser != null) {
                 object = dockerDriverHandler.resolve(browser.toBrowserType(),

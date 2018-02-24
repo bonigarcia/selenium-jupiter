@@ -172,13 +172,13 @@ public class DockerService {
         return exists;
     }
 
-    public void stopAndRemoveContainer(String containerName, String imageName) {
-        log.debug("Stopping Docker container {}", imageName);
+    public void stopAndRemoveContainer(String containerId, String imageId) {
+        log.debug("Stopping Docker container {}", imageId);
         try {
-            stopContainer(containerName);
-            removeContainer(containerName);
+            stopContainer(containerId);
+            removeContainer(containerId);
         } catch (Exception e) {
-            log.warn("Exception stopping container {}", imageName, e);
+            log.warn("Exception stopping container {}", imageId, e);
         }
     }
 

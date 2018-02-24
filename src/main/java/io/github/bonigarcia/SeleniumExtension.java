@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -86,6 +87,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private Map<String, Class<?>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
     private List<Browser> browser;
+    private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
 
     public SeleniumExtension() {
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
@@ -172,6 +174,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .newInstance(parameter, context);
 
             }
+
+            if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
+                driverHandler.setContainerMap(containerMap);
+            }
+
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
             if (driverHandler != null
@@ -194,9 +201,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     @SuppressWarnings("unchecked")
     @Override
     public void afterEach(ExtensionContext context) {
+        // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(context);
         for (DriverHandler driverHandler : driverHandlerList) {
-            // Make screenshots if required and close browsers
             try {
                 Object object = driverHandler.getObject();
                 if (object == null) {
@@ -219,14 +226,18 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             } catch (Exception e) {
                 log.warn("Exception closing webdriver instance", e);
             }
+        }
 
-            // Clean handlers
+        // Clean handlers
+        for (DriverHandler driverHandler : driverHandlerList) {
             try {
                 driverHandler.cleanup();
             } catch (Exception e) {
                 log.warn("Exception cleaning handler {}", driverHandler, e);
             }
         }
+
+        // Clear handler list
         driverHandlerList.clear();
     }
 

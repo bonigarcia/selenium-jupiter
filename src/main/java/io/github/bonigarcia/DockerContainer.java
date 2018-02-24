@@ -32,13 +32,15 @@ import com.spotify.docker.client.messages.PortBinding;
  * @since 1.1.2
  */
 public class DockerContainer {
-    private final String imageId;
-    private final Optional<Map<String, List<PortBinding>>> portBindings;
-    private final Optional<List<String>> binds;
-    private final Optional<List<String>> envs;
-    private final Optional<String> network;
-    private final Optional<List<String>> cmd;
-    private final Optional<List<String>> entryPoint;
+    private String imageId;
+    private Optional<Map<String, List<PortBinding>>> portBindings;
+    private Optional<List<String>> binds;
+    private Optional<List<String>> envs;
+    private Optional<String> network;
+    private Optional<List<String>> cmd;
+    private Optional<List<String>> entryPoint;
+    private String containerId;
+    private String containerUrl;
 
     private DockerContainer(DockerBuilder builder) {
         this.imageId = builder.imageId;
@@ -83,6 +85,22 @@ public class DockerContainer {
 
     public Optional<List<String>> getEntryPoint() {
         return entryPoint;
+    }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public String getContainerUrl() {
+        return containerUrl;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
+    public void setContainerUrl(String containerUrl) {
+        this.containerUrl = containerUrl;
     }
 
     public static class DockerBuilder {
