@@ -140,7 +140,7 @@ public class DockerDriverHandler {
             String selenoidHost = selenoidHubUrl.getHost();
             int selenoidPort = selenoidHubUrl.getPort();
 
-            log.debug("Using URL for hub {}", selenoidHub);
+            log.debug("Using hub at {}", selenoidHub);
             WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHub),
                     capabilities);
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
@@ -218,7 +218,7 @@ public class DockerDriverHandler {
             options.merge(optionalCapabilities.get());
         }
         capabilities.setCapability(browser.getOptionsKey(), options);
-        log.debug("Using capabilities for Docker browser {}", capabilities);
+        log.debug("Using {}", capabilities);
         return capabilities;
     }
 
@@ -289,7 +289,7 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer;
         if (containerMap.containsKey(selenoidImage)) {
-            log.debug("Selenoid container already available");
+            log.trace("Selenoid container already available");
             selenoidContainer = containerMap.get(selenoidImage);
         } else {
             // Pull images
