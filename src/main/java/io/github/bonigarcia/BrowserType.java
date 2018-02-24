@@ -55,26 +55,26 @@ public enum BrowserType {
     public void init() {
         switch (this) {
         case FIREFOX:
-            setDockerImage(getString("sel.jup.firefox.image.format"));
-            setPath(getString("sel.jup.firefox.path"));
-            setDriverHandler(new FirefoxDriverHandler());
-            setOptionsKey(FirefoxOptions.FIREFOX_OPTIONS);
-            setCapabilities(new DesiredCapabilities("firefox", "", ANY));
+            dockerImage = getString("sel.jup.firefox.image.format");
+            path = getString("sel.jup.firefox.path");
+            driverHandler = new FirefoxDriverHandler();
+            optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
+            capabilities = new DesiredCapabilities("firefox", "", ANY);
             break;
         case OPERA:
-            setDockerImage(getString("sel.jup.opera.image.format"));
-            setPath(getString("sel.jup.opera.path"));
-            setDriverHandler(new OperaDriverHandler());
-            setOptionsKey(OperaOptions.CAPABILITY);
-            setCapabilities(new DesiredCapabilities("operablink", "", ANY));
+            dockerImage = getString("sel.jup.opera.image.format");
+            path = getString("sel.jup.opera.path");
+            driverHandler = new OperaDriverHandler();
+            optionsKey = OperaOptions.CAPABILITY;
+            capabilities = new DesiredCapabilities("operablink", "", ANY);
             break;
         case CHROME:
         default:
-            setDockerImage(getString("sel.jup.chrome.image.format"));
-            setPath(getString("sel.jup.chrome.path"));
-            setDriverHandler(new ChromeDriverHandler());
-            setOptionsKey(ChromeOptions.CAPABILITY);
-            setCapabilities(new DesiredCapabilities("chrome", "", ANY));
+            dockerImage = getString("sel.jup.chrome.image.format");
+            path = getString("sel.jup.chrome.path");
+            driverHandler = new ChromeDriverHandler();
+            optionsKey = ChromeOptions.CAPABILITY;
+            capabilities = new DesiredCapabilities("chrome", "", ANY);
             break;
         }
     }
@@ -117,28 +117,12 @@ public enum BrowserType {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public void setDockerImage(String dockerImage) {
-        this.dockerImage = dockerImage;
-    }
-
     public DriverHandler getDriverHandler() {
         return driverHandler;
     }
 
-    public void setDriverHandler(DriverHandler driverHandler) {
-        this.driverHandler = driverHandler;
-    }
-
     public String getOptionsKey() {
         return optionsKey;
-    }
-
-    public void setOptionsKey(String optionsKey) {
-        this.optionsKey = optionsKey;
     }
 
     public String getDockerImage(String version) {
@@ -151,10 +135,6 @@ public enum BrowserType {
 
     public DesiredCapabilities getCapabilities() {
         return capabilities;
-    }
-
-    public void setCapabilities(DesiredCapabilities capabilities) {
-        this.capabilities = capabilities;
     }
 
 }

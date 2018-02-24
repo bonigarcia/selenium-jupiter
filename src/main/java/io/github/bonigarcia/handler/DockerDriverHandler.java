@@ -144,9 +144,7 @@ public class DockerDriverHandler {
             WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHub),
                     capabilities);
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
-
             String parameterName = parameter.getName();
-
             name = parameterName + "_" + browser + "_" + imageVersion + "_"
                     + ((RemoteWebDriver) webdriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
@@ -328,12 +326,13 @@ public class DockerDriverHandler {
 
             List<String> cmd = asList("sh", "-c",
                     "mkdir -p /etc/selenoid/; echo '" + browsersJson
-                            + "' > /etc/selenoid/browsers.json; "
-                            + "/usr/bin/selenoid -listen :"
-                            + internalBrowserPort
-                            + " -conf /etc/selenoid/browsers.json -video-output-dir /opt/selenoid/video/ -timeout "
-                            + browserTimeout + " -container-network " + network
-                            + " -limit " + calculateLimit());
+                            + "' > /etc/selenoid/browsers.json; /usr/bin/selenoid"
+                            + " -listen :" + internalBrowserPort
+                            + " -conf /etc/selenoid/browsers.json"
+                            + " -video-output-dir /opt/selenoid/video/"
+                            + " -timeout " + browserTimeout
+                            + " -container-network " + network + " -limit "
+                            + getDockerBrowserCount());
 
             // envs
             List<String> envs = new ArrayList<>();
@@ -367,7 +366,7 @@ public class DockerDriverHandler {
         return selenoidContainer;
     }
 
-    private int calculateLimit() {
+    private int getDockerBrowserCount() {
         int limit = 0;
         Optional<Method> testMethod = context.getTestMethod();
         if (testMethod.isPresent()) {
@@ -382,7 +381,7 @@ public class DockerDriverHandler {
                     limit += dockerBrowser.size();
                 }
             }
-            log.trace("Selenoid limit = {}", limit);
+            log.trace("Number of required Docker browser(s): {}", limit);
         }
         return limit;
     }
