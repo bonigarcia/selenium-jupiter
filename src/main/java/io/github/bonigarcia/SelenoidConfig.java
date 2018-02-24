@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.github.bonigarcia.DockerBrowserConfig.Browser;
 
@@ -46,7 +46,8 @@ public class SelenoidConfig {
     }
 
     public String getBrowsersJsonAsString() {
-        return new Gson().toJson(browsers);
+        return new GsonBuilder().disableHtmlEscaping().create()
+                .toJson(browsers);
     }
 
     public String getVersionFromLabel(BrowserType browser, String label) {

@@ -84,7 +84,7 @@ public class DockerService {
         if (dockerMachineIp == null
                 || dockerMachineIp.contains("Host is not running")) {
             if (IS_OS_MAC) {
-                dockerMachineIp = "127.0.0.1";
+                dockerMachineIp = getString("sel.jup.docker.default.host");
             } else {
                 dockerMachineIp = dockerClient.inspectContainer(containerId)
                         .networkSettings().networks().get(network).gateway();

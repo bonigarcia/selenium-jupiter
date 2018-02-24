@@ -65,7 +65,7 @@ public class DockerVncJupiterTest {
         assertThat(driver2.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
-        // Thread.sleep(30000);
+        // Thread.sleep(50000);
     }
 
 }

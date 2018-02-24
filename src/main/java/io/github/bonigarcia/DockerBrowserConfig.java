@@ -116,14 +116,22 @@ public class DockerBrowserConfig {
     public static class Browser {
         String image;
         String port = getString("sel.jup.selenoid.port");
+        String path;
+        Tmpfs tmpfs = new Tmpfs();
 
-        public Browser(String image) {
+        public Browser(String image, String path) {
             this.image = image;
+            this.path = path;
         }
 
         public String getImage() {
             return image;
         }
+    }
+
+    public static class Tmpfs {
+        @SerializedName("/tmp")
+        String tmp = "size=" + getString("sel.jup.selenoid.tmpfs.size");
     }
 
 }

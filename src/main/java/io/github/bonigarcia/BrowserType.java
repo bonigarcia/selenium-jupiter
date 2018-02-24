@@ -56,6 +56,7 @@ public enum BrowserType {
     String dockerImage;
     String latestVersion;
     String firstVersion;
+    String path;
     DriverHandler driverHandler;
     String optionsKey;
 
@@ -72,6 +73,7 @@ public enum BrowserType {
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.firefox.image.format");
+            path = getString("sel.jup.firefox.path");
             driverHandler = new FirefoxDriverHandler();
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             break;
@@ -84,6 +86,7 @@ public enum BrowserType {
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.opera.image.format");
+            path = getString("sel.jup.opera.path");
             driverHandler = new OperaDriverHandler();
             optionsKey = OperaOptions.CAPABILITY;
             break;
@@ -97,6 +100,7 @@ public enum BrowserType {
             firstVersion = browserList.get(0);
             latestVersion = browserList.get(browserList.size() - 1);
             dockerImage = getString("sel.jup.chrome.image.format");
+            path = getString("sel.jup.chrome.path");
             driverHandler = new ChromeDriverHandler();
             optionsKey = ChromeOptions.CAPABILITY;
             break;
@@ -105,7 +109,7 @@ public enum BrowserType {
         BrowserConfig browserConfig = new BrowserConfig(latestVersion);
         for (String version : browserList) {
             browserConfig.addBrowser(version,
-                    new Browser(format(dockerImage, version)));
+                    new Browser(format(dockerImage, version), path));
         }
 
         return browserConfig;
@@ -117,6 +121,7 @@ public enum BrowserType {
             firstVersion = getString("sel.jup.firefox.first.version");
             latestVersion = getString("sel.jup.firefox.latest.version");
             dockerImage = getString("sel.jup.firefox.image.format");
+            path = getString("sel.jup.firefox.path");
             driverHandler = new FirefoxDriverHandler();
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             break;
@@ -124,6 +129,7 @@ public enum BrowserType {
             firstVersion = getString("sel.jup.opera.first.version");
             latestVersion = getString("sel.jup.opera.latest.version");
             dockerImage = getString("sel.jup.opera.image.format");
+            path = getString("sel.jup.opera.path");
             driverHandler = new OperaDriverHandler();
             optionsKey = OperaOptions.CAPABILITY;
             break;
@@ -132,6 +138,7 @@ public enum BrowserType {
             firstVersion = getString("sel.jup.chrome.first.version");
             latestVersion = getString("sel.jup.chrome.latest.version");
             dockerImage = getString("sel.jup.chrome.image.format");
+            path = getString("sel.jup.chrome.path");
             driverHandler = new ChromeDriverHandler();
             optionsKey = ChromeOptions.CAPABILITY;
             break;
@@ -141,7 +148,7 @@ public enum BrowserType {
         String version = firstVersion;
         do {
             browserConfig.addBrowser(version,
-                    new Browser(format(dockerImage, version)));
+                    new Browser(format(dockerImage, version), path));
             if (version.equals(latestVersion)) {
                 break;
             }
