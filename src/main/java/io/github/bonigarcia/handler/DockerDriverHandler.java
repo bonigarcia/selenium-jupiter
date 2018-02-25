@@ -236,7 +236,8 @@ public class DockerDriverHandler {
             log.warn("Exception waiting for recording {}", e.getMessage());
         } finally {
             // Stop containers
-            if (!containerMap.isEmpty() && dockerService != null) {
+            if (containerMap != null && !containerMap.isEmpty()
+                    && dockerService != null) {
                 int numContainers = containerMap.size();
                 if (numContainers > 0) {
                     ExecutorService executorService = newFixedThreadPool(

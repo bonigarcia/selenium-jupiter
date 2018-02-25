@@ -35,9 +35,14 @@ public class BrowsersTemplate {
         return browsers.stream();
     }
 
-    public class Browser {
+    public static class Browser {
         String type;
         String version;
+
+        public Browser(String type, String version) {
+            this.type = type;
+            this.version = version;
+        }
 
         public String getType() {
             return type;

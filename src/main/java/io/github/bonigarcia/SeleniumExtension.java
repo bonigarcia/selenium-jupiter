@@ -27,15 +27,18 @@ import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -87,8 +90,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private List<DriverHandler> driverHandlerList = new ArrayList<>();
     private Map<String, Class<?>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
-    private List<Browser> browser;
     private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
+    private List<Browser> browserList;
     private DockerService dockerService;
     private SelenoidConfig selenoidConfig;
 
@@ -104,6 +107,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(handlerMap, "org.openqa.selenium.safari.SafariDriver",
                 SafariDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.remote.RemoteWebDriver",
+                RemoteDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.WebDriver",
                 RemoteDriverHandler.class);
         addEntry(handlerMap, "io.appium.java_client.AppiumDriver",
                 AppiumDriverHandler.class);
@@ -128,21 +133,28 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public boolean supportsParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
         Class<?> type = parameterContext.getParameter().getType();
-        return (WebDriver.class.isAssignableFrom(type) && !type.isInterface())
-                || type.equals(List.class);
+        return (WebDriver.class.isAssignableFrom(type)
+                || type.equals(List.class))
+                && !isTestTemplate(extensionContext);
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
-            ExtensionContext context) {
+            ExtensionContext extensionContext) {
+
         Parameter parameter = parameterContext.getParameter();
         Class<?> type = parameter.getType();
+        boolean isTemplate = isTestTemplate(extensionContext);
+        boolean isAbstract = type.equals(RemoteWebDriver.class)
+                || type.equals(WebDriver.class);
 
         // Check template
         Integer index = null;
-        if (type.equals(WebDriver.class)) {
-            index = Integer.valueOf(parameter.getName().replaceAll("arg", ""));
-            type = templateHandlerMap.get(browser.get(index).getType());
+        if (isAbstract && browserList != null) {
+            index = isTemplate
+                    ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
+                    : 0;
+            type = templateHandlerMap.get(browserList.get(index).getType());
         }
 
         // WebDriverManager
@@ -158,28 +170,39 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
         try {
-            if (browser != null && type.equals(RemoteWebDriver.class)) {
+            boolean isRemote = constructorClass
+                    .equals(RemoteDriverHandler.class);
+            if (isRemote && browserList != null) {
                 driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class, Browser.class)
-                        .newInstance(parameter, context, browser.get(index));
+                        .newInstance(parameter, extensionContext,
+                                browserList.get(index));
 
-            } else if (browser != null && type.equals(PhantomJSDriver.class)) {
+            } else if (constructorClass.equals(OtherDriverHandler.class)
+                    && browserList != null) {
                 driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class, Class.class)
-                        .newInstance(parameter, context, type);
+                        .newInstance(parameter, extensionContext, type);
 
             } else {
                 driverHandler = (DriverHandler) constructorClass
                         .getDeclaredConstructor(Parameter.class,
                                 ExtensionContext.class)
-                        .newInstance(parameter, context);
+                        .newInstance(parameter, extensionContext);
 
             }
             if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
                 initHandlerForDocker(driverHandler);
             }
+
+            if (!isTemplate && isAbstract && isRemote) {
+                ((RemoteDriverHandler) driverHandler).setParent(this);
+                ((RemoteDriverHandler) driverHandler)
+                        .setParameterContext(parameterContext);
+            }
+
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
             handleException(parameter, driverHandler, constructorClass, e);
@@ -272,7 +295,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (context.getTestMethod().isPresent()) {
             allWebDriver = !stream(
                     context.getTestMethod().get().getParameterTypes())
-                            .map(s -> s.equals(WebDriver.class))
+                            .map(s -> s.equals(WebDriver.class)
+                                    || s.equals(RemoteWebDriver.class))
                             .collect(toList()).contains(false);
         }
         return allWebDriver;
@@ -280,8 +304,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-            ExtensionContext context) {
-        BrowsersTemplate browsers = null;
+            ExtensionContext extensionContext) {
+        BrowsersTemplate browsersTemplate = null;
         try {
             String browserJsonContent = getString(
                     "sel.jup.browser.template.json.content");
@@ -302,21 +326,22 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 }
             }
 
-            browsers = new Gson().fromJson(browserJsonContent,
+            browsersTemplate = new Gson().fromJson(browserJsonContent,
                     BrowsersTemplate.class);
 
         } catch (IOException e) {
             throw new SeleniumJupiterException(e);
         }
-        return browsers.getStream().map(b -> invocationContext(b, this));
+        return browsersTemplate.getStream()
+                .map(b -> invocationContext(b, this));
     }
 
     private TestTemplateInvocationContext invocationContext(
-            List<Browser> browser, SeleniumExtension parent) {
+            List<Browser> template, SeleniumExtension parent) {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {
-                return browser.toString();
+                return template.toString();
             }
 
             @Override
@@ -326,15 +351,17 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     public boolean supportsParameter(
                             ParameterContext parameterContext,
                             ExtensionContext extensionContext) {
-                        return parameterContext.getParameter().getType()
-                                .equals(WebDriver.class);
+                        Class<?> type = parameterContext.getParameter()
+                                .getType();
+                        return type.equals(WebDriver.class)
+                                || type.equals(RemoteWebDriver.class);
                     }
 
                     @Override
                     public Object resolveParameter(
                             ParameterContext parameterContext,
                             ExtensionContext extensionContext) {
-                        parent.browser = browser;
+                        parent.browserList = template;
                         return parent.resolveParameter(parameterContext,
                                 extensionContext);
                     }
@@ -351,6 +378,16 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             log.warn("Exception adding {}={} to handler map ({})", key, value,
                     e.getMessage());
         }
+    }
+
+    private boolean isTestTemplate(ExtensionContext extensionContext) {
+        Optional<Method> testMethod = extensionContext.getTestMethod();
+        return testMethod.isPresent()
+                && testMethod.get().isAnnotationPresent(TestTemplate.class);
+    }
+
+    public void setBrowserList(List<Browser> browserList) {
+        this.browserList = browserList;
     }
 
 }

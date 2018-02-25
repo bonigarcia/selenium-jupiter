@@ -52,13 +52,13 @@ public abstract class DriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    AnnotationsReader annotationsReader = new AnnotationsReader();
     Parameter parameter;
     ExtensionContext context;
     Map<String, DockerContainer> containerMap;
     DockerService dockerService;
     SelenoidConfig selenoidConfig;
     Object object;
-    AnnotationsReader annotationsReader = new AnnotationsReader();
 
     public abstract void resolve();
 
