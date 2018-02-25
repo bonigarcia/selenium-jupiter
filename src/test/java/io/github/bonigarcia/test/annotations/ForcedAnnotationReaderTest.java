@@ -29,7 +29,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.appium.java_client.AppiumDriver;
@@ -40,12 +39,10 @@ import io.github.bonigarcia.handler.DriverHandler;
 import io.github.bonigarcia.handler.EdgeDriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.handler.OperaDriverHandler;
-import io.github.bonigarcia.handler.RemoteDriverHandler;
 import io.github.bonigarcia.handler.SafariDriverHandler;
 import io.github.bonigarcia.test.forced.ForcedAppiumJupiterTest;
 import io.github.bonigarcia.test.forced.ForcedBadChromeJupiterTest;
 import io.github.bonigarcia.test.forced.ForcedBadFirefoxJupiterTest;
-import io.github.bonigarcia.test.forced.ForcedBadRemoteJupiterTest;
 import io.github.bonigarcia.test.forced.ForcedEdgeJupiterTest;
 import io.github.bonigarcia.test.forced.ForcedOperaJupiterTest;
 import io.github.bonigarcia.test.forced.ForcedSafariJupiterTest;
@@ -66,9 +63,6 @@ public class ForcedAnnotationReaderTest {
                 Arguments.of(FirefoxDriverHandler.class,
                         ForcedBadFirefoxJupiterTest.class, FirefoxDriver.class,
                         "firefoxTest"),
-                Arguments.of(RemoteDriverHandler.class,
-                        ForcedBadRemoteJupiterTest.class, RemoteWebDriver.class,
-                        "remoteTest"),
                 Arguments.of(EdgeDriverHandler.class,
                         ForcedEdgeJupiterTest.class, EdgeDriver.class,
                         "edgeTest"),
