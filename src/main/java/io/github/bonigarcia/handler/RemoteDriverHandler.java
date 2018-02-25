@@ -17,12 +17,9 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +32,6 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
@@ -49,8 +45,6 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @since 1.2.0
  */
 public class RemoteDriverHandler extends DriverHandler {
-
-    final Logger log = getLogger(lookup().lookupClass());
 
     private DockerDriverHandler dockerDriverHandler;
     private Browser browser;
@@ -112,8 +106,7 @@ public class RemoteDriverHandler extends DriverHandler {
         }
     }
 
-    private WebDriver resolveRemote(URL url, Capabilities capabilities)
-            throws IllegalAccessException, MalformedURLException {
+    private WebDriver resolveRemote(URL url, Capabilities capabilities) {
         return new RemoteWebDriver(url, capabilities);
     }
 
@@ -153,10 +146,10 @@ public class RemoteDriverHandler extends DriverHandler {
             String browserCandidate = browserIterator.next();
             String versionCandidate = versionIterator.next();
 
-            Browser browser = new Browser(browserCandidate, versionCandidate);
+            Browser candidate = new Browser(browserCandidate, versionCandidate);
             log.debug("Using generic handler, trying with {}",
                     browserCandidate);
-            parent.setBrowserList(Collections.singletonList(browser));
+            parent.setBrowserList(Collections.singletonList(candidate));
             try {
                 object = parent.resolveParameter(parameterContext, context);
             } catch (Exception e) {

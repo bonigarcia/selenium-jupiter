@@ -27,6 +27,7 @@ import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -145,12 +146,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         Parameter parameter = parameterContext.getParameter();
         Class<?> type = parameter.getType();
         boolean isTemplate = isTestTemplate(extensionContext);
-        boolean isAbstract = type.equals(RemoteWebDriver.class)
+        boolean isRemote = type.equals(RemoteWebDriver.class)
                 || type.equals(WebDriver.class);
 
         // Check template
         Integer index = null;
-        if (isAbstract && browserList != null) {
+        if (isRemote && browserList != null) {
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
@@ -170,34 +171,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
         try {
-            boolean isRemote = constructorClass
-                    .equals(RemoteDriverHandler.class);
-            if (isRemote && browserList != null) {
-                driverHandler = (DriverHandler) constructorClass
-                        .getDeclaredConstructor(Parameter.class,
-                                ExtensionContext.class, Browser.class)
-                        .newInstance(parameter, extensionContext,
-                                browserList.get(index));
+            driverHandler = getDriverHandler(extensionContext, parameter, type,
+                    index, constructorClass, isRemote);
 
-            } else if (constructorClass.equals(OtherDriverHandler.class)
-                    && browserList != null) {
-                driverHandler = (DriverHandler) constructorClass
-                        .getDeclaredConstructor(Parameter.class,
-                                ExtensionContext.class, Class.class)
-                        .newInstance(parameter, extensionContext, type);
-
-            } else {
-                driverHandler = (DriverHandler) constructorClass
-                        .getDeclaredConstructor(Parameter.class,
-                                ExtensionContext.class)
-                        .newInstance(parameter, extensionContext);
-
-            }
             if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
                 initHandlerForDocker(driverHandler);
             }
 
-            if (!isTemplate && isAbstract && isRemote) {
+            if (!isTemplate && isRemote) {
                 ((RemoteDriverHandler) driverHandler).setParent(this);
                 ((RemoteDriverHandler) driverHandler)
                         .setParameterContext(parameterContext);
@@ -214,6 +195,36 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         } else {
             return null;
         }
+    }
+
+    private DriverHandler getDriverHandler(ExtensionContext extensionContext,
+            Parameter parameter, Class<?> type, Integer index,
+            Class<?> constructorClass, boolean isRemote)
+            throws InstantiationException, IllegalAccessException,
+            InvocationTargetException, NoSuchMethodException {
+        DriverHandler driverHandler;
+        if (isRemote && browserList != null) {
+            driverHandler = (DriverHandler) constructorClass
+                    .getDeclaredConstructor(Parameter.class,
+                            ExtensionContext.class, Browser.class)
+                    .newInstance(parameter, extensionContext,
+                            browserList.get(index));
+
+        } else if (constructorClass.equals(OtherDriverHandler.class)
+                && browserList != null) {
+            driverHandler = (DriverHandler) constructorClass
+                    .getDeclaredConstructor(Parameter.class,
+                            ExtensionContext.class, Class.class)
+                    .newInstance(parameter, extensionContext, type);
+
+        } else {
+            driverHandler = (DriverHandler) constructorClass
+                    .getDeclaredConstructor(Parameter.class,
+                            ExtensionContext.class)
+                    .newInstance(parameter, extensionContext);
+
+        }
+        return driverHandler;
     }
 
     private void initHandlerForDocker(DriverHandler driverHandler)
