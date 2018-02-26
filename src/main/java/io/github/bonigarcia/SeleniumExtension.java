@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
 import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -146,12 +147,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         Parameter parameter = parameterContext.getParameter();
         Class<?> type = parameter.getType();
         boolean isTemplate = isTestTemplate(extensionContext);
-        boolean isRemote = type.equals(RemoteWebDriver.class)
+        boolean isGeneric = type.equals(RemoteWebDriver.class)
                 || type.equals(WebDriver.class);
 
         // Check template
         Integer index = null;
-        if (isRemote && browserList != null) {
+        if (isGeneric && browserList != null) {
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
@@ -166,10 +167,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Handler
         DriverHandler driverHandler = null;
-
         Class<?> constructorClass = handlerMap.containsKey(type.getName())
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
+        boolean isRemote = constructorClass.equals(RemoteDriverHandler.class);
+
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
                     index, constructorClass, isRemote);
@@ -178,7 +180,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 initHandlerForDocker(driverHandler);
             }
 
-            if (!isTemplate && isRemote) {
+            if (!isTemplate && isGeneric && isRemote) {
                 ((RemoteDriverHandler) driverHandler).setParent(this);
                 ((RemoteDriverHandler) driverHandler)
                         .setParameterContext(parameterContext);
@@ -192,6 +194,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (driverHandler != null) {
             driverHandler.resolve();
             return driverHandler.getObject();
+        } else if (getBoolean("sel.jup.exception.when.no.driver")) {
+            throw new SeleniumJupiterException(
+                    "No valid handler for " + parameter + " was found");
         } else {
             return null;
         }
