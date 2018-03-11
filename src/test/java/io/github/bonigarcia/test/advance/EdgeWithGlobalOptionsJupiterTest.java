@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.test.advance;
 
-import static java.lang.System.setProperty;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,6 +29,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.Options;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @Disabled("Edge not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
@@ -37,7 +37,7 @@ public class EdgeWithGlobalOptionsJupiterTest {
 
     @BeforeAll
     static void setup() {
-        setProperty("wdm.edgeVersion", "3.14393");
+        SeleniumJupiter.config().wdm().setDriverVersion("3.14393");
     }
 
     @Options

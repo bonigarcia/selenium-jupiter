@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.test.forced;
 
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,13 +36,12 @@ public class ForcedEdgeJupiterTest {
     @BeforeEach
     void setup() {
         SeleniumJupiter.config().setExceptionWhenNoDriver(false);
-        setProperty("wdm.forceOs", "WIN");
+        SeleniumJupiter.config().wdm().setOs("WIN");
     }
 
     @AfterEach
     void teardown() {
         SeleniumJupiter.config().reset();
-        clearProperty("wdm.forceOs");
     }
 
     @Test

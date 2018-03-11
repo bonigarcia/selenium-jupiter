@@ -9,7 +9,7 @@
     <properties>
         <!-- Dependencies -->
         <selenium-java.version>3.9.1</selenium-java.version>
-        <webdrivermanager.version>2.1.0</webdrivermanager.version>
+        <webdrivermanager.version>2.1.1-SNAPSHOT</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
         <docker-client.version>8.11.1</docker-client.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
@@ -122,11 +122,6 @@
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>converter-gson</artifactId>
             <version>${retrofit.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.drapostolos</groupId>
-            <artifactId>type-parser</artifactId>
-            <version>0.6.0</version>
         </dependency>
 
         <!-- provided -->
@@ -347,5 +342,19 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>

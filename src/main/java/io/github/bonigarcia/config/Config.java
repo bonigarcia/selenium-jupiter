@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import com.github.drapostolos.typeparser.TypeParser;
 
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Configuration class.
@@ -592,6 +593,10 @@ public class Config {
 
     public void takeScreenshotAsBase64AndPng() {
         this.screenshotFormat.setValue("base64andpng");
+    }
+
+    public io.github.bonigarcia.wdm.Config wdm() {
+        return WebDriverManager.config();
     }
 
 }
