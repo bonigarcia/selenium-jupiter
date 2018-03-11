@@ -76,7 +76,7 @@ public class Config {
             "sel.jup.default.browser.fallback", String.class);
     ConfigKey<String> defaultBrowserFallbackVersion = new ConfigKey<>(
             "sel.jup.default.browser.fallback.version", String.class);
-    ConfigKey<Boolean> browserListFromDockerHub = new ConfigKey<Boolean>(
+    ConfigKey<Boolean> browserListFromDockerHub = new ConfigKey<>(
             "sel.jup.browser.list.from.docker.hub", Boolean.class);
     ConfigKey<String> browserSessionTimeoutDuration = new ConfigKey<>(
             "sel.jup.browser.session.timeout.duration", String.class);
@@ -116,9 +116,9 @@ public class Config {
             "sel.jup.opera.latest.version", String.class);
     ConfigKey<String> operaPath = new ConfigKey<>("sel.jup.opera.path",
             String.class);
-    ConfigKey<Integer> dockerWaitTimeoutSec = new ConfigKey<Integer>(
+    ConfigKey<Integer> dockerWaitTimeoutSec = new ConfigKey<>(
             "sel.jup.docker.wait.timeout.sec", Integer.class);
-    ConfigKey<Integer> dockerPollTimeMs = new ConfigKey<Integer>(
+    ConfigKey<Integer> dockerPollTimeMs = new ConfigKey<>(
             "sel.jup.docker.poll.time.ms", Integer.class);
     ConfigKey<String> dockerDefaultSocket = new ConfigKey<>(
             "sel.jup.docker.default.socket", String.class);
@@ -128,7 +128,7 @@ public class Config {
             String.class);
     ConfigKey<String> dockerServerUrl = new ConfigKey<>(
             "sel.jup.docker.server.url", String.class);
-    ConfigKey<Integer> dockerStopTimeoutSec = new ConfigKey<Integer>(
+    ConfigKey<Integer> dockerStopTimeoutSec = new ConfigKey<>(
             "sel.jup.docker.stop.timeout.sec", Integer.class);
     ConfigKey<String> dockerApiVersion = new ConfigKey<>(
             "sel.jup.docker.api.version", String.class);
@@ -189,7 +189,7 @@ public class Config {
     // Getters and setters
 
     public String getProperties() {
-        return (String) resolve(properties);
+        return resolve(properties);
     }
 
     public void setProperties(boolean properties) {
@@ -197,7 +197,7 @@ public class Config {
     }
 
     public boolean isVnc() {
-        return (boolean) resolve(vnc);
+        return resolve(vnc);
     }
 
     public void setVnc(boolean value) {
@@ -205,7 +205,7 @@ public class Config {
     }
 
     public String getVncScreenResolution() {
-        return (String) resolve(vncScreenResolution);
+        return resolve(vncScreenResolution);
     }
 
     public void setVncScreenResolution(String value) {
@@ -213,7 +213,7 @@ public class Config {
     }
 
     public boolean isVncRedirectHtmlPage() {
-        return (boolean) resolve(vncRedirectHtmlPage);
+        return resolve(vncRedirectHtmlPage);
     }
 
     public void setVncRedirectHtmlPage(boolean value) {
@@ -221,7 +221,7 @@ public class Config {
     }
 
     public boolean isRecording() {
-        return (boolean) resolve(recording);
+        return resolve(recording);
     }
 
     public void setRecording(boolean value) {
@@ -229,7 +229,7 @@ public class Config {
     }
 
     public String getRecordingVideoScreenSize() {
-        return (String) resolve(recordingVideoScreenSize);
+        return resolve(recordingVideoScreenSize);
     }
 
     public void setRecordingVideoScreenSize(String value) {
@@ -237,7 +237,7 @@ public class Config {
     }
 
     public int getRecordingVideoFrameRate() {
-        return (int) resolve(recordingVideoFrameRate);
+        return resolve(recordingVideoFrameRate);
     }
 
     public void setRecordingVideoFrameRate(int value) {
@@ -245,7 +245,7 @@ public class Config {
     }
 
     public String getRecordingImage() {
-        return (String) resolve(recordingImage);
+        return resolve(recordingImage);
     }
 
     public void setRecordingImage(String value) {
@@ -253,7 +253,7 @@ public class Config {
     }
 
     public String getOutputFolder() {
-        return (String) resolve(outputFolder);
+        return resolve(outputFolder);
     }
 
     public void setOutputFolder(String value) {
@@ -261,7 +261,7 @@ public class Config {
     }
 
     public String getScreenshotAtTheEndOfTests() {
-        return (String) resolve(screenshotAtTheEndOfTests);
+        return resolve(screenshotAtTheEndOfTests);
     }
 
     public void setScreenshotAtTheEndOfTests(String value) {
@@ -269,7 +269,7 @@ public class Config {
     }
 
     public String getScreenshotFormat() {
-        return (String) resolve(screenshotFormat);
+        return resolve(screenshotFormat);
     }
 
     public void setScreenshotFormat(String value) {
@@ -277,7 +277,7 @@ public class Config {
     }
 
     public boolean isExceptionWhenNoDriver() {
-        return (boolean) resolve(exceptionWhenNoDriver);
+        return resolve(exceptionWhenNoDriver);
     }
 
     public void setExceptionWhenNoDriver(boolean value) {
@@ -285,7 +285,7 @@ public class Config {
     }
 
     public String getBrowserTemplateJsonFile() {
-        return (String) resolve(browserTemplateJsonFile);
+        return resolve(browserTemplateJsonFile);
     }
 
     public void setBrowserTemplateJsonFile(String value) {
@@ -293,7 +293,7 @@ public class Config {
     }
 
     public String getBrowserTemplateJsonContent() {
-        return (String) resolve(browserTemplateJsonContent);
+        return resolve(browserTemplateJsonContent);
     }
 
     public void setBrowserTemplateJsonContent(String value) {
@@ -301,7 +301,7 @@ public class Config {
     }
 
     public String getDefaultBrowser() {
-        return (String) resolve(defaultBrowser);
+        return resolve(defaultBrowser);
     }
 
     public void setDefaultBrowser(String value) {
@@ -309,7 +309,7 @@ public class Config {
     }
 
     public String getDefaultVersion() {
-        return (String) resolve(defaultVersion);
+        return resolve(defaultVersion);
     }
 
     public void setDefaultVersion(String value) {
@@ -317,7 +317,7 @@ public class Config {
     }
 
     public String getDefaultBrowserFallback() {
-        return (String) resolve(defaultBrowserFallback);
+        return resolve(defaultBrowserFallback);
     }
 
     public void setDefaultBrowserFallback(String value) {
@@ -325,7 +325,7 @@ public class Config {
     }
 
     public String getDefaultBrowserFallbackVersion() {
-        return (String) resolve(defaultBrowserFallbackVersion);
+        return resolve(defaultBrowserFallbackVersion);
     }
 
     public void setDefaultBrowserFallbackVersion(String value) {
@@ -333,7 +333,7 @@ public class Config {
     }
 
     public boolean isBrowserListFromDockerHub() {
-        return (boolean) resolve(browserListFromDockerHub);
+        return resolve(browserListFromDockerHub);
     }
 
     public void setBrowserListFromDockerHub(boolean value) {
@@ -341,7 +341,7 @@ public class Config {
     }
 
     public String getBrowserSessionTimeoutDuration() {
-        return (String) resolve(browserSessionTimeoutDuration);
+        return resolve(browserSessionTimeoutDuration);
     }
 
     public void setBrowserSessionTimeoutDuration(String value) {
@@ -349,7 +349,7 @@ public class Config {
     }
 
     public String getSelenoidImage() {
-        return (String) resolve(selenoidImage);
+        return resolve(selenoidImage);
     }
 
     public void setSelenoidImage(String value) {
@@ -357,7 +357,7 @@ public class Config {
     }
 
     public String getSelenoidPort() {
-        return (String) resolve(selenoidPort);
+        return resolve(selenoidPort);
     }
 
     public void setSelenoidPort(String value) {
@@ -365,7 +365,7 @@ public class Config {
     }
 
     public String getSelenoidVncPassword() {
-        return (String) resolve(selenoidVncPassword);
+        return resolve(selenoidVncPassword);
     }
 
     public void setSelenoidVncPassword(String value) {
@@ -373,7 +373,7 @@ public class Config {
     }
 
     public String getSelenoidTmpfsSize() {
-        return (String) resolve(selenoidTmpfsSize);
+        return resolve(selenoidTmpfsSize);
     }
 
     public void setSelenoidTmpfsSize(String value) {
@@ -381,7 +381,7 @@ public class Config {
     }
 
     public String getNovncImage() {
-        return (String) resolve(novncImage);
+        return resolve(novncImage);
     }
 
     public void setNovncImage(String value) {
@@ -389,7 +389,7 @@ public class Config {
     }
 
     public String getNovncPort() {
-        return (String) resolve(novncPort);
+        return resolve(novncPort);
     }
 
     public void setNovncPort(String value) {
@@ -397,7 +397,7 @@ public class Config {
     }
 
     public String getChromeImageFormat() {
-        return (String) resolve(chromeImageFormat);
+        return resolve(chromeImageFormat);
     }
 
     public void setChromeImageFormat(String value) {
@@ -405,7 +405,7 @@ public class Config {
     }
 
     public String getChromeFirstVersion() {
-        return (String) resolve(chromeFirstVersion);
+        return resolve(chromeFirstVersion);
     }
 
     public void setChromeFirstVersion(String value) {
@@ -413,7 +413,7 @@ public class Config {
     }
 
     public String getChromeLatestVersion() {
-        return (String) resolve(chromeLatestVersion);
+        return resolve(chromeLatestVersion);
     }
 
     public void setChromeLatestVersion(String value) {
@@ -421,7 +421,7 @@ public class Config {
     }
 
     public String getChromePath() {
-        return (String) resolve(chromePath);
+        return resolve(chromePath);
     }
 
     public void setChromePath(String value) {
@@ -429,7 +429,7 @@ public class Config {
     }
 
     public String getFirefoxImageFormat() {
-        return (String) resolve(firefoxImageFormat);
+        return resolve(firefoxImageFormat);
     }
 
     public void setFirefoxImageFormat(String value) {
@@ -437,7 +437,7 @@ public class Config {
     }
 
     public String getFirefoxFirstVersion() {
-        return (String) resolve(firefoxFirstVersion);
+        return resolve(firefoxFirstVersion);
     }
 
     public void setFirefoxFirstVersion(String value) {
@@ -445,7 +445,7 @@ public class Config {
     }
 
     public String getFirefoxLatestVersion() {
-        return (String) resolve(firefoxLatestVersion);
+        return resolve(firefoxLatestVersion);
     }
 
     public void setFirefoxLatestVersion(String value) {
@@ -453,7 +453,7 @@ public class Config {
     }
 
     public String getFirefoxPath() {
-        return (String) resolve(firefoxPath);
+        return resolve(firefoxPath);
     }
 
     public void setFirefoxPath(String value) {
@@ -461,7 +461,7 @@ public class Config {
     }
 
     public String getOperaImageFormat() {
-        return (String) resolve(operaImageFormat);
+        return resolve(operaImageFormat);
     }
 
     public void setOperaImageFormat(String value) {
@@ -469,7 +469,7 @@ public class Config {
     }
 
     public String getOperaFirstVersion() {
-        return (String) resolve(operaFirstVersion);
+        return resolve(operaFirstVersion);
     }
 
     public void setOperaFirstVersion(String value) {
@@ -477,7 +477,7 @@ public class Config {
     }
 
     public String getOperaLatestVersion() {
-        return (String) resolve(operaLatestVersion);
+        return resolve(operaLatestVersion);
     }
 
     public void setOperaLatestVersion(String value) {
@@ -485,7 +485,7 @@ public class Config {
     }
 
     public String getOperaPath() {
-        return (String) resolve(operaPath);
+        return resolve(operaPath);
     }
 
     public void setOperaPath(String value) {
@@ -493,7 +493,7 @@ public class Config {
     }
 
     public int getDockerWaitTimeoutSec() {
-        return (int) resolve(dockerWaitTimeoutSec);
+        return resolve(dockerWaitTimeoutSec);
     }
 
     public void setDockerWaitTimeoutSec(int dockerWaitTimeoutSec) {
@@ -501,7 +501,7 @@ public class Config {
     }
 
     public int getDockerPollTimeMs() {
-        return (int) resolve(dockerPollTimeMs);
+        return resolve(dockerPollTimeMs);
     }
 
     public void setDockerPollTimeMs(int dockerWaitTimeoutSec) {
@@ -509,7 +509,7 @@ public class Config {
     }
 
     public String getDockerDefaultSocket() {
-        return (String) resolve(dockerDefaultSocket);
+        return resolve(dockerDefaultSocket);
     }
 
     public void setDockerDefaultSocket(String value) {
@@ -517,7 +517,7 @@ public class Config {
     }
 
     public String getDockerDefaultHost() {
-        return (String) resolve(dockerDefaultHost);
+        return resolve(dockerDefaultHost);
     }
 
     public void setDockerDefaultHost(String value) {
@@ -525,7 +525,7 @@ public class Config {
     }
 
     public String getDockerHubUrl() {
-        return (String) resolve(dockerHubUrl);
+        return resolve(dockerHubUrl);
     }
 
     public void setDockerHubUrl(String dockerHubUrl) {
@@ -533,7 +533,7 @@ public class Config {
     }
 
     public String getDockerServerUrl() {
-        return (String) resolve(dockerServerUrl);
+        return resolve(dockerServerUrl);
     }
 
     public void setDockerServerUrl(String dockerHubUrl) {
@@ -541,7 +541,7 @@ public class Config {
     }
 
     public int getDockerStopTimeoutSec() {
-        return (int) resolve(dockerStopTimeoutSec);
+        return resolve(dockerStopTimeoutSec);
     }
 
     public void setDockerStopTimeoutSec(int dockerWaitTimeoutSec) {
@@ -549,7 +549,7 @@ public class Config {
     }
 
     public String getDockerApiVersion() {
-        return (String) resolve(dockerApiVersion);
+        return resolve(dockerApiVersion);
     }
 
     public void setDockerApiVersion(String value) {
@@ -557,7 +557,7 @@ public class Config {
     }
 
     public String getDockerNetwork() {
-        return (String) resolve(dockerNetwork);
+        return resolve(dockerNetwork);
     }
 
     public void setDockerNetwork(String value) {

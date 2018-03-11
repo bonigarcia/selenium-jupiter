@@ -189,7 +189,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
-            e.printStackTrace();
             handleException(parameter, driverHandler, constructorClass, e);
         }
 
