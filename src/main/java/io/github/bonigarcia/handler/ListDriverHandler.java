@@ -32,6 +32,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
@@ -60,10 +61,11 @@ public class ListDriverHandler extends DriverHandler {
                     .getParameterizedType();
             Type[] actualTypeArguments = parameterizedType
                     .getActualTypeArguments();
-            if (actualTypeArguments[0] != RemoteWebDriver.class) {
-                throw new SeleniumJupiterException(
-                        "Invalid type of argument " + parameterizedType
-                                + " (expected List<RemoteWebDriver>)");
+            if (actualTypeArguments[0] != RemoteWebDriver.class
+                    && actualTypeArguments[0] != WebDriver.class) {
+                throw new SeleniumJupiterException("Invalid type of argument "
+                        + parameterizedType
+                        + " (expected List<RemoteWebDriver> or List<WebDriver>)");
             }
 
             Optional<DockerBrowser> dockerBrowser = annotationsReader

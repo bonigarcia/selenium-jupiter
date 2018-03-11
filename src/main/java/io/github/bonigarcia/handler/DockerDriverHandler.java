@@ -38,6 +38,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
@@ -143,6 +144,7 @@ public class DockerDriverHandler {
             log.debug("Using hub at {}", selenoidHub);
             WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHub),
                     capabilities);
+
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
             String parameterName = parameter.getName();
             name = parameterName + "_" + browser + "_" + imageVersion + "_"
@@ -272,11 +274,11 @@ public class DockerDriverHandler {
         String browserImage;
         if (version == null || version.isEmpty()
                 || version.equalsIgnoreCase("latest")) {
-            log.debug("Using {} version {} (latest)", browser,
+            log.info("Using {} version {} (latest)", browser,
                     selenoidConfig.getDefaultBrowser(browser));
             browserImage = selenoidConfig.getLatestImage(browser);
         } else {
-            log.debug("Using {} version {}", browser, version);
+            log.info("Using {} version {}", browser, version);
             browserImage = selenoidConfig.getImageFromVersion(browser, version);
         }
         dockerService.pullImageIfNecessary(browserImage);
@@ -290,7 +292,7 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer;
         if (containerMap.containsKey(selenoidImage)) {
-            log.trace("Selenoid container already available");
+            log.debug("Selenoid container already available");
             selenoidContainer = containerMap.get(selenoidImage);
         } else {
             // Pull images
@@ -368,23 +370,40 @@ public class DockerDriverHandler {
     }
 
     private int getDockerBrowserCount() {
-        int limit = 0;
-        Optional<Method> testMethod = context.getTestMethod();
-        if (testMethod.isPresent()) {
-            Parameter[] parameters = testMethod.get().getParameters();
-            for (Parameter param : parameters) {
-                Class<?> type = param.getType();
-                if (WebDriver.class.isAssignableFrom(type)) {
-                    limit++;
-                } else if (type.isAssignableFrom(List.class)) {
-                    DockerBrowser dockerBrowser = param
-                            .getAnnotation(DockerBrowser.class);
-                    limit += dockerBrowser.size();
-                }
+        int count = 0;
+        Optional<Class<?>> testClass = context.getTestClass();
+        if (testClass.isPresent()) {
+            Constructor<?>[] declaredConstructors = testClass.get()
+                    .getDeclaredConstructors();
+            for (Constructor<?> constructor : declaredConstructors) {
+                Parameter[] parameters = constructor.getParameters();
+                count += getDockerBrowsersInParams(parameters);
             }
-            log.trace("Number of required Docker browser(s): {}", limit);
+            Method[] declaredMethods = testClass.get().getDeclaredMethods();
+            for (Method method : declaredMethods) {
+                Parameter[] parameters = method.getParameters();
+                count += getDockerBrowsersInParams(parameters);
+            }
         }
-        return limit;
+        log.trace("Number of required Docker browser(s): {}", count);
+        return count;
+    }
+
+    private int getDockerBrowsersInParams(Parameter[] parameters) {
+        int count = 0;
+        for (Parameter param : parameters) {
+            log.debug("Checking {}", param);
+            Class<?> type = param.getType();
+            if (WebDriver.class.isAssignableFrom(type)) {
+                count++;
+            } else if (type.isAssignableFrom(List.class)) {
+                DockerBrowser dockerBrowser = param
+                        .getAnnotation(DockerBrowser.class);
+                count += dockerBrowser.size();
+            }
+        }
+        return count;
+
     }
 
     private String getNoVncUrl(String selenoidHost, int selenoidPort,
