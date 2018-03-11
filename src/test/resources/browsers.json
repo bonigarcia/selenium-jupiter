@@ -15,7 +15,13 @@
       [
          {
             "type": "chrome-in-docker",
-            "version": "latest-2"
+            "version": "beta"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "unstable"
          }
       ]
    ]
