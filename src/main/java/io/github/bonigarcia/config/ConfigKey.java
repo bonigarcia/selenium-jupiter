@@ -47,7 +47,7 @@ public class ConfigKey<T> {
     }
 
     public Class<T> getType() {
-        return (Class<T>) type;
+        return type;
     }
 
     public T getValue() {
