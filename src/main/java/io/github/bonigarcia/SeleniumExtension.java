@@ -176,7 +176,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             driverHandler = getDriverHandler(extensionContext, parameter, type,
                     index, constructorClass, isRemote);
 
-            if (type.equals(RemoteWebDriver.class) || type.equals(List.class)) {
+            if (type.equals(RemoteWebDriver.class)
+                    || type.equals(WebDriver.class)
+                    || type.equals(List.class)) {
                 initHandlerForDocker(driverHandler);
             }
 

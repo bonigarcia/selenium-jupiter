@@ -17,6 +17,7 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
+import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static java.lang.System.clearProperty;
 import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -30,14 +31,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
-public class DockerVncJupiterTest {
+public class DockerVncMixedJupiterTest {
 
     File htmlFile;
 
@@ -53,10 +54,15 @@ public class DockerVncJupiterTest {
 
     @Test
     public void testHtmlVnc(
-            @DockerBrowser(type = CHROME) WebDriver driver)
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver1,
+            @DockerBrowser(type = FIREFOX) RemoteWebDriver driver2)
             throws InterruptedException {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
+        driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
+
+        assertThat(driver1.getTitle(),
+                containsString("A JUnit 5 extension for Selenium WebDriver"));
+        assertThat(driver2.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
         // Thread.sleep(50000);
