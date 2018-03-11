@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.util.Arrays.asList;
 
 import java.lang.reflect.Parameter;
@@ -111,12 +111,11 @@ public class RemoteDriverHandler extends DriverHandler {
     }
 
     private WebDriver resolveGeneric() {
-        String defaultBrowser = getString("sel.jup.default.browser");
-        String defaultVersion = getString("sel.jup.default.version");
-        String defaultBrowserFallback = getString(
-                "sel.jup.default.browser.fallback");
-        String defaultBrowserFallbackVersion = getString(
-                "sel.jup.default.browser.fallback.version");
+        String defaultBrowser = config().getDefaultBrowser();
+        String defaultVersion = config().getDefaultVersion();
+        String defaultBrowserFallback = config().getDefaultBrowserFallback();
+        String defaultBrowserFallbackVersion = config()
+                .getDefaultBrowserFallbackVersion();
 
         String fallbackSeparator = ",";
 

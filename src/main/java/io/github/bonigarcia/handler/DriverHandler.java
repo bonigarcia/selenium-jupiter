@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.io.File.createTempFile;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
@@ -90,7 +90,7 @@ public abstract class DriverHandler {
     }
 
     public boolean throwExceptionWhenNoDriver() {
-        return getBoolean("sel.jup.exception.when.no.driver");
+        return config().isExceptionWhenNoDriver();
     }
 
     void handleException(Exception e) {

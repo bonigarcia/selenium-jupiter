@@ -17,8 +17,6 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,6 +36,7 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
@@ -49,15 +48,15 @@ public class DockerRecordingJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.recording", "true");
+        SeleniumJupiter.config().setRecording(true);
     }
 
     @AfterAll
     void teardown() {
+        SeleniumJupiter.config().reset();
         assertTrue(recordingFile.exists());
         log.info("Deleting recording {} ... {}", recordingFile,
                 recordingFile.delete());
-        clearProperty("sel.jup.recording");
     }
 
     @Test

@@ -18,8 +18,6 @@ package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static io.github.bonigarcia.BrowserType.FIREFOX;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -40,6 +38,7 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class MixedDockerChromeJupiterTest {
@@ -50,12 +49,12 @@ public class MixedDockerChromeJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.vnc", "true");
+        SeleniumJupiter.config().setVnc(true);
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.vnc");
+        SeleniumJupiter.config().reset();
     }
 
     @Test

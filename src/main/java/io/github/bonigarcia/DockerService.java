@@ -16,12 +16,10 @@
  */
 package io.github.bonigarcia;
 
-import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
-
-import static io.github.bonigarcia.SeleniumJupiter.getInt;
-import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -60,13 +58,13 @@ public class DockerService {
     private DockerClient dockerClient;
 
     public DockerService() throws DockerCertificateException {
-        dockerDefaultSocket = getString("sel.jup.docker.default.socket");
-        dockerWaitTimeoutSec = getInt("sel.jup.docker.wait.timeout.sec");
-        dockerPollTimeMs = getInt("sel.jup.docker.poll.time.ms");
+        dockerDefaultSocket = config().getDockerDefaultSocket();
+        dockerWaitTimeoutSec = config().getDockerWaitTimeoutSec();
+        dockerPollTimeMs = config().getDockerPollTimeMs();
 
         Builder dockerClientBuilder = DefaultDockerClient.fromEnv();
 
-        String dockerServerUrl = getString("sel.jup.docker.server.url");
+        String dockerServerUrl = config().getDockerServerUrl();
         if (!dockerServerUrl.isEmpty()) {
             DefaultDockerClient.builder().uri(dockerServerUrl);
         }
@@ -84,7 +82,7 @@ public class DockerService {
         if (dockerMachineIp == null
                 || dockerMachineIp.contains("Host is not running")) {
             if (IS_OS_MAC) {
-                dockerMachineIp = getString("sel.jup.docker.default.host");
+                dockerMachineIp = config().getDockerDefaultHost();
             } else {
                 dockerMachineIp = dockerClient.inspectContainer(containerId)
                         .networkSettings().networks().get(network).gateway();
@@ -184,7 +182,7 @@ public class DockerService {
 
     public void stopContainer(String containerId)
             throws DockerException, InterruptedException {
-        int stopTimeoutSec = getInt("sel.jup.docker.stop.timeout.sec");
+        int stopTimeoutSec = config().getDockerStopTimeoutSec();
         log.trace("Stopping container {} (timeout {} seconds)", containerId,
                 stopTimeoutSec);
         dockerClient.stopContainer(containerId, stopTimeoutSec);

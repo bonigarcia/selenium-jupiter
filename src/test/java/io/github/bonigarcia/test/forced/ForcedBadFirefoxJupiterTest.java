@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.test.forced;
 
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -29,18 +27,19 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.Binary;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class ForcedBadFirefoxJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.exception.when.no.driver", "false");
+        SeleniumJupiter.config().setExceptionWhenNoDriver(false);
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.exception.when.no.driver");
+        SeleniumJupiter.config().reset();
     }
 
     @Test

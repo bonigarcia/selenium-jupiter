@@ -16,8 +16,8 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static io.github.bonigarcia.SeleniumJupiter.getOutputFolder;
-import static io.github.bonigarcia.SeleniumJupiter.getString;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.BASE64;
@@ -51,8 +51,7 @@ public class ScreenshotManager {
     boolean isScreenshotRequired() {
         Optional<Throwable> executionException = context
                 .getExecutionException();
-        String screenshotAtTheEnd = getString(
-                "sel.jup.screenshot.at.the.end.of.tests");
+        String screenshotAtTheEnd = config().getScreenshotAtTheEndOfTests();
 
         return screenshotAtTheEnd.equalsIgnoreCase("true")
                 || (executionException.isPresent()
@@ -61,7 +60,7 @@ public class ScreenshotManager {
 
     void makeScreenshot(WebDriver driver, String fileName) {
         if (isScreenshotRequired() && driver != null) {
-            String screenshotFormat = getString("sel.jup.screenshot.format");
+            String screenshotFormat = config().getScreenshotFormat();
             switch (screenshotFormat) {
             case "png":
                 logFileScreenshot(driver, fileName);

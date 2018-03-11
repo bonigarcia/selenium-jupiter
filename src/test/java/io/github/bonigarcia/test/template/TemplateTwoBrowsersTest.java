@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.test.template;
 
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class TemplateTwoBrowsersTest {
@@ -38,13 +37,13 @@ public class TemplateTwoBrowsersTest {
     // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
-        setProperty("sel.jup.browser.template.json.file",
+        SeleniumJupiter.config().setBrowserTemplateJsonFile(
                 "./src/test/resources/browsers-two.json");
     }
 
     @AfterAll
     static void teardown() {
-        clearProperty("sel.jup.browser.template.json.file");
+        SeleniumJupiter.config().reset();
     }
 
     // tag::snippet-in-doc[]

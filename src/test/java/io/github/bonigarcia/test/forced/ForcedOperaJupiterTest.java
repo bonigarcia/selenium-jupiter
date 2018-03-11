@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.test.forced;
 
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -28,18 +26,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class ForcedOperaJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.exception.when.no.driver", "false");
+        SeleniumJupiter.config().setExceptionWhenNoDriver(false);
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.exception.when.no.driver");
+        SeleniumJupiter.config().reset();
     }
 
     @Test

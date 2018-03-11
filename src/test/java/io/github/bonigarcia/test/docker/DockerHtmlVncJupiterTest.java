@@ -17,8 +17,6 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,6 +33,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
@@ -44,14 +43,13 @@ public class DockerHtmlVncJupiterTest {
 
     @BeforeAll
     void setup() {
-        setProperty("sel.jup.vnc", "true");
-        setProperty("sel.jup.vnc.create.redirect.html.page", "true");
+        SeleniumJupiter.config().setVnc(true);
+        SeleniumJupiter.config().setVncRedirectHtmlPage(true);
     }
 
     @AfterAll
     void teardown() {
-        clearProperty("sel.jup.vnc");
-        clearProperty("sel.jup.vnc.create.redirect.html.page");
+        SeleniumJupiter.config().reset();
         assertTrue(htmlFile.exists());
         htmlFile.delete();
     }

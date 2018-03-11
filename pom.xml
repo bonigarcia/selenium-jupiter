@@ -123,6 +123,11 @@
             <artifactId>converter-gson</artifactId>
             <version>${retrofit.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.drapostolos</groupId>
+            <artifactId>type-parser</artifactId>
+            <version>0.6.0</version>
+        </dependency>
 
         <!-- provided -->
         <dependency>

@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
-import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.readAllBytes;
@@ -190,13 +189,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
             driverHandlerList.add(driverHandler);
         } catch (Exception e) {
+            e.printStackTrace();
             handleException(parameter, driverHandler, constructorClass, e);
         }
 
         if (driverHandler != null) {
             driverHandler.resolve();
             return driverHandler.getObject();
-        } else if (getBoolean("sel.jup.exception.when.no.driver")) {
+        } else if (config().isExceptionWhenNoDriver()) {
             throw new SeleniumJupiterException(
                     "No valid handler for " + parameter + " was found");
         } else {
@@ -325,12 +325,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             ExtensionContext extensionContext) {
         BrowsersTemplate browsersTemplate = null;
         try {
-            String browserJsonContent = getString(
-                    "sel.jup.browser.template.json.content");
-
+            String browserJsonContent = config()
+                    .getBrowserTemplateJsonContent();
             if (browserJsonContent.isEmpty()) {
-                String browserJsonFile = getString(
-                        "sel.jup.browser.template.json.file");
+                String browserJsonFile = config().getBrowserTemplateJsonFile();
                 if (browserJsonFile.startsWith(CLASSPATH_PREFIX)) {
                     String browserJsonInClasspath = browserJsonFile
                             .substring(CLASSPATH_PREFIX.length());

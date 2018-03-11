@@ -18,8 +18,6 @@ package io.github.bonigarcia.test.docker;
 
 import static com.google.common.collect.Maps.difference;
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static java.nio.charset.Charset.defaultCharset;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,6 +39,7 @@ import org.mockito.InjectMocks;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.test.mockito.MockitoExtension;
 
@@ -52,18 +51,15 @@ public class SelenoidConfigTest {
 
     @BeforeAll
     static void setup() {
-        setProperty("sel.jup.chrome.latest.version", "64.0");
-        setProperty("sel.jup.firefox.latest.version", "58.0");
-        setProperty("sel.jup.opera.latest.version", "51.0");
-        setProperty("sel.jup.browser.list.from.docker.hub", "false");
+        SeleniumJupiter.config().setChromeLatestVersion("64.0");
+        SeleniumJupiter.config().setFirefoxLatestVersion("58.0");
+        SeleniumJupiter.config().setOperaLatestVersion("51.0");
+        SeleniumJupiter.config().setBrowserListFromDockerHub(false);
     }
 
     @AfterAll
     static void teardown() {
-        clearProperty("sel.jup.chrome.latest.version");
-        clearProperty("sel.jup.firefox.latest.version");
-        clearProperty("sel.jup.opera.latest.version");
-        clearProperty("sel.jup.browser.list.from.docker.hub");
+        SeleniumJupiter.config().reset();
     }
 
     @ParameterizedTest

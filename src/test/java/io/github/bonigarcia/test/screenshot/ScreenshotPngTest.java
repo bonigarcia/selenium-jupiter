@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.test.screenshot;
 
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,6 +31,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
@@ -42,14 +41,13 @@ public class ScreenshotPngTest {
 
     @BeforeAll
     void setup() {
-        setProperty("sel.jup.screenshot.at.the.end.of.tests", "true");
-        setProperty("sel.jup.screenshot.format", "png");
+        SeleniumJupiter.config().enableScreenshotAtTheEndOfTests();
+        SeleniumJupiter.config().takeScreenshotAsPng();
     }
 
     @AfterAll
     void teardown() {
-        clearProperty("sel.jup.screenshot.at.the.end.of.tests");
-        clearProperty("sel.jup.screenshot.format");
+        SeleniumJupiter.config().reset();
         assertTrue(imageFile.exists());
         imageFile.delete();
     }

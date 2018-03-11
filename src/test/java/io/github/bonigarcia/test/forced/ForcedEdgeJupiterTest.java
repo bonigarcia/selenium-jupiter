@@ -30,19 +30,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class ForcedEdgeJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.exception.when.no.driver", "false");
+        SeleniumJupiter.config().setExceptionWhenNoDriver(false);
         setProperty("wdm.forceOs", "WIN");
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.exception.when.no.driver");
+        SeleniumJupiter.config().reset();
         clearProperty("wdm.forceOs");
     }
 

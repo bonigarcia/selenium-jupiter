@@ -16,9 +16,9 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.getString;
-import static org.slf4j.LoggerFactory.getLogger;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,7 @@ public class DockerHubService {
     DockerHubApi dockerHubApi;
 
     public DockerHubService() {
-        String dockerHubUrl = getString("sel.jup.docker.hub.url");
+        String dockerHubUrl = config().getDockerHubUrl();
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder().client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

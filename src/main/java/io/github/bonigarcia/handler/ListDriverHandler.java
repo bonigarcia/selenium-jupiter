@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
-import static io.github.bonigarcia.SeleniumJupiter.getInt;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -81,7 +80,7 @@ public class ListDriverHandler extends DriverHandler {
                         containerMap, dockerService, selenoidConfig);
                 firstDockerDriverHandler.setIndex("_0");
                 firstDockerDriverHandler.startSelenoidContainer();
-                if (getBoolean("sel.jup.vnc")) {
+                if (config().isVnc()) {
                     firstDockerDriverHandler.startNoVncContainer();
                 }
                 containerMap = firstDockerDriverHandler.getContainerMap();
@@ -93,8 +92,7 @@ public class ListDriverHandler extends DriverHandler {
                             firstDockerDriverHandler, testInstance,
                             dockerBrowser.get(), driverList, latch, index));
                 }
-                int timeout = numBrowsers
-                        * getInt("sel.jup.docker.wait.timeout.sec");
+                int timeout = numBrowsers * config().getDockerWaitTimeoutSec();
                 if (!latch.await(timeout, SECONDS)) {
                     throw new SeleniumJupiterException("Timeout of " + timeout
                             + " seconds waiting for start " + numBrowsers

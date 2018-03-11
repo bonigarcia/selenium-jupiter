@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -55,23 +55,23 @@ public enum BrowserType {
     public void init() {
         switch (this) {
         case FIREFOX:
-            dockerImage = getString("sel.jup.firefox.image.format");
-            path = getString("sel.jup.firefox.path");
+            dockerImage = config().getFirefoxImageFormat();
+            path = config().getFirefoxPath();
             driverHandler = new FirefoxDriverHandler();
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             capabilities = new DesiredCapabilities("firefox", "", ANY);
             break;
         case OPERA:
-            dockerImage = getString("sel.jup.opera.image.format");
-            path = getString("sel.jup.opera.path");
+            dockerImage = config().getOperaImageFormat();
+            path = config().getOperaPath();
             driverHandler = new OperaDriverHandler();
             optionsKey = OperaOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("operablink", "", ANY);
             break;
         case CHROME:
         default:
-            dockerImage = getString("sel.jup.chrome.image.format");
-            path = getString("sel.jup.chrome.path");
+            dockerImage = config().getChromeImageFormat();
+            path = config().getChromePath();
             driverHandler = new ChromeDriverHandler();
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("chrome", "", ANY);

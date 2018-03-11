@@ -17,8 +17,6 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -30,18 +28,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class BrowserListFromPropertiesJupiterTest {
 
     @BeforeEach
     void setup() {
-        setProperty("sel.jup.browser.list.from.docker.hub", "false");
+        SeleniumJupiter.config().setBrowserListFromDockerHub(false);
     }
 
     @AfterEach
     void teardown() {
-        clearProperty("sel.jup.browser.list.from.docker.hub");
+        SeleniumJupiter.config().reset();
     }
 
     @Test

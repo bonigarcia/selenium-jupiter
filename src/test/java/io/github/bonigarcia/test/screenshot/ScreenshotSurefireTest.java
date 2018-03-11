@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.test.screenshot;
 
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
@@ -41,16 +41,14 @@ public class ScreenshotSurefireTest {
 
     @BeforeAll
     void setup() {
-        setProperty("sel.jup.screenshot.at.the.end.of.tests", "true");
-        setProperty("sel.jup.screenshot.format", "base64andpng");
-        setProperty("sel.jup.output.folder", "surefire-reports");
+        SeleniumJupiter.config().enableScreenshotAtTheEndOfTests();
+        SeleniumJupiter.config().takeScreenshotAsBase64AndPng();
+        SeleniumJupiter.config().useSurefireOutputFolder();
     }
 
     @AfterAll
     void teardown() {
-        setProperty("sel.jup.screenshot.at.the.end.of.tests", "false");
-        setProperty("sel.jup.screenshot.format", "png");
-        setProperty("sel.jup.output.folder", ".");
+        SeleniumJupiter.config().reset();
         assertTrue(imageName.exists());
         imageName.delete();
     }

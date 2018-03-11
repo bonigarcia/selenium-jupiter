@@ -17,8 +17,6 @@
 package io.github.bonigarcia.test.docker;
 
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static java.lang.System.clearProperty;
-import static java.lang.System.setProperty;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -34,6 +32,7 @@ import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
@@ -43,17 +42,16 @@ public class DockerVncJupiterTest {
 
     @BeforeAll
     void setup() {
-        setProperty("sel.jup.vnc", "true");
+        SeleniumJupiter.config().setVnc(true);
     }
 
     @AfterAll
     void teardown() {
-        clearProperty("sel.jup.vnc");
+        SeleniumJupiter.config().reset();
     }
 
     @Test
-    public void testHtmlVnc(
-            @DockerBrowser(type = CHROME) WebDriver driver)
+    public void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

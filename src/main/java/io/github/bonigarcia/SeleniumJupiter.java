@@ -16,25 +16,20 @@
  */
 package io.github.bonigarcia;
 
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.wdm.WdmConfig;
-import io.github.bonigarcia.wdm.WebDriverManagerException;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Collection of utility features.
@@ -46,34 +41,21 @@ public class SeleniumJupiter {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
+    protected static Config config;
+
     SeleniumJupiter() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String getString(String key) {
-        String value = "";
-        if (!key.equals("")) {
-            value = System.getenv(key.toUpperCase().replace(".", "_"));
-            if (value == null) {
-                value = System.getProperty(key);
-            }
-            if (value == null) {
-                value = getProperty(key);
-            }
+    public static synchronized Config config() {
+        if (config == null) {
+            config = new Config();
         }
-        return value;
-    }
-
-    public static int getInt(String key) {
-        return parseInt(getString(key));
-    }
-
-    public static boolean getBoolean(String key) {
-        return parseBoolean(getString(key));
+        return config;
     }
 
     public static String getOutputFolder(ExtensionContext context) {
-        String outputFolder = getString("sel.jup.output.folder");
+        String outputFolder = config().getOutputFolder();
         Optional<Method> testMethod = context.getTestMethod();
         Optional<Class<?>> testInstance = context.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {
@@ -121,27 +103,6 @@ public class SeleniumJupiter {
             stringBuilder.append(testInstance.getName());
         }
         return stringBuilder.toString();
-    }
-
-    private static String getProperty(String key) {
-        String value = null;
-        Properties properties = new Properties();
-        try {
-            InputStream inputStream = WdmConfig.class.getResourceAsStream(
-                    System.getProperty("sel.jup.properties",
-                            "/selenium-jupiter.properties"));
-            properties.load(inputStream);
-            value = properties.getProperty(key);
-        } catch (Exception e) {
-            throw new WebDriverManagerException(e);
-        } finally {
-            if (value == null) {
-                log.trace("Property key {} not found, using default value",
-                        key);
-                value = "";
-            }
-        }
-        return value;
     }
 
 }

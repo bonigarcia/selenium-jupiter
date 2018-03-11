@@ -19,8 +19,7 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static io.github.bonigarcia.BrowserType.OPERA;
-import static io.github.bonigarcia.SeleniumJupiter.getBoolean;
-import static io.github.bonigarcia.SeleniumJupiter.getString;
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.stream.Collectors.toList;
@@ -52,9 +51,8 @@ public class DockerBrowserConfig {
     BrowserConfig operablink;
 
     public DockerBrowserConfig() {
-        if (!getBoolean("sel.jup.browser.list.from.docker.hub")) {
-            initBrowserConfigFromProperties();
-        } else {
+
+        if (config().isBrowserListFromDockerHub()) {
             try {
                 initBrowserConfigFromDockerHub();
             } catch (Exception e) {
@@ -63,6 +61,8 @@ public class DockerBrowserConfig {
                                 + " ... using properties values instead");
                 initBrowserConfigFromProperties();
             }
+        } else {
+            initBrowserConfigFromProperties();
         }
     }
 
@@ -131,17 +131,17 @@ public class DockerBrowserConfig {
         browserType.init();
         switch (browserType) {
         case FIREFOX:
-            firstVersion = getString("sel.jup.firefox.first.version");
-            latestVersion = getString("sel.jup.firefox.latest.version");
+            firstVersion = config().getFirefoxFirstVersion();
+            latestVersion = config().getFirefoxLatestVersion();
             break;
         case OPERA:
-            firstVersion = getString("sel.jup.opera.first.version");
-            latestVersion = getString("sel.jup.opera.latest.version");
+            firstVersion = config().getOperaFirstVersion();
+            latestVersion = config().getOperaLatestVersion();
             break;
         case CHROME:
         default:
-            firstVersion = getString("sel.jup.chrome.first.version");
-            latestVersion = getString("sel.jup.chrome.latest.version");
+            firstVersion = config().getChromeFirstVersion();
+            latestVersion = config().getChromeLatestVersion();
             break;
         }
 
@@ -197,7 +197,7 @@ public class DockerBrowserConfig {
 
     public static class Browser {
         String image;
-        String port = getString("sel.jup.selenoid.port");
+        String port = config().getSelenoidPort();
         String path;
         Tmpfs tmpfs = new Tmpfs();
 
@@ -213,7 +213,7 @@ public class DockerBrowserConfig {
 
     public static class Tmpfs {
         @SerializedName("/tmp")
-        String tmp = "size=" + getString("sel.jup.selenoid.tmpfs.size");
+        String tmp = "size=" + config().getSelenoidTmpfsSize();
     }
 
 }
