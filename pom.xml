@@ -8,7 +8,7 @@
 
     <properties>
         <!-- Dependencies -->
-        <selenium-java.version>3.9.1</selenium-java.version>
+        <selenium-java.version>3.11.0</selenium-java.version>
         <webdrivermanager.version>2.1.1-SNAPSHOT</webdrivermanager.version>
         <appium-java-client.version>5.0.4</appium-java-client.version>
         <docker-client.version>8.11.1</docker-client.version>
@@ -19,7 +19,7 @@
         <!-- Test dependencies -->
         <junit.jupiter.version>5.1.0</junit.jupiter.version>
         <junit.platform.version>1.1.0</junit.platform.version>
-        <selenium-server.version>3.9.1</selenium-server.version>
+        <selenium-server.version>3.11.0</selenium-server.version>
         <mockito-core.version>2.13.0</mockito-core.version>
         <hamcrest.version>1.3</hamcrest.version>
         <logback.version>1.1.3</logback.version>
