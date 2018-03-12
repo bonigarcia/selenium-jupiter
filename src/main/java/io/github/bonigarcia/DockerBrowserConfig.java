@@ -65,15 +65,17 @@ public class DockerBrowserConfig {
             initBrowserConfigFromProperties();
         }
 
-        chrome.addBrowser("beta",
-                new Browser("elastestbrowsers/chrome:beta", "/wd/hub"));
+        chrome.addBrowser("beta", new Browser(config().getChromeBetaImage(),
+                config().getChromeBetaPath()));
         chrome.addBrowser("unstable",
-                new Browser("elastestbrowsers/chrome:unstable", "/wd/hub"));
+                new Browser(config().getChromeUnstableImage(),
+                        config().getChromeUnstablePath()));
 
-        firefox.addBrowser("beta",
-                new Browser("elastestbrowsers/firefox:beta", "/wd/hub"));
+        firefox.addBrowser("beta", new Browser(config().getFirefoxBetaImage(),
+                config().getFirefoxBetaPath()));
         firefox.addBrowser("unstable",
-                new Browser("elastestbrowsers/firefox:nightly", "/wd/hub"));
+                new Browser(config().getFirefoxUnstableImage(),
+                        config().getFirefoxUnstablePath()));
     }
 
     public void initBrowserConfigFromDockerHub() throws IOException {

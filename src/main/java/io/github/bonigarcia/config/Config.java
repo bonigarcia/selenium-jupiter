@@ -101,6 +101,14 @@ public class Config {
             "sel.jup.chrome.latest.version", String.class);
     ConfigKey<String> chromePath = new ConfigKey<>("sel.jup.chrome.path",
             String.class);
+    ConfigKey<String> chromeBetaImage = new ConfigKey<>(
+            "sel.jup.chrome.beta.image", String.class);
+    ConfigKey<String> chromeBetaPath = new ConfigKey<>(
+            "sel.jup.chrome.beta.path", String.class);
+    ConfigKey<String> chromeUnstableImage = new ConfigKey<>(
+            "sel.jup.chrome.unstable.image", String.class);
+    ConfigKey<String> chromeUnstablePath = new ConfigKey<>(
+            "sel.jup.chrome.unstable.path", String.class);
     ConfigKey<String> firefoxImageFormat = new ConfigKey<>(
             "sel.jup.firefox.image.format", String.class);
     ConfigKey<String> firefoxFirstVersion = new ConfigKey<>(
@@ -109,6 +117,14 @@ public class Config {
             "sel.jup.firefox.latest.version", String.class);
     ConfigKey<String> firefoxPath = new ConfigKey<>("sel.jup.firefox.path",
             String.class);
+    ConfigKey<String> firefoxBetaImage = new ConfigKey<>(
+            "sel.jup.firefox.beta.image", String.class);
+    ConfigKey<String> firefoxBetaPath = new ConfigKey<>(
+            "sel.jup.firefox.beta.path", String.class);
+    ConfigKey<String> firefoxUnstableImage = new ConfigKey<>(
+            "sel.jup.firefox.unstable.image", String.class);
+    ConfigKey<String> firefoxUnstablePath = new ConfigKey<>(
+            "sel.jup.firefox.unstable.path", String.class);
     ConfigKey<String> operaImageFormat = new ConfigKey<>(
             "sel.jup.opera.image.format", String.class);
     ConfigKey<String> operaFirstVersion = new ConfigKey<>(
@@ -429,6 +445,38 @@ public class Config {
         this.chromePath.setValue(value);
     }
 
+    public String getChromeBetaImage() {
+        return resolve(chromeBetaImage);
+    }
+
+    public void setChromeBetaImage(String value) {
+        this.chromeBetaImage.setValue(value);
+    }
+
+    public String getChromeBetaPath() {
+        return resolve(chromeBetaPath);
+    }
+
+    public void setChromeBetaPath(String value) {
+        this.chromeBetaPath.setValue(value);
+    }
+
+    public String getChromeUnstableImage() {
+        return resolve(chromeUnstableImage);
+    }
+
+    public void setChromeUnstableImage(String value) {
+        this.chromeUnstableImage.setValue(value);
+    }
+
+    public String getChromeUnstablePath() {
+        return resolve(chromeUnstablePath);
+    }
+
+    public void setChromeUnstablePath(String value) {
+        this.chromeUnstablePath.setValue(value);
+    }
+
     public String getFirefoxImageFormat() {
         return resolve(firefoxImageFormat);
     }
@@ -459,6 +507,38 @@ public class Config {
 
     public void setFirefoxPath(String value) {
         this.firefoxPath.setValue(value);
+    }
+
+    public String getFirefoxBetaImage() {
+        return resolve(firefoxBetaImage);
+    }
+
+    public void setFirefoxBetaImage(String value) {
+        this.firefoxBetaImage.setValue(value);
+    }
+
+    public String getFirefoxBetaPath() {
+        return resolve(firefoxBetaPath);
+    }
+
+    public void setFirefoxBetaPath(String value) {
+        this.firefoxBetaPath.setValue(value);
+    }
+
+    public String getFirefoxUnstableImage() {
+        return resolve(firefoxUnstableImage);
+    }
+
+    public void setFirefoxUnstableImage(String value) {
+        this.firefoxUnstableImage.setValue(value);
+    }
+
+    public String getFirefoxUnstablePath() {
+        return resolve(firefoxUnstablePath);
+    }
+
+    public void setFirefoxUnstablePath(String value) {
+        this.firefoxUnstablePath.setValue(value);
     }
 
     public String getOperaImageFormat() {
