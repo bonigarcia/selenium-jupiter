@@ -279,7 +279,7 @@ public class DockerDriverHandler {
             log.info("Using {} version {}", browser, version);
             browserImage = selenoidConfig.getImageFromVersion(browser, version);
         }
-        dockerService.pullImageIfNecessary(browserImage);
+        dockerService.pullImage(browserImage);
 
         DockerContainer selenoidContainer = startSelenoidContainer();
         return selenoidContainer.getContainerUrl();

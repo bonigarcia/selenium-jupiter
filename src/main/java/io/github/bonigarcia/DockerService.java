@@ -36,11 +36,13 @@ import com.google.common.io.CharStreams;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.ProgressHandler;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.HostConfig;
 import com.spotify.docker.client.messages.PortBinding;
+import com.spotify.docker.client.messages.ProgressMessage;
 
 /**
  * Docker Service.
@@ -148,12 +150,23 @@ public class DockerService {
         return ports.get(exposed).get(0).hostPort();
     }
 
+    public void pullImage(String imageId)
+            throws DockerException, InterruptedException {
+        log.info("Pulling Docker image {} ... please wait", imageId);
+        dockerClient.pull(imageId, new ProgressHandler() {
+            @Override
+            public void progress(ProgressMessage message)
+                    throws DockerException {
+                log.trace("Pulling Docker image {} ... {}", imageId, message);
+            }
+        });
+        log.trace("Docker image {} downloaded", imageId);
+    }
+
     public void pullImageIfNecessary(String imageId)
             throws DockerException, InterruptedException {
         if (!existsImage(imageId)) {
-            log.info("Pulling Docker image {} ... please wait", imageId);
-            dockerClient.pull(imageId);
-            log.trace("Docker image {} downloaded", imageId);
+            pullImage(imageId);
         }
     }
 
