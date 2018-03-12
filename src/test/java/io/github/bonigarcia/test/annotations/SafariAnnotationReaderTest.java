@@ -17,7 +17,6 @@
 package io.github.bonigarcia.test.annotations;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -46,7 +45,6 @@ public class SafariAnnotationReaderTest {
 
     @ParameterizedTest
     @MethodSource("testClassProvider")
-    @SuppressWarnings("deprecation")
     void testSafariOptions(Class<?> testClass) throws Exception {
         Parameter parameter = testClass
                 .getMethod("safariTest", SafariDriver.class).getParameters()[0];
@@ -54,7 +52,6 @@ public class SafariAnnotationReaderTest {
         SafariOptions safariOptions = (SafariOptions) annotationsReader
                 .getOptions(parameter, testInstance);
 
-        assertTrue(safariOptions.getUseCleanSession());
         assertFalse(safariOptions.getUseTechnologyPreview());
     }
 }

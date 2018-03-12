@@ -36,7 +36,6 @@ public class SafariWithGlobalOptionsJupiterTest {
     @Options
     SafariOptions safariOptions = new SafariOptions();
     {
-        safariOptions.useCleanSession(true);
         safariOptions.setUseTechnologyPreview(false);
     }
 
