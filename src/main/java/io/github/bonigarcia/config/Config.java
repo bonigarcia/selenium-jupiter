@@ -25,8 +25,6 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 
-import com.github.drapostolos.typeparser.TypeParser;
-
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -39,8 +37,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class Config {
 
     final Logger log = getLogger(lookup().lookupClass());
-
-    TypeParser parser = TypeParser.newBuilder().build();
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
@@ -168,7 +164,23 @@ public class Config {
         if (strValue == null) {
             strValue = getProperty(name);
         }
-        return parser.parse(strValue, type);
+        return parse(type, strValue);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T parse(Class<T> type, String strValue) {
+        T output = null;
+        if (type.equals(String.class)) {
+            output = (T) strValue;
+        } else if (type.equals(Integer.class)) {
+            output = (T) Integer.valueOf(strValue);
+        } else if (type.equals(Boolean.class)) {
+            output = (T) Boolean.valueOf(strValue);
+        } else {
+            throw new SeleniumJupiterException(
+                    "Type " + type.getTypeName() + " cannot be parsed");
+        }
+        return output;
     }
 
     private String getProperty(String key) {
