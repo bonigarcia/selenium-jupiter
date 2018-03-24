@@ -84,6 +84,7 @@ public class SeleniumJupiter {
 
                 webdriver.quit();
                 dockerDriverHandler.cleanup();
+                dockerDriverHandler.close();
 
             } catch (Exception e) {
                 log.error("Exception trying to execute {} {} in Docker",

@@ -277,10 +277,13 @@ public class DockerDriverHandler {
                         currentThread().interrupt();
                     }
                     executorService.shutdown();
-                    dockerService.close();
                 }
             }
         }
+    }
+
+    public void close() {
+        dockerService.close();
     }
 
     private String startDockerBrowser(BrowserType browser, String version)
