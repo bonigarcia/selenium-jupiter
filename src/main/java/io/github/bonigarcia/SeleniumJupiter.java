@@ -23,8 +23,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.util.Scanner;
 
 import org.openqa.selenium.WebDriver;
-//import org.junit.jupiter.api.TestTemplate;
-//import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.config.Config;
@@ -52,9 +50,8 @@ public class SeleniumJupiter {
     public static void main(String[] args) {
         String validBrowsers = "chrome|firefox|opera";
         if (args.length <= 0) {
-            log.error("Usage: SeleniumJupiter browserName <version>",
-                    validBrowsers);
-            log.error("\t...where");
+            log.error("Usage: SeleniumJupiter browserName <version>");
+            log.error("\t...where:");
             log.error("\tbrowserName = {}", validBrowsers);
             log.error("\tversion = optional version (latest if empty)");
         } else {

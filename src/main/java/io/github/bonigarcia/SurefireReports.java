@@ -40,6 +40,10 @@ public class SurefireReports {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
+    private SurefireReports() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String getOutputFolder(ExtensionContext context) {
         String outputFolder = config().getOutputFolder();
         Optional<Method> testMethod = context.getTestMethod();
