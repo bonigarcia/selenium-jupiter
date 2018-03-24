@@ -152,20 +152,7 @@ public class DockerDriverHandler {
                     capabilities);
 
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
-            if (parameter != null) {
-                String parameterName = parameter.getName();
-                name = parameterName + "_" + browser + "_" + imageVersion + "_"
-                        + ((RemoteWebDriver) webdriver).getSessionId();
-                Optional<Method> testMethod = context.getTestMethod();
-                if (testMethod.isPresent()) {
-                    name = testMethod.get().getName() + "_" + name;
-                }
-                if (index != null) {
-                    name += index;
-                }
-            } else {
-                name = browser.name().toLowerCase();
-            }
+            updateName(browser, imageVersion, webdriver);
 
             if (enableVnc) {
                 String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
@@ -200,6 +187,24 @@ public class DockerDriverHandler {
             throw new SeleniumJupiterException(e);
         }
 
+    }
+
+    private void updateName(BrowserType browser, String imageVersion,
+            WebDriver webdriver) {
+        if (parameter != null) {
+            String parameterName = parameter.getName();
+            name = parameterName + "_" + browser + "_" + imageVersion + "_"
+                    + ((RemoteWebDriver) webdriver).getSessionId();
+            Optional<Method> testMethod = context.getTestMethod();
+            if (testMethod.isPresent()) {
+                name = testMethod.get().getName() + "_" + name;
+            }
+            if (index != null) {
+                name += index;
+            }
+        } else {
+            name = browser.name().toLowerCase();
+        }
     }
 
     private DesiredCapabilities getCapabilities(BrowserType browser,
