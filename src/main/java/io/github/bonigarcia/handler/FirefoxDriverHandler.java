@@ -77,7 +77,7 @@ public class FirefoxDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-        if (parameter != null && testInstance != null) {
+        if (parameter != null) {
             // @Arguments
             Arguments arguments = parameter.getAnnotation(Arguments.class);
             if (arguments != null) {

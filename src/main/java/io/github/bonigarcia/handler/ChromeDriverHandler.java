@@ -74,7 +74,7 @@ public class ChromeDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
 
-        if (parameter != null && testInstance != null) {
+        if (parameter != null) {
             // @Arguments
             Arguments arguments = parameter.getAnnotation(Arguments.class);
             if (arguments != null) {

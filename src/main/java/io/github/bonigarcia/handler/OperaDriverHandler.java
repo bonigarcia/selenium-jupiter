@@ -72,7 +72,7 @@ public class OperaDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         OperaOptions operaOptions = new OperaOptions();
 
-        if (parameter != null && testInstance != null) {
+        if (parameter != null) {
             // @Arguments
             Arguments arguments = parameter.getAnnotation(Arguments.class);
             if (arguments != null) {
