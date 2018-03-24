@@ -233,7 +233,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return driverHandler;
     }
 
-    private void initHandlerForDocker(DriverHandler driverHandler)
+    public void initHandlerForDocker(DriverHandler driverHandler)
             throws DockerCertificateException {
         if (containerMap == null) {
             containerMap = new LinkedHashMap<>();

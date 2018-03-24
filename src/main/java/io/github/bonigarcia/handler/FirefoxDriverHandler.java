@@ -77,37 +77,39 @@ public class FirefoxDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-        // @Arguments
-        Arguments arguments = parameter.getAnnotation(Arguments.class);
-        if (arguments != null) {
-            stream(arguments.value()).forEach(firefoxOptions::addArguments);
-        }
-
-        // @Extensions
-        Extensions extensions = parameter.getAnnotation(Extensions.class);
-        if (extensions != null) {
-            for (String extension : extensions.value()) {
-                FirefoxProfile firefoxProfile = new FirefoxProfile();
-                firefoxProfile.addExtension(getExtension(extension));
-                firefoxOptions.setProfile(firefoxProfile);
+        if (parameter != null && testInstance != null) {
+            // @Arguments
+            Arguments arguments = parameter.getAnnotation(Arguments.class);
+            if (arguments != null) {
+                stream(arguments.value()).forEach(firefoxOptions::addArguments);
             }
-        }
 
-        // @Binary
-        Binary binary = parameter.getAnnotation(Binary.class);
-        if (binary != null) {
-            firefoxOptions.setBinary(binary.value());
-        }
+            // @Extensions
+            Extensions extensions = parameter.getAnnotation(Extensions.class);
+            if (extensions != null) {
+                for (String extension : extensions.value()) {
+                    FirefoxProfile firefoxProfile = new FirefoxProfile();
+                    firefoxProfile.addExtension(getExtension(extension));
+                    firefoxOptions.setProfile(firefoxProfile);
+                }
+            }
 
-        // @Preferences
-        managePreferences(parameter, firefoxOptions);
+            // @Binary
+            Binary binary = parameter.getAnnotation(Binary.class);
+            if (binary != null) {
+                firefoxOptions.setBinary(binary.value());
+            }
 
-        // @Options
-        Object optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class);
-        if (optionsFromAnnotatedField != null) {
-            firefoxOptions = ((FirefoxOptions) optionsFromAnnotatedField)
-                    .merge(firefoxOptions);
+            // @Preferences
+            managePreferences(parameter, firefoxOptions);
+
+            // @Options
+            Object optionsFromAnnotatedField = annotationsReader
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
+            if (optionsFromAnnotatedField != null) {
+                firefoxOptions = ((FirefoxOptions) optionsFromAnnotatedField)
+                        .merge(firefoxOptions);
+            }
         }
 
         return firefoxOptions;

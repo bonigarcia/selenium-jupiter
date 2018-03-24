@@ -32,6 +32,8 @@
         <asciidoctorj-pdf.version>1.5.0-alpha.16</asciidoctorj-pdf.version>
         <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
 
         <!-- Java 8 -->
         <java.version>1.8</java.version>
@@ -41,6 +43,9 @@
         <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Main class -->
+        <sel.jup.mainClass>io.github.bonigarcia.SeleniumJupiter</sel.jup.mainClass>
     </properties>
 
     <name>selenium-jupiter</name>
@@ -123,6 +128,11 @@
             <artifactId>converter-gson</artifactId>
             <version>${retrofit.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
 
         <!-- provided -->
         <dependency>
@@ -161,12 +171,6 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -293,6 +297,45 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>${sel.jup.mainClass}</mainClass>
+                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${sel.jup.mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/logback.xml</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -18,8 +18,8 @@ package io.github.bonigarcia.handler;
 
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.BrowserType.OPERA;
+import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static io.github.bonigarcia.SeleniumJupiter.config;
-import static io.github.bonigarcia.SeleniumJupiter.getOutputFolder;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
@@ -43,6 +43,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,6 +60,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
 
@@ -95,6 +97,12 @@ public class DockerDriverHandler {
     boolean recording = config().isRecording();
     String selenoidImage = config().getSelenoidImage();
     String novncImage = config().getNovncImage();
+
+    public DockerDriverHandler() throws DockerCertificateException {
+        this.selenoidConfig = new SelenoidConfig();
+        this.dockerService = new DockerService();
+        this.containerMap = new LinkedHashMap<>();
+    }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
@@ -139,27 +147,34 @@ public class DockerDriverHandler {
             String selenoidHost = selenoidHubUrl.getHost();
             int selenoidPort = selenoidHubUrl.getPort();
 
-            log.debug("Using hub at {}", selenoidHub);
+            log.trace("Using hub at {}", selenoidHub);
             WebDriver webdriver = new RemoteWebDriver(new URL(selenoidHub),
                     capabilities);
 
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
-            String parameterName = parameter.getName();
-            name = parameterName + "_" + browser + "_" + imageVersion + "_"
-                    + ((RemoteWebDriver) webdriver).getSessionId();
-            Optional<Method> testMethod = context.getTestMethod();
-            if (testMethod.isPresent()) {
-                name = testMethod.get().getName() + "_" + name;
-            }
-            if (index != null) {
-                name += index;
+            if (parameter != null) {
+                String parameterName = parameter.getName();
+                name = parameterName + "_" + browser + "_" + imageVersion + "_"
+                        + ((RemoteWebDriver) webdriver).getSessionId();
+                Optional<Method> testMethod = context.getTestMethod();
+                if (testMethod.isPresent()) {
+                    name = testMethod.get().getName() + "_" + name;
+                }
+                if (index != null) {
+                    name += index;
+                }
+            } else {
+                name = browser.name().toLowerCase();
             }
 
             if (enableVnc) {
                 String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
                         sessionId.toString(),
                         config().getSelenoidVncPassword());
-                log.debug("Session {} VNC URL: {}", sessionId, novncUrl);
+                log.info("Session id {}", sessionId);
+                log.info(
+                        "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
+                log.info("{}", novncUrl);
 
                 if (config().isVncRedirectHtmlPage()) {
                     String outputFolder = getOutputFolder(context);
@@ -204,8 +219,9 @@ public class DockerDriverHandler {
                     config().getRecordingVideoFrameRate());
         }
 
-        Optional<Capabilities> optionalCapabilities = annotationsReader
-                .getCapabilities(parameter, testInstance);
+        Optional<Capabilities> optionalCapabilities = annotationsReader != null
+                ? annotationsReader.getCapabilities(parameter, testInstance)
+                : Optional.of(new DesiredCapabilities());
         MutableCapabilities options = browser.getDriverHandler()
                 .getOptions(parameter, testInstance);
 
@@ -218,7 +234,7 @@ public class DockerDriverHandler {
             options.merge(optionalCapabilities.get());
         }
         capabilities.setCapability(browser.getOptionsKey(), options);
-        log.debug("Using {}", capabilities);
+        log.trace("Using {}", capabilities);
         return capabilities;
     }
 
@@ -261,6 +277,7 @@ public class DockerDriverHandler {
                         currentThread().interrupt();
                     }
                     executorService.shutdown();
+                    dockerService.close();
                 }
             }
         }
@@ -367,19 +384,24 @@ public class DockerDriverHandler {
 
     private int getDockerBrowserCount() {
         int count = 0;
-        Optional<Class<?>> testClass = context.getTestClass();
-        if (testClass.isPresent()) {
-            Constructor<?>[] declaredConstructors = testClass.get()
-                    .getDeclaredConstructors();
-            for (Constructor<?> constructor : declaredConstructors) {
-                Parameter[] parameters = constructor.getParameters();
-                count += getDockerBrowsersInParams(parameters);
+        if (context != null) {
+            Optional<Class<?>> testClass = context.getTestClass();
+            if (testClass.isPresent()) {
+                Constructor<?>[] declaredConstructors = testClass.get()
+                        .getDeclaredConstructors();
+                for (Constructor<?> constructor : declaredConstructors) {
+                    Parameter[] parameters = constructor.getParameters();
+                    count += getDockerBrowsersInParams(parameters);
+                }
+                Method[] declaredMethods = testClass.get().getDeclaredMethods();
+                for (Method method : declaredMethods) {
+                    Parameter[] parameters = method.getParameters();
+                    count += getDockerBrowsersInParams(parameters);
+                }
             }
-            Method[] declaredMethods = testClass.get().getDeclaredMethods();
-            for (Method method : declaredMethods) {
-                Parameter[] parameters = method.getParameters();
-                count += getDockerBrowsersInParams(parameters);
-            }
+        } else {
+            // Interactive mode
+            count = 1;
         }
         log.trace("Number of required Docker browser(s): {}", count);
         return count;

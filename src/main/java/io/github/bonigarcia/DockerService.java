@@ -96,7 +96,7 @@ public class DockerService {
     public String startContainer(DockerContainer dockerContainer)
             throws DockerException, InterruptedException {
         String imageId = dockerContainer.getImageId();
-        log.debug("Starting Docker container {}", imageId);
+        log.info("Starting Docker container {}", imageId);
         com.spotify.docker.client.messages.HostConfig.Builder hostConfigBuilder = HostConfig
                 .builder();
         com.spotify.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
@@ -184,7 +184,7 @@ public class DockerService {
     }
 
     public void stopAndRemoveContainer(String containerId, String imageId) {
-        log.debug("Stopping Docker container {}", imageId);
+        log.info("Stopping Docker container {}", imageId);
         try {
             stopContainer(containerId);
             removeContainer(containerId);
@@ -236,6 +236,10 @@ public class DockerService {
 
     public int getDockerPollTimeMs() {
         return dockerPollTimeMs;
+    }
+
+    public void close() {
+        dockerClient.close();
     }
 
 }

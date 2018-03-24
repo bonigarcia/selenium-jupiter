@@ -55,7 +55,7 @@ public class DockerHubService {
     }
 
     public List<DockerHubTag> listTags() throws IOException {
-        log.debug("Getting browser image list from Docker Hub");
+        log.info("Getting browser image list from Docker Hub");
         Response<DockerHubTags> listTagsResponse = dockerHubApi.listTags()
                 .execute();
         if (!listTagsResponse.isSuccessful()) {

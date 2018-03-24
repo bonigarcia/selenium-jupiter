@@ -74,32 +74,34 @@ public class ChromeDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         ChromeOptions chromeOptions = new ChromeOptions();
 
-        // @Arguments
-        Arguments arguments = parameter.getAnnotation(Arguments.class);
-        if (arguments != null) {
-            stream(arguments.value()).forEach(chromeOptions::addArguments);
-        }
-
-        // @Extensions
-        Extensions extensions = parameter.getAnnotation(Extensions.class);
-        if (extensions != null) {
-            for (String extension : extensions.value()) {
-                chromeOptions.addExtensions(getExtension(extension));
+        if (parameter != null && testInstance != null) {
+            // @Arguments
+            Arguments arguments = parameter.getAnnotation(Arguments.class);
+            if (arguments != null) {
+                stream(arguments.value()).forEach(chromeOptions::addArguments);
             }
-        }
 
-        // @Binary
-        Binary binary = parameter.getAnnotation(Binary.class);
-        if (binary != null) {
-            chromeOptions.setBinary(binary.value());
-        }
+            // @Extensions
+            Extensions extensions = parameter.getAnnotation(Extensions.class);
+            if (extensions != null) {
+                for (String extension : extensions.value()) {
+                    chromeOptions.addExtensions(getExtension(extension));
+                }
+            }
 
-        // @Options
-        Object optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class);
-        if (optionsFromAnnotatedField != null) {
-            chromeOptions = ((ChromeOptions) optionsFromAnnotatedField)
-                    .merge(chromeOptions);
+            // @Binary
+            Binary binary = parameter.getAnnotation(Binary.class);
+            if (binary != null) {
+                chromeOptions.setBinary(binary.value());
+            }
+
+            // @Options
+            Object optionsFromAnnotatedField = annotationsReader
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
+            if (optionsFromAnnotatedField != null) {
+                chromeOptions = ((ChromeOptions) optionsFromAnnotatedField)
+                        .merge(chromeOptions);
+            }
         }
 
         return chromeOptions;

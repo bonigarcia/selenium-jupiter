@@ -72,32 +72,34 @@ public class OperaDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         OperaOptions operaOptions = new OperaOptions();
 
-        // @Arguments
-        Arguments arguments = parameter.getAnnotation(Arguments.class);
-        if (arguments != null) {
-            stream(arguments.value()).forEach(operaOptions::addArguments);
-        }
-
-        // @Extensions
-        Extensions extensions = parameter.getAnnotation(Extensions.class);
-        if (extensions != null) {
-            for (String extension : extensions.value()) {
-                operaOptions.addExtensions(getExtension(extension));
+        if (parameter != null && testInstance != null) {
+            // @Arguments
+            Arguments arguments = parameter.getAnnotation(Arguments.class);
+            if (arguments != null) {
+                stream(arguments.value()).forEach(operaOptions::addArguments);
             }
-        }
 
-        // @Binary
-        Binary binary = parameter.getAnnotation(Binary.class);
-        if (binary != null) {
-            operaOptions.setBinary(binary.value());
-        }
+            // @Extensions
+            Extensions extensions = parameter.getAnnotation(Extensions.class);
+            if (extensions != null) {
+                for (String extension : extensions.value()) {
+                    operaOptions.addExtensions(getExtension(extension));
+                }
+            }
 
-        // @Options
-        Object optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class);
-        if (optionsFromAnnotatedField != null) {
-            operaOptions = ((OperaOptions) optionsFromAnnotatedField)
-                    .merge(operaOptions);
+            // @Binary
+            Binary binary = parameter.getAnnotation(Binary.class);
+            if (binary != null) {
+                operaOptions.setBinary(binary.value());
+            }
+
+            // @Options
+            Object optionsFromAnnotatedField = annotationsReader
+                    .getOptionsFromAnnotatedField(testInstance, Options.class);
+            if (optionsFromAnnotatedField != null) {
+                operaOptions = ((OperaOptions) optionsFromAnnotatedField)
+                        .merge(operaOptions);
+            }
         }
 
         return operaOptions;

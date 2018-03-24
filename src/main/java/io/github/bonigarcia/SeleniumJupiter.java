@@ -17,22 +17,20 @@
 package io.github.bonigarcia;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.File;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Optional;
+import java.util.Scanner;
 
-import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.WebDriver;
+//import org.junit.jupiter.api.TestTemplate;
+//import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.config.Config;
+import io.github.bonigarcia.handler.DockerDriverHandler;
 
 /**
- * Collection of utility features.
+ * Main class for interactive mode.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
@@ -43,10 +41,6 @@ public class SeleniumJupiter {
 
     protected static Config config;
 
-    SeleniumJupiter() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static synchronized Config config() {
         if (config == null) {
             config = new Config();
@@ -54,55 +48,48 @@ public class SeleniumJupiter {
         return config;
     }
 
-    public static String getOutputFolder(ExtensionContext context) {
-        String outputFolder = config().getOutputFolder();
-        Optional<Method> testMethod = context.getTestMethod();
-        Optional<Class<?>> testInstance = context.getTestClass();
-        if (testMethod.isPresent() && testInstance.isPresent()) {
-            if (outputFolder.equalsIgnoreCase("surefire-reports")) {
-                outputFolder = getSurefireOutputFolder(testMethod.get(),
-                        testInstance.get());
-            } else if (outputFolder.isEmpty()) {
-                outputFolder = ".";
-            }
-        }
-
-        log.trace("Output folder {}", outputFolder);
-        File outputFolderFile = new File(outputFolder);
-        if (!outputFolderFile.exists()) {
-            outputFolderFile.mkdirs();
-        }
-        return outputFolder;
-    }
-
-    private static String getSurefireOutputFolder(Method testMethod,
-            Class<?> testInstance) {
-        Annotation[] annotations = testMethod.getAnnotations();
-        StringBuilder stringBuilder = new StringBuilder(
-                "./target/surefire-reports/");
-
-        boolean isTestTemplate = stream(annotations)
-                .map(Annotation::annotationType)
-                .anyMatch(a -> a == TestTemplate.class);
-        log.trace("Is test template? {}", isTestTemplate);
-
-        if (isTestTemplate) {
-            stringBuilder.append(testMethod.getName());
-            stringBuilder.append("(");
-
-            Class<?>[] parameterTypes = testMethod.getParameterTypes();
-            for (int i = 0; i < parameterTypes.length; i++) {
-                if (i != 0) {
-                    stringBuilder.append(", ");
-                }
-                stringBuilder.append(parameterTypes[i].getSimpleName());
-            }
-            stringBuilder.append(")/");
-
+    public static void main(String[] args) {
+        String validBrowsers = "chrome|firefox|opera";
+        if (args.length <= 0) {
+            log.error("Usage: SeleniumJupiter browserName <version>",
+                    validBrowsers);
+            log.error("\t...where");
+            log.error("\tbrowserName = {}", validBrowsers);
+            log.error("\tversion = optional version (latest if empty)");
         } else {
-            stringBuilder.append(testInstance.getName());
+            String browser = args[0];
+            String version = "";
+            String versionMessage = "(latest)";
+            if (args.length > 1) {
+                version = args[1];
+                versionMessage = version;
+            }
+            log.info("Using SeleniumJupiter to execute {} {} in Docker",
+                    browser, versionMessage);
+            try {
+                config().setVnc(true);
+                DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
+
+                BrowserType browserType = BrowserType
+                        .valueOf(browser.toUpperCase());
+                browserType.init();
+
+                WebDriver webdriver = dockerDriverHandler.resolve(browserType,
+                        version);
+
+                log.info("Press ENTER to exit");
+                Scanner scanner = new Scanner(System.in);
+                scanner.nextLine();
+                scanner.close();
+
+                webdriver.quit();
+                dockerDriverHandler.cleanup();
+
+            } catch (Exception e) {
+                log.error("Exception trying to execute {} {} in Docker",
+                        browser, versionMessage, e);
+            }
         }
-        return stringBuilder.toString();
     }
 
 }

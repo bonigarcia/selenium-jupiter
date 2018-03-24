@@ -16,8 +16,8 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static io.github.bonigarcia.SeleniumJupiter.config;
-import static io.github.bonigarcia.SeleniumJupiter.getOutputFolder;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.BASE64;
