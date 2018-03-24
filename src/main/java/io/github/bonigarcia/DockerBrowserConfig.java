@@ -97,13 +97,15 @@ public class DockerBrowserConfig {
         List<String> browserList = null;
         String latestVersion = null;
         browserType.init();
+
+        VersionComparator versionComparator = new VersionComparator();
         switch (browserType) {
         case FIREFOX:
             final String firefoxPreffix = "firefox_";
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(firefoxPreffix))
                     .map(p -> p.getName().replace(firefoxPreffix, ""))
-                    .sorted(browserType::compareVersions).collect(toList());
+                    .sorted(versionComparator::compare).collect(toList());
             latestVersion = browserList.get(browserList.size() - 1);
             break;
         case OPERA:
@@ -111,7 +113,7 @@ public class DockerBrowserConfig {
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(operaPreffix))
                     .map(p -> p.getName().replace(operaPreffix, ""))
-                    .sorted(browserType::compareVersions).skip(1)
+                    .sorted(versionComparator::compare).skip(1)
                     .collect(toList());
             latestVersion = browserList.get(browserList.size() - 1);
             break;
@@ -121,7 +123,7 @@ public class DockerBrowserConfig {
             browserList = dockerHubTags.stream()
                     .filter(p -> p.getName().startsWith(chromePreffix))
                     .map(p -> p.getName().replace(chromePreffix, ""))
-                    .sorted(browserType::compareVersions).collect(toList());
+                    .sorted(versionComparator::compare).collect(toList());
             latestVersion = browserList.get(browserList.size() - 1);
             break;
         }
