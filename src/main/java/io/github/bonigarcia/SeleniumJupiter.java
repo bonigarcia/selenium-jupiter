@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static java.lang.Runtime.getRuntime;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -66,6 +67,7 @@ public class SeleniumJupiter {
             }
             log.info("Using SeleniumJupiter to execute {} {} in Docker",
                     browser, versionMessage);
+
             try {
                 config().setVnc(true);
                 DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
@@ -77,19 +79,35 @@ public class SeleniumJupiter {
                 WebDriver webdriver = dockerDriverHandler.resolve(browserType,
                         version);
 
+                getRuntime().addShutdownHook(new Thread() {
+                    @Override
+                    public void run() {
+                        cleanContainers(dockerDriverHandler, webdriver);
+                    }
+                });
+
                 log.info("Press ENTER to exit");
                 Scanner scanner = new Scanner(System.in);
                 scanner.nextLine();
                 scanner.close();
 
-                webdriver.quit();
-                dockerDriverHandler.cleanup();
-                dockerDriverHandler.close();
+                cleanContainers(dockerDriverHandler, webdriver);
 
             } catch (Exception e) {
                 log.error("Exception trying to execute {} {} in Docker",
                         browser, versionMessage, e);
             }
+        }
+    }
+
+    private static void cleanContainers(DockerDriverHandler dockerDriverHandler,
+            WebDriver webdriver) {
+        if (webdriver != null) {
+            webdriver.quit();
+        }
+        if (dockerDriverHandler != null) {
+            dockerDriverHandler.cleanup();
+            dockerDriverHandler.close();
         }
     }
 
