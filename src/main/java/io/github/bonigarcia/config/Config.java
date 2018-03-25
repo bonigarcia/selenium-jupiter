@@ -45,6 +45,8 @@ public class Config {
             "sel.jup.vnc.screen.resolution", String.class);
     ConfigKey<Boolean> vncRedirectHtmlPage = new ConfigKey<>(
             "sel.jup.vnc.create.redirect.html.page", Boolean.class);
+    ConfigKey<String> vncExport = new ConfigKey<>("sel.jup.vnc.export",
+            String.class);
     ConfigKey<Boolean> recording = new ConfigKey<>("sel.jup.recording",
             Boolean.class);
     ConfigKey<String> recordingVideoScreenSize = new ConfigKey<>(
@@ -247,6 +249,14 @@ public class Config {
 
     public void setVncRedirectHtmlPage(boolean value) {
         this.vncRedirectHtmlPage.setValue(value);
+    }
+
+    public String getVncExport() {
+        return resolve(vncExport);
+    }
+
+    public void setVncExport(String value) {
+        this.vncExport.setValue(value);
     }
 
     public boolean isRecording() {

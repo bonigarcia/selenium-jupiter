@@ -162,6 +162,9 @@ public class DockerDriverHandler {
                 log.info(
                         "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
                 log.info("{}", novncUrl);
+                String vncExport = config().getVncExport();
+                log.trace("Exporting VNC URL as Java property {}", vncExport);
+                System.setProperty(vncExport, novncUrl);
 
                 if (config().isVncRedirectHtmlPage()) {
                     String outputFolder = getOutputFolder(context);
@@ -252,6 +255,12 @@ public class DockerDriverHandler {
             // Wait for recordings
             if (recording) {
                 waitForRecording();
+            }
+            // Clear VNC URL
+            String vncExport = config().getVncExport();
+            if (config().isVnc() && System.getProperty(vncExport) != null) {
+                log.trace("Clearing Java property {}", vncExport);
+                System.clearProperty(vncExport);
             }
         } catch (Exception e) {
             log.warn("Exception waiting for recording {}", e.getMessage());
