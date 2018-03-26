@@ -85,12 +85,22 @@ public class ListDriverHandler extends DriverHandler {
                 }
                 containerMap = firstDockerDriverHandler.getContainerMap();
 
-                executorService = newFixedThreadPool(numBrowsers);
+                boolean browserListInParallel = config()
+                        .isBrowserListInParallel();
+                if (browserListInParallel) {
+                    executorService = newFixedThreadPool(numBrowsers);
+                }
                 for (int i = 0; i < numBrowsers; i++) {
-                    final int index = i;
-                    executorService.submit(() -> resolveDockerBrowser(
-                            firstDockerDriverHandler, testInstance,
-                            dockerBrowser.get(), driverList, latch, index));
+                    if (browserListInParallel) {
+                        final int index = i;
+                        executorService.submit(() -> resolveDockerBrowser(
+                                firstDockerDriverHandler, testInstance,
+                                dockerBrowser.get(), driverList, latch, index));
+                    } else {
+                        resolveDockerBrowser(firstDockerDriverHandler,
+                                testInstance, dockerBrowser.get(), driverList,
+                                latch, i);
+                    }
                 }
                 int timeout = numBrowsers * config().getDockerWaitTimeoutSec();
                 if (!latch.await(timeout, SECONDS)) {

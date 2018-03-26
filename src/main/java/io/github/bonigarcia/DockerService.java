@@ -24,6 +24,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class DockerService {
     private int dockerWaitTimeoutSec;
     private int dockerPollTimeMs;
     private DockerClient dockerClient;
+    private List<String> pulledImages = new ArrayList<>();
 
     public DockerService() throws DockerCertificateException {
         dockerDefaultSocket = config().getDockerDefaultSocket();
@@ -152,15 +154,19 @@ public class DockerService {
 
     public void pullImage(String imageId)
             throws DockerException, InterruptedException {
-        log.info("Pulling Docker image {} ... please wait", imageId);
-        dockerClient.pull(imageId, new ProgressHandler() {
-            @Override
-            public void progress(ProgressMessage message)
-                    throws DockerException {
-                log.trace("Pulling Docker image {} ... {}", imageId, message);
-            }
-        });
-        log.trace("Docker image {} downloaded", imageId);
+        if (!pulledImages.contains(imageId)) {
+            log.info("Pulling Docker image {} ... please wait", imageId);
+            dockerClient.pull(imageId, new ProgressHandler() {
+                @Override
+                public void progress(ProgressMessage message)
+                        throws DockerException {
+                    log.trace("Pulling Docker image {} ... {}", imageId,
+                            message);
+                }
+            });
+            pulledImages.add(imageId);
+            log.trace("Docker image {} downloaded", imageId);
+        }
     }
 
     public void pullImageIfNecessary(String imageId)

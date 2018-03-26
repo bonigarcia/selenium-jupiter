@@ -18,8 +18,8 @@ package io.github.bonigarcia.handler;
 
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.BrowserType.OPERA;
-import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static io.github.bonigarcia.SeleniumJupiter.config;
+import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
@@ -324,7 +324,7 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer;
         if (containerMap.containsKey(selenoidImage)) {
-            log.debug("Selenoid container already available");
+            log.trace("Selenoid container already available");
             selenoidContainer = containerMap.get(selenoidImage);
         } else {
             // Pull images

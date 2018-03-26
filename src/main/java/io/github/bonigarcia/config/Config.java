@@ -79,6 +79,8 @@ public class Config {
             "sel.jup.browser.list.from.docker.hub", Boolean.class);
     ConfigKey<String> browserSessionTimeoutDuration = new ConfigKey<>(
             "sel.jup.browser.session.timeout.duration", String.class);
+    ConfigKey<Boolean> browserListInParallel = new ConfigKey<>(
+            "sel.jup.browser.list.in.parallel", Boolean.class);
     ConfigKey<String> selenoidImage = new ConfigKey<>("sel.jup.selenoid.image",
             String.class);
     ConfigKey<String> selenoidPort = new ConfigKey<>("sel.jup.selenoid.port",
@@ -385,6 +387,14 @@ public class Config {
 
     public void setBrowserSessionTimeoutDuration(String value) {
         this.browserSessionTimeoutDuration.setValue(value);
+    }
+
+    public Boolean isBrowserListInParallel() {
+        return resolve(browserListInParallel);
+    }
+
+    public void setBrowserListInParallel(Boolean value) {
+        this.browserListInParallel.setValue(value);
     }
 
     public String getSelenoidImage() {
