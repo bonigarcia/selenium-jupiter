@@ -74,7 +74,7 @@ public class ListDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                resolveBrowserList(testInstance, dockerBrowser);
+                resolveBrowserList(testInstance, dockerBrowser.get());
 
             } else {
                 log.warn("Annotation @DockerBrowser should be declared");
@@ -86,10 +86,10 @@ public class ListDriverHandler extends DriverHandler {
     }
 
     private void resolveBrowserList(Optional<Object> testInstance,
-            Optional<DockerBrowser> dockerBrowser)
+            DockerBrowser dockerBrowser)
             throws DockerException, InterruptedException, IOException {
         List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
-        int numBrowsers = dockerBrowser.get().size();
+        int numBrowsers = dockerBrowser.size();
         CountDownLatch latch = new CountDownLatch(numBrowsers);
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
@@ -110,11 +110,11 @@ public class ListDriverHandler extends DriverHandler {
             if (browserListInParallel) {
                 final int index = i;
                 executorService.submit(() -> resolveDockerBrowser(
-                        firstDockerDriverHandler, testInstance,
-                        dockerBrowser.get(), driverList, latch, index));
+                        firstDockerDriverHandler, testInstance, dockerBrowser,
+                        driverList, latch, index));
             } else {
                 resolveDockerBrowser(firstDockerDriverHandler, testInstance,
-                        dockerBrowser.get(), driverList, latch, i);
+                        dockerBrowser, driverList, latch, i);
             }
         }
         int timeout = numBrowsers * config().getDockerWaitTimeoutSec();
