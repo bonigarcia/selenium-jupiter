@@ -46,7 +46,7 @@ public class PerformenceDockerChromeJupiterTest {
 
     @Test
     public void testPerformance(
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
+            @DockerBrowser(type = CHROME, version = "64.0", size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
             throws InterruptedException {
 
         ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS);
