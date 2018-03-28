@@ -45,6 +45,7 @@ public class DockerHtmlVncJupiterTest {
     void setup() {
         SeleniumJupiter.config().setVnc(true);
         SeleniumJupiter.config().setVncRedirectHtmlPage(true);
+        SeleniumJupiter.config().useSurefireOutputFolder();
     }
 
     @AfterAll
@@ -61,7 +62,8 @@ public class DockerHtmlVncJupiterTest {
         assertThat(driver.getTitle(),
                 containsString("A JUnit 5 extension for Selenium WebDriver"));
 
-        htmlFile = new File("testHtmlVnc_arg0_CHROME_64.0_"
+        String folder = "target/surefire-reports/io.github.bonigarcia.test.docker.DockerHtmlVncJupiterTest";
+        htmlFile = new File(folder, "testHtmlVnc_arg0_CHROME_64.0_"
                 + driver.getSessionId() + ".html");
     }
 
