@@ -149,7 +149,16 @@ public class DockerService {
             throws DockerException, InterruptedException {
         ImmutableMap<String, List<PortBinding>> ports = dockerClient
                 .inspectContainer(containerId).networkSettings().ports();
-        return ports.get(exposed).get(0).hostPort();
+        List<PortBinding> exposedPort = ports.get(exposed);
+        log.trace("Port list {} -- Exposed port {} = {}", ports, exposed,
+                exposedPort);
+        if (ports.isEmpty() || exposedPort.isEmpty()) {
+            String dockerImage = dockerClient.inspectContainer(containerId)
+                    .config().image();
+            throw new SeleniumJupiterException("Port " + exposed
+                    + " is not bindable in container " + dockerImage);
+        }
+        return exposedPort.get(0).hostPort();
     }
 
     public void pullImage(String imageId)
