@@ -691,10 +691,6 @@ public class Config {
         this.screenshotAtTheEndOfTests.setValue("false");
     }
 
-    public void whenFailureScreenshotAtTheEndOfTests() {
-        this.screenshotAtTheEndOfTests.setValue("whenfailure");
-    }
-
     public void takeScreenshotAsBase64() {
         this.screenshotFormat.setValue("base64");
     }
