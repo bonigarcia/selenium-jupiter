@@ -21,8 +21,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-import java.io.File;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,8 +35,6 @@ import io.github.bonigarcia.SeleniumJupiter;
 @ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class DockerVncJupiterTest {
-
-    File htmlFile;
 
     @BeforeAll
     void setup() {
