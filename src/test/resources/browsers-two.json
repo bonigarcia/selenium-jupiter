@@ -10,10 +10,10 @@
       ],
       [
          {
-            "type": "phantomjs"
+            "type": "chrome"
          },
          {
-            "type": "opera-in-docker"
+            "type": "phantomjs"
          }
       ]
    ]
