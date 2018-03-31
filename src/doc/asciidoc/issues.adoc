@@ -4,11 +4,15 @@
 
 A daily use case in web development is testing an web application deployed in a local server (_http://localhost:port/path_). In the case of using Docker browsers to test this web application, we need to be aware that _localhost_ inside a Docker container is not the local host anymore, but the container. To handle this issue, different approaches can be taken.
 
-* If your host (i.e. the local machine running the tests and hosting the web application under test) is Linux, Docker creates a bridge named `docker0` by default. Both the Docker host and the Docker containers have an IP address on that bridge. We can find out the equivalent IP address to localhost using the following command:
+* If your host (i.e. the local machine running the tests and hosting the web application under test) is Linux, Docker creates a bridge named `docker0` by default. Both the Docker host and the Docker containers have an IP address on that bridge. We can find out the equivalent IP address to localhost using the following command (in this example, the address `172.17.0.1` will be used to replace localhost in our tests):  
 
 [source]
 ----
-$ sudo ip addr show docker0
+$ ip addr show docker0
+4: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    link/ether 02:42:b4:83:10:c8 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 scope global docker0
+       valid_lft forever preferred_lft forever
 ----
 
 * If your host is Mac and using _Docker for Mac_, we can use the special DNS name `docker.for.mac.host.internal` which will resolve to the internal IP address used by the host.
