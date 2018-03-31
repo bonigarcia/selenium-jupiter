@@ -792,10 +792,10 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="configuration"><a class="anchor" href="#configuration"></a>Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Configuration parameters for <em>selenium_jupiter</em> are set in the <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties">selenium-jupiter.properties</a> file. The following table summarizes all the configuration keys available.</p>
+<p>Default configuration parameters for <em>Selenium-Jupiter</em> are set in the <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties">selenium-jupiter.properties</a> file. The following table summarizes all the configuration keys available.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. Configuration keys in <em>selenium_jupiter</em></caption>
+<caption class="title">Table 1. Configuration keys in <em>Selenium-Jupiter</em></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -812,7 +812,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.vnc</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Check VNC session for Docker browsers</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.vnc.screen.resolution</code></p></td>
@@ -823,6 +823,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.vnc.create.redirect.html.page</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Redirect VNC URL to HTML page</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.vnc.export</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java property name in which the VNC URL will be exported</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>vnc.session.url</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.recording</code></p></td>
@@ -857,7 +862,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.screenshot.format</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Format for screenshots</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>png</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base64</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.exception.when.no.driver</code></p></td>
@@ -868,6 +873,26 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.template.json.file</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Browsers scenario (JSON) path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>classpath:browsers.json</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.browser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Browser for generic driver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome-in-docker</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version for generic driver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latest</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.browser.fallback</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fallback browser list for generic driver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome,firefox,safari,edge,phantomjs</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.browser.fallback.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fallback version list for generic driver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latest,latest,latest,latest,latest</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.list.from.docker.hub</code></p></td>
@@ -882,7 +907,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker iamage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.4.3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.5.3</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.port</code></p></td>
@@ -917,7 +942,32 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>63.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>65.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Chrome in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome beta</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Chrome beta in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome unstable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Chrome unstable in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.image.format</code></p></td>
@@ -932,7 +982,32 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>57.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>59.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Firefox in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox beta</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Firefox beta in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox unstable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Firefox beta in Docker as unstable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.image.format</code></p></td>
@@ -947,7 +1022,12 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>50.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>51.0</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Opera in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.server.url</code></p></td>
@@ -984,10 +1064,38 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.stop.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timeout in seconds to stop Docker containers at the end of tests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.api.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker API version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.35</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.network</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker network</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bridge</code></p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>These properties can be overwritten by Java system properties, for example:</p>
+<p>These properties can be overwritten in different ways. As of version 2.1.0 of <em>Selenium-Jupiter</em>, the configuration manager can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">SeleniumJupiter.config().setVnc(<span class="predefined-constant">true</span>);
+SeleniumJupiter.config().setRecording(<span class="predefined-constant">true</span>);
+SeleniumJupiter.config().useSurefireOutputFolder();
+SeleniumJupiter.config().setBrowserListFromDockerHub(<span class="predefined-constant">false</span>);
+SeleniumJupiter.config().wdm().setForceCache(<span class="predefined-constant">true</span>);
+SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">true</span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also use Java system properties, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1007,14 +1115,14 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="paragraph">
-<p>The value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable <code>SEL_JUP_RECORDING</code>.</p>
+<p>Moreover, the value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable <code>SEL_JUP_RECORDING</code>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-01-16 04:01:00 CET
+Last updated 2018-03-31 18:22:54 CEST
 </div>
 </div>
 </body>

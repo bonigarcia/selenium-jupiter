@@ -802,7 +802,67 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="local-browsers"><a class="anchor" href="#local-browsers"></a>Local browsers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section contains a comprehensive collection of basuc examples demonstrating the basic usage of <em>seleniun-jupiter</em> in JUnit 5 tests using different types of local browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>selenium-jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
+<p><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> allows to control different types of browsers (such as Chrome, Firefox, Edge, and so on) programmatically using different programming languages. This is very useful to implement automated tests for web applications. Nevertheless, in order to use WebDriver, we need to pay a prize. For security reasons, the automated manipulation of a browser can only be done using native features of the browser. In practical terms, it means that a binary file must be placed in between the test using the WebDriver API and the actual browser. One the one hand, the communication between the WebDriver object and that binary is done using the (<a href="https://www.w3.org/TR/webdriver/)">W3C WebDriver specification</a>, formerly called <em>JSON Wire Protocol</em>. It consists basically on a REST service using JSON for requests and responses. On the other hand, the communication between the binary and the browser is done using native capabilities of the browser. Therefore, the general schema of Selenium WebDriver can be illustrated as follows:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-general-schema.png" alt="webdriver general schema">
+</div>
+<div class="title">Figure 1. WebDriver general scenario</div>
+</div>
+<div class="paragraph">
+<p>From a tester point of view, the need of this binary component is a pain in the neck, since it should be downloaded manually for the proper platform running the test (i.e. Windows, Linux, Mac). Moreover, the binary version should be constantly updated. The majority of browsers evolve quite fast, and the corresponding binary file required by WebDriver needs to be also updated. The following picture shows a fine-grained diagram of the different flavor of WebDriver binaries and browsers:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/webdriver-particular-schemas.png" alt="webdriver particular schemas">
+</div>
+<div class="title">Figure 2. WebDriver scenario for Chrome, Firefox, Opera, PhantomJS, Edge, and Internet Explorer</div>
+</div>
+<div class="paragraph">
+<p>Concerning Java, in order to locate these drivers, the absolute path of the binary controlling the browser should be exported in a given environment variable before creating a WebDriver instance, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.chrome.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/chromedriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.opera.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/operadriver</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.ie.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/path/to/IEDriverServer.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.edge.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">C:/path/to/MicrosoftWebDriver.exe</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">phantomjs.binary.path</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/phantomjs</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">System</span>.setProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">webdriver.gecko.driver</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/geckodriver</span><span class="delimiter">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to simplify the life of Java WebDriver users, in March 2015 the utility <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> was first released. WebDriverManager is a library which automates all this process (download the proper binary and export the proper variable) for Java in runtime. The WebDriverManager API is quite simple, providing a singleton object for each of the above mentioned browsers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">WebDriverManager.chromedriver().setup();
+WebDriverManager.firefoxdriver().setup();
+WebDriverManager.operadriver().setup();
+WebDriverManager.phantomjs().setup();
+WebDriverManager.edgedriver().setup();
+WebDriverManager.iedriver().setup();;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The solution implemented by WebDriverManager is today supported by similar tools for other languages, such as <a href="https://github.com/angular/webdriver-manager">webdriver-manager</a> for <strong>Node.js</strong> or <a href="https://github.com/rosolko/WebDriverManager.Net">WebDriverManager.Net</a> for <strong>.NET</strong>.</p>
+</div>
+<div class="paragraph">
+<p>On September 2017, a new major version of the well-know testing JUnit framework was released. This leads to <strong><em>Selenium-Jupiter</em></strong>, which can be seen as the natural evolution of <em>WebDriverManager</em> for <strong>JUnit 5</strong> tests. Internally, <em>Selenium-Jupiter</em> is built using two foundations:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It uses <em>WebDriverManager</em> to manage the binaries requires by WebDriver.</p>
+</li>
+<li>
+<p>It uses the <em>dependency injection</em> feature of the extension model of JUnit 5 to inject WebDriver objects within <code>@Test</code> methods.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>All in all, using Selenium WebDriver to control browsers using Java was never that easy. Using JUnit 5 and <em>Selenium-Jupiter</em>, you simply need to declare the flavor of browser you want to use in your test method (or constructor) and use it.</p>
 </div>
 <div class="sect2">
 <h3 id="chrome"><a class="anchor" href="#chrome"></a>Chrome</h3>
@@ -930,7 +990,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
 <div class="paragraph">
-<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>selenium-jupiter</em>, as follows:</p>
+<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>Selenium-Jupiter</em>, as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -960,7 +1020,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="safari"><a class="anchor" href="#safari"></a>Safari</h3>
 <div class="paragraph">
-<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>selenium-jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
+<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>Selenium-Jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -990,7 +1050,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="phamtomjs"><a class="anchor" href="#phamtomjs"></a>PhamtomJS</h3>
 <div class="paragraph">
-<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>selenium-jupiter</em>.</p>
+<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>Selenium-Jupiter</em>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1051,7 +1111,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-01-15 23:50:44 CET
+Last updated 2018-03-31 15:54:55 CEST
 </div>
 </div>
 </body>
