@@ -19,12 +19,10 @@ package io.github.bonigarcia.test.docker;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
@@ -33,16 +31,15 @@ import io.github.bonigarcia.SeleniumExtension;
 import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
-@TestInstance(PER_CLASS)
 public class DockerVncJupiterTest {
 
     @BeforeAll
-    void setup() {
+    static void setup() {
         SeleniumJupiter.config().setVnc(true);
     }
 
     @AfterAll
-    void teardown() {
+    static void teardown() {
         SeleniumJupiter.config().reset();
     }
 

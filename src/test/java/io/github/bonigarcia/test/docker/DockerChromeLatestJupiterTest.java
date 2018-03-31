@@ -18,15 +18,13 @@ package io.github.bonigarcia.test.docker;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.CHROME;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
@@ -39,18 +37,26 @@ public class DockerChromeLatestJupiterTest {
 
     @Test
     public void testLatestChrome(
-            @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+            @DockerBrowser(type = CHROME, version = "latest") WebDriver driver) {
+        // Use stable version of Chrome in this test
     }
 
     @Test
     public void testFormerChrome(
-            @DockerBrowser(type = CHROME, version = "latest-1") RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+            @DockerBrowser(type = CHROME, version = "latest-1") WebDriver driver) {
+        // Use previous to stable version of Chrome in this test
+    }
+
+    @Test
+    public void testBetaChrome(
+            @DockerBrowser(type = CHROME, version = "beta") WebDriver driver) {
+        // Use beta version of Chrome in this test
+    }
+
+    @Test
+    public void testUnstableChrome(
+            @DockerBrowser(type = CHROME, version = "unstable") WebDriver driver) {
+        // Use development version of Chrome in this test
     }
 
 }

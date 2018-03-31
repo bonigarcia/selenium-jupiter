@@ -33,18 +33,18 @@ public class ChromeAndFirefoxJupiterTest {
 
     @Test
     public void testWithOneChrome(ChromeDriver chromeDriver) {
-        // using Chrome in this test
+        // Use Chrome in this test
     }
 
     @Test
     public void testWithFirefox(FirefoxDriver firefoxDriver) {
-        // using Firefox in this test
+        // Use Firefox in this test
     }
 
     @Test
     public void testWithChromeAndFirefox(ChromeDriver chromeDriver,
             FirefoxDriver firefoxDriver) {
-        // using Chrome and Firefox in this test
+        // Use Chrome and Firefox in this test
     }
 
 }
