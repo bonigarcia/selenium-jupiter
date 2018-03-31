@@ -43,7 +43,7 @@ Generally speaking, a browser within the JSON scenario is defined using two para
    * `chrome-in-docker`: For Chrome browsers in Docker.
    * `firefox-in-docker`: For Firefox browsers in Docker.
    * `opera-in-docker`: For Opera browsers in Docker.
-- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported.
+- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported (using the labels `beta` and `unstable` labels respectively).
  
 Finally, more than one parameters can be defined in the test template. For instance, consider the following test in which a couple of `WebDriver` parameters are declared in the test template.
 
@@ -198,7 +198,7 @@ mvn clean test -Dtest=DockerFirefoxWithOptionsJupiterTest -Dsel.jup.recording=tr
 In this case, at the the execution of this test, two recordings in MP4 and two screenshots in PNG will be attached to the job as follows. 
 
 [.thumb]
-.Example of test execution through Jenkins with attachements
+.Example of test execution through Jenkins with attachments
 image::jenkins-attachements-test.png[scaledwidth=100%]
 
 We can watch the recording simply clicking in the attached MP4 files.
@@ -207,22 +207,20 @@ We can watch the recording simply clicking in the attached MP4 files.
 .Example of test execution through Jenkins with attachements
 image::jenkins-attachements-test-mp4.png[scaledwidth=100%]
 
-Test template are also compatible with this feature. For instance, the following test
-https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/template/TemplateTest.java[test], when is executed in Jenkins using the the following configuration:
+Test template are also compatible with this feature. For instance, consider the following test
+https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/template/TemplateTest.java[test]. When is executed in Jenkins using the configuration below, the following attachments will be available on Jenkins:
 
 [source]
 ----
 mvn clean test -Dtest=TemplateTest -Dsel.jup.recording=true -Dsel.jup.output.folder=surefire-reports -Dsel.jup.screenshot.at.the.end.of.tests=true
 ----
 
-... will result in the following attachements:
-
 [.thumb]
-.Example of template test execution through Jenkins with attachements
+.Example of template test execution through Jenkins with attachments
 image::jenkins-attachements-template.png[scaledwidth=100%]
 
-... and we can see the recording, for instace:
+And we will be able to watch the recording:
 
 [.thumb]
-.Example of template test execution through Jenkins with attachements
+.Example of template test execution through Jenkins with attachments
 image::jenkins-attachements-template-mp4.png[scaledwidth=100%]

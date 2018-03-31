@@ -40,7 +40,7 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 
 The solution is forcing the latest version of _selenium-java_ to 3.x.
 
-For example, this issue happens in Spring-Boot project 1.x. When using the Spring-Boot parent, Selenium artifacts versions are established in the parent. To solve it, we need to force typically the following artifacts:
+For example, this issue is likely to happen in Spring-Boot 1.x projects. When using a Spring-Boot 1.x parent, Selenium 2 artifacts versions are established by default. To solve it, we need to force at least the following Selenium artifacts:
 
 [source, xml]
 ----

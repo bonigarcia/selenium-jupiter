@@ -2,7 +2,7 @@
 
 As of version 2.0.0, _Selenium-Jupiter_ allows to ask for browsers in https://www.docker.com/[Docker] containers. The only requirement to use this feature is to install https://www.docker.com/get-docker[Docker Engine] in the machine running the tests. Internally, _Selenium-Jupiter_ uses a https://github.com/docker-java/docker-java[docker-java] as Docker client and the Docker images for browsers provided by http://aerokube.com/selenoid/latest/[Selenoid].
 
-As shown in the following section, the mode of operation is similar to local browser. We simply asks for browsers in Docker simply declaring parameters in our `@Test` methods, and _Selenium-Jupiter_ will make magic for us: it downloads the proper Docker image for the browser, start it, and instantiate the object of type `RemoteWebDriver` to control the browser from our test. The annotation `@DockerBrowser` need to be declared in the parameter to mark the WebDriver object as a browser in Docker.    
+As shown in the following section, the mode of operation is similar to local browser. We simply asks for browsers in Docker simply declaring parameters in our `@Test` methods, and _Selenium-Jupiter_ will make magic for us: it downloads the proper Docker image for the browser, start it, and instantiate the object of type `WebDriver` or `RemoteWebDriver` to control the browser from our test. The annotation `@DockerBrowser` need to be declared in the parameter to mark the WebDriver object as a browser in Docker.    
 
 === Chrome
 
