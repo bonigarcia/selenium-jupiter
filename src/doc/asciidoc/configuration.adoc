@@ -1,39 +1,55 @@
 == Configuration
 
-Configuration parameters for _selenium_jupiter_ are set in the https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties[selenium-jupiter.properties] file. The following table summarizes all the configuration keys available.
+Default configuration parameters for _Selenium-Jupiter_ are set in the https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties[selenium-jupiter.properties] file. The following table summarizes all the configuration keys available.
 
-.Configuration keys in _selenium_jupiter_
+.Configuration keys in _Selenium-Jupiter_
 [width="100%",options="header"]
 |==========================
 |Configuration key | Description | Default value
-|`sel.jup.vnc` | Check VNC session for Docker browsers |`true`
+|`sel.jup.vnc` | Check VNC session for Docker browsers |`false`
 |`sel.jup.vnc.screen.resolution` | Screen resolution of VNC sessions (format _<width>x<height>x<colors-depth>_)|`1920x1080x24`
 |`sel.jup.vnc.create.redirect.html.page` | Redirect VNC URL to HTML page |`false`
+|`sel.jup.vnc.export` | Java property name in which the VNC URL will be exported |`vnc.session.url`
 |`sel.jup.recording` | Record Docker browser session (in MP4 format) |`false`
 |`sel.jup.recording.video.screen.size` | Video screen size for recordings (width and height) |`1024x768`
 |`sel.jup.recording.video.frame.rate` | Video frame rate for recordings |`12`
 |`sel.jup.recording.image` | Docker image for recordings |`selenoid/video-recorder:latest`
 |`sel.jup.output.folder` | Output folder for recordings, screenshots, and HTML redirect pages |`.`
 |`sel.jup.screenshot.at.the.end.of.tests` | Make screenshots at the end of the test |`whenfailure`
-|`sel.jup.screenshot.format` | Format for screenshots |`png`
+|`sel.jup.screenshot.format` | Format for screenshots |`base64`
 |`sel.jup.exception.when.no.driver` | Throw exception in case of exception or not |`true`
 |`sel.jup.browser.template.json.file` | Browsers scenario (JSON) path |`classpath:browsers.json`
+|`sel.jup.default.browser` | Browser for generic driver |`chrome-in-docker`
+|`sel.jup.default.version` | Version for generic driver |`latest`
+|`sel.jup.default.browser.fallback` | Fallback browser list for generic driver |`chrome,firefox,safari,edge,phantomjs`
+|`sel.jup.default.browser.fallback.version` | Fallback version list for generic driver |`latest,latest,latest,latest,latest`
 |`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
 |`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
-|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.4.3`
+|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.5.3`
 |`sel.jup.selenoid.port` | Selenoid port |`4444`
 |`sel.jup.selenoid.vnc.password` | VNC password for Selenoid sessions |`selenoid`
 |`sel.jup.novnc.image` | noVNC Docker image |`psharkey/novnc:3.3-t6`
 |`sel.jup.novnc.port` | noVNC Docker port  |`8080`
 |`sel.jup.chrome.image.format` | Selenoid Docker images format for Chrome with VNC |`selenoid/vnc:chrome_%s`
 |`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
-|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`63.0`
+|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`65.0`
+|`sel.jup.chrome.path` | Path for Hub when using Chrome in Docker as browser |`/`
+|`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta`
+|`sel.jup.chrome.beta.path` | Path for Hub when using Chrome beta in Docker as browser |`/wd/hub`
+|`sel.jup.chrome.unstable.image` | Selenoid Docker image format for Chrome unstable |`elastestbrowsers/chrome:unstable`
+|`sel.jup.chrome.unstable.path` | Path for Hub when using Chrome unstable in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
 |`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
-|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`57.0`
+|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`59.0`
+|`sel.jup.firefox.path` | Path for Hub when using Firefox in Docker as browser |`/wd/hub`
+|`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta`
+|`sel.jup.firefox.beta.path` | Path for Hub when using Firefox beta in Docker as browser |`/wd/hub`
+|`sel.jup.firefox.unstable.image` | Selenoid Docker image format for Firefox unstable |`elastestbrowsers/firefox:nightly`
+|`sel.jup.firefox.unstable.path` | Path for Hub when using Firefox beta in Docker as unstable |`/wd/hub`
 |`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
-|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`50.0`
+|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`51.0`
+|`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
 |`sel.jup.docker.server.url` | URL to connect with the Docker Host |``
 |`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`
 |`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
@@ -41,10 +57,24 @@ Configuration parameters for _selenium_jupiter_ are set in the https://github.co
 |`sel.jup.docker.default.host` | Default Docker host IP |`127.0.0.1`
 |`sel.jup.docker.hub.url` | Docker Hub URL |`https://hub.docker.com/`
 |`sel.jup.properties` | Location of the properties files (in the project classpath)|`/selenium-jupiter.properties`
+|`sel.jup.docker.stop.timeout.sec` |  Timeout in seconds to stop Docker containers at the end of tests |`5`
+|`sel.jup.docker.api.version` | Docker API version |`1.35`
+|`sel.jup.docker.network` | Docker network |`bridge`
 |==========================
 
+These properties can be overwritten in different ways. As of version 2.1.0 of _Selenium-Jupiter_, the configuration manager can be used: 
 
-These properties can be overwritten by Java system properties, for example:
+[source,java]
+----
+SeleniumJupiter.config().setVnc(true);
+SeleniumJupiter.config().setRecording(true);
+SeleniumJupiter.config().useSurefireOutputFolder();
+SeleniumJupiter.config().setBrowserListFromDockerHub(false);
+SeleniumJupiter.config().wdm().setForceCache(true);
+SeleniumJupiter.config().wdm().setOverride(true);
+----
+
+We can also use Java system properties, for example:
 
 [source,java]
 ----
@@ -57,4 +87,4 @@ System.setProperty("sel.jup.recording", "true");
 -Dsel.jup.recording=true
 ----
 
-The value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable `SEL_JUP_RECORDING`. 
+Moreover, the value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable `SEL_JUP_RECORDING`. 

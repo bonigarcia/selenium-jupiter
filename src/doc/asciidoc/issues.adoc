@@ -1,0 +1,27 @@
+== Known issues
+
+=== Testing _localhost_ 
+
+A daily use case in web development is testing a local instance of the web application, i.e. deployed in a local server and visible in a URL like _http://localhost:port/path_. In the case of using Docker browsers to test this web application, we need to be aware that _localhost_ inside a Docker container is not the local host anymore (but the container host instead). To handle this issue, different approaches can be taken.
+
+* If your host (i.e. the local machine running the tests and hosting the web application under test) is Linux, Docker creates a bridge named `docker0` by default. Both the Docker host and the Docker containers have an IP address on that bridge. We can find out the equivalent IP address to localhost using the following command:
+
+[source]
+----
+$ sudo ip addr show docker0
+----
+
+* If your host is Mac and using *Docker for Mac*, we can use the special DNS name `docker.for.mac.host.internal` which will resolve to the internal IP address used by the host.
+
+* If your host is Windows and using *Docker for Windows*, we can use the special DNS name `docker.for.windows.host.internal`.
+
+* If your host is Mac or Windows and using *Docker Machine*, we can find out the _docker-machine_ IP as follows:
+
+[source]
+----
+> docker-machine ip
+----
+
+=== Using old versions of Selenium
+
+To do.

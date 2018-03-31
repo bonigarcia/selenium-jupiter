@@ -2,9 +2,9 @@
 
 === Template tests
 
-_selenium_jupiter_ takes advantage on the standard feature of JUnit 5 called http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates[test templates]. Test templates can be seen as an special kind of parameterized tests, in which the test is executed several times according to the data provided by some extension. In our case, the extension is _selenium_jupiter_ itself, and the test template is configured using a custom file in JSON called *browsers scenario*. 
+_Selenium-Jupiter_ takes advantage on the standard feature of JUnit 5 called http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates[test templates]. Test templates can be seen as an special kind of parameterized tests, in which the test is executed several times according to the data provided by some extension. In our case, the extension is _Selenium-Jupiter_ itself, and the test template is configured using a custom file in JSON called *browsers scenario*. 
 
-Let's see some examples. Consider the following test. A couple of things are new in this test. First of all, instead of declaring the method with the usual `@Test` annotation, we are using the JUnit 5's annotation `@TestTemplate`. With this we are saying to JUnit that this method is not a regular test case but a template. Second, the parameter type of the method `templateTest` is `WebDriver`. This is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver`, `FirefoxDriver`, `RemoteWebDriver`, etc.) will be determined by _selenium_jupiter_ in runtime.
+Let's see some examples. Consider the following test. A couple of things are new in this test. First of all, instead of declaring the method with the usual `@Test` annotation, we are using the JUnit 5's annotation `@TestTemplate`. With this we are saying to JUnit that this method is not a regular test case but a template. Second, the parameter type of the method `templateTest` is `WebDriver`. This is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver`, `FirefoxDriver`, `RemoteWebDriver`, etc.) will be determined by _Selenium-Jupiter_ in runtime.
 
 [source,java]
 ----
@@ -24,10 +24,10 @@ Now imagine that the content of the file `browsers.json` is as follows:
 include::../../test/resources/browsers.json[indent=0]
 ----
 
-When we execute the template test, in this case we will have three actual tests: the first using the _latest_ version of Chrome, the second using the previous to stable version of Chrome (`latest-1`), and third using two versions older than the current stable (`latest-2`). For instance, if we run the test in Eclipse, we will get the following output:
+When we execute the template test, in this case we will have four actual tests: the first using the _latest_ version of Chrome, the second using the previous to stable version of Chrome (`latest-1`), the third using the beta version of Chrome (`beta`), and another test using the development version of Chrome (`unstable`). For instance, if we run the test in Eclipse, we will get the following output:
 
 [.thumb]
-.Example of test template execution (with one parameter) with Eclipse
+.Example of test template execution in Eclipse
 image::test-template-01.png[scaledwidth=100%]
 
 Generally speaking, a browser within the JSON scenario is defined using two parameters:
@@ -43,7 +43,7 @@ Generally speaking, a browser within the JSON scenario is defined using two para
    * `chrome-in-docker`: For Chrome browsers in Docker.
    * `firefox-in-docker`: For Firefox browsers in Docker.
    * `opera-in-docker`: For Opera browsers in Docker.
-- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser).
+- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported.
  
 Finally, more than one parameters can be defined in the test template. For instance, consider the following test in which a couple of `WebDriver` parameters are declared in the test template.
 
@@ -52,7 +52,7 @@ Finally, more than one parameters can be defined in the test template. For insta
 include::../../test/java/io/github/bonigarcia/test/template/TemplateTwoBrowsersTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-The JSON scenario should be defined accordingly. Each browser array in this case (for each test template execution) should declare two browsers. For instance, using the following JSON scenario, the first execution will be based on Chrome in Docker (first parameter) and Firefox in Docker (second parameter); and the second exection will be based on the headless browser PhantomJS (first parameter) and Opera in Docker (second paramter).
+The JSON scenario should be defined accordingly. Each browser array in this case (for each test template execution) should declare two browsers. For instance, using the following JSON scenario, the first execution will be based on Chrome in Docker (first parameter) and Firefox in Docker (second parameter); and the second execution will be based on a local Chrome (first parameter) and the headless browser PhantomJS (second parameter).
 
 [source,json]
 ----
@@ -62,7 +62,7 @@ include::../../test/resources/browsers-two.json[indent=0]
 If we execute this test using in GUI, the JUnit tab shows two tests executed with the values defined in the JSON scenario.
 
 [.thumb]
-.Example of test template execution (with two parameters) with Eclipse
+.Example of test template execution (with two parameters) in Eclipse
 image::test-template-02.png[scaledwidth=100%]
 
 
@@ -72,9 +72,9 @@ So far, we have discovered how to use different local browsers (Chrome, Firefox,
 
 * What if I need to specify options (e.g. `ChromeOptions`, `FirefoxOptions`, etc) to my WebDriver object?
 * What if need to specify desired capabilities (e.g. browser type, version, platform)?
-* And what about remote browsers (http://www.seleniumhq.org/projects/grid/[Selenium Grid])? How is `RemoteWebDriver` supported by _selenium-jupiter_?
+* And what about remote browsers (http://www.seleniumhq.org/projects/grid/[Selenium Grid])? How is `RemoteWebDriver` supported by _Selenium-Jupiter_?
 
-In order to support the advance features of Selenium WebDriver, _selenium-jupiter_ provides several annotations aimed to allow a fine-grained control of the WebDriver object instantiation. These annotations are:
+In order to support the advance features of Selenium WebDriver, _Selenium-Jupiter_ provides several annotations aimed to allow a fine-grained control of the WebDriver object instantiation. These annotations are:
 
 * `Arguments` (_parameter-level_) : Used to add arguments to the options.
 * `Preferences` (_parameter-level_) : Used to set preferences to the options.
@@ -102,9 +102,9 @@ include::../../test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOpti
 
 === Using capabilities
 
-The annotation `@DriverCapabilities` is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as _Selenium Server_) should be up an running, and its URL should known. This URL will be specified using the _selenium-jupiter_ annotation `@DriverUrl`. 
+The annotation `@DriverCapabilities` is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as _Selenium Server_) should be up an running, and its URL should known. This URL will be specified using the _Selenium-Jupiter_ annotation `@DriverUrl`. 
 
-The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
+The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4445/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
 
 [source,java]
 ----
@@ -120,7 +120,7 @@ include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithGlobalCapab
 
 === AppiumDriver
 
-The annotation `@DriverCapabilities` can be also used to specify the desired capabilities to create an instances of AppiumDriver to drive mobile devices (Android or iOS). If not `@DriverUrl` is specified, _selenium-jupiter_ will start automatically an instance of Appium Server (by default in port 4723) in the localhost after each test execution (this server is shutdown before each test). For example:
+The annotation `@DriverCapabilities` can be also used to specify the desired capabilities to create an instances of AppiumDriver to drive mobile devices (Android or iOS). If not `@DriverUrl` is specified, _Selenium-Jupiter_ will start automatically an instance of Appium Server (by default in port 4723) in the localhost after each test execution (this server is shutdown before each test). For example:
 
 [source,java]
 ----
@@ -137,7 +137,7 @@ include::../../test/java/io/github/bonigarcia/test/advance/AppiumApkJupiterTest.
 
 === Tuning WebDriverManager
 
-As introduced before, _selenium-jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
+As introduced before, _Selenium-Jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
 
 In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:
 
@@ -156,7 +156,7 @@ include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest
 
 === Screenshots
 
-_selenium-jupiter_ provides several built-in features for making *screenshots* for each of the browser sessions at the end of the test. These screenshots, can be encoded as *Base64* or stored as *PNG* images. The following configuration keys are used to control the way and format in which screenshots are made:
+_Selenium-Jupiter_ provides several built-in features for making *screenshots* for each of the browser sessions at the end of the test. These screenshots, can be encoded as *Base64* or stored as *PNG* images. The following configuration keys are used to control the way and format in which screenshots are made:
 
 - `sel.jup.screenshot.at.the.end.of.tests`: This key indicates whether or not screenshots will be made at the end of every browser session. The accepted valued for this configuration key are:
    * `true` : Screenshots are always taken at the end of tests.
@@ -186,9 +186,9 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  <<< FAILURE!
 
 === Integration with Jenkins
 
-_selenium_jupiter_ provides seamless integration with Jenkins through one of its plugins: the https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin[Jenkins attachment plugin]. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in _selenium_jupiter_ setting the configuration key `sel.jup.output.folder` to an special value: `surefire-reports`.
+_Selenium-Jupiter_ provides seamless integration with Jenkins through one of its plugins: the https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin[Jenkins attachment plugin]. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in _Selenium-Jupiter_ setting the configuration key `sel.jup.output.folder` to an special value: `surefire-reports`.
 
-When this configuration key is configured with that value, _selenium_jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerFirefoxWithOptionsJupiterTest.java[test], when is executed in Jenkins (with the attachment plugin) and the following configuration:
+When this configuration key is configured with that value, _Selenium-Jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerFirefoxWithOptionsJupiterTest.java[test], when is executed in Jenkins (with the attachment plugin) and the following configuration:
 
 [source]
 ----
