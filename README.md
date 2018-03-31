@@ -91,7 +91,7 @@ You can find more details and examples on the [Selenium-Jupiter user guide].
 
 ## About
 
-Selenium-Jupiter (Copyright &copy; 2018) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
+Selenium-Jupiter (Copyright &copy; 2017-2018) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Boni Garcia]: http://bonigarcia.github.io/
