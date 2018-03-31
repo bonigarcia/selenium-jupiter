@@ -39,7 +39,7 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
 public class RemoteWebDriverJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4444/wd/hub";
+    String url = "http://localhost:4445/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = firefox();
@@ -47,24 +47,24 @@ public class RemoteWebDriverJupiterTest {
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
+        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4445" });
 
         // Register Chrome in hub
         ChromeDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
+                "http://localhost:4445/grid/register", "-browser",
                 "browserName=chrome", "-port", "5555" });
 
         // Register Firefox in hub
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
+                "http://localhost:4445/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
     }
 
     @Test
     void testWithRemoteChrome(
-            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
+            @DriverUrl("http://localhost:4445/wd/hub") @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
 
