@@ -13,7 +13,7 @@ $ sudo ip addr show docker0
 
 * If your host is Mac and using _Docker for Mac_, we can use the special DNS name `docker.for.mac.host.internal` which will resolve to the internal IP address used by the host.
 
-* If your host is Windows and using _Docker for Windows_, we can use the special DNS name `docker.for.windows.host.internal`.
+* If your host is Windows and using _Docker for Windows_, we can use the special DNS name `docker.for.win.host.internal`.
 
 === Using old versions of Selenium
 
