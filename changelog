@@ -1,3 +1,27 @@
+selenium-jupiter (2.1.0)
+
+  + Maven dependency: org.seleniumhq.selenium:selenium-java 3.11.0
+  + Maven dependency: io.github.bonigarcia:webdrivermanager 2.2.0
+  + Maven dependency: io.appium:java-client 5.0.4
+  + Maven dependency: com.spotify:docker-client 8.11.2
+  + Maven dependency: com.codeborne:phantomjsdriver 1.4.4
+  + Docker hub dependency: aerokube/selenoid:1.5.3
+  + Docker hub dependency: selenoid/vnc:chrome_*, selenoid/vnc:firefox_*, selenoid/vnc:opera_*
+  + Docker hub dependency: elastestbrowsers/chrome:beta, elastestbrowsers/chrome:unstable, elastestbrowsers/firefox:beta, elastestbrowsers/firefox:nightly 
+  + Replace com.github:docker-java library with com.spotify:docker-client
+  + Use beta/unstable Docker containers for Chrome and Firefox
+  + Configuration manager: SeleniumJupiter.config()
+  + Interactive mode (from shell) to get remote sessions (VNC)
+  + Config key for Docker API version
+  + Config key for Docker network (bridge by default)
+  + Config key for path and tmpfs
+  + Config key for parallel browser list
+  + Improve compatibility of Docker support for Linux, Windows, and Mac
+  + Improve support for dependency injection in constructor parameters
+
+ -- Boni Garcia <boni.gg@gmail.com>  Sat, 31 Mar 2018 11:02:00
+
+
 selenium-jupiter (2.0.0)
 
   + Use of io.github.bonigarcia:webdrivermanager version 2.1.0
