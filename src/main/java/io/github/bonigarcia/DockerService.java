@@ -18,14 +18,9 @@ package io.github.bonigarcia;
 
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +28,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.CharStreams;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerClient;
@@ -75,24 +69,8 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getIpAddress(String containerId, String network)
-            throws DockerException, InterruptedException, IOException {
-        String dockerMachineIp = null;
-        try {
-            dockerMachineIp = getDockerMachineIp();
-        } catch (Exception e) {
-            log.trace("Docker machine not installed in this host");
-        }
-        if (dockerMachineIp == null
-                || dockerMachineIp.contains("Host is not running")) {
-            if (IS_OS_MAC) {
-                dockerMachineIp = config().getDockerDefaultHost();
-            } else {
-                dockerMachineIp = dockerClient.inspectContainer(containerId)
-                        .networkSettings().networks().get(network).gateway();
-            }
-        }
-        return dockerMachineIp;
+    public String getHost() {
+        return dockerClient.getHost();
     }
 
     public String startContainer(DockerContainer dockerContainer)
@@ -220,25 +198,6 @@ public class DockerService {
             throws DockerException, InterruptedException {
         log.trace("Removing container {}", containerId);
         dockerClient.removeContainer(containerId);
-    }
-
-    public String getDockerMachineIp() throws IOException {
-        return runAndWait("docker-machine", "ip");
-    }
-
-    public String runAndWait(String... command) throws IOException {
-        Process process = new ProcessBuilder(command).redirectErrorStream(true)
-                .start();
-        String result = CharStreams
-                .toString(
-                        new InputStreamReader(process.getInputStream(), UTF_8))
-                .replaceAll("\\r", "").replaceAll("\\n", "");
-        process.destroy();
-        if (log.isTraceEnabled()) {
-            log.trace("Running command on the shell: {} -- result: {}",
-                    Arrays.toString(command), result);
-        }
-        return result;
     }
 
     public String getDockerDefaultSocket() {

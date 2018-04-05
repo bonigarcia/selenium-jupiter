@@ -385,8 +385,7 @@ public class DockerDriverHandler {
             selenoidContainer = dockerBuilder.build();
             String containerId = dockerService
                     .startContainer(selenoidContainer);
-            String selenoidHost = dockerService.getIpAddress(containerId,
-                    network);
+            String selenoidHost = dockerService.getHost();
             String selenoidPort = dockerService.getBindPort(containerId,
                     internalSelenoidPort + "/tcp");
             String selenoidUrl = format("http://%s:%s/wd/hub", selenoidHost,
@@ -471,7 +470,7 @@ public class DockerDriverHandler {
             novncContainer = DockerContainer.dockerBuilder(novncImage)
                     .portBindings(portBindings).network(network).build();
             String containerId = dockerService.startContainer(novncContainer);
-            String novncHost = dockerService.getIpAddress(containerId, network);
+            String novncHost = dockerService.getHost();
             String novncPort = dockerService.getBindPort(containerId,
                     defaultNovncPort + "/tcp");
             String novncUrl = format("http://%s:%s/", novncHost, novncPort);
