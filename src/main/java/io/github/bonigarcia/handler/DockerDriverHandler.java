@@ -148,14 +148,14 @@ public class DockerDriverHandler {
             String hubUrl = seleniumServerUrlAvailable ? seleniumServerUrl
                     : startDockerBrowser(browser, version);
 
-            log.debug("Using Selenium Server at {}", hubUrl);
+            log.trace("Using Selenium Server at {}", hubUrl);
             WebDriver webdriver = new RemoteWebDriver(new URL(hubUrl),
                     capabilities);
 
             SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
             updateName(browser, imageVersion, webdriver);
 
-            if (enableVnc && seleniumServerUrlAvailable) {
+            if (enableVnc && !seleniumServerUrlAvailable) {
                 URL selenoidHubUrl = new URL(hubUrl);
                 String selenoidHost = selenoidHubUrl.getHost();
                 int selenoidPort = selenoidHubUrl.getPort();
