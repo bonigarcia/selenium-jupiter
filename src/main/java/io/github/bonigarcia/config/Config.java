@@ -139,8 +139,6 @@ public class Config {
             "sel.jup.docker.poll.time.ms", Integer.class);
     ConfigKey<String> dockerDefaultSocket = new ConfigKey<>(
             "sel.jup.docker.default.socket", String.class);
-    ConfigKey<String> dockerDefaultHost = new ConfigKey<>(
-            "sel.jup.docker.default.host", String.class);
     ConfigKey<String> dockerHubUrl = new ConfigKey<>("sel.jup.docker.hub.url",
             String.class);
     ConfigKey<String> dockerServerUrl = new ConfigKey<>(
@@ -627,14 +625,6 @@ public class Config {
 
     public void setDockerDefaultSocket(String value) {
         this.dockerDefaultSocket.setValue(value);
-    }
-
-    public String getDockerDefaultHost() {
-        return resolve(dockerDefaultHost);
-    }
-
-    public void setDockerDefaultHost(String value) {
-        this.dockerDefaultHost.setValue(value);
     }
 
     public String getDockerHubUrl() {
