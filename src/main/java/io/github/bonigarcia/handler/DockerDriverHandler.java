@@ -432,7 +432,9 @@ public class DockerDriverHandler {
             } else if (type.isAssignableFrom(List.class)) {
                 DockerBrowser dockerBrowser = param
                         .getAnnotation(DockerBrowser.class);
-                count += dockerBrowser.size();
+                if (dockerBrowser != null) {
+                    count += dockerBrowser.size();
+                }
             }
         }
         return count;
