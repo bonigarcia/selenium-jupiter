@@ -43,7 +43,7 @@ public class OperaWithGlobalOptionsJupiterTest {
     public void operaTest(OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
     }
 
 }

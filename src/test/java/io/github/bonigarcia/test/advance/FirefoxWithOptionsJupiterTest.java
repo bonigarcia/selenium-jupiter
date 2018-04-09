@@ -48,7 +48,7 @@ public class FirefoxWithOptionsJupiterTest {
     void extensionTest(@Extensions("hello_world.xpi") FirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
     }
 
 }

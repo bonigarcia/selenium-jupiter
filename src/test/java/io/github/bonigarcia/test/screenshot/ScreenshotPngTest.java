@@ -56,7 +56,7 @@ public class ScreenshotPngTest {
     void screenshotTest(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
 
         imageFile = new File("screenshotTest_arg0_ChromeDriver_"
                 + driver.getSessionId() + ".png");

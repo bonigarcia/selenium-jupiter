@@ -38,7 +38,7 @@ public class FirefoxJupiterTest {
     public void testWithOneFirefox(FirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
     }
 
     // end::snippet-in-doc[]

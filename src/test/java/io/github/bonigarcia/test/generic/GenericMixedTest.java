@@ -39,7 +39,7 @@ public class GenericMixedTest {
         for (WebDriver driver : driverList) {
             driver.get("https://bonigarcia.github.io/selenium-jupiter/");
             assertThat(driver.getTitle(), containsString(
-                    "A JUnit 5 extension for Selenium WebDriver"));
+                    "JUnit 5 extension for Selenium"));
         }
     }
 

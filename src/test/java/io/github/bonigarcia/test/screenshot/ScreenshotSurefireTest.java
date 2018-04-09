@@ -57,7 +57,7 @@ public class ScreenshotSurefireTest {
     void screenshotTest(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
 
         imageName = new File(
                 "./target/surefire-reports/io.github.bonigarcia.test.screenshot.ScreenshotSurefireTest",

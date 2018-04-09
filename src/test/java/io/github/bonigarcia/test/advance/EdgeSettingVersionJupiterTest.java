@@ -45,7 +45,7 @@ public class EdgeSettingVersionJupiterTest {
     void webrtcTest(EdgeDriver driver) {
         driver.get("http://www.seleniumhq.org/");
         assertThat(driver.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
     }
 
 }

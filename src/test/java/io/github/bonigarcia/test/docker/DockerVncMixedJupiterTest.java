@@ -60,9 +60,9 @@ public class DockerVncMixedJupiterTest {
         driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
 
         assertThat(driver1.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
         assertThat(driver2.getTitle(),
-                containsString("A JUnit 5 extension for Selenium WebDriver"));
+                containsString("JUnit 5 extension for Selenium"));
 
         // Thread.sleep(50000);
     }
