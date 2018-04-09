@@ -69,8 +69,16 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getHost() {
-        return dockerClient.getHost();
+    public String getHost(String containerId, String network) {
+        String dockerHost;
+        try {
+            dockerHost = dockerClient.inspectContainer(containerId)
+                    .networkSettings().networks().get(network).gateway();
+        } catch (Exception e) {
+            log.warn("Exception getting host from gateway, using default", e);
+            dockerHost = dockerClient.getHost();
+        }
+        return dockerHost;
     }
 
     public String startContainer(DockerContainer dockerContainer)
