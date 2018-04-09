@@ -783,7 +783,12 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#configuration">Configuration</a></li>
+<li><a href="#configuration">Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#tuning-webdrivermanager">Tuning WebDriverManager</a></li>
+<li><a href="#screenshots">Screenshots</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -907,7 +912,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker iamage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.5.3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.6.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.port</code></p></td>
@@ -1050,19 +1055,9 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/var/run/docker.sock</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.default.host</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Default Docker host IP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>127.0.0.1</code></p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.hub.url</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker Hub URL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="https://hub.docker.com/" class="bare">https://hub.docker.com/</a></code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.stop.timeout.sec</code></p></td>
@@ -1078,6 +1073,21 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.network</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker network</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>bridge</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.timezone</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timezone for browsers in Docker containers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Europe/Madrid</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">``</p></td>
 </tr>
 </tbody>
 </table>
@@ -1117,12 +1127,135 @@ SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">tru
 <div class="paragraph">
 <p>Moreover, the value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable <code>SEL_JUP_RECORDING</code>.</p>
 </div>
+<div class="sect2">
+<h3 id="tuning-webdrivermanager"><a class="anchor" href="#tuning-webdrivermanager"></a>Tuning WebDriverManager</h3>
+<div class="paragraph">
+<p>As introduced before, <em>Selenium-Jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumJupiter</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeSettingVersionJupiterTest</span> {
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        SeleniumJupiter.config().wdm().setDriverVersion(<span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> webrtcTest(EdgeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This other example shows how to force cache (i.e. binaries previously downloaded by WebDriverManager) to avoid the connection with online repository to check the latest version:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumJupiter</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ForceCacheJupiterTest</span> {
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        SeleniumJupiter.config().wdm().setForceCache(<span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(ChromeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>Screenshots</h3>
+<div class="paragraph">
+<p><em>Selenium-Jupiter</em> provides several built-in features for making <strong>screenshots</strong> for each of the browser sessions at the end of the test. These screenshots, can be encoded as <strong>Base64</strong> or stored as <strong>PNG</strong> images. The following configuration keys are used to control the way and format in which screenshots are made:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sel.jup.screenshot.at.the.end.of.tests</code>: This key indicates whether or not screenshots will be made at the end of every browser session. The accepted valued for this configuration key are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>true</code> : Screenshots are always taken at the end of tests.</p>
+</li>
+<li>
+<p><code>false</code> : Screenshots are not taken at the end of tests.</p>
+</li>
+<li>
+<p><code>whenfailure</code> : Screenshots are only taken if the test fails.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>sel.jup.screenshot.format</code>: Format for the screenshot. The accepted values for this key are two:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>base64</code> : Base64 screenshots are logged using the <strong>debug</strong> level of (<a href="https://www.slf4j.org/)">Simple Logging Facade for Java (SLF4J)</a>. You can copy&amp;paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot.</p>
+</li>
+<li>
+<p><code>png</code> : Screenshots are stored as PNG images. The output folder for these images is configured using the configuration key <code>sel.jup.output.folder</code> (the default value of this property is <code>.</code>, i.e. the local folder).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Take into account that a big <code>base64</code> string will be added to your logs if this option if configured. This feature can be especially useful for build server in the cloud (such as Travis CI), in which we don&#8217;t have access to the server file system but can track easily the test output log.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running io.github.bonigarcia.test.basic.ChromeJupiterTest
+...
+2017-12-13 02:41:53 [main] DEBUG i.g.bonigarcia.SeleniumExtension - Screenshot (in Base64) at the end of session 5712cce700bb76d8f5f5d65a00e2c7bc (copy&amp;paste this string as URL in browser to watch it)
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAykAAANaCAIAAAACvpRSAAAgAElEQVR4nOy9e3xV1Zn//1lr384t5+RyCDmBhJBwSRACBAqhXFQsYlGLZeygrWVGbalTtVU72gv9fgfnK3Yq36mdqTqOLTL1R8fyq2Wk3kCGSqEMlxKQiyQICZAAJySHnJyT5Nz2ZX3/ODGEk71DDuSCuN4vXrySnXX2WWfvtc767Od51vMQxhg4HA6Hw+FwOOkTDofTfQkdiH5wOBwOh8PhcEzh2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOZ/Dg2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOp5/5wx/+YPUnrr04HA6Hw+Fw+pOk8LKSX1x7cTgcDofD4fQb3SWXqfzi2o
+...
+nr2SgWY2TMdyRZMNENknWYTIo75WxuUWNCij9k178gCKO3BHLtkeQjiMYEgXy66/8f5nl+x57/98mYAvFysJUmckrGBLMv/dC0SlJSUjrXpwn3Ba6MgAlILbL+//8/5fAruDfRSl08WQBr2oDm4uNtmZOPKRm7GSgptWXBFJPrAAAAl0lEQVS4/biJEm74sxVmrvz///+U468MXDMRZc7zY5Aj1uDndWEG2gCWk+R5ARMgl5aZrga3N7XBT9vCbxrBWPjx/3/96tsQz8LL4foDPzSVlH4crofHwrFXxyDZx1xHaWN7EjwAiT/f69Gf/8G1O5SUDCBnj2EW8huvfnTLaFNSMsD043+89QUmwCz/yUhp9AFYT/DCDwBA0OZPpbBVqwAAAABJRU5ErkJggg==
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 7.219 sec &lt;&lt;&lt; FAILURE! - in io.github.bonigarcia.test.basic.ChromeJupiterTest
+testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-31 18:22:54 CEST
+Last updated 2018-04-09 16:58:14 CEST
 </div>
 </div>
 </body>

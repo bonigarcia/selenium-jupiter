@@ -787,6 +787,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#testing-localhost">Testing localhost</a></li>
 <li><a href="#using-old-versions-of-selenium">Using old versions of Selenium</a></li>
+<li><a href="#recordings-in-windows-or-mac">Recordings in Windows or Mac</a></li>
 </ul>
 </li>
 </ul>
@@ -895,12 +896,21 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="recordings-in-windows-or-mac"><a class="anchor" href="#recordings-in-windows-or-mac"></a>Recordings in Windows or Mac</h3>
+<div class="paragraph">
+<p>Docker for Windows/Mac only mounts by default the home of your user (e.g. <code>C:\Users\your-user</code> in Windows). If <em>Selenium-Jupiter</em> is executed from a different parent folder of that home, it won&#8217;t be possible to write the MP4 recording (by default it uses the current folder, i.e. <code>.</code>). This configuration can be changed using the default mappings of in Docker for Windows/Mac settings.</p>
+</div>
+<div class="paragraph">
+<p>As an alternative, the value of the configuration key <code>sel.jup.output.folder</code> of <em>Selenium-Jupiter</em> can be used to some path inside the user folder (e.g. <code>C:\User\your-user\whatever</code>). The MP4 recording should end in there.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-31 23:45:36 CEST
+Last updated 2018-04-09 16:35:09 CEST
 </div>
 </div>
 </body>
