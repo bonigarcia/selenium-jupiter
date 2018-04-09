@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -69,15 +70,12 @@ public class DockerService {
         dockerClient = dockerClientBuilder.build();
     }
 
-    public String getHost(String containerId, String network) {
-        String dockerHost;
-        try {
-            dockerHost = dockerClient.inspectContainer(containerId)
-                    .networkSettings().networks().get(network).gateway();
-        } catch (Exception e) {
-            log.warn("Exception getting host from gateway, using default", e);
-            dockerHost = dockerClient.getHost();
-        }
+    public String getHost(String containerId, String network)
+            throws DockerException, InterruptedException {
+        String dockerHost = IS_OS_LINUX
+                ? dockerClient.inspectContainer(containerId).networkSettings()
+                        .networks().get(network).gateway()
+                : dockerClient.getHost();
         return dockerHost;
     }
 
