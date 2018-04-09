@@ -81,3 +81,9 @@ For example, this issue is likely to happen in Spring-Boot 1.x projects. When us
         </dependency>
     </dependencies>
 ----
+
+=== Recordings in Windows or Mac
+
+Docker for Windows/Mac only mounts by default the home of your user (e.g. `C:\Users\your-user` in Windows). If _Selenium-Jupiter_ is executed from a different parent folder of that home, it won't be possible to write the MP4 recording (by default it uses the current folder, i.e. `.`). This configuration can be changed using the default mappings of in Docker for Windows/Mac settings.
+
+As an alternative, the value of the configuration key `sel.jup.output.folder` of _Selenium-Jupiter_ can be used to some path inside the user folder (e.g. `C:\User\your-user\whatever`). The MP4 recording should end in there.

@@ -2,17 +2,17 @@
 
 *_Selenium-Jupiter_* has been built using the http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection[dependency injection] capability provided by the extension model of JUnit 5. Thank to this feature, different types objects can be injected in JUnit 5 as methods or constructor parameters in `@Test` classes. Concretely, _Selenium-Jupiter_ allows to inject subtypes of the *WebDriver* interface (e.g. _ChromeDriver_, _FirefoxDriver_, and so on). 
 
-Using _Selenium-Jupiter_ it's easy as pie. First, you need to import the dependency in your project (typically as _test_ dependency). In Maven, it is done as follows:
+Using _Selenium-Jupiter_ is very easy. First, you need to import the dependency in your project (typically as _test_ dependency). In Maven, it is done as follows:
 
 [source,xml]
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>2.1.0</version>
+	<version>2.1.1</version>
 	<scope>test</scope>
 </dependency>
 
-NOTE: _Selenium-Jupiter_ 2.1.0 depends on *_selenium-java_ 3.11.0*, *_webdrivermanager_ 2.2.0*, *appium java-client 5.0.4*, and *docker-client 8.11.2*. Therefore, by using the _Selenium-Jupiter_ dependency, those libraries (_selenium-java_, _webdrivermanager_, _appium java-client_, and _docker-client_) will be added as transitive dependencies to your project.
+NOTE: _Selenium-Jupiter_ 2.1.1 depends on *_selenium-java_ 3.11.0*, *_webdrivermanager_ 2.2.1*, *appium _java-client_ 5.0.4*, and *spotify _docker-client_ 8.11.2*. Therefore, by using the _Selenium-Jupiter_ dependency, these libraries will be added as transitive dependencies to your project.
 
 Then, you need to declare _Selenium-Jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods (or constructor) whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _Selenium-Jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
 

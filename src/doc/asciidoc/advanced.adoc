@@ -66,6 +66,22 @@ If we execute this test using in GUI, the JUnit tab shows two tests executed wit
 image::test-template-02.png[scaledwidth=100%]
 
 
+=== Generic driver
+
+As of version 2.1.0, _Selenium-Jupiter_ allows to use a configurable WebDriver object. This generic driver is declared as usual (i.e. as test method or constructor parameter) using the type `RemoteWebDriver` or `WebDriver`. The concrete type of browser to be used is established using the configuration key `sel.jup.default.browser`. The default value for this key is `chrome-in-docker`. All the values used in the template test defined in the previous section (i.e. `chrome`, `firefox`, `edge`, `chrome-in-docker`, `firefox-in-docker`, etc.) can be used also to define the type of browser in this mode.
+
+For instance, the following test, if no additional configuration is done, will use Chrome in Docker as browser:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/generic/GenericTest.java[tags=snippet-in-doc,indent=0]
+----
+
+If the resolution of this browser finishes with exception (for instance, when executing the test in a host without Docker), a list of browser fallback will be used. This list is managed using the configuration key `sel.jup.default.browser.fallback`. By default, this key has the value `chrome,firefox,safari,edge,phantomjs`, meaning that the first fallback browser is a local Chrome, then local Firefox, then local Safari, then local Edge, and finally PhantomJS (headless browser).
+
+The version of the generic browser (in case of Docker browsers) is managed with the key `sel.jup.default.version` (`latest` by default). The versions of the fallback browsers can be also managed, this time using the configuration key `sel.jup.default.browser.fallback.version`.
+
+
 === Using options
 
 So far, we have discovered how to use different local browsers (Chrome, Firefox, Edge, Opera, Safari, PhamtomJS, HtmlUnit) of Docker browsers (Chrome, Firefox, Opera) with its default options and supposing that the browser to be used is installed on the machine running the test. Nevertheless, if you have used intensively Selenium WebDriver, different questions might come to your mind:
@@ -82,7 +98,7 @@ In order to support the advance features of Selenium WebDriver, _Selenium-Jupite
 * `Extensions` (_parameter-level_) : User to add extensions to the browser.
  * `Options` (_field-level_): Annotation to configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
 * `DriverCapabilities` (_parameter-level_ or _field-level_): Annotation to configure the desired _capabilities_ (WebDriver's object `DesiredCapabilities`).
-* `DriverUrl` (_parameter-level_ or _field-level_): Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object.
+* `DriverUrl` (_parameter-level_ or _field-level_): Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object. This URL can be setup using the configuration key `sel.jup.selenium.server.url`. This value can be used to use browsers from cloud providers, such as https://saucelabs.com/[Saucelabs] or https://www.browserstack.com/[BrowserStack]. 
 
 The annotations marked as _parameter-level_ are applied to a single WebDriver parameter. The annotations marked as _field-level_ are applied globally in a test class. Keep reading to find out several examples about that.
 

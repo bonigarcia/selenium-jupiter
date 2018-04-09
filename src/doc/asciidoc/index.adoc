@@ -1,4 +1,4 @@
-= *_Selenium-Jupiter_*: A JUnit 5 extension for Selenium WebDriver
+= *_Selenium-Jupiter_*: JUnit 5 extension for Selenium
 Boni García <boni.garcia@urjc.es>
 Version {project-version}
 
@@ -7,7 +7,7 @@ Version {project-version}
 ifndef::imagesdir[:imagesdir: img]
 ifndef::sourcedir[:sourcedir: ../..]
 
-http://junit.org/junit5/[JUnit 5] is the next generation of the well-known testing framework JUnit. _Jupiter_ is the name given to the new programming and extension model provided by JUnit 5. Regarding the extension model of JUnit 5, it allows to incorporate extra capabilities for Jupiter tests. On the other hand, http://www.seleniumhq.org/projects/webdriver/[Selenium WebDriver] is a testing framework which allows to control browsers (e.g. Chrome, Firefox, and so on) programmatically to carry out automated testing of web applications. This documentation presents *_Selenium-Jupiter_*, a JUnit 5 extension aimed to provide seamless integration of Selenium WebDriver within Jupiter tests. _Selenium-Jupiter_ is open source (Apache 2.0 license) and is hosted on https://github.com/bonigarcia/selenium-jupiter[GitHub].
+http://junit.org/junit5/[JUnit 5] is the next generation of the well-known testing framework JUnit. _Jupiter_ is the name given to the new programming and extension model provided by JUnit 5. The extension model of JUnit 5, it allows to incorporate extra capabilities for JUnit 5 tests. On the other hand, http://www.seleniumhq.org/projects/webdriver/[Selenium WebDriver] is a testing framework which allows to control browsers (e.g. Chrome, Firefox, and so on) programmatically to carry out automated testing of web applications. This documentation presents *_Selenium-Jupiter_*, a JUnit 5 extension aimed to provide seamless integration of Selenium (WebDriver and Grid) for JUnit 5 tests. _Selenium-Jupiter_ is open source (Apache 2.0 license) and is hosted on https://github.com/bonigarcia/selenium-jupiter[GitHub].
 
 include::quick-reference.adoc[]
 

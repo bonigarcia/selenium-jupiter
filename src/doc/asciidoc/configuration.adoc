@@ -25,7 +25,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.default.browser.fallback.version` | Fallback version list for generic driver |`latest,latest,latest,latest,latest`
 |`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
 |`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
-|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.5.3`
+|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.6.0`
 |`sel.jup.selenoid.port` | Selenoid port |`4444`
 |`sel.jup.selenoid.vnc.password` | VNC password for Selenoid sessions |`selenoid`
 |`sel.jup.novnc.image` | noVNC Docker image |`psharkey/novnc:3.3-t6`
@@ -54,12 +54,13 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`
 |`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
 |`sel.jup.docker.default.socket` | Default Docker socket path |`/var/run/docker.sock`
-|`sel.jup.docker.default.host` | Default Docker host IP |`127.0.0.1`
 |`sel.jup.docker.hub.url` | Docker Hub URL |`https://hub.docker.com/`
-|`sel.jup.properties` | Location of the properties files (in the project classpath)|`/selenium-jupiter.properties`
 |`sel.jup.docker.stop.timeout.sec` |  Timeout in seconds to stop Docker containers at the end of tests |`5`
 |`sel.jup.docker.api.version` | Docker API version |`1.35`
 |`sel.jup.docker.network` | Docker network |`bridge`
+|`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
+|`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
+|`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |``
 |==========================
 
 These properties can be overwritten in different ways. As of version 2.1.0 of _Selenium-Jupiter_, the configuration manager can be used: 
