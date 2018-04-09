@@ -67,6 +67,8 @@ public class SeleniumJupiter {
 
             try {
                 config().setVnc(true);
+                config().setBrowserSessionTimeoutDuration("99h0m0s");
+
                 DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
 
                 BrowserType browserType = BrowserType
