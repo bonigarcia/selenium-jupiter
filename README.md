@@ -9,7 +9,7 @@
 
 # Selenium-Jupiter [![][Logo]][GitHub Repository]
 
-*Selenium-Jupiter* is a JUnit 5 extension aimed to ease the use of Selenium WebDriver in Jupiter tests. This library is open source, released under the terms of [Apache 2.0 License].
+*Selenium-Jupiter* is a JUnit 5 extension aimed to ease the use of Selenium (WebDriver and Grid) in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Basic usage
 
@@ -19,7 +19,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>2.1.0</version>
+	<version>2.1.1</version>
 </dependency>
 ```
 

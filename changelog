@@ -1,3 +1,15 @@
+selenium-jupiter (2.1.1)
+
+  + Maven dependency: io.github.bonigarcia:webdrivermanager 2.2.1
+  + Docker hub dependency: aerokube/selenoid:1.6.0
+  + Get Docker host address using gateway only in Linux (issue #7)
+  + Include configuration key for Selenium Server URL
+  + Set unlimited timeout for browsers in interactive sessions
+  + Remove sel.jup.docker.default.host configuration key
+
+ -- Boni Garcia <boni.gg@gmail.com>  Mon, 9 Apr 2018 15:41:00
+
+
 selenium-jupiter (2.1.0)
 
   + Maven dependency: org.seleniumhq.selenium:selenium-java 3.11.0
