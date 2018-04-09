@@ -149,6 +149,8 @@ public class Config {
             "sel.jup.docker.api.version", String.class);
     ConfigKey<String> dockerNetwork = new ConfigKey<>("sel.jup.docker.network",
             String.class);
+    ConfigKey<String> dockerTimeZone = new ConfigKey<>(
+            "sel.jup.docker.timezone", String.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -665,6 +667,14 @@ public class Config {
 
     public void setDockerNetwork(String value) {
         this.dockerNetwork.setValue(value);
+    }
+
+    public String getDockerTimeZone() {
+        return resolve(dockerTimeZone);
+    }
+
+    public void setDockerTimeZone(String value) {
+        this.dockerTimeZone.setValue(value);
     }
 
     // Custom values

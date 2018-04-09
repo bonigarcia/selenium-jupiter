@@ -371,6 +371,7 @@ public class DockerDriverHandler {
             // envs
             List<String> envs = new ArrayList<>();
             envs.add("DOCKER_API_VERSION=" + config().getDockerApiVersion());
+            envs.add("TZ=" + config().getDockerTimeZone());
 
             if (recording) {
                 envs.add("OVERRIDE_VIDEO_OUTPUT_DIR="
