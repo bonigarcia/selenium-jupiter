@@ -17,8 +17,8 @@
         <logback.version>1.2.3</logback.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.1.0</junit.jupiter.version>
-        <junit.platform.version>1.1.0</junit.platform.version>
+        <junit.jupiter.version>5.1.1</junit.jupiter.version>
+        <junit.platform.version>1.1.1</junit.platform.version>
         <selenium-server.version>3.11.0</selenium-server.version>
         <mockito-core.version>2.16.0</mockito-core.version>
         <hamcrest.version>1.3</hamcrest.version>
