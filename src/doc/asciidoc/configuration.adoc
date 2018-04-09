@@ -89,3 +89,52 @@ System.setProperty("sel.jup.recording", "true");
 ----
 
 Moreover, the value of these properties can be overridden by means of environmental variables. The name of these variables result from putting the name in uppercase and replacing the symbol . by _. For example, the property sel.jup.recording can be overridden by the environment variable `SEL_JUP_RECORDING`. 
+
+
+=== Tuning WebDriverManager
+
+As introduced before, _Selenium-Jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
+
+In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/EdgeSettingVersionJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+This other example shows how to force cache (i.e. binaries previously downloaded by WebDriverManager) to avoid the connection with online repository to check the latest version: 
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+
+=== Screenshots
+
+_Selenium-Jupiter_ provides several built-in features for making *screenshots* for each of the browser sessions at the end of the test. These screenshots, can be encoded as *Base64* or stored as *PNG* images. The following configuration keys are used to control the way and format in which screenshots are made:
+
+- `sel.jup.screenshot.at.the.end.of.tests`: This key indicates whether or not screenshots will be made at the end of every browser session. The accepted valued for this configuration key are:
+   * `true` : Screenshots are always taken at the end of tests.
+   * `false` : Screenshots are not taken at the end of tests.
+   * `whenfailure` : Screenshots are only taken if the test fails.
+- `sel.jup.screenshot.format`: Format for the screenshot. The accepted values for this key are two:
+   * `base64` : Base64 screenshots are logged using the *debug* level of (https://www.slf4j.org/)[Simple Logging Facade for Java (SLF4J)]. You can copy&paste the resulting Base 64 string in the URL bar of any browser and watch the screenshot.
+   * `png` : Screenshots are stored as PNG images. The output folder for these images is configured using the configuration key `sel.jup.output.folder` (the default value of this property is `.`, i.e. the local folder).
+ 
+Take into account that a big `base64` string will be added to your logs if this option if configured. This feature can be especially useful for build server in the cloud (such as Travis CI), in which we don't have access to the server file system but can track easily the test output log. 
+
+[source]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running io.github.bonigarcia.test.basic.ChromeJupiterTest
+...
+2017-12-13 02:41:53 [main] DEBUG i.g.bonigarcia.SeleniumExtension - Screenshot (in Base64) at the end of session 5712cce700bb76d8f5f5d65a00e2c7bc (copy&paste this string as URL in browser to watch it)
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAykAAANaCAIAAAACvpRSAAAgAElEQVR4nOy9e3xV1Zn//1lr384t5+RyCDmBhJBwSRACBAqhXFQsYlGLZeygrWVGbalTtVU72gv9fgfnK3Yq36mdqTqOLTL1R8fyq2Wk3kCGSqEMlxKQiyQICZAAJySHnJyT5Nz2ZX3/ODGEk71DDuSCuN4vXrySnXX2WWfvtc767Od51vMQxhg4HA6Hw+FwOOkTDofTfQkdiH5wOBwOh8PhcEzh2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOZ/Dg2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOp5/5wx/+YPUnrr04HA6Hw+Fw+pOk8LKSX1x7cTgcDofD4fQb3SWXqfzi2o
+...
+nr2SgWY2TMdyRZMNENknWYTIo75WxuUWNCij9k178gCKO3BHLtkeQjiMYEgXy66/8f5nl+x57/98mYAvFysJUmckrGBLMv/dC0SlJSUjrXpwn3Ba6MgAlILbL+//8/5fAruDfRSl08WQBr2oDm4uNtmZOPKRm7GSgptWXBFJPrAAAAl0lEQVS4/biJEm74sxVmrvz///+U468MXDMRZc7zY5Aj1uDndWEG2gCWk+R5ARMgl5aZrga3N7XBT9vCbxrBWPjx/3/96tsQz8LL4foDPzSVlH4crofHwrFXxyDZx1xHaWN7EjwAiT/f69Gf/8G1O5SUDCBnj2EW8huvfnTLaFNSMsD043+89QUmwCz/yUhp9AFYT/DCDwBA0OZPpbBVqwAAAABJRU5ErkJggg==
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 7.219 sec <<< FAILURE! - in io.github.bonigarcia.test.basic.ChromeJupiterTest
+testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  <<< FAILURE!
+----
