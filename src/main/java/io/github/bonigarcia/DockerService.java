@@ -72,11 +72,10 @@ public class DockerService {
 
     public String getHost(String containerId, String network)
             throws DockerException, InterruptedException {
-        String dockerHost = IS_OS_LINUX
+        return IS_OS_LINUX
                 ? dockerClient.inspectContainer(containerId).networkSettings()
                         .networks().get(network).gateway()
                 : dockerClient.getHost();
-        return dockerHost;
     }
 
     public String startContainer(DockerContainer dockerContainer)
