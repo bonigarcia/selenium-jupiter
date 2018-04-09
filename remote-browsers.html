@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<title>Quick reference</title>
+<title>Remote browsers</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -783,150 +783,99 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#quick-reference">Quick reference</a></li>
+<li><a href="#remote-browsers">Remote browsers</a>
+<ul class="sectlevel2">
+<li><a href="#using-capabilities">Using capabilities</a></li>
+<li><a href="#mobile-testing-with-appium">Mobile testing with Appium</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="quick-reference"><a class="anchor" href="#quick-reference"></a>Quick reference</h2>
+<h2 id="remote-browsers"><a class="anchor" href="#remote-browsers"></a>Remote browsers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong><em>Selenium-Jupiter</em></strong> has been built using the <a href="http://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection">dependency injection</a> capability provided by the extension model of JUnit 5. Thank to this feature, different types objects can be injected in JUnit 5 as methods or constructor parameters in <code>@Test</code> classes. Concretely, <em>Selenium-Jupiter</em> allows to inject subtypes of the <strong>WebDriver</strong> interface (e.g. <em>ChromeDriver</em>, <em>FirefoxDriver</em>, and so on).</p>
-</div>
-<div class="paragraph">
-<p>Using <em>Selenium-Jupiter</em> is very easy. First, you need to import the dependency in your project (typically as <em>test</em> dependency). In Maven, it is done as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
-        <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
-        <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>2.1.1<span class="tag">&lt;/version&gt;</span>
-        <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
-<span class="tag">&lt;/dependency&gt;</span></code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<em>Selenium-Jupiter</em> 2.1.1 depends on <strong><em>selenium-java</em> 3.11.0</strong>, <strong><em>webdrivermanager</em> 2.2.1</strong>, <strong>appium <em>java-client</em> 5.0.4</strong>, and <strong>spotify <em>docker-client</em> 8.11.2</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Then, you need to declare <em>Selenium-Jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumExtension.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods (or constructor) whose types implements the <code>WebDriver</code> interface (e.g. <code>ChromeDriver</code> to use Chrome, <code>FirefoxDriver</code> for Firefox, and so for). That&#8217;s it. <em>Selenium-Jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test to drive the browser(s) you want. For example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
-
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chromeDriver) {
-        <span class="comment">// Use Chrome in this test</span>
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithFirefox(FirefoxDriver firefoxDriver) {
-        <span class="comment">// Use Firefox in this test</span>
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chromeDriver,
-            FirefoxDriver firefoxDriver) {
-        <span class="comment">// Use Chrome and Firefox in this test</span>
-    }
-
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The <code>WebDriver</code> subtypes supported by <em>Selenium-Jupiter</em> are the following:</p>
+<p><em>Selenium-Jupiter</em> also supports remote browsers, using a <a href="http://www.seleniumhq.org/projects/grid/">Selenium Grid</a> server. To that aim, a couple of custom annotations can be used:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>ChromeDriver</code>: Used to control Google Chrome browser.</p>
+<p><code>DriverUrl</code> (<em>parameter-level</em> or <em>field-level</em>): Annotation used to identify the URL value needed to instantiate a <code>RemoteWebDriver</code> object. This URL can be setup using the configuration key <code>sel.jup.selenium.server.url</code>. This value can be used to use browsers from cloud providers, such as <a href="https://saucelabs.com/">Saucelabs</a> or <a href="https://www.browserstack.com/">BrowserStack</a>.</p>
 </li>
 <li>
-<p><code>FirefoxDriver</code>: Used to control Firefox browser.</p>
-</li>
-<li>
-<p><code>EdgeDriver</code>: Used to control Microsoft Edge browser.</p>
-</li>
-<li>
-<p><code>OperaDriver</code>: Used to control Opera browser.</p>
-</li>
-<li>
-<p><code>SafariDriver</code>: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).</p>
-</li>
-<li>
-<p><code>HtmlUnitDriver</code>: Used to control HtmlUnit (headless browser).</p>
-</li>
-<li>
-<p><code>PhantomJSDriver</code>: Used to control PhantomJS (headless browser).</p>
-</li>
-<li>
-<p><code>InternetExplorerDriver</code>: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.</p>
-</li>
-<li>
-<p><code>RemoteWebDriver</code>: Used to control remote browsers (<em>Selenium Grid</em>).</p>
-</li>
-<li>
-<p><code>AppiumDriver</code>: Used to control mobile devices (Android, iOS).</p>
+<p><code>DriverCapabilities</code> (<em>parameter-level</em> or <em>field-level</em>): Annotation to configure the desired <em>capabilities</em> (WebDriver&#8217;s object <code>DesiredCapabilities</code>).</p>
 </li>
 </ul>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-The browser to be used must be installed in the machine running the test beforehand (except in the case of <code>RemoteWebDriver</code>, in which the requirement is to known a Selenium Server URL). In the case of mobile devices (<code>AppiumDriver</code>), the emulator should be up and running in local or available in a Appium Server identified by an URL.
-</td>
-</tr>
-</table>
+<div class="sect2">
+<h3 id="using-capabilities"><a class="anchor" href="#using-capabilities"></a>Using capabilities</h3>
+<div class="paragraph">
+<p>The annotation <code>@DriverCapabilities</code> is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as <em>Selenium Server</em>) should be up an running, and its URL should known. This URL will be specified using the <em>Selenium-Jupiter</em> annotation <code>@DriverUrl</code>.</p>
 </div>
 <div class="paragraph">
-<p>You can also inject <code>WebDriver</code> objects declaring them as constructor parameters, instead of as test method parameters. For example as follows:</p>
+<p>The following example provides a complete <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java">example</a> about this. As you can see, in the test setup (<code>@BeforeAll</code>) a Selenium Grid is implemented, first starting a Hub (a.k.a. <em>Selenium Server</em>), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using <code>RemoteWebDriver</code> can be executed, simply pointing to the Hub (whose URL in this case is <code><a href="http://localhost:4445/wd/hub" class="bare">http://localhost:4445/wd/hub</a></code> in this example) and selecting the browser to be used using the <code>Capabilities</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities.firefox</span>;
 
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.grid.selenium.GridLauncherV3</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.Capabilities</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverUrl</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.ChromeDriverManager</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.FirefoxDriverManager</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeInConstructorJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">RemoteWebDriverJupiterTest</span> {
 
-    ChromeDriver driver;
+    <span class="annotation">@DriverUrl</span>
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/wd/hub</span><span class="delimiter">&quot;</span></span>;
 
-    <span class="directive">public</span> ChromeInConstructorJupiterTest(ChromeDriver driver) {
-        <span class="local-variable">this</span>.driver = driver;
+    <span class="annotation">@DriverCapabilities</span>
+    Capabilities capabilities = firefox();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        <span class="comment">// Start hub</span>
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">hub</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">4445</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Chrome in hub</span>
+        ChromeDriverManager.getInstance().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5555</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Firefox in hub</span>
+        FirefoxDriverManager.getInstance().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=firefox</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5556</span><span class="delimiter">&quot;</span></span> });
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testGlobalChrome() {
+    <span class="type">void</span> testWithRemoteChrome(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithRemoteFirefox(RemoteWebDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="type">void</span> exercise(WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -936,14 +885,148 @@ The browser to be used must be installed in the machine running the test beforeh
 </div>
 </div>
 <div class="paragraph">
-<p>This documentation contains a comprehensive collection of basic examples demonstrating the basic usage of <em>seleniun-jupiter</em> in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>Selenium-Jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
+<p>The following class contains an example which uses Chrome as browser and capabilities defined using <code>@DriverCapabilities</code>. Concretely, this example uses the mobile emulation feature provided out of the box by Chrome (i.e. render the web page using small screen resolutions to emulate smartphones).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions.CAPABILITY</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities.chrome</span>;
+
+<span class="keyword">import</span> <span class="include">java.util.HashMap</span>;
+<span class="keyword">import</span> <span class="include">java.util.Map</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithGlobalCapabilitiesJupiterTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = chrome();
+    {
+        <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt; mobileEmulation = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">String</span>&gt;();
+        mobileEmulation.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus 5</span><span class="delimiter">&quot;</span></span>);
+        <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; chromeOptions = <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;();
+        chromeOptions.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">mobileEmulation</span><span class="delimiter">&quot;</span></span>, mobileEmulation);
+        capabilities.setCapability(CAPABILITY, chromeOptions);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> chromeTest(ChromeDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mobile-testing-with-appium"><a class="anchor" href="#mobile-testing-with-appium"></a>Mobile testing with Appium</h3>
+<div class="paragraph">
+<p>The annotation <code>@DriverCapabilities</code> can be also used to specify the desired capabilities to create an instances of AppiumDriver to drive mobile devices (Android or iOS). If not <code>@DriverUrl</code> is specified, <em>Selenium-Jupiter</em> will start automatically an instance of Appium Server (by default in port 4723) in the localhost after each test execution (this server is shutdown before each test). For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumChromeJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithAndroid(
+            <span class="annotation">@DriverCapabilities</span>({ <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>,
+                    <span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName=Android</span><span class="delimiter">&quot;</span></span> }) AppiumDriver&lt;WebElement&gt; driver)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+
+        <span class="predefined-type">String</span> context = driver.getContext();
+        driver.context(<span class="string"><span class="delimiter">&quot;</span><span class="content">NATIVE_APP</span><span class="delimiter">&quot;</span></span>);
+        driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.android.chrome:id/terms_accept</span><span class="delimiter">&quot;</span></span>)).click();
+        driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">com.android.chrome:id/negative_button</span><span class="delimiter">&quot;</span></span>))
+                .click();
+        driver.context(context);
+
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertTrue(driver.getTitle().contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also specify a custom Appium Server URL changing the value of <code>@DriverUrl</code>, at field-level or parameter-level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">java.io.File</span>;
+<span class="keyword">import</span> <span class="include">java.net.URISyntaxException</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
+<span class="keyword">import</span> <span class="include">io.appium.java_client.MobileElement</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumApkJupiterTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = <span class="keyword">new</span> DesiredCapabilities();
+    {
+        <span class="keyword">try</span> {
+            <span class="predefined-type">File</span> apk = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="local-variable">this</span>.getClass()
+                    .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/selendroid-test-app.apk</span><span class="delimiter">&quot;</span></span>).toURI());
+            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">app</span><span class="delimiter">&quot;</span></span>, apk.getAbsolutePath());
+            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>);
+
+        } <span class="keyword">catch</span> (<span class="exception">URISyntaxException</span> e) {
+            e.printStackTrace();
+        }
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithAndroid(AppiumDriver&lt;MobileElement&gt; driver)
+            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        WebElement button = driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">buttonStartWebview</span><span class="delimiter">&quot;</span></span>));
+        button.click();
+
+        WebElement inputField = driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">name_input</span><span class="delimiter">&quot;</span></span>));
+        inputField.clear();
+        inputField.sendKeys(<span class="string"><span class="delimiter">&quot;</span><span class="content">Custom name</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-04-09 16:14:56 CEST
+Last updated 2018-04-09 17:09:10 CEST
 </div>
 </div>
 </body>
