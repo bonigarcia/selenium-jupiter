@@ -16,9 +16,11 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.annotation.Annotation;
@@ -63,14 +65,14 @@ public class AnnotationsReader {
                             keyValue.get().get(0), keyValue.get().get(1));
                 }
             }
-            out = Optional.of(capabilities);
+            out = of(capabilities);
         } else {
             // If not, search DriverCapabilities in any field
             Optional<Object> annotatedField = seekFieldAnnotatedWith(
                     testInstance, DriverCapabilities.class);
             if (annotatedField.isPresent()) {
                 capabilities = (Capabilities) annotatedField.get();
-                out = Optional.of(capabilities);
+                out = of(capabilities);
             }
         }
         return out;
@@ -80,19 +82,25 @@ public class AnnotationsReader {
             Optional<Object> testInstance)
             throws MalformedURLException, IllegalAccessException {
         Optional<URL> out = empty();
-        String urlValue = null;
-        DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
-        if (driverUrl != null) {
-            // Search first DriverUrl annotation in parameter
-            urlValue = driverUrl.value();
-            out = Optional.of(new URL(urlValue));
+        String seleniumServerUrl = config().getSeleniumServerUrl();
+
+        if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
+            out = of(new URL(seleniumServerUrl));
         } else {
-            // If not, search DriverUrl in any field
-            Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                    testInstance, DriverUrl.class);
-            if (annotatedField.isPresent()) {
-                urlValue = (String) annotatedField.get();
-                out = Optional.of(new URL(urlValue));
+            String urlValue = null;
+            DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
+            if (driverUrl != null) {
+                // Search first DriverUrl annotation in parameter
+                urlValue = driverUrl.value();
+                out = of(new URL(urlValue));
+            } else {
+                // If not, search DriverUrl in any field
+                Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                        testInstance, DriverUrl.class);
+                if (annotatedField.isPresent()) {
+                    urlValue = (String) annotatedField.get();
+                    out = of(new URL(urlValue));
+                }
             }
         }
         return out;
@@ -156,7 +164,7 @@ public class AnnotationsReader {
         for (Field field : declaredFields) {
             if (field.isAnnotationPresent(annotation)) {
                 field.setAccessible(true);
-                return Optional.of(field.get(object));
+                return of(field.get(object));
             }
         }
         return empty();
@@ -167,7 +175,7 @@ public class AnnotationsReader {
         DockerBrowser dockerBrowser = parameter
                 .getAnnotation(DockerBrowser.class);
         if (dockerBrowser != null) {
-            out = Optional.of(dockerBrowser);
+            out = of(dockerBrowser);
         }
         return out;
     }
@@ -178,7 +186,7 @@ public class AnnotationsReader {
             log.warn("Invalid format in {} (expected key=value)", keyValue);
             return empty();
         }
-        return Optional.of(asList(st.nextToken(), st.nextToken()));
+        return of(asList(st.nextToken(), st.nextToken()));
     }
 
 }

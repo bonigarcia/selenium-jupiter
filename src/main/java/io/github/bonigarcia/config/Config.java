@@ -40,6 +40,8 @@ public class Config {
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
+    ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
+            "sel.jup.selenium.server.url", String.class);
     ConfigKey<Boolean> vnc = new ConfigKey<>("sel.jup.vnc", Boolean.class);
     ConfigKey<String> vncScreenResolution = new ConfigKey<>(
             "sel.jup.vnc.screen.resolution", String.class);
@@ -227,6 +229,14 @@ public class Config {
 
     public void setProperties(boolean properties) {
         this.properties.setValue(properties);
+    }
+
+    public String getSeleniumServerUrl() {
+        return resolve(seleniumServerUrl);
+    }
+
+    public void setSeleniumServerUrl(String value) {
+        this.seleniumServerUrl.setValue(value);
     }
 
     public boolean isVnc() {

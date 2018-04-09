@@ -18,11 +18,11 @@ package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +79,6 @@ public class RemoteDriverHandler extends DriverHandler {
                 if (dockerBrowser.isPresent()) {
                     object = dockerDriverHandler.resolve(dockerBrowser.get());
                 } else {
-
                     Optional<Capabilities> capabilities = annotationsReader
                             .getCapabilities(parameter, testInstance);
                     Optional<URL> url = annotationsReader.getUrl(parameter,
@@ -116,20 +115,20 @@ public class RemoteDriverHandler extends DriverHandler {
         String defaultBrowserFallback = config().getDefaultBrowserFallback();
         String defaultBrowserFallbackVersion = config()
                 .getDefaultBrowserFallbackVersion();
-
-        String fallbackSeparator = ",";
+        String separator = ",";
 
         List<String> browserCandidates = new ArrayList<>();
         List<String> versionCandidates = new ArrayList<>();
         browserCandidates.add(defaultBrowser);
         versionCandidates.add(defaultVersion);
 
-        if (defaultBrowserFallback.contains(fallbackSeparator)) {
-            browserCandidates.addAll(asList(defaultBrowserFallback.split(",")));
+        if (defaultBrowserFallback.contains(separator)) {
+            browserCandidates
+                    .addAll(asList(defaultBrowserFallback.split(separator)));
         }
-        if (defaultBrowserFallbackVersion.contains(fallbackSeparator)) {
-            versionCandidates
-                    .addAll(asList(defaultBrowserFallbackVersion.split(",")));
+        if (defaultBrowserFallbackVersion.contains(separator)) {
+            versionCandidates.addAll(
+                    asList(defaultBrowserFallbackVersion.split(separator)));
         }
         assert browserCandidates.size() == versionCandidates
                 .size() : "Number of browser and versions for fallback does not match";
@@ -148,7 +147,7 @@ public class RemoteDriverHandler extends DriverHandler {
             Browser candidate = new Browser(browserCandidate, versionCandidate);
             log.debug("Using generic handler, trying with {}",
                     browserCandidate);
-            parent.setBrowserList(Collections.singletonList(candidate));
+            parent.setBrowserList(singletonList(candidate));
             try {
                 object = parent.resolveParameter(parameterContext, context);
             } catch (Exception e) {
