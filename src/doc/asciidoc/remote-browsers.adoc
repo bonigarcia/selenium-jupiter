@@ -36,7 +36,7 @@ We can also specify a custom Appium Server URL changing the value of `@DriverUrl
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/AppiumApkJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/test/advance/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 
