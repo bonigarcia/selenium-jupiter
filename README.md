@@ -1,6 +1,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.bonigarcia/selenium-jupiter.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.github.bonigarcia%20a%3Aselenium-jupiter)
 [![Build Status](https://travis-ci.org/bonigarcia/selenium-jupiter.svg?branch=master)](https://travis-ci.org/bonigarcia/selenium-jupiter)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=io.github.bonigarcia:selenium-jupiter)](https://sonarcloud.io/dashboard/index/io.github.bonigarcia:selenium-jupiter)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.bonigarcia:selenium-jupiter&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.github.bonigarcia:selenium-jupiter)
 [![codecov](https://codecov.io/gh/bonigarcia/selenium-jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/bonigarcia/selenium-jupiter)
 [![badge-jdk](https://img.shields.io/badge/jdk-8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
