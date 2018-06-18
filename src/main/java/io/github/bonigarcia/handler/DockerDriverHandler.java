@@ -33,6 +33,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -136,7 +137,7 @@ public class DockerDriverHandler {
 
             WebDriver webdriver;
             if (browser == ANDROID) {
-                webdriver = getDriverForAndroid(browser);
+                webdriver = getDriverForAndroid(browser, version);
             } else {
                 webdriver = getDriverForBrowser(browser, version);
             }
@@ -216,10 +217,10 @@ public class DockerDriverHandler {
         return webdriver;
     }
 
-    private WebDriver getDriverForAndroid(BrowserType browser)
+    private WebDriver getDriverForAndroid(BrowserType browser, String version)
             throws DockerException, InterruptedException, IOException {
         browser.init();
-        String appiumUrl = startAndroidBrowser(browser);
+        String appiumUrl = startAndroidBrowser(browser, version);
         AndroidDriver<WebElement> androidDriver = null;
 
         log.info("Appium URL in Android device: {}", appiumUrl);
@@ -239,9 +240,9 @@ public class DockerDriverHandler {
                             + androidDeviceTimeoutSec
                             + " seconds) waiting for Android device in Docker");
                 }
-                log.trace("Exception waiting for device Android: {} {}",
-                        e.getClass(), e.getMessage());
-                sleep(5000);
+                log.debug("Device Android not ready yet: {} {}", e.getClass(),
+                        e.getMessage());
+                sleep(10000);
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
@@ -356,10 +357,47 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
-    private String startAndroidBrowser(BrowserType browser)
+    private String startAndroidBrowser(BrowserType browser, String version)
             throws DockerException, InterruptedException, IOException {
 
-        String androidImage = browser.getDockerImage();
+        if (version == null || version.isEmpty()) {
+            version = config().getAndroidDefaultVersion();
+        }
+
+        String androidImage;
+        String apiLevel;
+        switch (version) {
+        case "5.0.1":
+            androidImage = IS_OS_LINUX ? config().getAndroidImageApi21Linux()
+                    : config().getAndroidImageApi21OsxWin();
+            apiLevel = "21";
+            break;
+        case "5.1.1":
+            androidImage = IS_OS_LINUX ? config().getAndroidImageApi22Linux()
+                    : config().getAndroidImageApi22OsxWin();
+            apiLevel = "22";
+            break;
+        case "6.0":
+            androidImage = IS_OS_LINUX ? config().getAndroidImageApi23Linux()
+                    : config().getAndroidImageApi23OsxWin();
+            apiLevel = "23";
+            break;
+        case "7.0":
+            androidImage = IS_OS_LINUX ? config().getAndroidImageApi24Linux()
+                    : config().getAndroidImageApi24OsxWin();
+            apiLevel = "24";
+            break;
+        case "7.1.1":
+            androidImage = IS_OS_LINUX ? config().getAndroidImageApi25Linux()
+                    : config().getAndroidImageApi25OsxWin();
+            apiLevel = "25";
+            break;
+        default:
+            throw new SeleniumJupiterException(
+                    "Version " + version + " not valid for Android devices");
+        }
+
+        log.info("Using Android version {} (API level {})", version, apiLevel);
         dockerService.pullImage(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage);

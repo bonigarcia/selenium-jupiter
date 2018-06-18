@@ -54,8 +54,6 @@ public enum BrowserType {
     public void init() {
         switch (this) {
         case ANDROID:
-            dockerImage = config().getAndroidImage();
-            path = config().getChromePath();
             driverHandler = new ChromeDriverHandler();
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities();

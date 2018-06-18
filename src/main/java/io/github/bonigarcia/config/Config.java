@@ -154,8 +154,28 @@ public class Config {
     ConfigKey<String> dockerTimeZone = new ConfigKey<>(
             "sel.jup.docker.timezone", String.class);
 
-    ConfigKey<String> androidImage = new ConfigKey<>("sel.jup.android.image",
-            String.class);
+    ConfigKey<String> androidDefaultVersion = new ConfigKey<>(
+            "sel.jup.android.default.version", String.class);
+    ConfigKey<String> androidImageApi21Linux = new ConfigKey<>(
+            "sel.jup.android.image.api21.linux", String.class);
+    ConfigKey<String> androidImageApi22Linux = new ConfigKey<>(
+            "sel.jup.android.image.api22.linux", String.class);
+    ConfigKey<String> androidImageApi23Linux = new ConfigKey<>(
+            "sel.jup.android.image.api23.linux", String.class);
+    ConfigKey<String> androidImageApi24Linux = new ConfigKey<>(
+            "sel.jup.android.image.api24.linux", String.class);
+    ConfigKey<String> androidImageApi25Linux = new ConfigKey<>(
+            "sel.jup.android.image.api25.linux", String.class);
+    ConfigKey<String> androidImageApi21OsxWin = new ConfigKey<>(
+            "sel.jup.android.image.api21.osxwin", String.class);
+    ConfigKey<String> androidImageApi22OsxWin = new ConfigKey<>(
+            "sel.jup.android.image.api22.osxwin", String.class);
+    ConfigKey<String> androidImageApi23OsxWin = new ConfigKey<>(
+            "sel.jup.android.image.api23.osxwin", String.class);
+    ConfigKey<String> androidImageApi24OsxWin = new ConfigKey<>(
+            "sel.jup.android.image.api24.osxwin", String.class);
+    ConfigKey<String> androidImageApi25OsxWin = new ConfigKey<>(
+            "sel.jup.android.image.api25.osxwin", String.class);
     ConfigKey<String> androidNoVncPort = new ConfigKey<>(
             "sel.jup.android.novnc.port", String.class);
     ConfigKey<String> androidAppiumPort = new ConfigKey<>(
@@ -700,12 +720,92 @@ public class Config {
         this.dockerTimeZone.setValue(value);
     }
 
-    public String getAndroidImage() {
-        return resolve(androidImage);
+    public String getAndroidDefaultVersion() {
+        return resolve(androidDefaultVersion);
     }
 
-    public void setAndroidImage(String value) {
-        this.androidImage.setValue(value);
+    public void setAndroidDefaultVersion(String value) {
+        this.androidDefaultVersion.setValue(value);
+    }
+
+    public String getAndroidImageApi21Linux() {
+        return resolve(androidImageApi21Linux);
+    }
+
+    public void setAndroidImageApi21Linux(String value) {
+        this.androidImageApi21Linux.setValue(value);
+    }
+
+    public String getAndroidImageApi22Linux() {
+        return resolve(androidImageApi22Linux);
+    }
+
+    public void setAndroidImageApi22Linux(String value) {
+        this.androidImageApi22Linux.setValue(value);
+    }
+
+    public String getAndroidImageApi23Linux() {
+        return resolve(androidImageApi23Linux);
+    }
+
+    public void setAndroidImageApi23Linux(String value) {
+        this.androidImageApi23Linux.setValue(value);
+    }
+
+    public String getAndroidImageApi24Linux() {
+        return resolve(androidImageApi24Linux);
+    }
+
+    public void setAndroidImageApi24Linux(String value) {
+        this.androidImageApi24Linux.setValue(value);
+    }
+
+    public String getAndroidImageApi25Linux() {
+        return resolve(androidImageApi25Linux);
+    }
+
+    public void setAndroidImageApi25Linux(String value) {
+        this.androidImageApi25Linux.setValue(value);
+    }
+
+    public String getAndroidImageApi21OsxWin() {
+        return resolve(androidImageApi21OsxWin);
+    }
+
+    public void setAndroidImageApi21OsxWin(String value) {
+        this.androidImageApi21OsxWin.setValue(value);
+    }
+
+    public String getAndroidImageApi22OsxWin() {
+        return resolve(androidImageApi22OsxWin);
+    }
+
+    public void setAndroidImageApi22OsxWin(String value) {
+        this.androidImageApi22OsxWin.setValue(value);
+    }
+
+    public String getAndroidImageApi23OsxWin() {
+        return resolve(androidImageApi23OsxWin);
+    }
+
+    public void setAndroidImageApi23OsxWin(String value) {
+        this.androidImageApi23OsxWin.setValue(value);
+    }
+
+    public String getAndroidImageApi24OsxWin() {
+        return resolve(androidImageApi24OsxWin);
+    }
+
+    public void setAndroidImageApi24OsxWin(String value) {
+        this.androidImageApi24OsxWin.setValue(value);
+    }
+
+    public String getAndroidImageApi25OsxWin() {
+        return resolve(androidImageApi25OsxWin);
+    }
+
+    public void setAndroidImageApi25OsxWin(String value) {
+        this.androidImageApi25OsxWin.setValue(value);
     }
 
     public String getAndroidNoVncPort() {
