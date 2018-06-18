@@ -23,7 +23,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -43,18 +42,11 @@ public class AppiumWithGlobalOptionsChromeJupiterTest {
     DesiredCapabilities capabilities = new DesiredCapabilities();
     {
         capabilities.setCapability("browserName", "chrome");
-        capabilities.setCapability("deviceName", "Android");
+        capabilities.setCapability("deviceName", "Nexus S");
     }
 
     @Test
     void testWithAndroid(AppiumDriver<WebElement> driver) {
-        String context = driver.getContext();
-        driver.context("NATIVE_APP");
-        driver.findElement(By.id("com.android.chrome:id/terms_accept")).click();
-        driver.findElement(By.id("com.android.chrome:id/negative_button"))
-                .click();
-        driver.context(context);
-
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
