@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -84,6 +83,8 @@ import io.github.bonigarcia.SelenoidConfig;
  * @since 1.2.0
  */
 public class DockerDriverHandler {
+
+    static final String ALL_IPV4_ADDRESSES = "0.0.0.0";
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -150,7 +151,7 @@ public class DockerDriverHandler {
 
     private WebDriver getDriverForBrowser(BrowserType browser, String version)
             throws IllegalAccessException, IOException, DockerException,
-            InterruptedException, MalformedURLException {
+            InterruptedException {
         boolean enableVnc = config().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
 
@@ -405,7 +406,7 @@ public class DockerDriverHandler {
             String defaultSelenoidPort = config().getSelenoidPort();
             String internalSelenoidPort = defaultSelenoidPort;
             portBindings.put(internalSelenoidPort,
-                    asList(randomPort("0.0.0.0")));
+                    asList(randomPort(ALL_IPV4_ADDRESSES)));
 
             // binds
             String defaultSocket = dockerService.getDockerDefaultSocket();
@@ -478,9 +479,11 @@ public class DockerDriverHandler {
             // portBindings
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
             String internalAppiumPort = config().getAndroidAppiumPort();
-            portBindings.put(internalAppiumPort, asList(randomPort("0.0.0.0")));
+            portBindings.put(internalAppiumPort,
+                    asList(randomPort(ALL_IPV4_ADDRESSES)));
             String internalNoVncPort = config().getAndroidNoVncPort();
-            portBindings.put(internalNoVncPort, asList(randomPort("0.0.0.0")));
+            portBindings.put(internalNoVncPort,
+                    asList(randomPort(ALL_IPV4_ADDRESSES)));
 
             // binds
             List<String> binds = new ArrayList<>();
@@ -589,7 +592,8 @@ public class DockerDriverHandler {
 
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
             String defaultNovncPort = config().getNovncPort();
-            portBindings.put(defaultNovncPort, asList(randomPort("0.0.0.0")));
+            portBindings.put(defaultNovncPort,
+                    asList(randomPort(ALL_IPV4_ADDRESSES)));
 
             String network = config().getDockerNetwork();
             novncContainer = DockerContainer.dockerBuilder(novncImage)
