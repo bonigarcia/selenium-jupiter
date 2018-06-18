@@ -39,6 +39,7 @@ public class DockerContainer {
     private Optional<String> network;
     private Optional<List<String>> cmd;
     private Optional<List<String>> entryPoint;
+    private boolean privileged;
     private String containerId;
     private String containerUrl;
 
@@ -53,6 +54,7 @@ public class DockerContainer {
         this.cmd = builder.cmd != null ? of(builder.cmd) : empty();
         this.entryPoint = builder.entryPoint != null ? of(builder.entryPoint)
                 : empty();
+        this.privileged = builder.privileged;
     }
 
     public static DockerBuilder dockerBuilder(String imageId) {
@@ -103,6 +105,14 @@ public class DockerContainer {
         this.containerUrl = containerUrl;
     }
 
+    public boolean isPrivileged() {
+        return privileged;
+    }
+
+    public void setPrivileged(boolean privileged) {
+        this.privileged = privileged;
+    }
+
     public static class DockerBuilder {
         private String imageId;
         private Map<String, List<PortBinding>> portBindings;
@@ -111,6 +121,7 @@ public class DockerContainer {
         private List<String> cmd;
         private String network;
         private List<String> entryPoint;
+        private boolean privileged = false;
 
         public DockerBuilder(String imageId) {
             this.imageId = imageId;
@@ -144,6 +155,11 @@ public class DockerContainer {
 
         public DockerBuilder entryPoint(List<String> entryPoint) {
             this.entryPoint = entryPoint;
+            return this;
+        }
+
+        public DockerBuilder privileged() {
+            this.privileged = true;
             return this;
         }
 

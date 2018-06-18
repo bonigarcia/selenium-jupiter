@@ -87,6 +87,11 @@ public class DockerService {
         com.spotify.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
                 .builder();
 
+        boolean privileged = dockerContainer.isPrivileged();
+        if (privileged) {
+            log.trace("Using privileged mode");
+            hostConfigBuilder.privileged(true);
+        }
         Optional<String> network = dockerContainer.getNetwork();
         if (network.isPresent()) {
             log.trace("Using network: {}", network.get());
