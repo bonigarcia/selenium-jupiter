@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -132,88 +133,12 @@ public class DockerDriverHandler {
                 hostVideoFolder = new File(getOutputFolder(context));
             }
 
+            WebDriver webdriver;
             if (browser == ANDROID) {
-                browser.init();
-                String appiumUrl = startAndroidBrowser(browser);
-                AndroidDriver<WebElement> androidDriver = null;
-
-                log.info("Appium URL in Android device: {}", appiumUrl);
-                log.info(
-                        "Waiting for Android device ... this might take long, please wait");
-                do {
-                    try {
-                        androidDriver = new AndroidDriver<>(new URL(appiumUrl),
-                                browser.getCapabilities());
-                    } catch (Exception e) {
-                        Thread.sleep(1000);
-                    }
-                } while (androidDriver == null);
-                log.info("Android device ready {}", androidDriver);
-                return androidDriver;
-            }
-
-            boolean enableVnc = config().isVnc();
-            DesiredCapabilities capabilities = getCapabilities(browser,
-                    enableVnc);
-
-            String imageVersion;
-            if (version != null && !version.isEmpty()
-                    && !version.equalsIgnoreCase("latest")) {
-                if (version.startsWith("latest-")) {
-                    version = selenoidConfig.getVersionFromLabel(browser,
-                            version);
-                }
-                imageVersion = selenoidConfig.getImageVersion(browser, version);
-                capabilities.setCapability("version", imageVersion);
+                webdriver = getDriverForAndroid(browser);
             } else {
-                imageVersion = selenoidConfig.getDefaultBrowser(browser);
+                webdriver = getDriverForBrowser(browser, version);
             }
-
-            String seleniumServerUrl = config().getSeleniumServerUrl();
-            boolean seleniumServerUrlAvailable = seleniumServerUrl != null
-                    && !seleniumServerUrl.isEmpty();
-            String hubUrl = seleniumServerUrlAvailable ? seleniumServerUrl
-                    : startDockerBrowser(browser, version);
-
-            log.trace("Using Selenium Server at {}", hubUrl);
-            WebDriver webdriver = new RemoteWebDriver(new URL(hubUrl),
-                    capabilities);
-
-            SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
-            updateName(browser, imageVersion, webdriver);
-
-            if (enableVnc && !seleniumServerUrlAvailable) {
-                URL selenoidHubUrl = new URL(hubUrl);
-                String selenoidHost = selenoidHubUrl.getHost();
-                int selenoidPort = selenoidHubUrl.getPort();
-
-                String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
-                        sessionId.toString(),
-                        config().getSelenoidVncPassword());
-                log.info("Session id {}", sessionId);
-                log.info(
-                        "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
-                log.info("{}", novncUrl);
-                String vncExport = config().getVncExport();
-                log.trace("Exporting VNC URL as Java property {}", vncExport);
-                System.setProperty(vncExport, novncUrl);
-
-                if (config().isVncRedirectHtmlPage()) {
-                    String outputFolder = getOutputFolder(context);
-                    String vncHtmlPage = format("<!DOCTYPE html>\n" + "<html>\n"
-                            + "<head>\n"
-                            + "<meta http-equiv=\"refresh\" content=\"0; url=%s\">\n"
-                            + "</head>\n" + "<body>\n" + "</body>\n"
-                            + "</html>", novncUrl);
-                    write(Paths.get(outputFolder, name + ".html"),
-                            vncHtmlPage.getBytes());
-                }
-            }
-
-            if (recording) {
-                recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
-            }
-
             return webdriver;
 
         } catch (Exception e) {
@@ -221,7 +146,94 @@ public class DockerDriverHandler {
                     version, e);
             throw new SeleniumJupiterException(e);
         }
+    }
 
+    private WebDriver getDriverForBrowser(BrowserType browser, String version)
+            throws IllegalAccessException, IOException, DockerException,
+            InterruptedException, MalformedURLException {
+        boolean enableVnc = config().isVnc();
+        DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
+
+        String imageVersion;
+        String versionFromLabel = version;
+        if (version != null && !version.isEmpty()
+                && !version.equalsIgnoreCase("latest")) {
+            if (version.startsWith("latest-")) {
+                versionFromLabel = selenoidConfig.getVersionFromLabel(browser,
+                        version);
+            }
+            imageVersion = selenoidConfig.getImageVersion(browser,
+                    versionFromLabel);
+            capabilities.setCapability("version", imageVersion);
+        } else {
+            imageVersion = selenoidConfig.getDefaultBrowser(browser);
+        }
+
+        String seleniumServerUrl = config().getSeleniumServerUrl();
+        boolean seleniumServerUrlAvailable = seleniumServerUrl != null
+                && !seleniumServerUrl.isEmpty();
+        String hubUrl = seleniumServerUrlAvailable ? seleniumServerUrl
+                : startDockerBrowser(browser, versionFromLabel);
+
+        log.trace("Using Selenium Server at {}", hubUrl);
+        WebDriver webdriver = new RemoteWebDriver(new URL(hubUrl),
+                capabilities);
+
+        SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
+        updateName(browser, imageVersion, webdriver);
+
+        if (enableVnc && !seleniumServerUrlAvailable) {
+            URL selenoidHubUrl = new URL(hubUrl);
+            String selenoidHost = selenoidHubUrl.getHost();
+            int selenoidPort = selenoidHubUrl.getPort();
+
+            String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
+                    sessionId.toString(), config().getSelenoidVncPassword());
+            log.info("Session id {}", sessionId);
+            log.info(
+                    "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
+            log.info("{}", novncUrl);
+            String vncExport = config().getVncExport();
+            log.trace("Exporting VNC URL as Java property {}", vncExport);
+            System.setProperty(vncExport, novncUrl);
+
+            if (config().isVncRedirectHtmlPage()) {
+                String outputFolder = getOutputFolder(context);
+                String vncHtmlPage = format("<!DOCTYPE html>\n" + "<html>\n"
+                        + "<head>\n"
+                        + "<meta http-equiv=\"refresh\" content=\"0; url=%s\">\n"
+                        + "</head>\n" + "<body>\n" + "</body>\n" + "</html>",
+                        novncUrl);
+                write(Paths.get(outputFolder, name + ".html"),
+                        vncHtmlPage.getBytes());
+            }
+        }
+
+        if (recording) {
+            recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
+        }
+        return webdriver;
+    }
+
+    private WebDriver getDriverForAndroid(BrowserType browser)
+            throws DockerException, InterruptedException, IOException {
+        browser.init();
+        String appiumUrl = startAndroidBrowser(browser);
+        AndroidDriver<WebElement> androidDriver = null;
+
+        log.info("Appium URL in Android device: {}", appiumUrl);
+        log.info(
+                "Waiting for Android device ... this might take long, please wait");
+        do {
+            try {
+                androidDriver = new AndroidDriver<>(new URL(appiumUrl),
+                        browser.getCapabilities());
+            } catch (Exception e) {
+                Thread.sleep(1000);
+            }
+        } while (androidDriver == null);
+        log.info("Android device ready {}", androidDriver);
+        return androidDriver;
     }
 
     private void updateName(BrowserType browser, String imageVersion,
