@@ -154,6 +154,17 @@ public class Config {
     ConfigKey<String> dockerTimeZone = new ConfigKey<>(
             "sel.jup.docker.timezone", String.class);
 
+    ConfigKey<String> androidImage = new ConfigKey<>("sel.jup.android.image",
+            String.class);
+    ConfigKey<String> androidNoVncPort = new ConfigKey<>(
+            "sel.jup.android.novnc.port", String.class);
+    ConfigKey<String> androidAppiumPort = new ConfigKey<>(
+            "sel.jup.android.appium.port", String.class);
+    ConfigKey<String> androidDeviceName = new ConfigKey<>(
+            "sel.jup.android.device.name", String.class);
+    ConfigKey<String> androidBrowserName = new ConfigKey<>(
+            "sel.jup.android.browser.name", String.class);
+
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
         String name = configKey.getName();
@@ -685,6 +696,46 @@ public class Config {
 
     public void setDockerTimeZone(String value) {
         this.dockerTimeZone.setValue(value);
+    }
+
+    public String getAndroidImage() {
+        return resolve(androidImage);
+    }
+
+    public void setAndroidImage(String value) {
+        this.androidImage.setValue(value);
+    }
+
+    public String getAndroidNoVncPort() {
+        return resolve(androidNoVncPort);
+    }
+
+    public void setAndroidNoVncPort(String value) {
+        this.androidNoVncPort.setValue(value);
+    }
+
+    public String getAndroidAppiumPort() {
+        return resolve(androidAppiumPort);
+    }
+
+    public void setAndroidAppiumPort(String value) {
+        this.androidAppiumPort.setValue(value);
+    }
+
+    public String getAndroidDeviceName() {
+        return resolve(androidDeviceName);
+    }
+
+    public void setAndroidDeviceName(String value) {
+        this.androidDeviceName.setValue(value);
+    }
+
+    public String getAndroidBrowserName() {
+        return resolve(androidBrowserName);
+    }
+
+    public void setAndroidBrowserName(String value) {
+        this.androidBrowserName.setValue(value);
     }
 
     // Custom values

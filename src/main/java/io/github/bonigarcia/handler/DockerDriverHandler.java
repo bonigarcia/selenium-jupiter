@@ -17,6 +17,7 @@
 package io.github.bonigarcia.handler;
 
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
+import static io.github.bonigarcia.BrowserType.ANDROID;
 import static io.github.bonigarcia.BrowserType.OPERA;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static io.github.bonigarcia.SurefireReports.getOutputFolder;
@@ -54,6 +55,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -64,6 +66,7 @@ import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
 
+import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.DockerBrowser;
@@ -125,6 +128,30 @@ public class DockerDriverHandler {
 
     public WebDriver resolve(BrowserType browser, String version) {
         try {
+            if (recording) {
+                hostVideoFolder = new File(getOutputFolder(context));
+            }
+
+            if (browser == ANDROID) {
+                browser.init();
+                String appiumUrl = startAndroidBrowser(browser);
+                AndroidDriver<WebElement> androidDriver = null;
+
+                log.info("Appium URL in Android device: {}", appiumUrl);
+                log.info(
+                        "Waiting for Android device ... this might take long, please wait");
+                do {
+                    try {
+                        androidDriver = new AndroidDriver<>(new URL(appiumUrl),
+                                browser.getCapabilities());
+                    } catch (Exception e) {
+                        Thread.sleep(1000);
+                    }
+                } while (androidDriver == null);
+                log.info("Android device ready {}", androidDriver);
+                return androidDriver;
+            }
+
             boolean enableVnc = config().isVnc();
             DesiredCapabilities capabilities = getCapabilities(browser,
                     enableVnc);
@@ -305,6 +332,17 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
+    private String startAndroidBrowser(BrowserType browser)
+            throws DockerException, InterruptedException, IOException {
+
+        String androidImage = browser.getDockerImage();
+        dockerService.pullImage(androidImage);
+
+        DockerContainer androidContainer = startAndroidContainer(androidImage);
+        return androidContainer.getContainerUrl();
+
+    }
+
     private String startDockerBrowser(BrowserType browser, String version)
             throws DockerException, InterruptedException, IOException {
 
@@ -337,7 +375,6 @@ public class DockerDriverHandler {
             String recordingImage = config().getRecordingImage();
             if (recording) {
                 dockerService.pullImageIfNecessary(recordingImage);
-                hostVideoFolder = new File(getOutputFolder(context));
             }
 
             // portBindings
@@ -402,6 +439,63 @@ public class DockerDriverHandler {
             containerMap.put(selenoidImage, selenoidContainer);
         }
         return selenoidContainer;
+    }
+
+    public DockerContainer startAndroidContainer(String androidImage)
+            throws DockerException, InterruptedException, IOException {
+
+        DockerContainer androidContainer;
+        if (containerMap.containsKey(androidImage)) {
+            log.trace("Android container already available");
+            androidContainer = containerMap.get(androidImage);
+        } else {
+            // Pull image
+            dockerService.pullImageIfNecessary(androidImage);
+
+            // portBindings
+            Map<String, List<PortBinding>> portBindings = new HashMap<>();
+            String internalAppiumPort = config().getAndroidAppiumPort();
+            portBindings.put(internalAppiumPort, asList(randomPort("0.0.0.0")));
+            String internalNoVncPort = config().getAndroidNoVncPort();
+            portBindings.put(internalNoVncPort, asList(randomPort("0.0.0.0")));
+
+            // binds
+            List<String> binds = new ArrayList<>();
+            if (recording) {
+                binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
+            }
+
+            // network
+            String network = config().getDockerNetwork();
+
+            // envs
+            List<String> envs = new ArrayList<>();
+            envs.add("DEVICE=" + config().getAndroidDeviceName());
+            envs.add("APPIUM=True");
+            if (recording) {
+                envs.add("AUTO_RECORD=True");
+            }
+
+            // Build container
+            DockerBuilder dockerBuilder = DockerContainer
+                    .dockerBuilder(androidImage).portBindings(portBindings)
+                    .binds(binds).envs(envs).network(network).privileged();
+
+            androidContainer = dockerBuilder.build();
+            String containerId = dockerService.startContainer(androidContainer);
+
+            String androidHost = dockerService.getHost(containerId, network);
+            String androidPort = dockerService.getBindPort(containerId,
+                    internalAppiumPort + "/tcp");
+
+            String appiumUrl = format("http://%s:%s/wd/hub", androidHost,
+                    androidPort);
+            androidContainer.setContainerId(containerId);
+            androidContainer.setContainerUrl(appiumUrl);
+
+            containerMap.put(androidImage, androidContainer);
+        }
+        return androidContainer;
     }
 
     private int getDockerBrowserCount() {

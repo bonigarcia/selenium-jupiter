@@ -41,7 +41,7 @@ import io.github.bonigarcia.handler.OperaDriverHandler;
  */
 public enum BrowserType {
 
-    CHROME, FIREFOX, OPERA;
+    CHROME, FIREFOX, OPERA, ANDROID;
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -53,6 +53,17 @@ public enum BrowserType {
 
     public void init() {
         switch (this) {
+        case ANDROID:
+            dockerImage = config().getAndroidImage();
+            path = config().getChromePath();
+            driverHandler = new ChromeDriverHandler();
+            optionsKey = ChromeOptions.CAPABILITY;
+            capabilities = new DesiredCapabilities();
+            capabilities.setCapability("browserName",
+                    config().getAndroidBrowserName());
+            capabilities.setCapability("deviceName",
+                    config().getAndroidDeviceName());
+            break;
         case FIREFOX:
             dockerImage = config().getFirefoxImageFormat();
             path = config().getFirefoxPath();
