@@ -224,12 +224,23 @@ public class DockerDriverHandler {
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info(
                 "Waiting for Android device ... this might take long, please wait");
+
+        int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
+        long endTimeMillis = currentTimeMillis()
+                + androidDeviceTimeoutSec * 1000;
         do {
             try {
                 androidDriver = new AndroidDriver<>(new URL(appiumUrl),
                         browser.getCapabilities());
             } catch (Exception e) {
-                Thread.sleep(1000);
+                if (currentTimeMillis() > endTimeMillis) {
+                    throw new SeleniumJupiterException("Timeout ("
+                            + androidDeviceTimeoutSec
+                            + " seconds) waiting for Android device in Docker");
+                }
+                log.trace("Exception waiting for device Android: {} {}",
+                        e.getClass(), e.getMessage());
+                sleep(5000);
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);

@@ -164,6 +164,8 @@ public class Config {
             "sel.jup.android.device.name", String.class);
     ConfigKey<String> androidBrowserName = new ConfigKey<>(
             "sel.jup.android.browser.name", String.class);
+    ConfigKey<Integer> androidDeviceTimeoutSec = new ConfigKey<>(
+            "sel.jup.android.device.timeout.sec", Integer.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -736,6 +738,14 @@ public class Config {
 
     public void setAndroidBrowserName(String value) {
         this.androidBrowserName.setValue(value);
+    }
+
+    public Integer getAndroidDeviceTimeoutSec() {
+        return resolve(androidDeviceTimeoutSec);
+    }
+
+    public void setAndroidDeviceTimeoutSec(Integer value) {
+        this.androidDeviceTimeoutSec.setValue(value);
     }
 
     // Custom values
