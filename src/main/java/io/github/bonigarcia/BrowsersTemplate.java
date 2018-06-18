@@ -38,6 +38,8 @@ public class BrowsersTemplate {
     public static class Browser {
         String type;
         String version;
+        String browserName;
+        String deviceName;
 
         public Browser(String type, String version) {
             this.type = type;
@@ -50,6 +52,14 @@ public class BrowsersTemplate {
 
         public String getVersion() {
             return version;
+        }
+
+        public String getBrowserName() {
+            return browserName;
+        }
+
+        public String getDeviceName() {
+            return deviceName;
         }
 
         public BrowserType toBrowserType() {

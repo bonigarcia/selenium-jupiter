@@ -126,10 +126,14 @@ public class DockerDriverHandler {
     public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browser = dockerBrowser.type();
         String version = dockerBrowser.version();
-        return resolve(browser, version);
+        String browserName = dockerBrowser.browserName();
+        String deviceName = dockerBrowser.deviceName();
+
+        return resolve(browser, version, browserName, deviceName);
     }
 
-    public WebDriver resolve(BrowserType browser, String version) {
+    public WebDriver resolve(BrowserType browser, String version,
+            String browserName, String deviceName) {
         try {
             if (recording) {
                 hostVideoFolder = new File(getOutputFolder(context));
@@ -137,7 +141,8 @@ public class DockerDriverHandler {
 
             WebDriver webdriver;
             if (browser == ANDROID) {
-                webdriver = getDriverForAndroid(browser, version);
+                webdriver = getDriverForAndroid(browser, version, browserName,
+                        deviceName);
             } else {
                 webdriver = getDriverForBrowser(browser, version);
             }
@@ -217,23 +222,40 @@ public class DockerDriverHandler {
         return webdriver;
     }
 
-    private WebDriver getDriverForAndroid(BrowserType browser, String version)
+    private WebDriver getDriverForAndroid(BrowserType browser, String version,
+            String browserName, String deviceName)
             throws DockerException, InterruptedException, IOException {
         browser.init();
-        String appiumUrl = startAndroidBrowser(browser, version);
+
+        DesiredCapabilities capabilities = browser.getCapabilities();
+        String browserNameCapability = browserName != null
+                && !browserName.isEmpty() ? browserName
+                        : config().getAndroidBrowserName();
+        String deviceNameCapability = deviceName != null
+                && !deviceName.isEmpty() ? deviceName
+                        : config().getAndroidDeviceName();
+        capabilities.setCapability("browserName", browserNameCapability);
+        capabilities.setCapability("deviceName", deviceNameCapability);
+
+        String appiumUrl = startAndroidBrowser(browser, version,
+                deviceNameCapability);
         AndroidDriver<WebElement> androidDriver = null;
 
         log.info("Appium URL in Android device: {}", appiumUrl);
+        log.info("Android device name: {} -- Browser in Android device: {}",
+                deviceNameCapability, browserNameCapability);
         log.info(
                 "Waiting for Android device ... this might take long, please wait");
 
         int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
         long endTimeMillis = currentTimeMillis()
                 + androidDeviceTimeoutSec * 1000;
+
         do {
             try {
+
                 androidDriver = new AndroidDriver<>(new URL(appiumUrl),
-                        browser.getCapabilities());
+                        capabilities);
             } catch (Exception e) {
                 if (currentTimeMillis() > endTimeMillis) {
                     throw new SeleniumJupiterException("Timeout ("
@@ -242,7 +264,7 @@ public class DockerDriverHandler {
                 }
                 log.debug("Device Android not ready yet: {} {}", e.getClass(),
                         e.getMessage());
-                sleep(10000);
+                sleep(5000);
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
@@ -357,7 +379,8 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
-    private String startAndroidBrowser(BrowserType browser, String version)
+    private String startAndroidBrowser(BrowserType browser, String version,
+            String deviceName)
             throws DockerException, InterruptedException, IOException {
 
         if (version == null || version.isEmpty()) {
@@ -400,7 +423,8 @@ public class DockerDriverHandler {
         log.info("Using Android version {} (API level {})", version, apiLevel);
         dockerService.pullImage(androidImage);
 
-        DockerContainer androidContainer = startAndroidContainer(androidImage);
+        DockerContainer androidContainer = startAndroidContainer(androidImage,
+                deviceName);
         return androidContainer.getContainerUrl();
 
     }
@@ -503,7 +527,8 @@ public class DockerDriverHandler {
         return selenoidContainer;
     }
 
-    public DockerContainer startAndroidContainer(String androidImage)
+    public DockerContainer startAndroidContainer(String androidImage,
+            String deviceName)
             throws DockerException, InterruptedException, IOException {
 
         DockerContainer androidContainer;
@@ -534,7 +559,7 @@ public class DockerDriverHandler {
 
             // envs
             List<String> envs = new ArrayList<>();
-            envs.add("DEVICE=" + config().getAndroidDeviceName());
+            envs.add("DEVICE=" + deviceName);
             envs.add("APPIUM=True");
             if (recording) {
                 envs.add("AUTO_RECORD=True");

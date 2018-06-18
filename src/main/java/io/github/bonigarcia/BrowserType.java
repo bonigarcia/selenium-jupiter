@@ -57,10 +57,6 @@ public enum BrowserType {
             driverHandler = new ChromeDriverHandler();
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities();
-            capabilities.setCapability("browserName",
-                    config().getAndroidBrowserName());
-            capabilities.setCapability("deviceName",
-                    config().getAndroidDeviceName());
             break;
         case FIREFOX:
             dockerImage = config().getFirefoxImageFormat();
