@@ -27,18 +27,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerAndroidJupiterTest {
 
-    static {
-        SeleniumJupiter.config().setAndroidBrowserName("browser");
-    }
-
     @Test
     public void testAndroid(
-            @DockerBrowser(type = ANDROID, version = "5.0.1") RemoteWebDriver driver) {
+            @DockerBrowser(type = ANDROID) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
