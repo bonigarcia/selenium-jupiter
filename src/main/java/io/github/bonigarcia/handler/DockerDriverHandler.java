@@ -103,6 +103,7 @@ public class DockerDriverHandler {
     boolean recording = config().isRecording();
     String selenoidImage = config().getSelenoidImage();
     String novncImage = config().getNovncImage();
+    String androidNoVncUrl;
 
     public DockerDriverHandler() throws DockerCertificateException {
         this.selenoidConfig = new SelenoidConfig();
@@ -199,10 +200,9 @@ public class DockerDriverHandler {
 
             String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
                     sessionId.toString(), config().getSelenoidVncPassword());
-            log.info("Session id {}", sessionId);
-            log.info(
-                    "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
-            log.info("{}", novncUrl);
+            logSessionId(sessionId);
+            logNoVncUrl(novncUrl);
+
             String vncExport = config().getVncExport();
             log.trace("Exporting VNC URL as Java property {}", vncExport);
             System.setProperty(vncExport, novncUrl);
@@ -223,6 +223,16 @@ public class DockerDriverHandler {
             recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
         }
         return webdriver;
+    }
+
+    private void logSessionId(SessionId sessionId) {
+        log.info("Session id {}", sessionId);
+    }
+
+    private void logNoVncUrl(String novncUrl) {
+        log.info(
+                "VNC URL (copy and paste in a browser navigation bar to interact with remote session)");
+        log.info("{}", novncUrl);
     }
 
     private WebDriver getDriverForAndroid(BrowserType browser, String version,
@@ -274,6 +284,13 @@ public class DockerDriverHandler {
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
+
+        if (config().isVnc()) {
+            SessionId sessionId = ((RemoteWebDriver) androidDriver)
+                    .getSessionId();
+            logSessionId(sessionId);
+            logNoVncUrl(androidNoVncUrl);
+        }
         return androidDriver;
     }
 
@@ -586,6 +603,11 @@ public class DockerDriverHandler {
                     androidPort);
             androidContainer.setContainerId(containerId);
             androidContainer.setContainerUrl(appiumUrl);
+
+            String androidNoVncPort = dockerService.getBindPort(containerId,
+                    internalNoVncPort + "/tcp");
+            androidNoVncUrl = format("http://%s:%s/vnc.html?autoconnect=true",
+                    androidHost, androidNoVncPort);
 
             containerMap.put(androidImage, androidContainer);
         }
