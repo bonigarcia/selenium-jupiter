@@ -21,6 +21,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,14 +40,20 @@ public class ForcedAndroidTimeoutJupiterTest {
 
     @BeforeAll
     static void setup() {
+        SeleniumJupiter.config().setVnc(true);
         SeleniumJupiter.config().setAndroidDeviceTimeoutSec(10);
     }
 
     @AfterEach
-    void teardown() {
+    void cleanup() {
         if (dockerDriverHandler != null) {
             dockerDriverHandler.cleanup();
         }
+    }
+
+    @AfterAll
+    static void teardown() {
+        SeleniumJupiter.config().reset();
     }
 
     @Test
