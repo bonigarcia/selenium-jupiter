@@ -56,6 +56,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -66,6 +67,7 @@ import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
 
+import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.DockerBrowser;
@@ -232,15 +234,13 @@ public class DockerDriverHandler {
         String deviceNameCapability = deviceName != null
                 && !deviceName.isEmpty() ? deviceName
                         : config().getAndroidDeviceName();
-        capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("browserName", browserNameCapability);
         capabilities.setCapability("deviceName", deviceNameCapability);
 
-        String seleniumServerUrl = startAndroidBrowser(version,
-                deviceNameCapability);
-        RemoteWebDriver androidDriver = null;
+        String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
+        AndroidDriver<WebElement> androidDriver = null;
 
-        log.info("Selenium Hub URL with Android device: {}", seleniumServerUrl);
+        log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser in Android device: {}",
                 deviceNameCapability, browserNameCapability);
         log.info(
@@ -252,9 +252,9 @@ public class DockerDriverHandler {
 
         do {
             try {
-                androidDriver = new RemoteWebDriver(new URL(seleniumServerUrl),
-                        capabilities);
 
+                androidDriver = new AndroidDriver<>(new URL(appiumUrl),
+                        capabilities);
             } catch (Exception e) {
                 if (currentTimeMillis() > endTimeMillis) {
                     throw new SeleniumJupiterException("Timeout ("
@@ -421,10 +421,9 @@ public class DockerDriverHandler {
         log.info("Using Android version {} (API level {})", version, apiLevel);
         dockerService.pullImage(androidImage);
 
-        DockerContainer seleniumHubContainer = startSeleniumHubContainer(
-                "selenium/hub:3.12.0");
-        startAndroidContainer(seleniumHubContainer, androidImage, deviceName);
-        return seleniumHubContainer.getContainerUrl();
+        DockerContainer androidContainer = startAndroidContainer(androidImage,
+                deviceName);
+        return androidContainer.getContainerUrl();
 
     }
 
@@ -526,52 +525,7 @@ public class DockerDriverHandler {
         return selenoidContainer;
     }
 
-    public DockerContainer startSeleniumHubContainer(String seleniumHubImage)
-            throws DockerException, InterruptedException, IOException {
-
-        DockerContainer androidContainer;
-        if (containerMap.containsKey(seleniumHubImage)) {
-            log.trace("Selenium Hub container already available");
-            androidContainer = containerMap.get(seleniumHubImage);
-        } else {
-            // Pull image
-            dockerService.pullImageIfNecessary(seleniumHubImage);
-
-            // portBindings
-            Map<String, List<PortBinding>> portBindings = new HashMap<>();
-            String internalHubPort = "4444";
-            portBindings.put(internalHubPort,
-                    asList(randomPort(ALL_IPV4_ADDRESSES)));
-
-            // network
-            String network = config().getDockerNetwork();
-
-            // Build container
-            DockerBuilder dockerBuilder = DockerContainer
-                    .dockerBuilder(seleniumHubImage).portBindings(portBindings)
-                    .network(network);
-
-            androidContainer = dockerBuilder.build();
-            String containerId = dockerService.startContainer(androidContainer);
-
-            String seleniumHubHost = dockerService.getHost(containerId,
-                    network);
-            String seleniumHubPort = dockerService.getBindPort(containerId,
-                    internalHubPort + "/tcp");
-
-            String seleniumHubUrl = format("http://%s:%s/wd/hub",
-                    seleniumHubHost, seleniumHubPort);
-
-            androidContainer.setContainerId(containerId);
-            androidContainer.setContainerUrl(seleniumHubUrl);
-
-            containerMap.put(seleniumHubImage, androidContainer);
-        }
-        return androidContainer;
-    }
-
-    public DockerContainer startAndroidContainer(
-            DockerContainer seleniumHubContainer, String androidImage,
+    public DockerContainer startAndroidContainer(String androidImage,
             String deviceName)
             throws DockerException, InterruptedException, IOException {
 
@@ -602,16 +556,9 @@ public class DockerDriverHandler {
             String network = config().getDockerNetwork();
 
             // envs
-            URL seleniumHubUrl = new URL(
-                    seleniumHubContainer.getContainerUrl());
             List<String> envs = new ArrayList<>();
             envs.add("DEVICE=" + deviceName);
             envs.add("APPIUM=True");
-            envs.add("CONNECT_TO_GRID=True");
-            envs.add("SELENIUM_HOST=" + seleniumHubUrl.getHost());
-            envs.add("SELENIUM_PORT=" + seleniumHubUrl.getPort());
-            envs.add("MOBILE_WEB_TEST=True");
-
             if (recording) {
                 envs.add("AUTO_RECORD=True");
             }
