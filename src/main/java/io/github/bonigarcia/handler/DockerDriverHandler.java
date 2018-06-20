@@ -237,8 +237,7 @@ public class DockerDriverHandler {
         capabilities.setCapability("browserName", browserNameCapability);
         capabilities.setCapability("deviceName", deviceNameCapability);
 
-        String appiumUrl = startAndroidBrowser(browser, version,
-                deviceNameCapability);
+        String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
         AndroidDriver<WebElement> androidDriver = null;
 
         log.info("Appium URL in Android device: {}", appiumUrl);
@@ -379,8 +378,7 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
-    private String startAndroidBrowser(BrowserType browser, String version,
-            String deviceName)
+    private String startAndroidBrowser(String version, String deviceName)
             throws DockerException, InterruptedException, IOException {
 
         if (version == null || version.isEmpty()) {
