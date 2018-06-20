@@ -42,7 +42,7 @@ public class AppiumWithGlobalOptionsChromeJupiterTest {
     DesiredCapabilities capabilities = new DesiredCapabilities();
     {
         capabilities.setCapability("browserName", "chrome");
-        capabilities.setCapability("deviceName", "Nexus S");
+        capabilities.setCapability("deviceName", "Samsung Galaxy S6");
     }
 
     @Test
