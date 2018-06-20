@@ -144,6 +144,9 @@ public class DockerDriverHandler {
                 webdriver = getDriverForAndroid(browser, version, browserName,
                         deviceName);
             } else {
+                if (selenoidConfig == null) {
+                    selenoidConfig = new SelenoidConfig();
+                }
                 webdriver = getDriverForBrowser(browser, version);
             }
             return webdriver;

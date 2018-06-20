@@ -94,7 +94,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
     private List<Browser> browserList;
     private DockerService dockerService;
-    private SelenoidConfig selenoidConfig;
 
     public SeleniumExtension() {
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
@@ -245,11 +244,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             dockerService = new DockerService();
         }
         driverHandler.setDockerService(dockerService);
-
-        if (selenoidConfig == null) {
-            selenoidConfig = new SelenoidConfig();
-        }
-        driverHandler.setSelenoidConfig(selenoidConfig);
     }
 
     private void handleException(Parameter parameter,
