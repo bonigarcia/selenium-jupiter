@@ -247,7 +247,7 @@ public class DockerDriverHandler {
         log.info("Android device name: {} -- Browser in Android device: {}",
                 deviceNameCapability, browserNameCapability);
         log.info(
-                "Waiting for Android device ... this might take long, please wait");
+                "Waiting for Android device ... this might take long, please wait (retries each 5 seconds)");
 
         int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
         long endTimeMillis = currentTimeMillis()
@@ -264,8 +264,12 @@ public class DockerDriverHandler {
                             + androidDeviceTimeoutSec
                             + " seconds) waiting for Android device in Docker");
                 }
-                log.debug("Device Android not ready yet: {} {}", e.getClass(),
-                        e.getMessage());
+                String errorMessage = e.getMessage();
+                int i = errorMessage.indexOf("\n");
+                if (i != -1) {
+                    errorMessage = errorMessage.substring(0, i);
+                }
+                log.debug("Android device not ready: {}", errorMessage);
                 sleep(5000);
             }
         } while (androidDriver == null);
