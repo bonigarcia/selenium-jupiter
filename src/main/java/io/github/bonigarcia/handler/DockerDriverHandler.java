@@ -408,39 +408,33 @@ public class DockerDriverHandler {
         }
 
         String androidImage;
-        String apiLevel;
         switch (version) {
         case "5.0.1":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi21Linux()
                     : config().getAndroidImageApi21OsxWin();
-            apiLevel = "21";
             break;
         case "5.1.1":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi22Linux()
                     : config().getAndroidImageApi22OsxWin();
-            apiLevel = "22";
             break;
         case "6.0":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi23Linux()
                     : config().getAndroidImageApi23OsxWin();
-            apiLevel = "23";
             break;
         case "7.0":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi24Linux()
                     : config().getAndroidImageApi24OsxWin();
-            apiLevel = "24";
             break;
         case "7.1.1":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi25Linux()
                     : config().getAndroidImageApi25OsxWin();
-            apiLevel = "25";
             break;
         default:
             throw new SeleniumJupiterException(
                     "Version " + version + " not valid for Android devices");
         }
 
-        log.info("Using Android version {} (API level {})", version, apiLevel);
+        log.info("Using Android version {}", version);
         dockerService.pullImage(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage,
