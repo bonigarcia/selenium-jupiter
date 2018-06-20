@@ -22,6 +22,7 @@ import static org.awaitility.Awaitility.await;
 
 import java.io.ByteArrayInputStream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -38,10 +39,20 @@ class InteractiveJupiterTest {
     @ParameterizedTest
     @ValueSource(strings = { "chrome", "firefox", "opera" })
     void testInteractive(String argument) {
+        exercise(new String[] { argument });
+    }
+
+    @Test
+    void testInteractiveAndroid() {
+        exercise(new String[] { "android", "7.1.1", "chrome",
+                "Samsung Galaxy S6" });
+    }
+
+    private void exercise(String[] args) {
         ByteArrayInputStream intro = new ByteArrayInputStream(
                 "\r\n".getBytes());
         System.setIn(intro);
-        SeleniumJupiter.main(new String[] { argument });
+        SeleniumJupiter.main(args);
         await().atMost(1, MINUTES).until(() -> getVncExport() == null);
     }
 
