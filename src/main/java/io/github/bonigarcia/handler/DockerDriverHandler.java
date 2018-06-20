@@ -275,7 +275,7 @@ public class DockerDriverHandler {
                             + " seconds) waiting for Android device in Docker");
                 }
                 String errorMessage = e.getMessage();
-                int i = errorMessage.indexOf("\n");
+                int i = errorMessage.indexOf('\n');
                 if (i != -1) {
                     errorMessage = errorMessage.substring(0, i);
                 }
@@ -286,9 +286,7 @@ public class DockerDriverHandler {
         log.info("Android device ready {}", androidDriver);
 
         if (config().isVnc()) {
-            SessionId sessionId = ((RemoteWebDriver) androidDriver)
-                    .getSessionId();
-            logSessionId(sessionId);
+            logSessionId(androidDriver.getSessionId());
             logNoVncUrl(androidNoVncUrl);
         }
         return androidDriver;
