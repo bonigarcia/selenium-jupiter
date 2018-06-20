@@ -17,7 +17,9 @@
 package io.github.bonigarcia;
 
 import static java.lang.Runtime.getRuntime;
+import static java.lang.String.join;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Arrays.copyOfRange;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Scanner;
@@ -51,13 +53,13 @@ public class SeleniumJupiter {
         String validBrowsers = "chrome|firefox|opera|android";
         if (args.length <= 0) {
             log.error(
-                    "Usage: SeleniumJupiter browserName <version> <deviceName> <browserNameInAdroid>");
+                    "Usage: SeleniumJupiter browserName <version> <browserNameInAdroid> <deviceName>");
             log.error("\t...where:");
             log.error("\tbrowserName = {}", validBrowsers);
             log.error("\tversion = optional version (latest if empty)");
-            log.error("\tdeviceName = Device name (only for Android)");
             log.error(
-                    "\browserNameInAdroid = Browser name in Android (only for Android)");
+                    "\tbrowserNameInAdroid = Browser name in Android (only for Android)");
+            log.error("\tdeviceName = Device name (only for Android)");
 
         } else {
             String browser = args[0];
@@ -67,10 +69,16 @@ public class SeleniumJupiter {
             String versionMessage = "(latest)";
             if (args.length > 1) {
                 version = args[1];
-                deviceName = args[2];
-                browserNameInAdroid = args[3];
                 versionMessage = version;
             }
+            if (args.length > 2) {
+                browserNameInAdroid = args[2];
+
+            }
+            if (args.length > 3) {
+                deviceName = join(" ", copyOfRange(args, 3, args.length));
+            }
+
             log.info("Using SeleniumJupiter to execute {} {} in Docker",
                     browser, versionMessage);
 
