@@ -16,10 +16,16 @@
  */
 package io.github.bonigarcia.test.advance;
 
+import static java.lang.String.valueOf;
+import static java.lang.invoke.MethodHandles.lookup;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import java.io.IOException;
+import java.net.ServerSocket;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,6 +34,7 @@ import org.openqa.grid.selenium.GridLauncherV3;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.DriverUrl;
@@ -38,8 +45,32 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
 @ExtendWith(SeleniumExtension.class)
 public class RemoteWebDriverJupiterTest {
 
+    static final Logger log = getLogger(lookup().lookupClass());
+
+    static int hubPort = 4446;
+    static int chromeNodePort = 5555;
+    static int firefoxNodePort = 5556;
+
+    static {
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            hubPort = serverSocket.getLocalPort();
+            serverSocket.close();
+
+            serverSocket = new ServerSocket(0);
+            chromeNodePort = serverSocket.getLocalPort();
+            serverSocket.close();
+
+            serverSocket = new ServerSocket(0);
+            firefoxNodePort = serverSocket.getLocalPort();
+            serverSocket.close();
+        } catch (IOException e) {
+            log.error("Exception finding free port", e);
+        }
+    }
+
     @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
+    String url = "http://localhost:" + hubPort + "/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = firefox();
@@ -47,24 +78,25 @@ public class RemoteWebDriverJupiterTest {
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4445" });
+        GridLauncherV3.main(
+                new String[] { "-role", "hub", "-port", valueOf(hubPort) });
 
         // Register Chrome in hub
         ChromeDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
-                "browserName=chrome", "-port", "5555" });
+                "http://localhost:" + hubPort + "/grid/register", "-browser",
+                "browserName=chrome", "-port", valueOf(chromeNodePort) });
 
         // Register Firefox in hub
         FirefoxDriverManager.getInstance().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
-                "browserName=firefox", "-port", "5556" });
+                "http://localhost:" + hubPort + "/grid/register", "-browser",
+                "browserName=firefox", "-port", valueOf(firefoxNodePort) });
     }
 
     @Test
     void testWithRemoteChrome(
-            @DriverUrl("http://localhost:4445/wd/hub") @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
+            @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
 
