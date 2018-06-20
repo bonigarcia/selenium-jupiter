@@ -17,30 +17,45 @@
 package io.github.bonigarcia.test.forced;
 
 import static io.github.bonigarcia.BrowserType.ANDROID;
+import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.slf4j.LoggerFactory.getLogger;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.handler.DockerDriverHandler;
 
-public class ForcedEmptyAndroidTimeoutJupiterTest {
+public class ForcedAndroidTimeoutJupiterTest {
+
+    final Logger log = getLogger(lookup().lookupClass());
+
+    DockerDriverHandler dockerDriverHandler;
 
     @BeforeAll
-    static void setup() throws Exception {
-        SeleniumJupiter.config().setAndroidDeviceTimeoutSec(0);
+    static void setup() {
+        SeleniumJupiter.config().setAndroidDeviceTimeoutSec(10);
+    }
+
+    @AfterEach
+    void teardown() {
+        if (dockerDriverHandler != null) {
+            dockerDriverHandler.cleanup();
+        }
     }
 
     @Test
     void androidTimeoutTest() {
         assertThrows(SeleniumJupiterException.class, () -> {
-            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
+            dockerDriverHandler = new DockerDriverHandler();
             WebDriver driver = dockerDriverHandler.resolve(ANDROID, "7.1.1",
                     "chrome", "Samsung Galaxy S6");
-            System.out.println(driver);
+            log.debug("WebDriver object: {}", driver);
         });
     }
 
