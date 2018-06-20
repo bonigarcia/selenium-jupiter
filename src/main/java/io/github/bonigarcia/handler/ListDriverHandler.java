@@ -39,6 +39,7 @@ import com.spotify.docker.client.exceptions.DockerException;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.SelenoidConfig;
 
 /**
  * Resolver for lists of RemoteWebDriver.
@@ -58,6 +59,10 @@ public class ListDriverHandler extends DriverHandler {
     @Override
     public void resolve() {
         try {
+            if (selenoidConfig == null) {
+                selenoidConfig = new SelenoidConfig();
+            }
+
             Optional<Object> testInstance = context.getTestInstance();
             ParameterizedType parameterizedType = (ParameterizedType) parameter
                     .getParameterizedType();
