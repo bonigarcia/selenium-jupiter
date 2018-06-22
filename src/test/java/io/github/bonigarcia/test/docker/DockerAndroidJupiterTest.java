@@ -37,6 +37,7 @@ public class DockerAndroidJupiterTest {
     @BeforeAll
     static void setup() {
         SeleniumJupiter.config().setVnc(true);
+        SeleniumJupiter.config().setRecording(true);
     }
 
     @Disabled("Due to problems with Appium java-client and Travis CI")
