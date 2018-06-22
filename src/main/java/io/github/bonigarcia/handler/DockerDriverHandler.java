@@ -33,6 +33,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.lang.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -274,12 +275,17 @@ public class DockerDriverHandler {
                             + androidDeviceTimeoutSec
                             + " seconds) waiting for Android device in Docker");
                 }
-                String errorMessage = e.getMessage();
+
+                String errorMessage = getRootCause(e).getMessage();
                 int i = errorMessage.indexOf('\n');
                 if (i != -1) {
                     errorMessage = errorMessage.substring(0, i);
                 }
                 log.debug("Android device not ready: {}", errorMessage);
+
+                if (errorMessage.contains("Could not find package")) {
+                    throw new SeleniumJupiterException(errorMessage);
+                }
                 sleep(5000);
             }
         } while (androidDriver == null);
@@ -411,26 +417,31 @@ public class DockerDriverHandler {
         String apiLevel;
         switch (version) {
         case "5.0.1":
+        case "latest-4":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi21Linux()
                     : config().getAndroidImageApi21OsxWin();
             apiLevel = "21";
             break;
         case "5.1.1":
+        case "latest-3":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi22Linux()
                     : config().getAndroidImageApi22OsxWin();
             apiLevel = "22";
             break;
         case "6.0":
+        case "latest-2":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi23Linux()
                     : config().getAndroidImageApi23OsxWin();
             apiLevel = "23";
             break;
         case "7.0":
+        case "latest-1":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi24Linux()
                     : config().getAndroidImageApi24OsxWin();
             apiLevel = "24";
             break;
         case "7.1.1":
+        case "latest":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi25Linux()
                     : config().getAndroidImageApi25OsxWin();
             apiLevel = "25";
@@ -604,8 +615,8 @@ public class DockerDriverHandler {
 
             String androidNoVncPort = dockerService.getBindPort(containerId,
                     internalNoVncPort + "/tcp");
-            androidNoVncUrl = format("http://%s:%s/vnc.html?autoconnect=true",
-                    androidHost, androidNoVncPort);
+            androidNoVncUrl = format("http://%s:%s/", androidHost,
+                    androidNoVncPort);
 
             containerMap.put(androidImage, androidContainer);
         }
