@@ -33,6 +33,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.collections.CollectionUtils.disjunction;
 import static org.apache.commons.lang.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -46,6 +47,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +107,7 @@ public class DockerDriverHandler {
     String selenoidImage = config().getSelenoidImage();
     String novncImage = config().getNovncImage();
     String androidNoVncUrl;
+    List<File> filesInVideoFolder;
 
     public DockerDriverHandler() throws DockerCertificateException {
         this.selenoidConfig = new SelenoidConfig();
@@ -240,6 +243,9 @@ public class DockerDriverHandler {
             String browserName, String deviceName)
             throws DockerException, InterruptedException, IOException {
         browser.init();
+        if (recording) {
+            filesInVideoFolder = asList(hostVideoFolder.listFiles());
+        }
 
         DesiredCapabilities capabilities = browser.getCapabilities();
         String browserNameCapability = browserName != null
@@ -251,6 +257,9 @@ public class DockerDriverHandler {
         capabilities.setCapability("browserName", browserNameCapability);
         capabilities.setCapability("deviceName", deviceNameCapability);
 
+        if (version == null || version.isEmpty()) {
+            version = config().getAndroidDefaultVersion();
+        }
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
         AndroidDriver<WebElement> androidDriver = null;
 
@@ -290,6 +299,7 @@ public class DockerDriverHandler {
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
+        updateName(browser, version, androidDriver);
 
         if (config().isVnc()) {
             logSessionId(androidDriver.getSessionId());
@@ -408,11 +418,6 @@ public class DockerDriverHandler {
 
     public String startAndroidBrowser(String version, String deviceName)
             throws DockerException, InterruptedException, IOException {
-
-        if (version == null || version.isEmpty()) {
-            version = config().getAndroidDefaultVersion();
-        }
-
         String androidImage;
         String apiLevel;
         switch (version) {
@@ -452,7 +457,7 @@ public class DockerDriverHandler {
         }
 
         log.info("Using Android version {} (API level {})", version, apiLevel);
-        dockerService.pullImage(androidImage);
+        dockerService.pullImageIfNecessary(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage,
                 deviceName);
@@ -726,33 +731,48 @@ public class DockerDriverHandler {
     }
 
     private void waitForRecording() throws IOException {
-        int dockerWaitTimeoutSec = dockerService.getDockerWaitTimeoutSec();
-        int dockerPollTimeMs = dockerService.getDockerPollTimeMs();
-        long timeoutMs = currentTimeMillis()
-                + SECONDS.toMillis(dockerWaitTimeoutSec);
-
-        log.debug("Waiting for recording {} to be available", recordingFile);
-        while (!recordingFile.exists()) {
-            if (currentTimeMillis() > timeoutMs) {
-                log.warn("Timeout of {} seconds waiting for file {}",
-                        dockerWaitTimeoutSec, recordingFile);
-                break;
-            }
-            log.trace("Recording {} not present ... waiting {} ms",
-                    recordingFile, dockerPollTimeMs);
-            try {
-                sleep(dockerPollTimeMs);
-            } catch (InterruptedException e) {
-                log.warn("Interrupted Exception while waiting for container",
-                        e);
-                currentThread().interrupt();
+        if (filesInVideoFolder != null) {
+            List<File> newFilesInVideoFolder = asList(
+                    hostVideoFolder.listFiles());
+            Iterator<?> iterator = disjunction(filesInVideoFolder,
+                    newFilesInVideoFolder).iterator();
+            if (iterator.hasNext()) {
+                String filename = iterator.next().toString();
+                recordingFile = new File(filename);
             }
         }
 
-        log.trace("Renaming {} to {}.mp4", recordingFile, name);
-        move(recordingFile.toPath(),
-                recordingFile.toPath().resolveSibling(name + ".mp4"),
-                REPLACE_EXISTING);
+        if (recordingFile != null) {
+            int dockerWaitTimeoutSec = dockerService.getDockerWaitTimeoutSec();
+            int dockerPollTimeMs = dockerService.getDockerPollTimeMs();
+            long timeoutMs = currentTimeMillis()
+                    + SECONDS.toMillis(dockerWaitTimeoutSec);
+
+            log.debug("Waiting for recording {} to be available",
+                    recordingFile);
+            while (!recordingFile.exists()) {
+                if (currentTimeMillis() > timeoutMs) {
+                    log.warn("Timeout of {} seconds waiting for file {}",
+                            dockerWaitTimeoutSec, recordingFile);
+                    break;
+                }
+                log.trace("Recording {} not present ... waiting {} ms",
+                        recordingFile, dockerPollTimeMs);
+                try {
+                    sleep(dockerPollTimeMs);
+                } catch (InterruptedException e) {
+                    log.warn(
+                            "Interrupted Exception while waiting for container",
+                            e);
+                    currentThread().interrupt();
+                }
+            }
+
+            log.trace("Renaming {} to {}.mp4", recordingFile, name);
+            move(recordingFile.toPath(),
+                    recordingFile.toPath().resolveSibling(name + ".mp4"),
+                    REPLACE_EXISTING);
+        }
     }
 
     public Map<String, DockerContainer> getContainerMap() {
