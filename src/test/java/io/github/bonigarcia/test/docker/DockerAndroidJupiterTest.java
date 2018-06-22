@@ -21,6 +21,7 @@ import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +29,15 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 @ExtendWith(SeleniumExtension.class)
 public class DockerAndroidJupiterTest {
+
+    @BeforeAll
+    static void setup() {
+        SeleniumJupiter.config().setVnc(true);
+    }
 
     @Disabled("Due to problems with Appium java-client and Travis CI")
     @Test
