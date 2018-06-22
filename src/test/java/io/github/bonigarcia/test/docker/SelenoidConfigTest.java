@@ -37,6 +37,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import com.google.common.collect.MapDifference;
@@ -45,7 +46,6 @@ import com.google.gson.Gson;
 
 import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SelenoidConfig;
-import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SelenoidConfigTest {

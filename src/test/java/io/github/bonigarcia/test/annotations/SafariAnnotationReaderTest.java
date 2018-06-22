@@ -26,12 +26,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.handler.SafariDriverHandler;
 import io.github.bonigarcia.test.advance.SafariWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SafariAnnotationReaderTest {

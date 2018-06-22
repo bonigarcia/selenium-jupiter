@@ -28,13 +28,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.test.advance.FirefoxWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.FirefoxWithOptionsJupiterTest;
-import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class FirefoxAnnotationReaderTest {

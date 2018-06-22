@@ -25,12 +25,12 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import io.github.bonigarcia.SelenoidConfig;
-import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SelenoidConfigFromHubTest {

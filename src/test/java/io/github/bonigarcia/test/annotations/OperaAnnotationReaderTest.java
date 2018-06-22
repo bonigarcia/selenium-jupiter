@@ -26,13 +26,13 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
 import io.github.bonigarcia.handler.OperaDriverHandler;
 import io.github.bonigarcia.test.advance.OperaWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.test.advance.OperaWithOptionsJupiterTest;
-import io.github.bonigarcia.test.mockito.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class OperaAnnotationReaderTest {
