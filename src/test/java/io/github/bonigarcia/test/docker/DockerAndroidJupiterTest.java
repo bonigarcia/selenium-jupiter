@@ -21,6 +21,7 @@ import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,11 @@ public class DockerAndroidJupiterTest {
     static void setup() {
         SeleniumJupiter.config().setVnc(true);
         SeleniumJupiter.config().setRecording(true);
+    }
+
+    @AfterAll
+    static void teardown() {
+        SeleniumJupiter.config().reset();
     }
 
     @Test
