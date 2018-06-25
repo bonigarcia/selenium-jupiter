@@ -1,4 +1,4 @@
-language: android
+language: java
 sudo: false
 dist: trusty
 
@@ -14,11 +14,6 @@ addons:
         organization: "bonigarcia-github"
         token:
             secure: "fNDlGiZsMS83K1aL/TInfwpBDrr9GL5/6XWPQ9iv8xARPIKNf+Sb5Y3Pj/UUCOGyLLtK0g5gocl9ZXVIcRi38zKfHI1lPkgaO8HW6prhLB5wjvtWqL900wRmHSm3zS45dSeshutzHB1ycohriwzfPoiPx2Iqfz7nOg290MKLTGuhR6ZSDeZUFlS0MDqNhC62Ud44xkD5BXwoiMi/X3HJCgAdjA3HqhEKy4yFFIN0KIREJeHG6x6jlSWwHPFQ35QbNdSWD1vEDTspeYOeSCdmOeJ4347dA/bs3ox3RexAIpfa8ZbU214Mlr3+pXauiyPuY0JwOVUyAB8FKEOiXn8gvhSz4GD1b+v6VHnxnLUwc1yxqU+A4ZFIxV5l76z8mk2wTSVBU/NP7LZojBCXyGJ0urCnqrMp97LzpMU0c3oYeG7NlU5bmRNcxbFIdBt4dq9wDrugBcrNExGIjlt/idVDvbkSm6g1UaurxK708CuIfvwrfgB/JFEePwRzldt1aIqDYjTbQ+qDgoFf+zBoLk25aLVN7AVJuwZLxgyp0iQulNmavWE7vhyo4Pi+sQmhn1aqcU8JOV2b0cWQKYiD2B/K4LodVEURIXhptCvDMVgHTuj45nFWk3sNoj0Sp2rGWuDy8iCvSLyH75fP6X/MHKzuwWWzmrP4In6IdOprbcl3gMM="
-
-android:
-    components:
-        - tools
-        - platform-tools
 
 before_script:
     - export DISPLAY=:99.0
