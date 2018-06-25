@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -45,6 +46,7 @@ public class DockerAndroidJupiterTest {
         SeleniumJupiter.config().reset();
     }
 
+    @Disabled
     @Test
     public void testAndroid(
             @DockerBrowser(type = ANDROID) RemoteWebDriver driver) {
