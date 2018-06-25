@@ -1,7 +1,6 @@
 language: android
-sudo: required
+sudo: false
 dist: trusty
-group: edge
 
 services:
   - docker
