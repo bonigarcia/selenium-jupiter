@@ -6,8 +6,10 @@ services:
   - docker
 
 addons:
-    chrome: stable
-    firefox: stable
+    firefox: latest
+    apt:
+        packages:
+            - google-chrome-stable
     sonarcloud:
         organization: "bonigarcia-github"
         token:
