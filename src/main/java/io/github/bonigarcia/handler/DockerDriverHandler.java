@@ -270,10 +270,8 @@ public class DockerDriverHandler {
         int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
         long endTimeMillis = currentTimeMillis()
                 + androidDeviceTimeoutSec * 1000;
-
         do {
             try {
-
                 androidDriver = new AndroidDriver<>(new URL(appiumUrl),
                         capabilities);
             } catch (Exception e) {
@@ -282,14 +280,8 @@ public class DockerDriverHandler {
                             + androidDeviceTimeoutSec
                             + " seconds) waiting for Android device in Docker");
                 }
-
-                String errorMessage = getRootCause(e).getMessage();
-                int i = errorMessage.indexOf('\n');
-                if (i != -1) {
-                    errorMessage = errorMessage.substring(0, i);
-                }
+                String errorMessage = getErrorMessage(e);
                 log.debug("Android device not ready: {}", errorMessage);
-
                 if (errorMessage.contains("Could not find package")) {
                     throw new SeleniumJupiterException(errorMessage);
                 }
@@ -304,6 +296,15 @@ public class DockerDriverHandler {
             logNoVncUrl(androidNoVncUrl);
         }
         return androidDriver;
+    }
+
+    private String getErrorMessage(Exception e) {
+        String errorMessage = getRootCause(e).getMessage();
+        int i = errorMessage.indexOf('\n');
+        if (i != -1) {
+            errorMessage = errorMessage.substring(0, i);
+        }
+        return errorMessage;
     }
 
     private void updateName(BrowserType browser, String imageVersion,
