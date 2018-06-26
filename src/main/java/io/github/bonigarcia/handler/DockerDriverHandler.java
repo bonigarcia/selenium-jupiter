@@ -248,15 +248,12 @@ public class DockerDriverHandler {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
 
-        DesiredCapabilities capabilities = browser.getCapabilities();
-        String browserNameCapability = browserName != null
-                && !browserName.isEmpty() ? browserName
-                        : config().getAndroidBrowserName();
-        String deviceNameCapability = deviceName != null
-                && !deviceName.isEmpty() ? deviceName
-                        : config().getAndroidDeviceName();
-        capabilities.setCapability("browserName", browserNameCapability);
-        capabilities.setCapability("deviceName", deviceNameCapability);
+        DesiredCapabilities capabilities = browser.getCapabilities(browserName,
+                deviceName);
+        String browserNameCapability = capabilities.getCapability("browserName")
+                .toString();
+        String deviceNameCapability = capabilities.getCapability("deviceName")
+                .toString();
 
         if (version == null || version.isEmpty()) {
             version = config().getAndroidDefaultVersion();
