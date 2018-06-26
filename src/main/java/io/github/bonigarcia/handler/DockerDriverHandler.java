@@ -89,6 +89,7 @@ import io.github.bonigarcia.SelenoidConfig;
 public class DockerDriverHandler {
 
     static final String ALL_IPV4_ADDRESSES = "0.0.0.0";
+    static final String LATEST = "latest";
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -172,8 +173,8 @@ public class DockerDriverHandler {
         String imageVersion;
         String versionFromLabel = version;
         if (version != null && !version.isEmpty()
-                && !version.equalsIgnoreCase("latest")) {
-            if (version.startsWith("latest-")) {
+                && !version.equalsIgnoreCase(LATEST)) {
+            if (version.startsWith(LATEST + "-")) {
                 versionFromLabel = selenoidConfig.getVersionFromLabel(browser,
                         version);
             }
@@ -422,31 +423,31 @@ public class DockerDriverHandler {
         String apiLevel;
         switch (version) {
         case "5.0.1":
-        case "latest-4":
+        case LATEST + "-4":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi21Linux()
                     : config().getAndroidImageApi21OsxWin();
             apiLevel = "21";
             break;
         case "5.1.1":
-        case "latest-3":
+        case LATEST + "-3":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi22Linux()
                     : config().getAndroidImageApi22OsxWin();
             apiLevel = "22";
             break;
         case "6.0":
-        case "latest-2":
+        case LATEST + "-2":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi23Linux()
                     : config().getAndroidImageApi23OsxWin();
             apiLevel = "23";
             break;
         case "7.0":
-        case "latest-1":
+        case LATEST + "-1":
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi24Linux()
                     : config().getAndroidImageApi24OsxWin();
             apiLevel = "24";
             break;
         case "7.1.1":
-        case "latest":
+        case LATEST:
             androidImage = IS_OS_LINUX ? config().getAndroidImageApi25Linux()
                     : config().getAndroidImageApi25OsxWin();
             apiLevel = "25";
@@ -470,7 +471,7 @@ public class DockerDriverHandler {
 
         String browserImage;
         if (version == null || version.isEmpty()
-                || version.equalsIgnoreCase("latest")) {
+                || version.equalsIgnoreCase(LATEST)) {
             log.info("Using {} version {} (latest)", browser,
                     selenoidConfig.getDefaultBrowser(browser));
             browserImage = selenoidConfig.getLatestImage(browser);
