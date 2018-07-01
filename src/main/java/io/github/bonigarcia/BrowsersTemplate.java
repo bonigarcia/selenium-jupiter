@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.BrowserType.valueOf;
-
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,9 +39,21 @@ public class BrowsersTemplate {
         String browserName;
         String deviceName;
 
+        public Browser(String type, String version, String browserName,
+                String deviceName) {
+            this.type = type;
+            this.version = version;
+            this.browserName = browserName;
+            this.deviceName = deviceName;
+        }
+
         public Browser(String type, String version) {
             this.type = type;
             this.version = version;
+        }
+
+        public Browser(String type) {
+            this.type = type;
         }
 
         public String getType() {
@@ -63,7 +73,8 @@ public class BrowsersTemplate {
         }
 
         public BrowserType toBrowserType() {
-            return valueOf(getType().replace("-in-docker", "").toUpperCase());
+            return BrowserType
+                    .valueOf(getType().replace("-in-docker", "").toUpperCase());
 
         }
 

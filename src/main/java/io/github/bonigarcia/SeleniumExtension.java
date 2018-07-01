@@ -21,12 +21,14 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
+import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -92,8 +94,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private Map<String, Class<?>> handlerMap = new HashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
     private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
-    private List<Browser> browserList;
     private DockerService dockerService;
+    private List<Browser> browserList;
+    private List<List<Browser>> browserListList;
 
     public SeleniumExtension() {
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
@@ -317,33 +320,50 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
             ExtensionContext extensionContext) {
-        BrowsersTemplate browsersTemplate = null;
         try {
+            // 1. By JSON content
             String browserJsonContent = config()
                     .getBrowserTemplateJsonContent();
             if (browserJsonContent.isEmpty()) {
+                // 2. By JSON file
                 String browserJsonFile = config().getBrowserTemplateJsonFile();
                 if (browserJsonFile.startsWith(CLASSPATH_PREFIX)) {
                     String browserJsonInClasspath = browserJsonFile
                             .substring(CLASSPATH_PREFIX.length());
-                    browserJsonContent = IOUtils.toString(
-                            this.getClass().getResourceAsStream(
-                                    "/" + browserJsonInClasspath),
-                            defaultCharset());
+                    InputStream resourceAsStream = this.getClass()
+                            .getResourceAsStream("/" + browserJsonInClasspath);
+
+                    if (resourceAsStream != null) {
+                        browserJsonContent = IOUtils.toString(resourceAsStream,
+                                defaultCharset());
+                    }
+
                 } else {
                     browserJsonContent = new String(
                             readAllBytes(get(browserJsonFile)));
                 }
             }
+            if (!browserJsonContent.isEmpty()) {
+                return new Gson()
+                        .fromJson(browserJsonContent, BrowsersTemplate.class)
+                        .getStream().map(b -> invocationContext(b, this));
+            }
 
-            browsersTemplate = new Gson().fromJson(browserJsonContent,
-                    BrowsersTemplate.class);
+            // 3. By setter
+            if (browserList != null) {
+                return Stream.of(invocationContext(browserList, this));
+            }
+            if (browserListList != null) {
+                return browserListList.stream()
+                        .map(b -> invocationContext(b, this));
+            }
 
         } catch (IOException e) {
             throw new SeleniumJupiterException(e);
         }
-        return browsersTemplate.getStream()
-                .map(b -> invocationContext(b, this));
+
+        throw new SeleniumJupiterException(
+                "No browser scenario registered for test template");
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -398,6 +418,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     public void setBrowserList(List<Browser> browserList) {
         this.browserList = browserList;
+    }
+
+    public void addBrowsers(Browser... browsers) {
+        if (browserListList == null) {
+            browserListList = new ArrayList<>();
+        }
+        browserListList.add(asList(browsers));
     }
 
 }

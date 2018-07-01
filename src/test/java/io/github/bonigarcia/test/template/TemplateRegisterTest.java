@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,31 +20,28 @@ package io.github.bonigarcia.test.template;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
+import io.github.bonigarcia.BrowserBuilder;
+import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
-public class TemplateTest {
+public class TemplateRegisterTest {
 
-    // end::snippet-in-doc[]
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config()
-                .setBrowserTemplateJsonFile("classpath:browsers-docker.json");
+        Browser chrome = BrowserBuilder.chrome().build();
+        Browser firefox = BrowserBuilder.firefox().build();
+        seleniumExtension.addBrowsers(chrome);
+        seleniumExtension.addBrowsers(firefox);
     }
 
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
-    }
-
-    // tag::snippet-in-doc[]
     @TestTemplate
     void templateTest(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
