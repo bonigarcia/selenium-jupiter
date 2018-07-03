@@ -22,7 +22,6 @@ import static org.awaitility.Awaitility.await;
 
 import java.io.ByteArrayInputStream;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -43,7 +42,6 @@ class InteractiveJupiterTest {
         exercise(new String[] { argument });
     }
 
-    @Disabled
     @Test
     void testInteractiveAndroid() {
         exercise(new String[] { "android", "7.1.1", "chrome",
