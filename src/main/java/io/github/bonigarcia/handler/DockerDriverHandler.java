@@ -401,8 +401,6 @@ public class DockerDriverHandler {
                     try {
                         latch.await();
                     } catch (InterruptedException e) {
-                        log.warn("Exception cleaning Docker containers {}",
-                                e.getMessage());
                         currentThread().interrupt();
                     }
                     executorService.shutdown();
