@@ -54,9 +54,11 @@ public class DockerRecordingJupiterTest {
     @AfterAll
     void teardown() {
         SeleniumJupiter.config().reset();
-        assertTrue(recordingFile.exists());
-        log.info("Deleting recording {} ... {}", recordingFile,
-                recordingFile.delete());
+        if (recordingFile != null) {
+            assertTrue(recordingFile.exists());
+            log.info("Deleting recording {} ... {}", recordingFile,
+                    recordingFile.delete());
+        }
     }
 
     @Test
