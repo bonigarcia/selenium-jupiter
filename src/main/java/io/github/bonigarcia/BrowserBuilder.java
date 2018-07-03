@@ -83,16 +83,19 @@ public class BrowserBuilder {
         return new BrowserBuilder("android");
     }
 
-    public void version(String version) {
+    public BrowserBuilder version(String version) {
         this.version = version;
+        return this;
     }
 
-    public void browserName(String browserName) {
+    public BrowserBuilder browserName(String browserName) {
         this.browserName = browserName;
+        return this;
     }
 
-    public void deviceName(String deviceName) {
+    public BrowserBuilder deviceName(String deviceName) {
         this.deviceName = deviceName;
+        return this;
     }
 
     public Browser build() {
