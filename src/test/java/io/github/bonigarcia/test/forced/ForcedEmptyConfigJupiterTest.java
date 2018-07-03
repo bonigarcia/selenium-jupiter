@@ -41,6 +41,12 @@ public class ForcedEmptyConfigJupiterTest {
             if (method.getName().startsWith("set")) {
                 if (method.getParameterTypes()[0].equals(String.class)) {
                     method.invoke(config, "");
+                } else if (method.getParameterTypes()[0]
+                        .equals(Boolean.class)) {
+                    method.invoke(config, false);
+                } else if (method.getParameterTypes()[0]
+                        .equals(Integer.class)) {
+                    method.invoke(config, 0);
                 }
             }
         }
