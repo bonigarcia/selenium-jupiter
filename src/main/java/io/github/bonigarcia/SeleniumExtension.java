@@ -53,6 +53,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -126,6 +127,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(templateHandlerMap, "safari", SafariDriver.class);
         addEntry(templateHandlerMap, "appium", AppiumDriver.class);
         addEntry(templateHandlerMap, "phantomjs", PhantomJSDriver.class);
+        addEntry(templateHandlerMap, "iexplorer", InternetExplorerDriver.class);
         addEntry(templateHandlerMap, "chrome-in-docker", RemoteWebDriver.class);
         addEntry(templateHandlerMap, "firefox-in-docker",
                 RemoteWebDriver.class);

@@ -63,6 +63,10 @@ public class BrowserBuilder {
         return new BrowserBuilder("phantomjs");
     }
 
+    public static BrowserBuilder iexplorer() {
+        return new BrowserBuilder("iexplorer");
+    }
+
     public static BrowserBuilder chromeInDocker() {
         return new BrowserBuilder("chrome-in-docker");
     }
