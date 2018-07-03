@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -10,7 +9,7 @@
     <properties>
         <!-- Dependencies -->
         <selenium.version>3.13.0</selenium.version>
-        <webdrivermanager.version>2.2.3</webdrivermanager.version>
+        <webdrivermanager.version>2.2.4</webdrivermanager.version>
         <appium-java-client.version>6.1.0</appium-java-client.version>
         <docker-client.version>8.11.7</docker-client.version>
         <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
