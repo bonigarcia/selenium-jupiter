@@ -19,7 +19,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>2.1.1</version>
+	<version>2.2.0</version>
 </dependency>
 ```
 
@@ -57,6 +57,7 @@ Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver b
 As of version 2, *Selenium-Jupiter* allows to use browsers in [Docker] containers. The only requirement is to get installed [Docker Engine] in the machine running the tests. A simple example using this feature is the following:
 
 ```java
+import static io.github.bonigarcia.BrowserType.ANDROID;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static io.github.bonigarcia.BrowserType.FIREFOX;
 
@@ -73,13 +74,19 @@ public class SeleniumJupiterDockerTest {
     @Test
     public void testChrome(
             @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
-        // use chrome (latest version) in this test
+        // use Chrome (latest version) in this test
     }
 
     @Test
     public void testFirefox(
-            @DockerBrowser(type = FIREFOX, version = "57.0") RemoteWebDriver driver) {
-        // use firefox (version 57.0) in this test
+            @DockerBrowser(type = FIREFOX, version = "60.0") RemoteWebDriver driver) {
+        // use Firefox (version 60.0) in this test
+    }
+
+    @Test
+    public void testAndroid(
+            @DockerBrowser(type = ANDROID, version = "7.1.1") RemoteWebDriver driver) {
+        // use Android (version 7.1.1) in this test
     }
 
 }

@@ -1,3 +1,20 @@
+selenium-jupiter (2.2.0)
+
+  + Include Android browsers in Docker using butomo1989 images
+  + Include Internet Explorer as configurable browser
+  + Include META-INF information for ServiceLoader mechanism
+  + Maven dependency: org.seleniumhq.selenium:selenium-java 3.13.0
+  + Maven dependency: io.github.bonigarcia:webdrivermanager 2.2.4
+  + Maven dependency: io.appium:java-client 6.1.0
+  + Maven dependency: com.spotify:docker-client 8.11.7
+  + Maven dependency: com.codeborne:phantomjsdriver 1.4.4
+  + Docker hub dependency: aerokube/selenoid:1.6.2
+  + Docker hub dependency: butomo1989/docker-android-x86*:0.9-p5 (Linux)
+  + Docker hub dependency: butomo1989/docker-android-arm*:0.9-p5 (Mac and Win)
+
+ -- Boni Garcia <boni.gg@gmail.com>  Wed, 4 Jul 2018 11:08:00
+
+
 selenium-jupiter (2.1.1)
 
   + Maven dependency: io.github.bonigarcia:webdrivermanager 2.2.1
