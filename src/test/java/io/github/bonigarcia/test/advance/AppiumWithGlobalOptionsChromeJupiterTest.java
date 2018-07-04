@@ -20,7 +20,9 @@ package io.github.bonigarcia.test.advance;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
@@ -31,7 +33,9 @@ import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.DriverUrl;
 import io.github.bonigarcia.SeleniumExtension;
 
+// end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class AppiumWithGlobalOptionsChromeJupiterTest {
 

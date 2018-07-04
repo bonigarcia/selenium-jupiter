@@ -21,11 +21,15 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 
+// end::snippet-in-doc[]
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+// end::snippet-in-doc[]
 import org.openqa.grid.selenium.GridLauncherV3;
+// tag::snippet-in-doc[]
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -33,40 +37,43 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.DriverCapabilities;
 import io.github.bonigarcia.DriverUrl;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
+// end::snippet-in-doc[]
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @Disabled
+// tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
 public class RemoteWebDriverJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
+    String url = "http://localhost:4444/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = firefox();
 
+    // end::snippet-in-doc[]
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4445" });
+        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
 
         // Register Chrome in hub
-        ChromeDriverManager.getInstance().setup();
+        WebDriverManager.chromedriver().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
+                "http://localhost:4444/grid/register", "-browser",
                 "browserName=chrome", "-port", "5555" });
 
         // Register Firefox in hub
-        FirefoxDriverManager.getInstance().setup();
+        WebDriverManager.firefoxdriver().setup();
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4445/grid/register", "-browser",
+                "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
     }
 
+    // tag::snippet-in-doc[]
     @Test
-    void testWithRemoteChrome(
-            @DriverUrl("http://localhost:4445/wd/hub") @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
+    void testWithRemoteChrome(@DriverUrl("http://localhost:4445/wd/hub")
+            @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
 

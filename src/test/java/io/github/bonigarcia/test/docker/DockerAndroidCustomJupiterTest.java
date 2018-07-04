@@ -21,8 +21,6 @@ import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
@@ -32,30 +30,17 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-// end::snippet-in-doc[]
-import io.github.bonigarcia.SeleniumJupiter;
 // tag::snippet-in-doc[]
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerAndroidJupiterTest {
+public class DockerAndroidCustomJupiterTest {
 
     // end::snippet-in-doc[]
-    @BeforeAll
-    static void setup() {
-        SeleniumJupiter.config().setVnc(true);
-        SeleniumJupiter.config().setRecording(true);
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
-    }
-
     @Disabled
     // tag::snippet-in-doc[]
     @Test
-    public void testAndroid(
-            @DockerBrowser(type = ANDROID) RemoteWebDriver driver) {
+    public void testAndroid(@DockerBrowser(type = ANDROID, version = "5.0.1",
+            deviceName = "Nexus S", browserName = "browser") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
