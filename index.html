@@ -785,7 +785,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
 <span id="email" class="email"><a href="mailto:boni.garcia@urjc.es">boni.garcia@urjc.es</a></span><br>
-<span id="revdate">Version 2.1.1</span>
+<span id="revdate">Version 2.2.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -807,6 +807,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#chrome-2">Chrome</a></li>
 <li><a href="#firefox-2">Firefox</a></li>
 <li><a href="#opera-2">Opera</a></li>
+<li><a href="#android">Android</a></li>
 <li><a href="#remote-sessions-vnc">Remote sessions (VNC)</a></li>
 <li><a href="#recordings">Recordings</a></li>
 <li><a href="#performance-tests">Performance tests</a></li>
@@ -848,7 +849,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="http://junit.org/junit5/">JUnit 5</a> is the next generation of the well-known testing framework JUnit. <em>Jupiter</em> is the name given to the new programming and extension model provided by JUnit 5. The extension model of JUnit 5, it allows to incorporate extra capabilities for JUnit 5 tests. On the other hand, <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> is a testing framework which allows to control browsers (e.g. Chrome, Firefox, and so on) programmatically to carry out automated testing of web applications. This documentation presents <strong><em>Selenium-Jupiter</em></strong>, a JUnit 5 extension aimed to provide seamless integration of Selenium (WebDriver and Grid) for JUnit 5 tests. <em>Selenium-Jupiter</em> is open source (Apache 2.0 license) and is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter">GitHub</a>.</p>
+<p><a href="http://junit.org/junit5/">JUnit 5</a> is the next generation of the well-known testing framework JUnit. <em>Jupiter</em> is the name given to the new programming and extension model provided by JUnit 5. The extension model of JUnit 5, it allows to incorporate extra capabilities for JUnit 5 tests. On the other hand, <a href="http://www.seleniumhq.org/">Selenium</a> is a testing framework which allows to control local (<em>Selenium WebDriver</em>) or remote (<em>Selenium Grid</em>) browsers (e.g. Chrome, Firefox, and so on) programmatically to carry out automated testing of web applications. This documentation presents <strong><em>Selenium-Jupiter</em></strong>, a JUnit 5 extension aimed to provide seamless integration of Selenium (WebDriver and Grid) for JUnit 5 tests. <em>Selenium-Jupiter</em> is open source (Apache 2.0 license) and is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter">GitHub</a>.</p>
 </div>
 </div>
 </div>
@@ -866,7 +867,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>2.1.1<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>2.2.0<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -878,7 +879,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 2.1.1 depends on <strong><em>selenium-java</em> 3.11.0</strong>, <strong><em>webdrivermanager</em> 2.2.1</strong>, <strong>appium <em>java-client</em> 5.0.4</strong>, and <strong>spotify <em>docker-client</em> 8.11.2</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 2.2.0 depends on <strong><em>selenium-java</em> 3.13.0</strong>, <strong><em>webdrivermanager</em> 2.2.4</strong>, <strong>appium <em>java-client</em> 6.1.0</strong>, and <strong>spotify <em>docker-client</em> 8.11.7</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
@@ -916,6 +917,18 @@ table.CodeRay td.code>pre{padding:0}
 
 }</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As of JUnit 5.1, extensions can be registered programmatically via <code>@RegisterExtension</code> or automatically via Java’s <code>ServiceLoader</code>. Both mechanisms can be used with <em>Selenium-Jupiter</em>.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The <code>WebDriver</code> subtypes supported by <em>Selenium-Jupiter</em> are the following:</p>
@@ -1000,7 +1013,7 @@ The browser to be used must be installed in the machine running the test beforeh
 </div>
 </div>
 <div class="paragraph">
-<p>This documentation contains a comprehensive collection of basic examples demonstrating the basic usage of <em>seleniun-jupiter</em> in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>Selenium-Jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
+<p>This documentation contains a comprehensive collection of basic examples demonstrating the basic usage of <em>Selenium-Jupiter</em> in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of <a href="https://github.com/bonigarcia/selenium-jupiter"><em>Selenium-Jupiter</em></a> and are executed on <a href="https://travis-ci.org/bonigarcia/selenium-jupiter">Travis CI</a>.</p>
 </div>
 </div>
 </div>
@@ -1318,7 +1331,20 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <h2 id="docker-browsers"><a class="anchor" href="#docker-browsers"></a>Docker browsers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As of version 2.0.0, <em>Selenium-Jupiter</em> allows to ask for browsers in <a href="https://www.docker.com/">Docker</a> containers. The only requirement to use this feature is to install <a href="https://www.docker.com/get-docker">Docker Engine</a> in the machine running the tests. Internally, <em>Selenium-Jupiter</em> uses a <a href="https://github.com/docker-java/docker-java">docker-java</a> as Docker client and the Docker images for browsers provided by <a href="http://aerokube.com/selenoid/latest/">Selenoid</a>.</p>
+<p>As of version 2.0.0, <em>Selenium-Jupiter</em> allows to ask for browsers in <a href="https://www.docker.com/">Docker</a> containers. The only requirement to use this feature is to install <a href="https://www.docker.com/get-docker">Docker Engine</a> in the machine running the tests. Internally, <em>Selenium-Jupiter</em> uses a <a href="https://github.com/spotify/docker-client">docker-client</a> and different Docker images for browsers, namely:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Stable versions of Docker browser, provided by <a href="https://aerokube.com/selenoid/latest/">Selenoid</a>.</p>
+</li>
+<li>
+<p>Beta and nightly versions of Docker browser, provided by <a href="https://elastest.io/">ElasTest</a>.</p>
+</li>
+<li>
+<p>Browsers in Android devices, provided by <a href="https://github.com/butomo1989/docker-android">Budi Utomo</a>.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>As shown in the following section, the mode of operation is similar to local browser. We simply asks for browsers in Docker simply declaring parameters in our <code>@Test</code> methods, and <em>Selenium-Jupiter</em> will make magic for us: it downloads the proper Docker image for the browser, start it, and instantiate the object of type <code>WebDriver</code> or <code>RemoteWebDriver</code> to control the browser from our test. The annotation <code>@DockerBrowser</code> need to be declared in the parameter to mark the WebDriver object as a browser in Docker.</p>
@@ -1326,7 +1352,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="chrome-2"><a class="anchor" href="#chrome-2"></a>Chrome</h3>
 <div class="paragraph">
-<p>The following example contains a simple test example using Chrome browsers in Docker. Check out the code <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java">here</a>. As you can see, the first <code>@Test</code> method (called <code>testChrome</code>) declares a parameter of type <code>RemoteWebDriver</code>. This parameter is annotated with <code>@DockerBrowser</code>. This annotation requires to set the browser type, in this case <code>CHROME</code>. If no version is specified, then the latest version of the browser will be used. This feature is known as <strong><em>evergreen</em> Docker browsers</strong>, and it is implementing by consuming the REST API of <a href="https://hub.docker.com/">Docker Hub</a>, asking for the list of <a href="https://hub.docker.com/u/selenoid/">Selenoid</a> browsers. On the other hand, the second <code>@Test</code> (called <code>testChromeWithVersion</code>) a fixed version is set, in this case <code>64.0</code>.</p>
+<p>The following example contains a simple test example using Chrome browsers in Docker. Check out the code <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java">here</a>. As you can see, the first <code>@Test</code> method (called <code>testChrome</code>) declares a parameter of type <code>RemoteWebDriver</code>. This parameter is annotated with <code>@DockerBrowser</code>. This annotation requires to set the browser type, in this case <code>CHROME</code>. If no version is specified, then the latest version of the browser will be used. This feature is known as <strong><em>evergreen</em> Docker browsers</strong>, and it is implementing by consuming the REST API of <a href="https://hub.docker.com/">Docker Hub</a>, asking for the list of <a href="https://hub.docker.com/u/selenoid/">Selenoid</a> browsers. On the other hand, the second <code>@Test</code> (called <code>testChromeWithVersion</code>) a fixed version is set, in this case <code>67.0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1354,7 +1380,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">64.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">67.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1454,7 +1480,7 @@ The label <em>latest-*</em> is supported, where <em>*</em> is a number for a for
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testVersion(
-            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">57</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">60</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1470,7 +1496,7 @@ The label <em>latest-*</em> is supported, where <em>*</em> is a number for a for
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Notice that the version of the second test is simply <code>57</code>. The actual version of the image is <code>57.0</code>, but <em>Selenium-Jupiter</em> supposes that version is <code>.0</code> if not specified.
+Notice that the version of the second test is simply <code>60</code>. The actual version of the image is <code>60.0</code>, but <em>Selenium-Jupiter</em> supposes that version is <code>.0</code> if not specified.
 </td>
 </tr>
 </table>
@@ -1509,6 +1535,158 @@ Notice that the version of the second test is simply <code>57</code>. The actual
 </div>
 </div>
 <div class="sect2">
+<h3 id="android"><a class="anchor" href="#android"></a>Android</h3>
+<div class="paragraph">
+<p>The use of browser devices in <em>Selenium-Jupiter</em> is straightforward. Simply change the browser type to <code>ANDROID</code> as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.ANDROID</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerAndroidJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testAndroid(
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID) RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The supported Android devices are summarized in the following table:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Android devices in <em>Selenium-Jupiter</em></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Android version</th>
+<th class="tableblock halign-left valign-top">API level</th>
+<th class="tableblock halign-left valign-top">Browser name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.0.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>browser</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.1.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>browser</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.1.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Moreover, the type of devices are the following:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Android devices types in <em>Selenium-Jupiter</em></caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Device name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Samsung Galaxy S6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nexus 4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nexus 5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nexus One</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Phone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nexus S</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tablet</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nexus 7</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>By default, the latest version of Android (<code>7.1.1</code>) using Chrome in a <code>Samsung Galaxy S6</code>. These values can be changed using the <a href="#configuration">configuration</a> capabilities or by means of the the following parameters in the <code>@DockerBrowser</code> annotation</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.BrowserType.ANDROID</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerAndroidCustomJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">5.0.1</span><span class="delimiter">&quot;</span></span>,
+            deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">browser</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="remote-sessions-vnc"><a class="anchor" href="#remote-sessions-vnc"></a>Remote sessions (VNC)</h3>
 <div class="paragraph">
 <p><em>Selenium-Jupiter</em> allows to track the evolution of our browsers in Docker using Virtual Network Computing (VNC) sessions. This feature is disabled by default, but it can activated using the configuration key <code>sel.jup.vnc</code>  to <code>true</code> (more info on section <a href="#configuration">Configuration</a>).</p>
@@ -1526,7 +1704,13 @@ Notice that the version of the second test is simply <code>57</code>. The actual
 <div class="content">
 <img src="./img/vnc_chrome_in_docker.png" alt="vnc chrome in docker">
 </div>
-<div class="title">Figure 3. Example of VNC session on Chrome</div>
+<div class="title">Figure 3. Example of VNC session of Chrome (desktop)</div>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/vnc_chrome_in_android_docker.png" alt="vnc chrome in android docker">
+</div>
+<div class="title">Figure 4. Example of VNC session of Chrome (Android)</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1553,7 +1737,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 <div class="content">
 <img src="./img/recording_chrome_in_docker.png" alt="recording chrome in docker">
 </div>
-<div class="title">Figure 4. Example of recording played in VLC</div>
+<div class="title">Figure 5. Example of recording played in VLC</div>
 </div>
 </div>
 <div class="sect2">
@@ -1592,7 +1776,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testPerformance(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">64.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">67.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
         <span class="predefined-type">ExecutorService</span> executorService = newFixedThreadPool(NUM_BROWSERS);
@@ -1697,6 +1881,18 @@ INFORMATION: Detected dialect: W3C
 [INFO] Stopping Docker container aerokube/selenoid:1.6.3</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As of version 2.2.0, the parameter <code>browserName</code> can be used to select an <code>android</code> device. In this case, a couple of addition parameter can be specified: <code>browserNameInAdroid</code> for the browser in Android (<code>chrome</code> or <code>browser</code>) and <code>deviceName</code> for the device type (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1722,7 +1918,7 @@ INFORMATION: Detected dialect: W3C
 <p>The annotation <code>@DriverCapabilities</code> is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tets (i.e. tests using remote browsers). To that aim, an Selenium Hub (also known as <em>Selenium Server</em>) should be up an running, and its URL should known. This URL will be specified using the <em>Selenium-Jupiter</em> annotation <code>@DriverUrl</code>.</p>
 </div>
 <div class="paragraph">
-<p>The following example provides a complete <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java">example</a> about this. As you can see, in the test setup (<code>@BeforeAll</code>) a Selenium Grid is implemented, first starting a Hub (a.k.a. <em>Selenium Server</em>), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using <code>RemoteWebDriver</code> can be executed, simply pointing to the Hub (whose URL in this case is <code><a href="http://localhost:4445/wd/hub" class="bare">http://localhost:4445/wd/hub</a></code> in this example) and selecting the browser to be used using the <code>Capabilities</code>.</p>
+<p>The following example provides a complete <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java">example</a> about this. As you can see, in the test setup (<code>@BeforeAll</code>) a Selenium Grid is implemented, first starting a Hub (a.k.a. <em>Selenium Server</em>), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using <code>RemoteWebDriver</code> can be executed, simply pointing to the Hub (whose URL in this case is <code><a href="http://localhost:4444/wd/hub" class="bare">http://localhost:4444/wd/hub</a></code> in this example) and selecting the browser to be used using the <code>Capabilities</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1730,10 +1926,8 @@ INFORMATION: Detected dialect: W3C
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities.firefox</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.grid.selenium.GridLauncherV3</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.Capabilities</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
@@ -1741,39 +1935,18 @@ INFORMATION: Detected dialect: W3C
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverUrl</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.ChromeDriverManager</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.FirefoxDriverManager</span>;
-
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">RemoteWebDriverJupiterTest</span> {
 
     <span class="annotation">@DriverUrl</span>
-    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/wd/hub</span><span class="delimiter">&quot;</span></span>;
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>;
 
     <span class="annotation">@DriverCapabilities</span>
     Capabilities capabilities = firefox();
 
-    <span class="annotation">@BeforeAll</span>
-    <span class="directive">static</span> <span class="type">void</span> setup() <span class="directive">throws</span> <span class="exception">Exception</span> {
-        <span class="comment">// Start hub</span>
-        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">hub</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">4445</span><span class="delimiter">&quot;</span></span> });
-
-        <span class="comment">// Register Chrome in hub</span>
-        ChromeDriverManager.getInstance().setup();
-        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5555</span><span class="delimiter">&quot;</span></span> });
-
-        <span class="comment">// Register Firefox in hub</span>
-        FirefoxDriverManager.getInstance().setup();
-        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=firefox</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5556</span><span class="delimiter">&quot;</span></span> });
-    }
-
     <span class="annotation">@Test</span>
-    <span class="type">void</span> testWithRemoteChrome(
-            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/wd/hub</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+    <span class="type">void</span> testWithRemoteChrome(<span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4445/wd/hub</span><span class="delimiter">&quot;</span></span>)
+            <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         exercise(driver);
     }
 
@@ -1882,46 +2055,37 @@ INFORMATION: Detected dialect: W3C
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">java.io.File</span>;
-<span class="keyword">import</span> <span class="include">java.net.URISyntaxException</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
 
 <span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
-<span class="keyword">import</span> <span class="include">io.appium.java_client.MobileElement</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.DriverUrl</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumApkJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumWithGlobalOptionsChromeJupiterTest</span> {
+
+    <span class="annotation">@DriverUrl</span>
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4723/wd/hub</span><span class="delimiter">&quot;</span></span>;
 
     <span class="annotation">@DriverCapabilities</span>
     DesiredCapabilities capabilities = <span class="keyword">new</span> DesiredCapabilities();
     {
-        <span class="keyword">try</span> {
-            <span class="predefined-type">File</span> apk = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="local-variable">this</span>.getClass()
-                    .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/selendroid-test-app.apk</span><span class="delimiter">&quot;</span></span>).toURI());
-            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">app</span><span class="delimiter">&quot;</span></span>, apk.getAbsolutePath());
-            capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>);
-
-        } <span class="keyword">catch</span> (<span class="exception">URISyntaxException</span> e) {
-            e.printStackTrace();
-        }
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">deviceName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Samsung Galaxy S6</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="type">void</span> testWithAndroid(AppiumDriver&lt;MobileElement&gt; driver)
-            <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
-        WebElement button = driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">buttonStartWebview</span><span class="delimiter">&quot;</span></span>));
-        button.click();
-
-        WebElement inputField = driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">name_input</span><span class="delimiter">&quot;</span></span>));
-        inputField.clear();
-        inputField.sendKeys(<span class="string"><span class="delimiter">&quot;</span><span class="content">Custom name</span><span class="delimiter">&quot;</span></span>);
+    <span class="type">void</span> testWithAndroid(AppiumDriver&lt;WebElement&gt; driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
     }
 
 }</code></pre>
@@ -2076,11 +2240,14 @@ INFORMATION: Detected dialect: W3C
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.TestTemplate</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumJupiter</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateTest</span> {
@@ -2155,10 +2322,10 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/test-template-01.png" alt="test template 01">
 </div>
-<div class="title">Figure 5. Example of test template execution in Eclipse</div>
+<div class="title">Figure 6. Example of test template execution in Eclipse</div>
 </div>
 <div class="paragraph">
-<p>Generally speaking, a browser within the JSON scenario is defined using two parameters:</p>
+<p>Generally speaking, a browser within the JSON scenario is defined using the following parameters:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2174,6 +2341,9 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 </li>
 <li>
 <p><code>edge</code>: For local Edge browsers.</p>
+</li>
+<li>
+<p><code>iexplorer</code>: For local Internet Explorer browsers.</p>
 </li>
 <li>
 <p><code>opera</code>: For local Opera browsers.</p>
@@ -2196,11 +2366,20 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <li>
 <p><code>opera-in-docker</code>: For Opera browsers in Docker.</p>
 </li>
+<li>
+<p><code>android</code>: For web browsers in Android devices in Docker containers.</p>
+</li>
 </ul>
 </div>
 </li>
 <li>
 <p><code>version</code>: Optional value for the version. Wildcard for latest versions (<code>latest</code>, <code>latest-1</code>, etc) are accepted. Concrete versions are also valid (e.g. <code>63.0</code>, <code>57.0</code>, etc., depending of the browser). <strong>Beta</strong> and <strong>unstable</strong> (i.e. development) versions for Chrome and Firefox are also supported (using the labels <code>beta</code> and <code>unstable</code> labels respectively).</p>
+</li>
+<li>
+<p><code>browserName</code>: As of version 2.2.0, when the <code>type</code> is <code>android</code> device, the parameter <code>browserName</code> can be used to select the browser in Android (<code>chrome</code> or <code>browser</code>)</p>
+</li>
+<li>
+<p><code>deviceName</code>: Also for <code>android</code> type, the device type can be specified (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).</p>
 </li>
 </ul>
 </div>
@@ -2269,13 +2448,53 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/test-template-02.png" alt="test template 02">
 </div>
-<div class="title">Figure 6. Example of test template execution (with two parameters) in Eclipse</div>
+<div class="title">Figure 7. Example of test template execution (with two parameters) in Eclipse</div>
+</div>
+<div class="paragraph">
+<p>As of version 2.2.0, <em>Selenium-Jupiter</em> allows to configure the browser scenario programmatically using the JUnit 5 <code>@RegisterExtension</code> annotation. To that aim, the method <code>addBrowsers</code> of the <code>SeleniumExtension</code> instance is used to add different browser(s) to the scenario. In the following example the test is executed twice, one using Chrome and the second using Firefox.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.TestTemplate</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.BrowserBuilder</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.BrowsersTemplate.Browser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateRegisterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        Browser chrome = BrowserBuilder.chrome().build();
+        Browser firefox = BrowserBuilder.firefox().build();
+        seleniumExtension.addBrowsers(chrome);
+        seleniumExtension.addBrowsers(firefox);
+    }
+
+    <span class="annotation">@TestTemplate</span>
+    <span class="type">void</span> templateTest(WebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="generic-driver"><a class="anchor" href="#generic-driver"></a>Generic driver</h3>
 <div class="paragraph">
-<p>As of version 2.1.0, <em>Selenium-Jupiter</em> allows to use a configurable WebDriver object. This generic driver is declared as usual (i.e. as test method or constructor parameter) using the type <code>RemoteWebDriver</code> or <code>WebDriver</code>. The concrete type of browser to be used is established using the configuration key <code>sel.jup.default.browser</code>. The default value for this key is <code>chrome-in-docker</code>. All the values used in the template test defined in the previous section (i.e. <code>chrome</code>, <code>firefox</code>, <code>edge</code>, <code>chrome-in-docker</code>, <code>firefox-in-docker</code>, etc.) can be used also to define the type of browser in this mode.</p>
+<p>As of version 2.1.0, <em>Selenium-Jupiter</em> allows to use a configurable WebDriver object. This generic driver is declared as usual (i.e. as test method or constructor parameter) using the type <code>RemoteWebDriver</code> or <code>WebDriver</code>. The concrete type of browser to be used is established using the configuration key <code>sel.jup.default.browser</code>. The default value for this key is <code>chrome-in-docker</code>. All the values used in the template test defined in the previous section (i.e. <code>chrome</code>, <code>firefox</code>, <code>edge</code>, <code>chrome-in-docker</code>, <code>firefox-in-docker</code>, <code>android</code>, etc.) can be used also to define the type of browser in this mode.</p>
 </div>
 <div class="paragraph">
 <p>For instance, the following test, if no additional configuration is done, will use Chrome in Docker as browser:</p>
@@ -2331,7 +2550,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/jenkins-attachements-test.png" alt="jenkins attachements test">
 </div>
-<div class="title">Figure 7. Example of test execution through Jenkins with attachments</div>
+<div class="title">Figure 8. Example of test execution through Jenkins with attachments</div>
 </div>
 <div class="paragraph">
 <p>We can watch the recording simply clicking in the attached MP4 files.</p>
@@ -2340,7 +2559,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/jenkins-attachements-test-mp4.png" alt="jenkins attachements test mp4">
 </div>
-<div class="title">Figure 8. Example of test execution through Jenkins with attachements</div>
+<div class="title">Figure 9. Example of test execution through Jenkins with attachements</div>
 </div>
 <div class="paragraph">
 <p>Test template are also compatible with this feature. For instance, consider the following test
@@ -2355,7 +2574,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/jenkins-attachements-template.png" alt="jenkins attachements template">
 </div>
-<div class="title">Figure 9. Example of template test execution through Jenkins with attachments</div>
+<div class="title">Figure 10. Example of template test execution through Jenkins with attachments</div>
 </div>
 <div class="paragraph">
 <p>And we will be able to watch the recording:</p>
@@ -2364,7 +2583,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="content">
 <img src="./img/jenkins-attachements-template-mp4.png" alt="jenkins attachements template mp4">
 </div>
-<div class="title">Figure 10. Example of template test execution through Jenkins with attachments</div>
+<div class="title">Figure 11. Example of template test execution through Jenkins with attachments</div>
 </div>
 </div>
 </div>
@@ -2376,7 +2595,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <p>Default configuration parameters for <em>Selenium-Jupiter</em> are set in the <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/selenium-jupiter.properties">selenium-jupiter.properties</a> file. The following table summarizes all the configuration keys available.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. Configuration keys in <em>Selenium-Jupiter</em></caption>
+<caption class="title">Table 3. Configuration keys in <em>Selenium-Jupiter</em></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2438,7 +2657,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.screenshot.at.the.end.of.tests</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Make screenshots at the end of the test</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>whenfailure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.screenshot.format</code></p></td>
@@ -2611,9 +2830,89 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.default.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default version of Android devices in Doker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>7.1.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api21.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.0.1 of Android devices in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.0.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api22.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.1.1 of Android devices in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.1.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api23.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 6.0 of Android devices in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-6.0:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api24.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.0 of Android devices in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.0:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api25.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.1.1 of Android devices in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.1.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api21.osxwin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.0.1 of Android devices in Mac and Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-5.0.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api22.osxwin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.1.1 of Android devices in Mac and Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-5.1.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api23.osxwin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 6.0 of Android devices in Mac and Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-6.0:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api24.osxwin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.0 of Android devices in Mac and Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-7.0:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api25.osxwin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.1.1 of Android devices in Mac and Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-7.1.1:0.9-p5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.novnc.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal port of noVNC in Docker containers for Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>6080</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal port of Appium server in Docker containers for Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>4723</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default device name for Android in Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Samsung Galaxy S6</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.browser.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default browser name for Android in Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timeout (in seconds) to wait Android devices to be available</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.server.url</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">URL to connect with the Docker Host</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">``</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.wait.timeout.sec</code></p></td>
@@ -2663,7 +2962,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">``</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
@@ -2965,8 +3264,8 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.1.1<br>
-Last updated 2018-04-09 16:58:14 CEST
+Version 2.2.0<br>
+Last updated 2018-07-04 13:35:58 CEST
 </div>
 </div>
 </body>
