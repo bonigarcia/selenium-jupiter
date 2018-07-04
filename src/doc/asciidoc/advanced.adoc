@@ -42,17 +42,17 @@ Let's see some examples. Consider the following test. A couple of things are new
 include::../../test/java/io/github/bonigarcia/test/template/TemplateTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-The last piece we need in this test template is what we call _browser scenario_. As introduced before, this scenario is defined in a JSOn file following a simple notation. 
+The last piece we need in this test template is what we call _browser scenario_. As introduced before, this scenario is defined in a JSOn file following a simple notation.
 
 The path of the JSON browser scenario is established in the configuration key called `sel.jup.browser.template.json.file`. By default, this key has the value `classpath:browsers.json`. This means that the JSON scenario is defined in a file called `browsers.json` located in the classpath (see section link:#configuration[Configuration] for further details about configuration).
 
-NOTE: If the configuration key `sel.jup.browser.template.json.file` do not start with the word `classpath:`, the file will be searched using relative of absolute paths. 
+NOTE: If the configuration key `sel.jup.browser.template.json.file` do not start with the word `classpath:`, the file will be searched using relative of absolute paths.
 
 Now imagine that the content of the file `browsers.json` is as follows:
 
 [source,json]
 ----
-include::../../test/resources/browsers.json[indent=0]
+include::../../test/resources/browsers-docker.json[indent=0]
 ----
 
 When we execute the template test, in this case we will have four actual tests: the first using the _latest_ version of Chrome, the second using the previous to stable version of Chrome (`latest-1`), the third using the beta version of Chrome (`beta`), and another test using the development version of Chrome (`unstable`). For instance, if we run the test in Eclipse, we will get the following output:
@@ -61,12 +61,13 @@ When we execute the template test, in this case we will have four actual tests: 
 .Example of test template execution in Eclipse
 image::test-template-01.png[scaledwidth=100%]
 
-Generally speaking, a browser within the JSON scenario is defined using two parameters:
+Generally speaking, a browser within the JSON scenario is defined using the following parameters:
 
 - `type`: Type of browsers. The accepted values are:
    * `chrome`: For local Chrome browsers.
    * `firefox`: For local Firefox browsers.
    * `edge`: For local Edge browsers.
+   * `iexplorer`: For local Internet Explorer browsers.
    * `opera`: For local Opera browsers.
    * `safari`: For local Safari browsers.
    * `appium`: For local mobile emulated devices.
@@ -74,8 +75,12 @@ Generally speaking, a browser within the JSON scenario is defined using two para
    * `chrome-in-docker`: For Chrome browsers in Docker.
    * `firefox-in-docker`: For Firefox browsers in Docker.
    * `opera-in-docker`: For Opera browsers in Docker.
+   * `android`: For web browsers in Android devices in Docker containers.
 - `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported (using the labels `beta` and `unstable` labels respectively).
- 
+- `browserName`: As of version 2.2.0, when the `type` is `android` device, the parameter `browserName` can be used to select the browser in Android (`chrome` or `browser`)
+- `deviceName`: Also for `android` type, the device type can be specified (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).
+
+
 Finally, more than one parameters can be defined in the test template. For instance, consider the following test in which a couple of `WebDriver` parameters are declared in the test template.
 
 [source,java]
@@ -96,10 +101,16 @@ If we execute this test using in GUI, the JUnit tab shows two tests executed wit
 .Example of test template execution (with two parameters) in Eclipse
 image::test-template-02.png[scaledwidth=100%]
 
+As of version 2.2.0, _Selenium-Jupiter_ allows to configure the browser scenario programmatically using the JUnit 5 `@RegisterExtension` annotation. To that aim, the method `addBrowsers` of the `SeleniumExtension` instance is used to add different browser(s) to the scenario. In the following example the test is executed twice, one using Chrome and the second using Firefox.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/test/template/TemplateRegisterTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === Generic driver
 
-As of version 2.1.0, _Selenium-Jupiter_ allows to use a configurable WebDriver object. This generic driver is declared as usual (i.e. as test method or constructor parameter) using the type `RemoteWebDriver` or `WebDriver`. The concrete type of browser to be used is established using the configuration key `sel.jup.default.browser`. The default value for this key is `chrome-in-docker`. All the values used in the template test defined in the previous section (i.e. `chrome`, `firefox`, `edge`, `chrome-in-docker`, `firefox-in-docker`, etc.) can be used also to define the type of browser in this mode.
+As of version 2.1.0, _Selenium-Jupiter_ allows to use a configurable WebDriver object. This generic driver is declared as usual (i.e. as test method or constructor parameter) using the type `RemoteWebDriver` or `WebDriver`. The concrete type of browser to be used is established using the configuration key `sel.jup.default.browser`. The default value for this key is `chrome-in-docker`. All the values used in the template test defined in the previous section (i.e. `chrome`, `firefox`, `edge`, `chrome-in-docker`, `firefox-in-docker`, `android`, etc.) can be used also to define the type of browser in this mode.
 
 For instance, the following test, if no additional configuration is done, will use Chrome in Docker as browser:
 

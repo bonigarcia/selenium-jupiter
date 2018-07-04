@@ -8,11 +8,11 @@ Using _Selenium-Jupiter_ is very easy. First, you need to import the dependency 
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>2.1.1</version>
+	<version>2.2.0</version>
 	<scope>test</scope>
 </dependency>
 
-NOTE: _Selenium-Jupiter_ 2.1.1 depends on *_selenium-java_ 3.11.0*, *_webdrivermanager_ 2.2.1*, *appium _java-client_ 5.0.4*, and *spotify _docker-client_ 8.11.2*. Therefore, by using the _Selenium-Jupiter_ dependency, these libraries will be added as transitive dependencies to your project.
+NOTE: _Selenium-Jupiter_ 2.2.0 depends on *_selenium-java_ 3.13.0*, *_webdrivermanager_ 2.2.4*, *appium _java-client_ 6.1.0*, and *spotify _docker-client_ 8.11.7*. Therefore, by using the _Selenium-Jupiter_ dependency, these libraries will be added as transitive dependencies to your project.
 
 Then, you need to declare _Selenium-Jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods (or constructor) whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _Selenium-Jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
 
@@ -20,6 +20,8 @@ Then, you need to declare _Selenium-Jupiter_ extension in your JUnit 5 test, sim
 ----
 include::../../test/java/io/github/bonigarcia/test/basic/ChromeAndFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+NOTE: As of JUnit 5.1, extensions can be registered programmatically via `@RegisterExtension` or automatically via Java’s `ServiceLoader`. Both mechanisms can be used with _Selenium-Jupiter_.
 
 The `WebDriver` subtypes supported by _Selenium-Jupiter_ are the following:
 
@@ -43,5 +45,5 @@ You can also inject `WebDriver` objects declaring them as constructor parameters
 include::../../test/java/io/github/bonigarcia/test/constructor/ChromeInConstructorJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-This documentation contains a comprehensive collection of basic examples demonstrating the basic usage of _seleniun-jupiter_ in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of https://github.com/bonigarcia/selenium-jupiter[_Selenium-Jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI]. 
+This documentation contains a comprehensive collection of basic examples demonstrating the basic usage of _Selenium-Jupiter_ in JUnit 5 tests using different types of browsers. All these examples are part of the test suite of https://github.com/bonigarcia/selenium-jupiter[_Selenium-Jupiter_] and are executed on https://travis-ci.org/bonigarcia/selenium-jupiter[Travis CI]. 
 

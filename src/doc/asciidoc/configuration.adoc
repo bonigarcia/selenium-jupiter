@@ -15,7 +15,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.recording.video.frame.rate` | Video frame rate for recordings |`12`
 |`sel.jup.recording.image` | Docker image for recordings |`selenoid/video-recorder:latest`
 |`sel.jup.output.folder` | Output folder for recordings, screenshots, and HTML redirect pages |`.`
-|`sel.jup.screenshot.at.the.end.of.tests` | Make screenshots at the end of the test |`whenfailure`
+|`sel.jup.screenshot.at.the.end.of.tests` | Make screenshots at the end of the test |`false`
 |`sel.jup.screenshot.format` | Format for screenshots |`base64`
 |`sel.jup.exception.when.no.driver` | Throw exception in case of exception or not |`true`
 |`sel.jup.browser.template.json.file` | Browsers scenario (JSON) path |`classpath:browsers.json`
@@ -50,7 +50,23 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
 |`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`51.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
-|`sel.jup.docker.server.url` | URL to connect with the Docker Host |``
+|`sel.jup.android.default.version` | Default version of Android devices in Doker |`7.1.1`
+|`sel.jup.android.image.api21.linux` | Docker image for version 5.0.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.0.1:0.9-p5`
+|`sel.jup.android.image.api22.linux` | Docker image for version 5.1.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.1.1:0.9-p5`
+|`sel.jup.android.image.api23.linux` | Docker image for version 6.0 of Android devices in Linux |`butomo1989/docker-android-x86-6.0:0.9-p5`
+|`sel.jup.android.image.api24.linux` | Docker image for version 7.0 of Android devices in Linux |`butomo1989/docker-android-x86-7.0:0.9-p5`
+|`sel.jup.android.image.api25.linux` | Docker image for version 7.1.1 of Android devices in Linux |`butomo1989/docker-android-x86-7.1.1:0.9-p5`
+|`sel.jup.android.image.api21.osxwin` | Docker image for version 5.0.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-5.0.1:0.9-p5`
+|`sel.jup.android.image.api22.osxwin` | Docker image for version 5.1.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-5.1.1:0.9-p5`
+|`sel.jup.android.image.api23.osxwin` | Docker image for version 6.0 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-6.0:0.9-p5`
+|`sel.jup.android.image.api24.osxwin` | Docker image for version 7.0 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-7.0:0.9-p5`
+|`sel.jup.android.image.api25.osxwin` | Docker image for version 7.1.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-7.1.1:0.9-p5`
+|`sel.jup.android.novnc.port` | Internal port of noVNC in Docker containers for Android devices  |`6080`
+|`sel.jup.android.appium.port` | Internal port of Appium server in Docker containers for Android devices |`4723`
+|`sel.jup.android.device.name` | Default device name for Android in Docker |`Samsung Galaxy S6`
+|`sel.jup.android.browser.name` | Default browser name for Android in Docker |`chrome`
+|`sel.jup.android.device.timeout.sec` |Timeout (in seconds) to wait Android devices to be available |`200`
+|`sel.jup.docker.server.url` | URL to connect with the Docker Host |
 |`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`
 |`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
 |`sel.jup.docker.default.socket` | Default Docker socket path |`/var/run/docker.sock`
@@ -60,7 +76,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.network` | Docker network |`bridge`
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
 |`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
-|`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |``
+|`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |
 |==========================
 
 These properties can be overwritten in different ways. As of version 2.1.0 of _Selenium-Jupiter_, the configuration manager can be used: 
