@@ -72,7 +72,7 @@ public class RemoteWebDriverJupiterTest {
 
     // tag::snippet-in-doc[]
     @Test
-    void testWithRemoteChrome(@DriverUrl("http://localhost:4445/wd/hub")
+    void testWithRemoteChrome(@DriverUrl("http://localhost:4444/wd/hub")
             @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
