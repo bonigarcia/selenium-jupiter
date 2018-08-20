@@ -415,38 +415,47 @@ public class DockerDriverHandler {
 
     public String startAndroidBrowser(String version, String deviceName)
             throws DockerException, InterruptedException, IOException {
+        if (!IS_OS_LINUX) {
+            throw new SeleniumJupiterException(
+                    "Android devices are only supported in Linux hosts");
+        }
         String androidImage;
         String apiLevel;
         switch (version) {
         case "5.0.1":
-        case LATEST + "-4":
-            androidImage = IS_OS_LINUX ? config().getAndroidImageApi21Linux()
-                    : config().getAndroidImageApi21OsxWin();
+        case LATEST + "-6":
+            androidImage = config().getAndroidImage501();
             apiLevel = "21";
             break;
         case "5.1.1":
-        case LATEST + "-3":
-            androidImage = IS_OS_LINUX ? config().getAndroidImageApi22Linux()
-                    : config().getAndroidImageApi22OsxWin();
+        case LATEST + "-5":
+            androidImage = config().getAndroidImage511();
             apiLevel = "22";
             break;
         case "6.0":
-        case LATEST + "-2":
-            androidImage = IS_OS_LINUX ? config().getAndroidImageApi23Linux()
-                    : config().getAndroidImageApi23OsxWin();
+        case LATEST + "-4":
+            androidImage = config().getAndroidImage60();
             apiLevel = "23";
             break;
         case "7.0":
-        case LATEST + "-1":
-            androidImage = IS_OS_LINUX ? config().getAndroidImageApi24Linux()
-                    : config().getAndroidImageApi24OsxWin();
+        case LATEST + "-3":
+            androidImage = config().getAndroidImage701();
             apiLevel = "24";
             break;
         case "7.1.1":
-        case LATEST:
-            androidImage = IS_OS_LINUX ? config().getAndroidImageApi25Linux()
-                    : config().getAndroidImageApi25OsxWin();
+        case LATEST + "-2":
+            androidImage = config().getAndroidImage711();
             apiLevel = "25";
+            break;
+        case "8.0":
+        case LATEST + "-1":
+            androidImage = config().getAndroidImage80();
+            apiLevel = "26";
+            break;
+        case "8.1":
+        case LATEST:
+            androidImage = config().getAndroidImage81();
+            apiLevel = "27";
             break;
         default:
             throw new SeleniumJupiterException(
