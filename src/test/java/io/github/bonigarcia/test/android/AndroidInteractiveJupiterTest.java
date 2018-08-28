@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 import java.io.ByteArrayInputStream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.bonigarcia.SeleniumJupiter;
@@ -33,6 +34,7 @@ import io.github.bonigarcia.SeleniumJupiter;
  */
 class AndroidInteractiveJupiterTest {
 
+    @Disabled
     @Test
     void testInteractiveAndroid() {
         exercise(new String[] { "android", "8.0", "Samsung Galaxy S6" });
