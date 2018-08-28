@@ -90,6 +90,8 @@ public class DockerDriverHandler {
 
     static final String ALL_IPV4_ADDRESSES = "0.0.0.0";
     static final String LATEST = "latest";
+    static final String BROWSER = "browser";
+    static final String CHROME = "chrome";
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -138,7 +140,6 @@ public class DockerDriverHandler {
         return resolve(browser, version, deviceName);
     }
 
-    // TODO who call this?
     public WebDriver resolve(BrowserType browser, String version,
             String deviceName) {
         try {
@@ -426,49 +427,49 @@ public class DockerDriverHandler {
         case LATEST + "-6":
             androidImage = config().getAndroidImage501();
             apiLevel = "21";
-            browserName = "browser";
+            browserName = BROWSER;
             browserVersion = "37.0";
             break;
         case "5.1.1":
         case LATEST + "-5":
             androidImage = config().getAndroidImage511();
             apiLevel = "22";
-            browserName = "browser";
+            browserName = BROWSER;
             browserVersion = "39.0";
             break;
         case "6.0":
         case LATEST + "-4":
             androidImage = config().getAndroidImage60();
             apiLevel = "23";
-            browserName = "browser";
+            browserName = BROWSER;
             browserVersion = "44.0";
             break;
         case "7.0":
         case LATEST + "-3":
             androidImage = config().getAndroidImage701();
             apiLevel = "24";
-            browserName = "chrome";
+            browserName = CHROME;
             browserVersion = "51.0";
             break;
         case "7.1.1":
         case LATEST + "-2":
             androidImage = config().getAndroidImage711();
             apiLevel = "25";
-            browserName = "chrome";
+            browserName = CHROME;
             browserVersion = "55.0";
             break;
         case "8.0":
         case LATEST + "-1":
             androidImage = config().getAndroidImage80();
             apiLevel = "26";
-            browserName = "chrome";
+            browserName = CHROME;
             browserVersion = "58.0";
             break;
         case "8.1":
         case LATEST:
             androidImage = config().getAndroidImage81();
             apiLevel = "27";
-            browserName = "chrome";
+            browserName = CHROME;
             browserVersion = "61.0";
             break;
         default:
