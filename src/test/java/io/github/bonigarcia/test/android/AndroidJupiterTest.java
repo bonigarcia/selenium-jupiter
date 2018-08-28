@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.docker;
+package io.github.bonigarcia.test.android;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.ANDROID;
@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +36,7 @@ import io.github.bonigarcia.SeleniumJupiter;
 // tag::snippet-in-doc[]
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerAndroidJupiterTest {
+public class AndroidJupiterTest {
 
     // end::snippet-in-doc[]
     @BeforeAll
@@ -49,6 +50,7 @@ public class DockerAndroidJupiterTest {
         SeleniumJupiter.config().reset();
     }
 
+    @Disabled
     // tag::snippet-in-doc[]
     @Test
     public void testAndroid(

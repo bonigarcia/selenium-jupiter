@@ -14,32 +14,25 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.docker;
+package io.github.bonigarcia.test.android;
 
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-// tag::snippet-in-doc[]
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerAndroidCustomJupiterTest {
+public class AndroidCustomJupiterTest {
 
-    // end::snippet-in-doc[]
-    @Disabled
-    // tag::snippet-in-doc[]
     @Test
-    public void testAndroid(@DockerBrowser(type = ANDROID, version = "5.0.1",
+    public void testAndroid(@DockerBrowser(type = ANDROID, version = "8.0",
             deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

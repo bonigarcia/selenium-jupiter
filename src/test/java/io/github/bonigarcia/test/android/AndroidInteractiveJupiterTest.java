@@ -14,30 +14,28 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.interactive;
+package io.github.bonigarcia.test.android;
 
 import static java.time.Duration.ofMinutes;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 import java.io.ByteArrayInputStream;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.Test;
 
 import io.github.bonigarcia.SeleniumJupiter;
 
 /**
- * Test interactive mode (from the shell).
+ * Test interactive mode for Android (from the shell).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 2.1.0
  */
-class InteractiveJupiterTest {
+class AndroidInteractiveJupiterTest {
 
-    @ParameterizedTest
-    @ValueSource(strings = { "chrome", "firefox", "opera" })
-    void testInteractive(String argument) {
-        exercise(new String[] { argument });
+    @Test
+    void testInteractiveAndroid() {
+        exercise(new String[] { "android", "8.0", "Samsung Galaxy S6" });
     }
 
     void exercise(String[] args) {

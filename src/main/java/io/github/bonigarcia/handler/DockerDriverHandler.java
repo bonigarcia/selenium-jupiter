@@ -260,8 +260,8 @@ public class DockerDriverHandler {
         capabilities.setCapability("deviceName", deviceNameCapability);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
-        log.info("Android device name: {} -- Browser in Android device: {}",
-                deviceNameCapability, browserName);
+        log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
+                browserName);
         log.info(
                 "Waiting for Android device ... this might take long, please wait (retries each 5 seconds)");
 
