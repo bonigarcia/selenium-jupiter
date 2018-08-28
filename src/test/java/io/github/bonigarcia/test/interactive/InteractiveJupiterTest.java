@@ -44,8 +44,7 @@ class InteractiveJupiterTest {
 
     @Test
     void testInteractiveAndroid() {
-        exercise(new String[] { "android", "7.1.1", "chrome",
-                "Samsung Galaxy S6" });
+        exercise(new String[] { "android", "8.1", "Samsung Galaxy S6" });
     }
 
     private void exercise(String[] args) {
