@@ -16,6 +16,9 @@
  */
 package io.github.bonigarcia.test.interactive;
 
+import static java.time.Duration.ofMinutes;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+
 import java.io.ByteArrayInputStream;
 
 import org.junit.jupiter.api.Test;
@@ -44,10 +47,12 @@ class InteractiveJupiterTest {
     }
 
     void exercise(String[] args) {
-        ByteArrayInputStream intro = new ByteArrayInputStream(
-                "\r\n".getBytes());
-        System.setIn(intro);
-        SeleniumJupiter.main(args);
+        assertTimeout(ofMinutes(5), () -> {
+            ByteArrayInputStream intro = new ByteArrayInputStream(
+                    "\r\n".getBytes());
+            System.setIn(intro);
+            SeleniumJupiter.main(args);
+        });
     }
 
 }
