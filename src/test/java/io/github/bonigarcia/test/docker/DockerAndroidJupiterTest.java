@@ -23,8 +23,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +49,6 @@ public class DockerAndroidJupiterTest {
         SeleniumJupiter.config().reset();
     }
 
-    @Disabled
     // tag::snippet-in-doc[]
     @Test
     public void testAndroid(
