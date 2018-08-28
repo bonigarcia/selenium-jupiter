@@ -16,10 +16,6 @@
  */
 package io.github.bonigarcia.test.interactive;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static org.awaitility.Awaitility.await;
-
 import java.io.ByteArrayInputStream;
 
 import org.junit.jupiter.api.Test;
@@ -47,17 +43,11 @@ class InteractiveJupiterTest {
         exercise(new String[] { "android", "8.1", "Samsung Galaxy S6" });
     }
 
-    private void exercise(String[] args) {
+    void exercise(String[] args) {
         ByteArrayInputStream intro = new ByteArrayInputStream(
                 "\r\n".getBytes());
         System.setIn(intro);
         SeleniumJupiter.main(args);
-        await().atMost(1, MINUTES).until(() -> getVncExport() == null);
-    }
-
-    String getVncExport() {
-        String vncExport = config().getVncExport();
-        return System.getProperty(vncExport);
     }
 
 }

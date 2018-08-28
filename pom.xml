@@ -20,7 +20,6 @@
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <mockito.version>2.19.0</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <awaitility.version>3.1.0</awaitility.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -176,12 +175,6 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
