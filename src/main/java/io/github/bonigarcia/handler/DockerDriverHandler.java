@@ -109,6 +109,7 @@ public class DockerDriverHandler {
     String novncImage = config().getNovncImage();
     String androidNoVncUrl;
     List<File> filesInVideoFolder;
+    String browserName;
 
     public DockerDriverHandler() throws DockerCertificateException {
         this.selenoidConfig = new SelenoidConfig();
@@ -132,14 +133,14 @@ public class DockerDriverHandler {
     public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browser = dockerBrowser.type();
         String version = dockerBrowser.version();
-        String browserName = dockerBrowser.browserName();
         String deviceName = dockerBrowser.deviceName();
 
-        return resolve(browser, version, browserName, deviceName);
+        return resolve(browser, version, deviceName);
     }
 
+    // TODO who call this?
     public WebDriver resolve(BrowserType browser, String version,
-            String browserName, String deviceName) {
+            String deviceName) {
         try {
             if (recording) {
                 hostVideoFolder = new File(getOutputFolder(context));
@@ -147,8 +148,7 @@ public class DockerDriverHandler {
 
             WebDriver webdriver;
             if (browser == ANDROID) {
-                webdriver = getDriverForAndroid(browser, version, browserName,
-                        deviceName);
+                webdriver = getDriverForAndroid(browser, version, deviceName);
             } else {
                 if (selenoidConfig == null) {
                     selenoidConfig = new SelenoidConfig();
@@ -241,32 +241,31 @@ public class DockerDriverHandler {
     }
 
     private WebDriver getDriverForAndroid(BrowserType browser, String version,
-            String browserName, String deviceName)
+            String deviceName)
             throws DockerException, InterruptedException, IOException {
         browser.init();
         if (recording) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
-
-        DesiredCapabilities capabilities = browser.getCapabilities(browserName,
-                deviceName);
-        String browserNameCapability = capabilities.getCapability("browserName")
-                .toString();
-        String deviceNameCapability = capabilities.getCapability("deviceName")
-                .toString();
-
         if (version == null || version.isEmpty()) {
             version = config().getAndroidDefaultVersion();
         }
+        String deviceNameCapability = deviceName != null
+                && !deviceName.isEmpty() ? deviceName
+                        : config().getAndroidDeviceName();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
-        AndroidDriver<WebElement> androidDriver = null;
+
+        DesiredCapabilities capabilities = browser.getCapabilities();
+        capabilities.setCapability("browserName", browserName);
+        capabilities.setCapability("deviceName", deviceNameCapability);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser in Android device: {}",
-                deviceNameCapability, browserNameCapability);
+                deviceNameCapability, browserName);
         log.info(
                 "Waiting for Android device ... this might take long, please wait (retries each 5 seconds)");
 
+        AndroidDriver<WebElement> androidDriver = null;
         int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
         long endTimeMillis = currentTimeMillis()
                 + androidDeviceTimeoutSec * 1000;
@@ -421,48 +420,64 @@ public class DockerDriverHandler {
         }
         String androidImage;
         String apiLevel;
+        String browserVersion;
         switch (version) {
         case "5.0.1":
         case LATEST + "-6":
             androidImage = config().getAndroidImage501();
             apiLevel = "21";
+            browserName = "browser";
+            browserVersion = "37.0";
             break;
         case "5.1.1":
         case LATEST + "-5":
             androidImage = config().getAndroidImage511();
             apiLevel = "22";
+            browserName = "browser";
+            browserVersion = "39.0";
             break;
         case "6.0":
         case LATEST + "-4":
             androidImage = config().getAndroidImage60();
             apiLevel = "23";
+            browserName = "browser";
+            browserVersion = "44.0";
             break;
         case "7.0":
         case LATEST + "-3":
             androidImage = config().getAndroidImage701();
             apiLevel = "24";
+            browserName = "chrome";
+            browserVersion = "51.0";
             break;
         case "7.1.1":
         case LATEST + "-2":
             androidImage = config().getAndroidImage711();
             apiLevel = "25";
+            browserName = "chrome";
+            browserVersion = "55.0";
             break;
         case "8.0":
         case LATEST + "-1":
             androidImage = config().getAndroidImage80();
             apiLevel = "26";
+            browserName = "chrome";
+            browserVersion = "58.0";
             break;
         case "8.1":
         case LATEST:
             androidImage = config().getAndroidImage81();
             apiLevel = "27";
+            browserName = "chrome";
+            browserVersion = "61.0";
             break;
         default:
             throw new SeleniumJupiterException(
                     "Version " + version + " not valid for Android devices");
         }
 
-        log.info("Using Android version {} (API level {})", version, apiLevel);
+        log.info("Starting {} {} in Android {} (API level {})", browserName,
+                browserVersion, version, apiLevel);
         dockerService.pullImageIfNecessary(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage,

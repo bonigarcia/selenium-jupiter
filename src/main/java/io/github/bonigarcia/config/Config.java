@@ -176,8 +176,6 @@ public class Config {
             "sel.jup.android.appium.port", String.class);
     ConfigKey<String> androidDeviceName = new ConfigKey<>(
             "sel.jup.android.device.name", String.class);
-    ConfigKey<String> androidBrowserName = new ConfigKey<>(
-            "sel.jup.android.browser.name", String.class);
     ConfigKey<Integer> androidDeviceTimeoutSec = new ConfigKey<>(
             "sel.jup.android.device.timeout.sec", Integer.class);
 
@@ -800,14 +798,6 @@ public class Config {
 
     public void setAndroidDeviceName(String value) {
         this.androidDeviceName.setValue(value);
-    }
-
-    public String getAndroidBrowserName() {
-        return resolve(androidBrowserName);
-    }
-
-    public void setAndroidBrowserName(String value) {
-        this.androidBrowserName.setValue(value);
     }
 
     public Integer getAndroidDeviceTimeoutSec() {

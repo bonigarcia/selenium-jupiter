@@ -38,8 +38,6 @@ public @interface DockerBrowser {
 
     public int size() default 0;
 
-    public String browserName() default "";
-
     public String deviceName() default "";
 
 }

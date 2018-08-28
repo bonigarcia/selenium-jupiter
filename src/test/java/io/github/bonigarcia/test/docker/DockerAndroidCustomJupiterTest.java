@@ -40,7 +40,7 @@ public class DockerAndroidCustomJupiterTest {
     // tag::snippet-in-doc[]
     @Test
     public void testAndroid(@DockerBrowser(type = ANDROID, version = "5.0.1",
-            deviceName = "Nexus S", browserName = "browser") RemoteWebDriver driver) {
+            deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

@@ -53,30 +53,23 @@ public class SeleniumJupiter {
         String validBrowsers = "chrome|firefox|opera|android";
         if (args.length <= 0) {
             log.error(
-                    "Usage: SeleniumJupiter browserName <version> <browserNameInAdroid> <deviceName>");
+                    "Usage: SeleniumJupiter browserName <version> <deviceName>");
             log.error("\t...where:");
             log.error("\tbrowserName = {}", validBrowsers);
             log.error("\tversion = optional version (latest if empty)");
-            log.error(
-                    "\tbrowserNameInAdroid = Browser name in Android (only for Android)");
             log.error("\tdeviceName = Device name (only for Android)");
 
         } else {
             String browser = args[0];
             String version = "";
             String deviceName = "";
-            String browserNameInAdroid = "";
             String versionMessage = "(latest)";
             if (args.length > 1) {
                 version = args[1];
                 versionMessage = version;
             }
             if (args.length > 2) {
-                browserNameInAdroid = args[2];
-
-            }
-            if (args.length > 3) {
-                deviceName = join(" ", copyOfRange(args, 3, args.length));
+                deviceName = join(" ", copyOfRange(args, 2, args.length));
             }
 
             log.info("Using SeleniumJupiter to execute {} {} in Docker",
@@ -93,7 +86,7 @@ public class SeleniumJupiter {
                 browserType.init();
 
                 WebDriver webdriver = dockerDriverHandler.resolve(browserType,
-                        version, browserNameInAdroid, deviceName);
+                        version, deviceName);
 
                 getRuntime().addShutdownHook(new Thread() {
                     @Override

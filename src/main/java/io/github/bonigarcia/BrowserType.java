@@ -124,17 +124,4 @@ public enum BrowserType {
         return capabilities;
     }
 
-    public DesiredCapabilities getCapabilities(String browserName,
-            String deviceName) {
-        String browserNameCapability = browserName != null
-                && !browserName.isEmpty() ? browserName
-                        : config().getAndroidBrowserName();
-        String deviceNameCapability = deviceName != null
-                && !deviceName.isEmpty() ? deviceName
-                        : config().getAndroidDeviceName();
-        capabilities.setCapability("browserName", browserNameCapability);
-        capabilities.setCapability("deviceName", deviceNameCapability);
-        return capabilities;
-    }
-
 }
