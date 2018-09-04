@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.test.forced;
+package io.github.bonigarcia.test.android;
 
 import static io.github.bonigarcia.BrowserType.ANDROID;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -32,7 +32,7 @@ import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.handler.DockerDriverHandler;
 
-public class ForcedAndroidTimeoutJupiterTest {
+public class AndroidForcedTimeoutJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -60,7 +60,7 @@ public class ForcedAndroidTimeoutJupiterTest {
     void androidTimeoutTest() {
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler = new DockerDriverHandler();
-            WebDriver driver = dockerDriverHandler.resolve(ANDROID, "8.1",
+            WebDriver driver = dockerDriverHandler.resolve(ANDROID, "8.0",
                     "Samsung Galaxy S6");
             log.debug("WebDriver object: {}", driver);
         });
