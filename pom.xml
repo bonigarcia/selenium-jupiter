@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bonigarcia</groupId>
@@ -15,6 +17,8 @@
         <slf4j.version>1.7.25</slf4j.version>
         <retrofit.version>2.4.0</retrofit.version>
         <logback.version>1.2.3</logback.version>
+        <javalin.version>2.1.1</javalin.version>
+        <okhttp.version>3.11.0</okhttp.version>
 
         <!-- Test dependencies -->
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
@@ -139,6 +143,18 @@
             <version>${junit.jupiter.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>${javalin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- test -->
         <dependency>
@@ -158,6 +174,24 @@
             <artifactId>selenium-server</artifactId>
             <version>${selenium.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-http</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -305,6 +339,14 @@
                 <configuration>
                     <mainClass>${sel.jup.mainClass}</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                    <includePluginDependencies>false</includePluginDependencies>
+                    <classpathScope>test</classpathScope>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>logback.configurationFile</key>
+                            <value>src/main/resources/logback.xml</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
@@ -315,9 +357,9 @@
                             <mainClass>${sel.jup.mainClass}</mainClass>
                         </manifest>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                    </descriptors>
                 </configuration>
             </plugin>
             <plugin>

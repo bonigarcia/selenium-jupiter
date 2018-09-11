@@ -16,10 +16,12 @@
  */
 package io.github.bonigarcia;
 
+import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.join;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.copyOfRange;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Scanner;
@@ -52,60 +54,64 @@ public class SeleniumJupiter {
     public static void main(String[] args) {
         String validBrowsers = "chrome|firefox|opera|android";
         if (args.length <= 0) {
-            log.error(
-                    "Usage: SeleniumJupiter browserName <version> <deviceName>");
-            log.error("\t...where:");
-            log.error("\tbrowserName = {}", validBrowsers);
-            log.error("\tversion = optional version (latest if empty)");
-            log.error("\tdeviceName = Device name (only for Android)");
+            logCliError(validBrowsers);
 
         } else {
-            String browser = args[0];
-            String version = "";
-            String deviceName = "";
-            String versionMessage = "(latest)";
-            if (args.length > 1) {
-                version = args[1];
-                versionMessage = version;
+            String arg = args[0];
+            if (arg.equalsIgnoreCase("server")) {
+                startServer(args);
+            } else {
+                resolveLocal(args);
             }
-            if (args.length > 2) {
-                deviceName = join(" ", copyOfRange(args, 2, args.length));
-            }
+        }
+    }
 
-            log.info("Using SeleniumJupiter to execute {} {} in Docker",
-                    browser, versionMessage);
+    private static void resolveLocal(String[] args) {
+        String browser = args[0];
+        String version = "";
+        String deviceName = "";
+        String versionMessage = "(latest)";
+        if (args.length > 1) {
+            version = args[1];
+            versionMessage = version;
+        }
+        if (args.length > 2) {
+            deviceName = join(" ", copyOfRange(args, 2, args.length));
+        }
 
-            try {
-                config().setVnc(true);
-                config().setBrowserSessionTimeoutDuration("99h0m0s");
+        log.info("Using SeleniumJupiter to execute {} {} in Docker", browser,
+                versionMessage);
 
-                DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
+        try {
+            config().setVnc(true);
+            config().setBrowserSessionTimeoutDuration("99h0m0s");
 
-                BrowserType browserType = BrowserType
-                        .valueOf(browser.toUpperCase());
-                browserType.init();
+            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
 
-                WebDriver webdriver = dockerDriverHandler.resolve(browserType,
-                        version, deviceName);
+            BrowserType browserType = BrowserType
+                    .valueOf(browser.toUpperCase());
+            browserType.init();
 
-                getRuntime().addShutdownHook(new Thread() {
-                    @Override
-                    public void run() {
-                        cleanContainers(dockerDriverHandler, webdriver);
-                    }
-                });
+            WebDriver webdriver = dockerDriverHandler.resolve(browserType,
+                    version, deviceName);
 
-                log.info("Press ENTER to exit");
-                Scanner scanner = new Scanner(System.in);
-                scanner.nextLine();
-                scanner.close();
+            getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    cleanContainers(dockerDriverHandler, webdriver);
+                }
+            });
 
-                cleanContainers(dockerDriverHandler, webdriver);
+            log.info("Press ENTER to exit");
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+            scanner.close();
 
-            } catch (Exception e) {
-                log.error("Exception trying to execute {} {} in Docker",
-                        browser, versionMessage, e);
-            }
+            cleanContainers(dockerDriverHandler, webdriver);
+
+        } catch (Exception e) {
+            log.error("Exception trying to execute {} {} in Docker", browser,
+                    versionMessage, e);
         }
     }
 
@@ -118,6 +124,28 @@ public class SeleniumJupiter {
             dockerDriverHandler.cleanup();
             dockerDriverHandler.close();
         }
+    }
+
+    private static void startServer(String[] args) {
+        int port = config().getServerPort();
+        if (args.length > 1 && isNumeric(args[1])) {
+            port = parseInt(args[1]);
+        }
+        new Server(port);
+    }
+
+    private static void logCliError(String validBrowsers) {
+        log.error("There are 2 options to run Selenium-Jupiter CLI");
+        log.error("1. Selenium-Jupiter used to get VNC sessions of browsers:");
+        log.error("\tSeleniumJupiter browserName <version> <deviceName>");
+        log.error("\t...where:");
+        log.error("\tbrowserName = {}", validBrowsers);
+        log.error("\tversion = optional version (latest if empty)");
+        log.error("\tdeviceName = Device name (only for Android)");
+        log.error("\t(where browserName={})", validBrowsers);
+        log.error("2. Selenium-Jupiter as a server:");
+        log.error("\tSelenium-Jupiter server <port>");
+        log.error("\t(where default port is 4042)");
     }
 
 }
