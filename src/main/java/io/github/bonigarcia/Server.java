@@ -43,6 +43,7 @@ public class Server {
     public static final MediaType JSON = MediaType
             .parse("application/json; charset=utf-8");
     public static final String HUB = "http://localhost:9515";
+    public static final String SESSION = "/session";
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -58,10 +59,10 @@ public class Server {
             log.info("Server response: {}", response);
         };
 
-        app.post("/session", handler);
-        app.post("/session/*", handler);
-        app.get("/session/*", handler);
-        app.delete("/session/*", handler);
+        app.post(SESSION, handler);
+        app.post(SESSION + "/*", handler);
+        app.get(SESSION + "/*", handler);
+        app.delete(SESSION + "/*", handler);
 
         log.info("Selenium-Jupiter server listening on port {}", port);
     }
