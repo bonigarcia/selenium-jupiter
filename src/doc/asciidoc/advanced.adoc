@@ -144,7 +144,7 @@ image::jenkins-attachements-test.png[scaledwidth=100%]
 We can watch the recording simply clicking in the attached MP4 files.
 
 [.thumb]
-.Example of test execution through Jenkins with attachements
+.Example of test execution through Jenkins with attachments
 image::jenkins-attachements-test-mp4.png[scaledwidth=100%]
 
 Test template are also compatible with this feature. For instance, consider the following test
