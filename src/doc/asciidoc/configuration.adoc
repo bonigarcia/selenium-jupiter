@@ -25,7 +25,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.default.browser.fallback.version` | Fallback version list for generic driver |`latest,latest,latest,latest,latest`
 |`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
 |`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
-|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker iamage |`aerokube/selenoid:1.6.0`
+|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker image |`aerokube/selenoid:1.6.0`
 |`sel.jup.selenoid.port` | Selenoid port |`4444`
 |`sel.jup.selenoid.vnc.password` | VNC password for Selenoid sessions |`selenoid`
 |`sel.jup.novnc.image` | noVNC Docker image |`psharkey/novnc:3.3-t6`
@@ -50,7 +50,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
 |`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`51.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
-|`sel.jup.android.default.version` | Default version of Android devices in Doker |`7.1.1`
+|`sel.jup.android.default.version` | Default version of Android devices in Docker |`7.1.1`
 |`sel.jup.android.image.api21.linux` | Docker image for version 5.0.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.0.1:0.9-p5`
 |`sel.jup.android.image.api22.linux` | Docker image for version 5.1.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.1.1:0.9-p5`
 |`sel.jup.android.image.api23.linux` | Docker image for version 6.0 of Android devices in Linux |`butomo1989/docker-android-x86-6.0:0.9-p5`
@@ -109,7 +109,7 @@ Moreover, the value of these properties can be overridden by means of environmen
 
 === Tuning WebDriverManager
 
-As introduced before, _Selenium-Jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
+As introduced before, _Selenium-Jupiter_ internally uses https://github.com/bonigarcia/webdrivermanager[WebDriverManager] to manage the required binary to control local browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the https://github.com/bonigarcia/webdrivermanager[WebDriverManager documentation].
 
 In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:
 
