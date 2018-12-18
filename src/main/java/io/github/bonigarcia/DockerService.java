@@ -130,11 +130,6 @@ public class DockerService {
         String containerId = dockerClient.createContainer(createContainer).id();
         dockerClient.startContainer(containerId);
 
-        boolean isPrivileged = dockerClient.inspectContainer(containerId)
-                .hostConfig().privileged();
-        log.debug("Docker container {} is running in privileged mode: {}",
-                imageId, isPrivileged);
-
         return containerId;
     }
 
