@@ -143,15 +143,17 @@ public class AnnotationsReader {
             Object object = testInstance.get();
             Class<? extends Object> clazz = object.getClass();
             out = getField(annotation, clazz, object);
-
-            // If annotation not present in class, look for it in the parent(s)
-            Class<?> superclass;
-            while ((superclass = clazz.getSuperclass()) != Object.class) {
-                out = getField(annotation, superclass, object);
-                if (out.isPresent()) {
-                    break;
+            if (!out.isPresent()) {
+                // If annotation not present in class, look for it in the
+                // parent(s)
+                Class<?> superclass;
+                while ((superclass = clazz.getSuperclass()) != Object.class) {
+                    out = getField(annotation, superclass, object);
+                    if (out.isPresent()) {
+                        break;
+                    }
+                    clazz = clazz.getSuperclass();
                 }
-                clazz = clazz.getSuperclass();
             }
         }
         return out;
