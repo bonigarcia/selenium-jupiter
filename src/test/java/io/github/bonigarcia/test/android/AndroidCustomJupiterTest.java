@@ -21,9 +21,6 @@ import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -34,9 +31,6 @@ import io.github.bonigarcia.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 public class AndroidCustomJupiterTest {
 
-    // end::snippet-in-doc[]
-    @Disabled
-    // tag::snippet-in-doc[]
     @Test
     public void testAndroid(@DockerBrowser(type = ANDROID, version = "8.0",
             deviceName = "Nexus S") RemoteWebDriver driver) {
