@@ -159,9 +159,11 @@ public class DockerDriverHandler {
             return webdriver;
 
         } catch (Exception e) {
-            log.error("Exception resolving driver in Docker ({} {})", browser,
-                    version, e);
-            throw new SeleniumJupiterException(e);
+            String errorMessage = format(
+                    "Exception resolving driver in Docker ({} {})", browser,
+                    version);
+            log.error(errorMessage, e);
+            throw new SeleniumJupiterException(errorMessage, e);
         }
     }
 
