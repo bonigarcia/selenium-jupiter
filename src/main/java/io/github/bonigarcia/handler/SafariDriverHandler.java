@@ -60,10 +60,10 @@ public class SafariDriverHandler extends DriverHandler {
     public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
         SafariOptions safariOptions = new SafariOptions();
-        Object optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class);
+        SafariOptions optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class, SafariOptions.class);
         if (optionsFromAnnotatedField != null) {
-            safariOptions = (SafariOptions) optionsFromAnnotatedField;
+            safariOptions = optionsFromAnnotatedField;
         }
         return safariOptions;
     }

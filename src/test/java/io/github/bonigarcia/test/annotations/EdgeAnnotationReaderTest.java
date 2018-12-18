@@ -17,12 +17,14 @@
 package io.github.bonigarcia.test.annotations;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -56,4 +58,10 @@ public class EdgeAnnotationReaderTest {
                 equalTo("eager"));
     }
 
+    @Test
+    void testAnnotatedEdgeOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
+        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
+        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader.getOptions(null, testInstance);
+        assertThat(edgeOptions, notNullValue());
+    }
 }

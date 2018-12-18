@@ -16,12 +16,15 @@
  */
 package io.github.bonigarcia.test.annotations;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -53,5 +56,12 @@ public class SafariAnnotationReaderTest {
                 .getOptions(parameter, testInstance);
 
         assertFalse(safariOptions.getUseTechnologyPreview());
+    }
+
+    @Test
+    void testAnnotatedSafariOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
+        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
+        SafariOptions safariOptions = (SafariOptions) annotationsReader.getOptions(null, testInstance);
+        assertThat(safariOptions, notNullValue());
     }
 }

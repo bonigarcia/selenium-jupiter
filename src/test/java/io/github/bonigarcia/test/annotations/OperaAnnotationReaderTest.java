@@ -18,9 +18,11 @@ package io.github.bonigarcia.test.annotations;
 
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Parameter;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -56,4 +58,10 @@ public class OperaAnnotationReaderTest {
                 containsString("binary"));
     }
 
+    @Test
+    void testAnnotatedOperaOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
+        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
+        OperaOptions operaOptions = (OperaOptions) annotationsReader.getOptions(null, testInstance);
+        assertThat(operaOptions, notNullValue());
+    }
 }

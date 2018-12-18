@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.test.annotations;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -66,4 +69,10 @@ public class FirefoxAnnotationReaderTest {
         assertTrue(options.get("prefs").get("media.navigator.streams.fake"));
     }
 
+    @Test
+    void testAnnotatedFirefoxOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
+        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
+        FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader.getOptions(null, testInstance);
+        assertThat(firefoxOptions, notNullValue());
+    }
 }

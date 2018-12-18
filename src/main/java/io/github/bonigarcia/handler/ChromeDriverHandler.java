@@ -96,10 +96,10 @@ public class ChromeDriverHandler extends DriverHandler {
             }
 
             // @Options
-            Object optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class);
+            ChromeOptions optionsFromAnnotatedField = annotationsReader
+                    .getOptionsFromAnnotatedField(testInstance, Options.class, ChromeOptions.class);
             if (optionsFromAnnotatedField != null) {
-                chromeOptions = ((ChromeOptions) optionsFromAnnotatedField)
+                chromeOptions = optionsFromAnnotatedField
                         .merge(chromeOptions);
             }
         }
