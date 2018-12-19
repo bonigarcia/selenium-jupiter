@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,50 +51,51 @@ public class DockerBrowserConfig {
     BrowserConfig firefox;
     BrowserConfig operablink;
 
-    public DockerBrowserConfig() {
+    public DockerBrowserConfig(List<String> envs) {
 
         if (config().isBrowserListFromDockerHub()) {
             try {
-                initBrowserConfigFromDockerHub();
+                initBrowserConfigFromDockerHub(envs);
             } catch (Exception e) {
                 log.warn(
                         "There was an error in browser initilization from Docker hub"
                                 + " ... using properties values instead");
-                initBrowserConfigFromProperties();
+                initBrowserConfigFromProperties(envs);
             }
         } else {
-            initBrowserConfigFromProperties();
+            initBrowserConfigFromProperties(envs);
         }
 
         chrome.addBrowser("beta", new Browser(config().getChromeBetaImage(),
-                config().getChromeBetaPath()));
+                config().getChromeBetaPath(), envs));
         chrome.addBrowser("unstable",
                 new Browser(config().getChromeUnstableImage(),
-                        config().getChromeUnstablePath()));
+                        config().getChromeUnstablePath(), envs));
 
         firefox.addBrowser("beta", new Browser(config().getFirefoxBetaImage(),
-                config().getFirefoxBetaPath()));
+                config().getFirefoxBetaPath(), envs));
         firefox.addBrowser("unstable",
                 new Browser(config().getFirefoxUnstableImage(),
-                        config().getFirefoxUnstablePath()));
+                        config().getFirefoxUnstablePath(), envs));
     }
 
-    public void initBrowserConfigFromDockerHub() throws IOException {
+    public void initBrowserConfigFromDockerHub(List<String> envs)
+            throws IOException {
         DockerHubService dockerHubService = new DockerHubService();
         List<DockerHubTag> listTags = dockerHubService.listTags();
-        chrome = getBrowserConfigFromDockerHub(CHROME, listTags);
-        firefox = getBrowserConfigFromDockerHub(FIREFOX, listTags);
-        operablink = getBrowserConfigFromDockerHub(OPERA, listTags);
+        chrome = getBrowserConfigFromDockerHub(CHROME, listTags, envs);
+        firefox = getBrowserConfigFromDockerHub(FIREFOX, listTags, envs);
+        operablink = getBrowserConfigFromDockerHub(OPERA, listTags, envs);
     }
 
-    public void initBrowserConfigFromProperties() {
-        chrome = getBrowserConfigFromProperties(CHROME);
-        firefox = getBrowserConfigFromProperties(FIREFOX);
-        operablink = getBrowserConfigFromProperties(OPERA);
+    public void initBrowserConfigFromProperties(List<String> envs) {
+        chrome = getBrowserConfigFromProperties(CHROME, envs);
+        firefox = getBrowserConfigFromProperties(FIREFOX, envs);
+        operablink = getBrowserConfigFromProperties(OPERA, envs);
     }
 
     public BrowserConfig getBrowserConfigFromDockerHub(BrowserType browserType,
-            List<DockerHubTag> dockerHubTags) {
+            List<DockerHubTag> dockerHubTags, List<String> envs) {
         List<String> browserList = null;
         String latestVersion = null;
         browserType.init();
@@ -132,14 +134,14 @@ public class DockerBrowserConfig {
         for (String version : browserList) {
             browserConfig.addBrowser(version,
                     new Browser(format(browserType.getDockerImage(), version),
-                            browserType.getPath()));
+                            browserType.getPath(), envs));
         }
 
         return browserConfig;
     }
 
     private BrowserConfig getBrowserConfigFromProperties(
-            BrowserType browserType) {
+            BrowserType browserType, List<String> envs) {
         String firstVersion = null;
         String latestVersion = null;
         browserType.init();
@@ -164,7 +166,7 @@ public class DockerBrowserConfig {
         do {
             browserConfig.addBrowser(version,
                     new Browser(format(browserType.getDockerImage(), version),
-                            browserType.getPath()));
+                            browserType.getPath(), envs));
             if (version.equals(latestVersion)) {
                 break;
             }
@@ -214,10 +216,12 @@ public class DockerBrowserConfig {
         String port = config().getSelenoidPort();
         String path;
         Tmpfs tmpfs = new Tmpfs();
+        List<String> env = new ArrayList<>();
 
-        public Browser(String image, String path) {
+        public Browser(String image, String path, List<String> envs) {
             this.image = image;
             this.path = path;
+            this.env = envs;
         }
 
         public String getImage() {

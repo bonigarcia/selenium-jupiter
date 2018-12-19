@@ -16,11 +16,14 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -42,7 +45,7 @@ public class SelenoidConfig {
     DockerBrowserConfig browsers;
 
     public SelenoidConfig() {
-        browsers = new DockerBrowserConfig();
+        browsers = new DockerBrowserConfig(getDockerEnvs());
     }
 
     public String getBrowsersJsonAsString() {
@@ -92,6 +95,13 @@ public class SelenoidConfig {
         return browsers.getBrowserConfig(browser).getDefaultBrowser();
     }
 
+    public List<String> getDockerEnvs() {
+        List<String> envs = new ArrayList<>();
+        envs.add("DOCKER_API_VERSION=" + config().getDockerApiVersion());
+        envs.add("TZ=" + config().getDockerTimeZone());
+        return envs;
+    }
+
     private String getPreviousVersion(int beforeVersion, String latestVersion) {
         int iLatestVersion = latestVersion.indexOf('_') + 1;
         int jLatestVersion = latestVersion.indexOf('.');
@@ -102,4 +112,5 @@ public class SelenoidConfig {
         }
         return String.valueOf(latestVersionInt - beforeVersion) + ".0";
     }
+
 }
