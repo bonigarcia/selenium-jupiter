@@ -127,28 +127,44 @@ public class AnnotationsReader {
             Class<Options> annotationClass) throws IllegalAccessException {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
-                annotationClass);
+                annotationClass, null);
         if (annotatedField.isPresent()) {
             out = annotatedField.get();
         }
         return out;
     }
 
+    public <T extends Capabilities> T getOptionsFromAnnotatedField(Optional<Object> testInstance,
+            Class<Options> annotationClass, Class<T> capabilitiesClass) throws IllegalAccessException {
+        if (capabilitiesClass == null) {
+            throw new SeleniumJupiterException("The parameter capabilitiesClass must not be null.");
+        }
+        return seekFieldAnnotatedWith(testInstance, annotationClass, capabilitiesClass).orElse(null);
+    }
+
     public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
             Class<? extends Annotation> annotation)
             throws IllegalAccessException {
-        Optional<Object> out = empty();
+        return seekFieldAnnotatedWith(testInstance, annotation, null);
+    }
+
+    private static <T> Optional<T> seekFieldAnnotatedWith(
+            Optional<Object> testInstance,
+            Class<? extends Annotation> annotation,
+            Class<T> annotatedType)
+            throws IllegalAccessException {
+        Optional<T> out = empty();
         if (testInstance.isPresent()) {
             Object object = testInstance.get();
             Class<? extends Object> clazz = object.getClass();
-            out = getField(annotation, clazz, object);
+            out = getField(annotation, annotatedType, clazz, object);
             if (!out.isPresent()) {
                 // If annotation not present in class, look for it in the
                 // parent(s)
                 Class<?> superclass;
                 while ((superclass = clazz.getSuperclass()) != Object.class) {
-                    out = getField(annotation, superclass, object);
+                    out = getField(annotation, annotatedType, superclass, object);
                     if (out.isPresent()) {
                         break;
                     }
@@ -159,14 +175,18 @@ public class AnnotationsReader {
         return out;
     }
 
-    private Optional<Object> getField(Class<? extends Annotation> annotation,
-            Class<? extends Object> clazz, Object object)
+    @SuppressWarnings("unchecked")
+    private static <T> Optional<T> getField(Class<? extends Annotation> annotation,
+            Class<T> annotatedType, Class<? extends Object> clazz, Object object)
             throws IllegalAccessException {
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
-            if (field.isAnnotationPresent(annotation)) {
+            if (field.isAnnotationPresent(annotation) && (annotatedType == null || annotatedType == field.getType())) {
                 field.setAccessible(true);
-                return of(field.get(object));
+                if (annotatedType != null) {
+                    return of(annotatedType.cast(field.get(object)));
+                }
+                return (Optional<T>) of(field.get(object));
             }
         }
         return empty();
