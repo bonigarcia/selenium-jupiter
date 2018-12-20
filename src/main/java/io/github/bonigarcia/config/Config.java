@@ -154,6 +154,8 @@ public class Config {
             String.class);
     ConfigKey<String> dockerTimeZone = new ConfigKey<>(
             "sel.jup.docker.timezone", String.class);
+    ConfigKey<String> dockerLang = new ConfigKey<>("sel.jup.docker.lang",
+            String.class);
 
     ConfigKey<String> androidDefaultVersion = new ConfigKey<>(
             "sel.jup.android.default.version", String.class);
@@ -714,6 +716,14 @@ public class Config {
 
     public void setDockerTimeZone(String value) {
         this.dockerTimeZone.setValue(value);
+    }
+
+    public String getDockerLang() {
+        return resolve(dockerLang);
+    }
+
+    public void setDockerLang(String value) {
+        this.dockerLang.setValue(value);
     }
 
     public String getAndroidDefaultVersion() {
