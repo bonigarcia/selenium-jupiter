@@ -61,7 +61,8 @@ public class SafariDriverHandler extends DriverHandler {
             Optional<Object> testInstance) throws IllegalAccessException {
         SafariOptions safariOptions = new SafariOptions();
         SafariOptions optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class, SafariOptions.class);
+                .getOptionsFromAnnotatedField(testInstance, Options.class,
+                        SafariOptions.class);
         if (optionsFromAnnotatedField != null) {
             safariOptions = optionsFromAnnotatedField;
         }

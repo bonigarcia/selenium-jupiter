@@ -59,9 +59,12 @@ public class OperaAnnotationReaderTest {
     }
 
     @Test
-    void testAnnotatedOperaOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
-        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
-        OperaOptions operaOptions = (OperaOptions) annotationsReader.getOptions(null, testInstance);
+    void testAnnotatedOperaOptionsIsSelectedOverOtherAnnotatedOptions()
+            throws Exception {
+        Optional<Object> testInstance = Optional
+                .of(new ClassWithMultipleOptions());
+        OperaOptions operaOptions = (OperaOptions) annotationsReader
+                .getOptions(null, testInstance);
         assertThat(operaOptions, notNullValue());
     }
 }

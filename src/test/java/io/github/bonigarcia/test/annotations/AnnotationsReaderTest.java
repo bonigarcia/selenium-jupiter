@@ -16,9 +16,9 @@
  */
 package io.github.bonigarcia.test.annotations;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,38 +49,43 @@ public class AnnotationsReaderTest {
     @Test
     void testThrowsExceptionWithNullCapabilitiesClass() throws Exception {
         assertThrows(SeleniumJupiterException.class, () -> {
-            annotationsReader.getOptionsFromAnnotatedField(testInstance, Options.class, null);
+            annotationsReader.getOptionsFromAnnotatedField(testInstance,
+                    Options.class, null);
         }, "The parameter capabilitiesClass must not be null.");
     }
 
     @Test
     void testGetsNullOptionsIfEmptyTestInstance() throws Exception {
-        Object options = annotationsReader.getOptionsFromAnnotatedField(Optional.empty(), Options.class);
+        Object options = annotationsReader
+                .getOptionsFromAnnotatedField(Optional.empty(), Options.class);
         assertThat(options, nullValue());
     }
 
     @Test
-    void testGetsFirstDeclaredOptionsFromAnnotatedFieldWithoutTypeSpecied() throws Exception {
-        Object options = annotationsReader.getOptionsFromAnnotatedField(testInstance, Options.class);
+    void testGetsFirstDeclaredOptionsFromAnnotatedFieldWithoutTypeSpecied()
+            throws Exception {
+        Object options = annotationsReader
+                .getOptionsFromAnnotatedField(testInstance, Options.class);
         assertThat(options, instanceOf(Integer.class));
     }
 
     @Test
-    void testGetsNullOptionsFromAnnotatedFieldIfSpeciedTypeNotFound() throws Exception {
-        Capabilities options = annotationsReader.getOptionsFromAnnotatedField(testInstance, Options.class,
-                Capabilities.class);
+    void testGetsNullOptionsFromAnnotatedFieldIfSpeciedTypeNotFound()
+            throws Exception {
+        Capabilities options = annotationsReader.getOptionsFromAnnotatedField(
+                testInstance, Options.class, Capabilities.class);
         assertThat(options, nullValue());
     }
 
     @Test
     void testGetsOptionsFromAnnotatedFieldWithSpeciedType() throws Exception {
-        CapabilitiesA optionsA = annotationsReader.getOptionsFromAnnotatedField(testInstance, Options.class,
-                CapabilitiesA.class);
+        CapabilitiesA optionsA = annotationsReader.getOptionsFromAnnotatedField(
+                testInstance, Options.class, CapabilitiesA.class);
         assertThat(optionsA, notNullValue());
         assertThat(optionsA.getId(), equalTo("A"));
 
-        CapabilitiesB optionsB = annotationsReader.getOptionsFromAnnotatedField(testInstance, Options.class,
-                CapabilitiesB.class);
+        CapabilitiesB optionsB = annotationsReader.getOptionsFromAnnotatedField(
+                testInstance, Options.class, CapabilitiesB.class);
         assertThat(optionsB, notNullValue());
         assertThat(optionsB.getId(), equalTo("B"));
     }

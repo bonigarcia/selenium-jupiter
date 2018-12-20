@@ -59,9 +59,12 @@ public class SafariAnnotationReaderTest {
     }
 
     @Test
-    void testAnnotatedSafariOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
-        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
-        SafariOptions safariOptions = (SafariOptions) annotationsReader.getOptions(null, testInstance);
+    void testAnnotatedSafariOptionsIsSelectedOverOtherAnnotatedOptions()
+            throws Exception {
+        Optional<Object> testInstance = Optional
+                .of(new ClassWithMultipleOptions());
+        SafariOptions safariOptions = (SafariOptions) annotationsReader
+                .getOptions(null, testInstance);
         assertThat(safariOptions, notNullValue());
     }
 }

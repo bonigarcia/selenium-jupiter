@@ -95,10 +95,10 @@ public class OperaDriverHandler extends DriverHandler {
 
             // @Options
             OperaOptions optionsFromAnnotatedField = annotationsReader
-                    .getOptionsFromAnnotatedField(testInstance, Options.class, OperaOptions.class);
+                    .getOptionsFromAnnotatedField(testInstance, Options.class,
+                            OperaOptions.class);
             if (optionsFromAnnotatedField != null) {
-                operaOptions = optionsFromAnnotatedField
-                        .merge(operaOptions);
+                operaOptions = optionsFromAnnotatedField.merge(operaOptions);
             }
         }
 

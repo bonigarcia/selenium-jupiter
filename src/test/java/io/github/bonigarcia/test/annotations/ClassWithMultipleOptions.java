@@ -33,7 +33,7 @@ public class ClassWithMultipleOptions {
 
     @Options
     FirefoxOptions firefoxOptions = new FirefoxOptions();
-    
+
     @Options
     OperaOptions operaOptions = new OperaOptions();
 

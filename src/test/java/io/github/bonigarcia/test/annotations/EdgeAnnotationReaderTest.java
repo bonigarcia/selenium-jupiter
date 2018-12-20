@@ -59,9 +59,12 @@ public class EdgeAnnotationReaderTest {
     }
 
     @Test
-    void testAnnotatedEdgeOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
-        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
-        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader.getOptions(null, testInstance);
+    void testAnnotatedEdgeOptionsIsSelectedOverOtherAnnotatedOptions()
+            throws Exception {
+        Optional<Object> testInstance = Optional
+                .of(new ClassWithMultipleOptions());
+        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
+                .getOptions(null, testInstance);
         assertThat(edgeOptions, notNullValue());
     }
 }

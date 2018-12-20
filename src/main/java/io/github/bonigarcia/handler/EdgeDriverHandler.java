@@ -63,7 +63,8 @@ public class EdgeDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         EdgeOptions edgeOptions = new EdgeOptions();
         EdgeOptions optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class, EdgeOptions.class);
+                .getOptionsFromAnnotatedField(testInstance, Options.class,
+                        EdgeOptions.class);
         if (optionsFromAnnotatedField != null) {
             edgeOptions = optionsFromAnnotatedField;
         }

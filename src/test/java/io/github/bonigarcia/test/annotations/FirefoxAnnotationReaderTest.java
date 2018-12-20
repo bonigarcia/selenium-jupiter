@@ -70,9 +70,12 @@ public class FirefoxAnnotationReaderTest {
     }
 
     @Test
-    void testAnnotatedFirefoxOptionsIsSelectedOverOtherAnnotatedOptions() throws Exception {
-        Optional<Object> testInstance = Optional.of(new ClassWithMultipleOptions());
-        FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader.getOptions(null, testInstance);
+    void testAnnotatedFirefoxOptionsIsSelectedOverOtherAnnotatedOptions()
+            throws Exception {
+        Optional<Object> testInstance = Optional
+                .of(new ClassWithMultipleOptions());
+        FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader
+                .getOptions(null, testInstance);
         assertThat(firefoxOptions, notNullValue());
     }
 }
