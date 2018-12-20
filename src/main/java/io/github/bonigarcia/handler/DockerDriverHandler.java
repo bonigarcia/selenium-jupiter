@@ -24,6 +24,7 @@ import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.getenv;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -35,6 +36,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.collections.CollectionUtils.disjunction;
 import static org.apache.commons.lang.exception.ExceptionUtils.getRootCause;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -613,14 +615,11 @@ public class DockerDriverHandler {
             List<String> envs = new ArrayList<>();
             envs.add("DEVICE=" + deviceName);
             envs.add("APPIUM=True");
-            // proxy
-            List<String> proxyEnvVars = Arrays.asList("HTTP_PROXY",
-                    "HTTPS_PROXY", "NO_PROXY", "http_proxy", "https_proxy",
-                    "no_proxy");
-            proxyEnvVars.stream()
-                    .filter(name -> StringUtils.isNotBlank(System.getenv(name)))
-                    .forEach(
-                            name -> envs.add(name + "=" + System.getenv(name)));
+            List<String> proxyEnvVars = asList("HTTP_PROXY", "HTTPS_PROXY",
+                    "NO_PROXY", "http_proxy", "https_proxy", "no_proxy");
+            proxyEnvVars.stream().filter(envName -> isNotBlank(getenv(envName)))
+                    .forEach(envName -> envs
+                            .add(envName + "=" + getenv(envName)));
             if (recording) {
                 envs.add("AUTO_RECORD=True");
             }

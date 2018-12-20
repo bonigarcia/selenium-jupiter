@@ -43,7 +43,7 @@ public class DockerHubService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    final Long PAGE_SIZE = 1024L;
+    static final Long PAGE_SIZE = 1024L;
 
     DockerHubApi dockerHubApi;
 
@@ -60,7 +60,7 @@ public class DockerHubService {
     public List<DockerHubTag> listTags() throws IOException {
         log.info("Getting browser image list from Docker Hub");
         long page = 0L;
-        List<DockerHubTag> results = new ArrayList<DockerHubTag>();
+        List<DockerHubTag> results = new ArrayList<>();
         Response<DockerHubTags> listTagsResponse;
 
         do {
