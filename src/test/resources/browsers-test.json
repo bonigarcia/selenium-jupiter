@@ -8,7 +8,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "49.0": {
             "image": "selenoid/vnc:chrome_49.0",
@@ -16,7 +21,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "50.0": {
             "image": "selenoid/vnc:chrome_50.0",
@@ -24,7 +34,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "51.0": {
             "image": "selenoid/vnc:chrome_51.0",
@@ -32,7 +47,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "52.0": {
             "image": "selenoid/vnc:chrome_52.0",
@@ -40,7 +60,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "53.0": {
             "image": "selenoid/vnc:chrome_53.0",
@@ -48,7 +73,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "54.0": {
             "image": "selenoid/vnc:chrome_54.0",
@@ -56,7 +86,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "55.0": {
             "image": "selenoid/vnc:chrome_55.0",
@@ -64,7 +99,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "56.0": {
             "image": "selenoid/vnc:chrome_56.0",
@@ -72,7 +112,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "57.0": {
             "image": "selenoid/vnc:chrome_57.0",
@@ -80,7 +125,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "58.0": {
             "image": "selenoid/vnc:chrome_58.0",
@@ -88,7 +138,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "59.0": {
             "image": "selenoid/vnc:chrome_59.0",
@@ -96,7 +151,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "60.0": {
             "image": "selenoid/vnc:chrome_60.0",
@@ -104,7 +164,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "61.0": {
             "image": "selenoid/vnc:chrome_61.0",
@@ -112,7 +177,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "62.0": {
             "image": "selenoid/vnc:chrome_62.0",
@@ -120,7 +190,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "63.0": {
             "image": "selenoid/vnc:chrome_63.0",
@@ -128,7 +203,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "64.0": {
             "image": "selenoid/vnc:chrome_64.0",
@@ -136,7 +216,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "65.0": {
             "image": "selenoid/vnc:chrome_65.0",
@@ -144,7 +229,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "beta": {
             "image": "elastestbrowsers/chrome:beta",
@@ -152,7 +242,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "unstable": {
             "image": "elastestbrowsers/chrome:unstable",
@@ -160,7 +255,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          }
       }
    },
@@ -173,7 +273,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "4.0": {
             "image": "selenoid/vnc:firefox_4.0",
@@ -181,7 +286,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "5.0": {
             "image": "selenoid/vnc:firefox_5.0",
@@ -189,7 +299,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "6.0": {
             "image": "selenoid/vnc:firefox_6.0",
@@ -197,7 +312,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "7.0": {
             "image": "selenoid/vnc:firefox_7.0",
@@ -205,7 +325,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "8.0": {
             "image": "selenoid/vnc:firefox_8.0",
@@ -213,7 +338,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "9.0": {
             "image": "selenoid/vnc:firefox_9.0",
@@ -221,7 +351,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "10.0": {
             "image": "selenoid/vnc:firefox_10.0",
@@ -229,7 +364,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "11.0": {
             "image": "selenoid/vnc:firefox_11.0",
@@ -237,7 +377,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "12.0": {
             "image": "selenoid/vnc:firefox_12.0",
@@ -245,7 +390,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "13.0": {
             "image": "selenoid/vnc:firefox_13.0",
@@ -253,7 +403,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "14.0": {
             "image": "selenoid/vnc:firefox_14.0",
@@ -261,7 +416,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "15.0": {
             "image": "selenoid/vnc:firefox_15.0",
@@ -269,7 +429,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "16.0": {
             "image": "selenoid/vnc:firefox_16.0",
@@ -277,7 +442,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "17.0": {
             "image": "selenoid/vnc:firefox_17.0",
@@ -285,7 +455,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "18.0": {
             "image": "selenoid/vnc:firefox_18.0",
@@ -293,7 +468,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "19.0": {
             "image": "selenoid/vnc:firefox_19.0",
@@ -301,7 +481,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "20.0": {
             "image": "selenoid/vnc:firefox_20.0",
@@ -309,7 +494,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "21.0": {
             "image": "selenoid/vnc:firefox_21.0",
@@ -317,7 +507,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "22.0": {
             "image": "selenoid/vnc:firefox_22.0",
@@ -325,7 +520,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "23.0": {
             "image": "selenoid/vnc:firefox_23.0",
@@ -333,7 +533,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "24.0": {
             "image": "selenoid/vnc:firefox_24.0",
@@ -341,7 +546,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "25.0": {
             "image": "selenoid/vnc:firefox_25.0",
@@ -349,7 +559,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "26.0": {
             "image": "selenoid/vnc:firefox_26.0",
@@ -357,7 +572,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "27.0": {
             "image": "selenoid/vnc:firefox_27.0",
@@ -365,7 +585,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "28.0": {
             "image": "selenoid/vnc:firefox_28.0",
@@ -373,7 +598,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "29.0": {
             "image": "selenoid/vnc:firefox_29.0",
@@ -381,7 +611,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "30.0": {
             "image": "selenoid/vnc:firefox_30.0",
@@ -389,7 +624,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "31.0": {
             "image": "selenoid/vnc:firefox_31.0",
@@ -397,7 +637,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "32.0": {
             "image": "selenoid/vnc:firefox_32.0",
@@ -405,7 +650,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "33.0": {
             "image": "selenoid/vnc:firefox_33.0",
@@ -413,7 +663,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "34.0": {
             "image": "selenoid/vnc:firefox_34.0",
@@ -421,7 +676,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "35.0": {
             "image": "selenoid/vnc:firefox_35.0",
@@ -429,7 +689,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "36.0": {
             "image": "selenoid/vnc:firefox_36.0",
@@ -437,7 +702,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "37.0": {
             "image": "selenoid/vnc:firefox_37.0",
@@ -445,7 +715,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "38.0": {
             "image": "selenoid/vnc:firefox_38.0",
@@ -453,7 +728,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "39.0": {
             "image": "selenoid/vnc:firefox_39.0",
@@ -461,7 +741,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "40.0": {
             "image": "selenoid/vnc:firefox_40.0",
@@ -469,7 +754,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "41.0": {
             "image": "selenoid/vnc:firefox_41.0",
@@ -477,7 +767,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "42.0": {
             "image": "selenoid/vnc:firefox_42.0",
@@ -485,7 +780,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "43.0": {
             "image": "selenoid/vnc:firefox_43.0",
@@ -493,7 +793,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "44.0": {
             "image": "selenoid/vnc:firefox_44.0",
@@ -501,7 +806,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "45.0": {
             "image": "selenoid/vnc:firefox_45.0",
@@ -509,7 +819,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "46.0": {
             "image": "selenoid/vnc:firefox_46.0",
@@ -517,7 +832,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "47.0": {
             "image": "selenoid/vnc:firefox_47.0",
@@ -525,7 +845,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "48.0": {
             "image": "selenoid/vnc:firefox_48.0",
@@ -533,7 +858,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "49.0": {
             "image": "selenoid/vnc:firefox_49.0",
@@ -541,7 +871,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "50.0": {
             "image": "selenoid/vnc:firefox_50.0",
@@ -549,7 +884,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "51.0": {
             "image": "selenoid/vnc:firefox_51.0",
@@ -557,7 +897,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "52.0": {
             "image": "selenoid/vnc:firefox_52.0",
@@ -565,7 +910,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "53.0": {
             "image": "selenoid/vnc:firefox_53.0",
@@ -573,7 +923,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "54.0": {
             "image": "selenoid/vnc:firefox_54.0",
@@ -581,7 +936,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "55.0": {
             "image": "selenoid/vnc:firefox_55.0",
@@ -589,7 +949,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "56.0": {
             "image": "selenoid/vnc:firefox_56.0",
@@ -597,7 +962,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "57.0": {
             "image": "selenoid/vnc:firefox_57.0",
@@ -605,7 +975,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "58.0": {
             "image": "selenoid/vnc:firefox_58.0",
@@ -613,7 +988,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "beta": {
             "image": "elastestbrowsers/firefox:beta",
@@ -621,7 +1001,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "unstable": {
             "image": "elastestbrowsers/firefox:nightly",
@@ -629,7 +1014,12 @@
             "path": "/wd/hub",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          }
       }
    },
@@ -642,7 +1032,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "34.0": {
             "image": "selenoid/vnc:opera_34.0",
@@ -650,7 +1045,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "35.0": {
             "image": "selenoid/vnc:opera_35.0",
@@ -658,7 +1058,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "36.0": {
             "image": "selenoid/vnc:opera_36.0",
@@ -666,7 +1071,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "37.0": {
             "image": "selenoid/vnc:opera_37.0",
@@ -674,7 +1084,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "38.0": {
             "image": "selenoid/vnc:opera_38.0",
@@ -682,7 +1097,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "39.0": {
             "image": "selenoid/vnc:opera_39.0",
@@ -690,7 +1110,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "40.0": {
             "image": "selenoid/vnc:opera_40.0",
@@ -698,7 +1123,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "41.0": {
             "image": "selenoid/vnc:opera_41.0",
@@ -706,7 +1136,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "42.0": {
             "image": "selenoid/vnc:opera_42.0",
@@ -714,7 +1149,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "43.0": {
             "image": "selenoid/vnc:opera_43.0",
@@ -722,7 +1162,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "44.0": {
             "image": "selenoid/vnc:opera_44.0",
@@ -730,7 +1175,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "45.0": {
             "image": "selenoid/vnc:opera_45.0",
@@ -738,7 +1188,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "46.0": {
             "image": "selenoid/vnc:opera_46.0",
@@ -746,7 +1201,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "47.0": {
             "image": "selenoid/vnc:opera_47.0",
@@ -754,7 +1214,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "48.0": {
             "image": "selenoid/vnc:opera_48.0",
@@ -762,7 +1227,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "49.0": {
             "image": "selenoid/vnc:opera_49.0",
@@ -770,7 +1240,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "50.0": {
             "image": "selenoid/vnc:opera_50.0",
@@ -778,7 +1253,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          },
          "51.0": {
             "image": "selenoid/vnc:opera_51.0",
@@ -786,7 +1266,12 @@
             "path": "/",
             "tmpfs": {
                "/tmp": "size=128m"
-            }
+            },
+            "env": [
+               "DOCKER_API_VERSION=1.35",
+               "TZ=Europe/Madrid",
+               "LANG=en"
+            ]
          }
       }
    }
