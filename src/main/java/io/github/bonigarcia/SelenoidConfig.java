@@ -99,6 +99,9 @@ public class SelenoidConfig {
         List<String> envs = new ArrayList<>();
         envs.add("DOCKER_API_VERSION=" + config().getDockerApiVersion());
         envs.add("TZ=" + config().getDockerTimeZone());
+        if (config().isVnc()) {
+            envs.add("ENABLE_WINDOW_MANAGER=true");
+        }
         return envs;
     }
 
