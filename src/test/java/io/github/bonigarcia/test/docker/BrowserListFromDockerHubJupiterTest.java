@@ -1,4 +1,6 @@
 /*
+ * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +33,7 @@ public class BrowserListFromDockerHubJupiterTest {
         List<?> list = service.listTags();
         assertThat(list, notNullValue());
         assertThat(list.isEmpty(), is(false));
-        assertThat(list.size()>100, is(true));
+        assertThat(list.size() > 100, is(true));
     }
 
 }

@@ -17,7 +17,8 @@
 package io.github.bonigarcia;
 
 import retrofit2.Call;
-import retrofit2.http.*;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Docker Hub API.

@@ -16,21 +16,22 @@
  */
 package io.github.bonigarcia;
 
-import io.github.bonigarcia.DockerHubTags.DockerHubTag;
-import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import static io.github.bonigarcia.SeleniumJupiter.config;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.slf4j.LoggerFactory.getLogger;
+import org.slf4j.Logger;
+
+import io.github.bonigarcia.DockerHubTags.DockerHubTag;
+import okhttp3.OkHttpClient;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Docker Hub service.
@@ -41,6 +42,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class DockerHubService {
 
     final Logger log = getLogger(lookup().lookupClass());
+
+    final Long PAGE_SIZE = 1024L;
 
     DockerHubApi dockerHubApi;
 
@@ -56,11 +59,11 @@ public class DockerHubService {
 
     public List<DockerHubTag> listTags() throws IOException {
         log.info("Getting browser image list from Docker Hub");
-        Long page = 0L;
-        final Long PAGE_SIZE = 1024L;
+        long page = 0L;
         List<DockerHubTag> results = new ArrayList<DockerHubTag>();
         Response<DockerHubTags> listTagsResponse;
-        for (; ; ) {
+
+        do {
             listTagsResponse = (++page > 1)
                     ? dockerHubApi.listTagsNext(page, PAGE_SIZE).execute()
                     : dockerHubApi.listTags(PAGE_SIZE).execute();
@@ -70,9 +73,9 @@ public class DockerHubService {
                         listTagsResponse.errorBody().string());
             }
             results.addAll(listTagsResponse.body().getResults());
-            if (null == listTagsResponse.body().next)
-                break;
-        }
+
+        } while (listTagsResponse.body().next != null);
+
         return results;
     }
 
