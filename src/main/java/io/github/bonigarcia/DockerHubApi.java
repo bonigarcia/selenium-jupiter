@@ -17,7 +17,7 @@
 package io.github.bonigarcia;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
+import retrofit2.http.*;
 
 /**
  * Docker Hub API.
@@ -27,7 +27,9 @@ import retrofit2.http.GET;
  */
 public interface DockerHubApi {
 
-    @GET("/v2/repositories/selenoid/vnc/tags/?page_size=1024")
-    Call<DockerHubTags> listTags();
+    @GET("/v2/repositories/selenoid/vnc/tags")
+    Call<DockerHubTags> listTags(@Query("page_size") Long pageSize);
 
+    @GET("/v2/repositories/selenoid/vnc/tags")
+    Call<DockerHubTags> listTagsNext(@Query("page") Long page, @Query("page_size") Long pageSize);
 }
