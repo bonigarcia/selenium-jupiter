@@ -19,8 +19,6 @@ package io.github.bonigarcia.test.advance;
 // tag::snippet-in-doc[]
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
-import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,22 +26,20 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.DriverCapabilities;
+import io.github.bonigarcia.Options;
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class ChromeWithGlobalCapabilitiesJupiterTest {
 
-    @DriverCapabilities
-    DesiredCapabilities capabilities = chrome();
+    @Options
+    ChromeOptions options = new ChromeOptions();
     {
-        Map<String, String> mobileEmulation = new HashMap<String, String>();
+        Map<String, String> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceName", "Nexus 5");
-        Map<String, Object> chromeOptions = new HashMap<String, Object>();
-        chromeOptions.put("mobileEmulation", mobileEmulation);
-        capabilities.setCapability(CAPABILITY, chromeOptions);
+        options.setExperimentalOption("mobileEmulation", mobileEmulation);
     }
 
     @Test
