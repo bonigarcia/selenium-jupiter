@@ -38,6 +38,7 @@ import static org.apache.commons.collections.CollectionUtils.disjunction;
 import static org.apache.commons.lang.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
+import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -246,7 +247,7 @@ public class DockerDriverHandler {
 
     private WebDriver getDriverForAndroid(BrowserType browser, String version,
             String deviceName)
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException, IOException, IllegalAccessException {
         browser.init();
         if (recording) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
@@ -259,9 +260,7 @@ public class DockerDriverHandler {
                         : config().getAndroidDeviceName();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
 
-        DesiredCapabilities capabilities = browser.getCapabilities();
-        capabilities.setCapability("browserName", browserName);
-        capabilities.setCapability("deviceName", deviceNameCapability);
+        DesiredCapabilities capabilities = getCapabilitiesForAndroid(browser, deviceNameCapability);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
@@ -360,6 +359,26 @@ public class DockerDriverHandler {
             options.merge(optionalCapabilities.get());
         }
         capabilities.setCapability(browser.getOptionsKey(), options);
+        log.trace("Using {}", capabilities);
+        return capabilities;
+    }
+
+    private DesiredCapabilities getCapabilitiesForAndroid(BrowserType browser,
+                                                String deviceNameCapability) throws IllegalAccessException, IOException {
+        DesiredCapabilities capabilities = browser.getCapabilities();
+        capabilities.setCapability("browserName", browserName);
+        capabilities.setCapability("deviceName", deviceNameCapability);
+
+        Optional<Capabilities> optionalCapabilities = annotationsReader != null
+                ? annotationsReader.getCapabilities(parameter, testInstance)
+                : Optional.of(new DesiredCapabilities());
+        MutableCapabilities options = browser.getDriverHandler()
+                .getOptions(parameter, testInstance);
+
+        if (optionalCapabilities.isPresent()) {
+            options.merge(optionalCapabilities.get());
+        }
+        capabilities.setCapability(CAPABILITY, options);
         log.trace("Using {}", capabilities);
         return capabilities;
     }
