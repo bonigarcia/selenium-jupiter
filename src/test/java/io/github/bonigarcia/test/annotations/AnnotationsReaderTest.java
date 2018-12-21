@@ -137,7 +137,7 @@ public class AnnotationsReaderTest {
         }
 
         @Override
-        public Map<String, ?> asMap() {
+        public Map<String, Object> asMap() {
             return capabilities;
         }
 
