@@ -282,7 +282,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         webDriverList.get(i).quit();
                     }
 
-                } else {
+                } else if (driverHandler.getName() != null) {
                     WebDriver webDriver = (WebDriver) object;
                     screenshotManager.makeScreenshot(webDriver,
                             driverHandler.getName());

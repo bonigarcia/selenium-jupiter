@@ -246,8 +246,8 @@ public class DockerDriverHandler {
     }
 
     private WebDriver getDriverForAndroid(BrowserType browser, String version,
-            String deviceName)
-            throws DockerException, InterruptedException, IOException, IllegalAccessException {
+            String deviceName) throws DockerException, InterruptedException,
+            IOException, IllegalAccessException {
         browser.init();
         if (recording) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
@@ -260,7 +260,8 @@ public class DockerDriverHandler {
                         : config().getAndroidDeviceName();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
 
-        DesiredCapabilities capabilities = getCapabilitiesForAndroid(browser, deviceNameCapability);
+        DesiredCapabilities capabilities = getCapabilitiesForAndroid(browser,
+                deviceNameCapability);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
@@ -313,8 +314,8 @@ public class DockerDriverHandler {
             WebDriver webdriver) {
         if (parameter != null) {
             String parameterName = parameter.getName();
-            name = parameterName + "_" + browser + "_" + imageVersion + "_"
-                    + ((RemoteWebDriver) webdriver).getSessionId();
+            name = parameterName + "_" + parameter.getType().getSimpleName()
+                    + "_" + ((RemoteWebDriver) webdriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
                 name = testMethod.get().getName() + "_" + name;
@@ -364,7 +365,8 @@ public class DockerDriverHandler {
     }
 
     private DesiredCapabilities getCapabilitiesForAndroid(BrowserType browser,
-                                                String deviceNameCapability) throws IllegalAccessException, IOException {
+            String deviceNameCapability)
+            throws IllegalAccessException, IOException {
         DesiredCapabilities capabilities = browser.getCapabilities();
         capabilities.setCapability("browserName", browserName);
         capabilities.setCapability("deviceName", deviceNameCapability);
