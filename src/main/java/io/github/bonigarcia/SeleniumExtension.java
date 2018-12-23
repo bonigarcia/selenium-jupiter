@@ -24,6 +24,7 @@ import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -33,11 +34,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -90,11 +92,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     static final String CLASSPATH_PREFIX = "classpath:";
 
-    private List<Class<?>> typeList = new ArrayList<>();
-    private List<DriverHandler> driverHandlerList = new ArrayList<>();
-    private Map<String, Class<?>> handlerMap = new HashMap<>();
-    private Map<String, Class<?>> templateHandlerMap = new HashMap<>();
-    private Map<String, DockerContainer> containerMap = new LinkedHashMap<>();
+    private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
+    private List<DriverHandler> driverHandlerList = new CopyOnWriteArrayList<>();
+    private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
+    private Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
+    private Map<String, DockerContainer> containerMap = synchronizedMap(
+            new LinkedHashMap<>());
     private DockerService dockerService;
     private List<Browser> browserList;
     private List<List<Browser>> browserListList;
@@ -165,8 +168,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // WebDriverManager
         if (!typeList.contains(type)) {
-            typeList.add(type);
             WebDriverManager.getInstance(type).setup();
+            typeList.add(type);
         }
 
         // Handler
