@@ -12,17 +12,17 @@
         <selenium.version>3.141.59</selenium.version>
         <webdrivermanager.version>3.1.1</webdrivermanager.version>
         <appium-java-client.version>6.1.0</appium-java-client.version>
-        <docker-client.version>8.11.7</docker-client.version>
+        <docker-client.version>8.14.5</docker-client.version>
         <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
         <slf4j.version>1.7.25</slf4j.version>
         <retrofit.version>2.5.0</retrofit.version>
         <logback.version>1.2.3</logback.version>
-        <javalin.version>2.1.1</javalin.version>
-        <okhttp.version>3.11.0</okhttp.version>
+        <javalin.version>2.4.0</javalin.version>
+        <okhttp.version>3.12.0</okhttp.version>
 
         <!-- Test dependencies -->
         <junit.jupiter.version>5.3.2</junit.jupiter.version>
-        <mockito.version>2.19.0</mockito.version>
+        <mockito.version>2.23.4</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <htmlunit.driver.version>2.33.3</htmlunit.driver.version>
 
@@ -36,7 +36,7 @@
         <jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
 
         <!-- Java 8 -->
         <java.version>1.8</java.version>
