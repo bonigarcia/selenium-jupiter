@@ -27,8 +27,8 @@ import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.BrowserBuilder;
 import io.github.bonigarcia.BrowsersTemplate.Browser;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TemplateRemoteTest {
 
@@ -36,7 +36,7 @@ public class TemplateRemoteTest {
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
-    static void setup() {
+    static void setup() throws InterruptedException {
         // Start hub
         GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
 
@@ -51,6 +51,8 @@ public class TemplateRemoteTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
+
+        Thread.sleep(1000);
 
         // Register Chrome and Firefox in template
         Browser chrome = BrowserBuilder.chrome()
