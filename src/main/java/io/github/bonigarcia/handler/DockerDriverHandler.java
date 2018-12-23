@@ -314,8 +314,8 @@ public class DockerDriverHandler {
             WebDriver webdriver) {
         if (parameter != null) {
             String parameterName = parameter.getName();
-            name = parameterName + "_" + parameter.getType().getSimpleName()
-                    + "_" + ((RemoteWebDriver) webdriver).getSessionId();
+            name = parameterName + "_" + browser + "_" + imageVersion + "_"
+                    + ((RemoteWebDriver) webdriver).getSessionId();
             Optional<Method> testMethod = context.getTestMethod();
             if (testMethod.isPresent()) {
                 name = testMethod.get().getName() + "_" + name;
