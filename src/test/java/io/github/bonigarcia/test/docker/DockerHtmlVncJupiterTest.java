@@ -57,13 +57,13 @@ public class DockerHtmlVncJupiterTest {
 
     @Test
     public void testHtmlVnc(
-            @DockerBrowser(type = CHROME, version = "67.0") RemoteWebDriver driver) {
+            @DockerBrowser(type = CHROME, version = "71.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
         String folder = "target/surefire-reports/io.github.bonigarcia.test.docker.DockerHtmlVncJupiterTest";
-        htmlFile = new File(folder, "testHtmlVnc_arg0_CHROME_67.0_"
+        htmlFile = new File(folder, "testHtmlVnc_arg0_CHROME_71.0_"
                 + driver.getSessionId() + ".html");
     }
 

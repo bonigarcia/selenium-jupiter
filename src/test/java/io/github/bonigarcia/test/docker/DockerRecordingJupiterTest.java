@@ -63,11 +63,11 @@ public class DockerRecordingJupiterTest {
 
     @Test
     public void testLatest(
-            @DockerBrowser(type = CHROME, version = "67.0") RemoteWebDriver driver) {
+            @DockerBrowser(type = CHROME, version = "71.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
-        recordingFile = new File("testLatest_arg0_CHROME_67.0_"
+        recordingFile = new File("testLatest_arg0_CHROME_71.0_"
                 + driver.getSessionId() + ".mp4");
     }
 
