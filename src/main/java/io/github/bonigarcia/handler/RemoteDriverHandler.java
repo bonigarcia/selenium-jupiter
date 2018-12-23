@@ -71,7 +71,8 @@ public class RemoteDriverHandler extends DriverHandler {
                     testInstance, annotationsReader, containerMap,
                     dockerService, selenoidConfig);
 
-            if (browser != null && browser.getUrl().isEmpty()) {
+            if (browser != null && (browser.getUrl() == null
+                    || browser.getUrl().isEmpty())) {
                 object = dockerDriverHandler.resolve(browser.toBrowserType(),
                         browser.getVersion(), browser.getDeviceName(),
                         browser.getUrl());
