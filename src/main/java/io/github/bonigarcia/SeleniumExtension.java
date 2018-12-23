@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static com.google.common.collect.ImmutableList.copyOf;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -62,6 +63,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 
@@ -278,7 +280,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public void afterEach(ExtensionContext context) {
         // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(context);
-        for (DriverHandler driverHandler : driverHandlerList) {
+        for (DriverHandler driverHandler : copyOf(driverHandlerList)
+                .reverse()) {
             try {
                 Object object = driverHandler.getObject();
                 if (object == null) {
