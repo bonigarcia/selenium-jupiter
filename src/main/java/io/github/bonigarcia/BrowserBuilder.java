@@ -30,6 +30,7 @@ public class BrowserBuilder {
     String version;
     String browserName;
     String deviceName;
+    String url;
 
     private BrowserBuilder(String type) {
         this.type = type;
@@ -98,8 +99,13 @@ public class BrowserBuilder {
         return this;
     }
 
+    public BrowserBuilder url(String url) {
+        this.url = url;
+        return this;
+    }
+
     public Browser build() {
-        return new Browser(type, version, browserName, deviceName);
+        return new Browser(type, version, browserName, deviceName, url);
     }
 
 }

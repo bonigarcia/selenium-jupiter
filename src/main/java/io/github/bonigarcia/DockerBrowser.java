@@ -40,4 +40,6 @@ public @interface DockerBrowser {
 
     public String deviceName() default "";
 
+    public String url() default "";
+
 }

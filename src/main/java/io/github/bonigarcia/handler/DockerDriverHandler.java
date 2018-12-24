@@ -139,12 +139,13 @@ public class DockerDriverHandler {
         BrowserType browser = dockerBrowser.type();
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
+        String url = dockerBrowser.url();
 
-        return resolve(browser, version, deviceName);
+        return resolve(browser, version, deviceName, url);
     }
 
     public WebDriver resolve(BrowserType browser, String version,
-            String deviceName) {
+            String deviceName, String url) {
         try {
             if (recording) {
                 hostVideoFolder = new File(getOutputFolder(context));
@@ -157,7 +158,7 @@ public class DockerDriverHandler {
                 if (selenoidConfig == null) {
                     selenoidConfig = new SelenoidConfig();
                 }
-                webdriver = getDriverForBrowser(browser, version);
+                webdriver = getDriverForBrowser(browser, version, url);
             }
             return webdriver;
 
@@ -169,9 +170,10 @@ public class DockerDriverHandler {
         }
     }
 
-    private WebDriver getDriverForBrowser(BrowserType browser, String version)
-            throws IllegalAccessException, IOException, DockerException,
-            InterruptedException {
+    // TODO url
+    private WebDriver getDriverForBrowser(BrowserType browser, String version,
+            String url) throws IllegalAccessException, IOException,
+            DockerException, InterruptedException {
         boolean enableVnc = config().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
 

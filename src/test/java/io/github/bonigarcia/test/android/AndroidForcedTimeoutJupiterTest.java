@@ -61,7 +61,7 @@ public class AndroidForcedTimeoutJupiterTest {
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler = new DockerDriverHandler();
             WebDriver driver = dockerDriverHandler.resolve(ANDROID, "8.0",
-                    "Samsung Galaxy S6");
+                    "Samsung Galaxy S6", "");
             log.debug("WebDriver object: {}", driver);
         });
     }

@@ -19,6 +19,7 @@ package io.github.bonigarcia.handler;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.openqa.selenium.Platform.ANY;
 
 import java.lang.reflect.Parameter;
 import java.net.URL;
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.BrowsersTemplate.Browser;
@@ -69,9 +71,10 @@ public class RemoteDriverHandler extends DriverHandler {
                     testInstance, annotationsReader, containerMap,
                     dockerService, selenoidConfig);
 
-            if (browser != null) {
+            if (browser != null && browser.getUrl().isEmpty()) {
                 object = dockerDriverHandler.resolve(browser.toBrowserType(),
-                        browser.getVersion(), browser.getDeviceName());
+                        browser.getVersion(), browser.getDeviceName(),
+                        browser.getUrl());
             } else {
                 Optional<DockerBrowser> dockerBrowser = annotationsReader
                         .getDocker(parameter);
@@ -81,8 +84,16 @@ public class RemoteDriverHandler extends DriverHandler {
                 } else {
                     Optional<Capabilities> capabilities = annotationsReader
                             .getCapabilities(parameter, testInstance);
-                    Optional<URL> url = annotationsReader.getUrl(parameter,
-                            testInstance);
+
+                    Optional<URL> url;
+                    if (browser != null && !browser.getUrl().isEmpty()) {
+                        url = Optional.of(new URL(browser.getUrl()));
+                        capabilities = Optional.of(new DesiredCapabilities(
+                                browser.getType(), browser.getVersion(), ANY));
+                        System.out.println(capabilities);
+                    } else {
+                        url = annotationsReader.getUrl(parameter, testInstance);
+                    }
 
                     if (url.isPresent() && capabilities.isPresent()) {
                         object = resolveRemote(url.get(), capabilities.get());

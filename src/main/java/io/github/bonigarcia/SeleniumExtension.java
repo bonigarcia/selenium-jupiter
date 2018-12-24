@@ -156,6 +156,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         boolean isTemplate = isTestTemplate(extensionContext);
         boolean isGeneric = type.equals(RemoteWebDriver.class)
                 || type.equals(WebDriver.class);
+        String url = null;
 
         // Check template
         Integer index = null;
@@ -164,6 +165,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
             type = templateHandlerMap.get(browserList.get(index).getType());
+            url = browserList.get(index).getUrl();
         }
 
         // WebDriverManager
@@ -178,6 +180,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
         boolean isRemote = constructorClass.equals(RemoteDriverHandler.class);
+
+        if (url != null && !url.isEmpty()) {
+            constructorClass = RemoteDriverHandler.class;
+            isRemote = true;
+        }
 
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
@@ -285,10 +292,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         webDriverList.get(i).quit();
                     }
 
-                } else if (driverHandler.getName() != null) {
+                } else {
                     WebDriver webDriver = (WebDriver) object;
-                    screenshotManager.makeScreenshot(webDriver,
-                            driverHandler.getName());
+                    if (driverHandler.getName() != null) {
+                        screenshotManager.makeScreenshot(webDriver,
+                                driverHandler.getName());
+                    }
                     webDriver.quit();
                 }
             } catch (Exception e) {
