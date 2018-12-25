@@ -63,7 +63,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
-import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 

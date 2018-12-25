@@ -91,7 +91,6 @@ public class RemoteDriverHandler extends DriverHandler {
                         url = Optional.of(new URL(browser.getUrl()));
                         capabilities = Optional.of(new DesiredCapabilities(
                                 browser.getType(), browser.getVersion(), ANY));
-                        System.out.println(capabilities);
                     } else {
                         url = annotationsReader.getUrl(parameter, testInstance);
                     }

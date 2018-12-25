@@ -158,7 +158,7 @@ public class DockerDriverHandler {
                 if (selenoidConfig == null) {
                     selenoidConfig = new SelenoidConfig();
                 }
-                webdriver = getDriverForBrowser(browser, version, url);
+                webdriver = getDriverForBrowser(browser, version);
             }
             return webdriver;
 
@@ -170,10 +170,9 @@ public class DockerDriverHandler {
         }
     }
 
-    // TODO url
-    private WebDriver getDriverForBrowser(BrowserType browser, String version,
-            String url) throws IllegalAccessException, IOException,
-            DockerException, InterruptedException {
+    private WebDriver getDriverForBrowser(BrowserType browser, String version)
+            throws IllegalAccessException, IOException, DockerException,
+            InterruptedException {
         boolean enableVnc = config().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
 
