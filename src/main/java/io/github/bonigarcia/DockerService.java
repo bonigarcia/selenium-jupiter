@@ -61,11 +61,14 @@ public class DockerService {
         dockerWaitTimeoutSec = config().getDockerWaitTimeoutSec();
         dockerPollTimeMs = config().getDockerPollTimeMs();
 
-        Builder dockerClientBuilder = DefaultDockerClient.fromEnv();
-
         String dockerServerUrl = config().getDockerServerUrl();
-        if (!dockerServerUrl.isEmpty()) {
-            DefaultDockerClient.builder().uri(dockerServerUrl);
+        Builder dockerClientBuilder = null;
+        if (dockerServerUrl.isEmpty()) {
+            dockerClientBuilder = DefaultDockerClient.fromEnv();
+        } else {
+            log.debug("Using Docker server URL {}", dockerServerUrl);
+            dockerClientBuilder = DefaultDockerClient.builder()
+                    .uri(dockerServerUrl);
         }
         dockerClient = dockerClientBuilder.build();
     }
