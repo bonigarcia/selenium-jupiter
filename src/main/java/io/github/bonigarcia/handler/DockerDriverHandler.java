@@ -200,6 +200,8 @@ public class DockerDriverHandler {
         log.trace("Using Selenium Server at {}", hubUrl);
         WebDriver webdriver = new RemoteWebDriver(new URL(hubUrl),
                 capabilities);
+        log.trace("Creating WebDriver object (session id {})",
+                ((RemoteWebDriver) webdriver).getSessionId());
 
         SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
         updateName(browser, imageVersion, webdriver);

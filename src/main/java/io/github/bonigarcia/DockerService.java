@@ -16,22 +16,25 @@
  */
 package io.github.bonigarcia;
 
-import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.ProgressHandler;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
@@ -134,6 +137,26 @@ public class DockerService {
         dockerClient.startContainer(containerId);
 
         return containerId;
+    }
+
+    public String execCommandInContainer(String containerId, String... command)
+            throws DockerException, InterruptedException {
+        String[] shCommand = { "sh", "-c" };
+        String[] finalCommand = (String[]) ArrayUtils.addAll(shCommand,
+                command);
+        String commandStr = Arrays.toString(finalCommand);
+        log.trace("Running command {} in container {}", commandStr,
+                containerId);
+        String execId = dockerClient.execCreate(containerId, finalCommand,
+                DockerClient.ExecCreateParam.attachStdout(),
+                DockerClient.ExecCreateParam.attachStderr()).id();
+        String output = null;
+        try (LogStream stream = dockerClient.execStart(execId)) {
+            output = stream.readFully();
+        }
+        log.trace("Result of command {} in container {}: {}", commandStr,
+                containerId, output);
+        return output;
     }
 
     public String getBindPort(String containerId, String exposed)

@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -441,6 +442,32 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             browserListList = new ArrayList<>();
         }
         browserListList.add(asList(browsers));
+    }
+
+    public String executeCommandInContainer(WebDriver driver,
+            String... command) {
+        try {
+            String output = "";
+            DockerContainer selenoidContainer = containerMap.values().iterator()
+                    .next();
+            URL selenoidUrl = new URL(selenoidContainer.getContainerUrl());
+            URL selenoidBaseUrl = new URL(selenoidUrl.getProtocol(),
+                    selenoidUrl.getHost(), selenoidUrl.getPort(), "/");
+
+            SelenoidService selenoidService = new SelenoidService(
+                    selenoidBaseUrl.toString());
+            Optional<String> containerId = selenoidService
+                    .getContainerId(driver);
+
+            if (containerId.isPresent()) {
+                output = dockerService.execCommandInContainer(containerId.get(),
+                        command);
+            }
+            return output;
+
+        } catch (Exception e) {
+            throw new SeleniumJupiterException(e);
+        }
     }
 
 }
