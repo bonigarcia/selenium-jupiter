@@ -21,12 +21,15 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.SeleniumJupiter;
 
 public class ExecCommandInContainerTest {
 
@@ -34,6 +37,16 @@ public class ExecCommandInContainerTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
+
+    @BeforeAll
+    static void setup() {
+        SeleniumJupiter.config().setDockerServerUrl("http://localhost:2375");
+    }
+
+    @AfterAll
+    static void teardown() {
+        SeleniumJupiter.config().reset();
+    }
 
     @Test
     void templateTest(WebDriver driver) {
