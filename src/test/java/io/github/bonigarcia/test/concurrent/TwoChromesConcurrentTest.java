@@ -16,12 +16,17 @@
  */
 package io.github.bonigarcia.test.concurrent;
 
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.SeleniumExtension;
 
@@ -29,17 +34,19 @@ import io.github.bonigarcia.SeleniumExtension;
 @Execution(CONCURRENT)
 public class TwoChromesConcurrentTest {
 
+    final Logger log = getLogger(lookup().lookupClass());
+
     @Test
     public void testWithOneChrome(ChromeDriver driver)
             throws InterruptedException {
-        // Use Chrome in this test
-        System.out.println("#1 " + driver);
+        log.debug("Chrome #1 {}", driver);
+        assertThat(driver, nullValue());
     }
 
     @Test
     public void testWithOtherChrome(ChromeDriver driver) {
-        // Use Chrome also in this test
-        System.out.println("#2 " + driver);
+        log.debug("Chrome #2 {}", driver);
+        assertThat(driver, nullValue());
     }
 
 }
