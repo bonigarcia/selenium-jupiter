@@ -17,35 +17,67 @@
 package io.github.bonigarcia.test.concurrent;
 
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @Execution(CONCURRENT)
-public class TwoChromesConcurrentTest {
+public class DifferentBrowsersConcurrentTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    @Test
-    public void testWithOneChrome(ChromeDriver driver) {
-        log.debug("Chrome #1 {}", driver);
-        assertThat(driver, notNullValue());
+    @BeforeAll
+    static void setup() {
+        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,
+                "/dev/null");
     }
 
     @Test
-    public void testWithOtherChrome(ChromeDriver driver) {
-        log.debug("Chrome #2 {}", driver);
+    public void testWithChrome1(ChromeDriver driver) {
+        log.debug("#1 Chrome {}", driver);
         assertThat(driver, notNullValue());
+        exercise(driver);
+    }
+
+    @Test
+    public void testWithFirefox1(FirefoxDriver driver) {
+        log.debug("#1 Firefox {}", driver);
+        assertThat(driver, notNullValue());
+        exercise(driver);
+    }
+
+    @Test
+    public void testWithChrome2(ChromeDriver driver) {
+        log.debug("#2 Chrome {}", driver);
+        assertThat(driver, notNullValue());
+        exercise(driver);
+    }
+
+    @Test
+    public void testWithFirefox2(FirefoxDriver driver) {
+        log.debug("#2 Firefox {}", driver);
+        assertThat(driver, notNullValue());
+        exercise(driver);
+    }
+
+    void exercise(WebDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("JUnit 5 extension for Selenium"));
     }
 
 }

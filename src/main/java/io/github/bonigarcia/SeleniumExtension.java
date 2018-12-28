@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static com.google.common.collect.ImmutableList.copyOf;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -95,7 +94,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     static final String CLASSPATH_PREFIX = "classpath:";
 
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
-    private List<DriverHandler> driverHandlerList = new CopyOnWriteArrayList<>();
+    private Map<String, DriverHandler> driverHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
     private Map<String, DockerContainer> containerMap = synchronizedMap(
@@ -204,7 +203,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .setParameterContext(parameterContext);
             }
 
-            driverHandlerList.add(driverHandler);
+            driverHandlerMap.put(extensionContext.getUniqueId(), driverHandler);
+            log.trace("Adding {} to handler map (id {})", driverHandler,
+                    extensionContext.getUniqueId());
         } catch (Exception e) {
             handleException(parameter, driverHandler, constructorClass, e);
         }
@@ -280,13 +281,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public void afterEach(ExtensionContext context) {
         // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(context);
-        for (DriverHandler driverHandler : copyOf(driverHandlerList)
-                .reverse()) {
-            try {
-                Object object = driverHandler.getObject();
-                if (object == null) {
-                    continue;
-                }
+
+        String contextId = context.getUniqueId();
+        DriverHandler driverHandler = driverHandlerMap.get(contextId);
+        log.trace("After each for {} (id {})", driverHandler, contextId);
+
+        try {
+            Object object = driverHandler.getObject();
+            if (object != null) {
                 if (List.class.isAssignableFrom(object.getClass())) {
                     List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
                     for (int i = 0; i < webDriverList.size(); i++) {
@@ -303,22 +305,20 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     }
                     webDriver.quit();
                 }
-            } catch (Exception e) {
-                log.warn("Exception closing webdriver instance", e);
             }
+        } catch (Exception e) {
+            log.warn("Exception closing webdriver instance", e);
         }
 
-        // Clean handlers
-        for (DriverHandler driverHandler : driverHandlerList) {
-            try {
-                driverHandler.cleanup();
-            } catch (Exception e) {
-                log.warn("Exception cleaning handler {}", driverHandler, e);
-            }
+        // Clean handler
+        try {
+            driverHandler.cleanup();
+        } catch (Exception e) {
+            log.warn("Exception cleaning handler {}", driverHandler, e);
         }
 
-        // Clear handler list
-        driverHandlerList.clear();
+        // Clear handler map
+        driverHandlerMap.remove(contextId);
     }
 
     @Override
