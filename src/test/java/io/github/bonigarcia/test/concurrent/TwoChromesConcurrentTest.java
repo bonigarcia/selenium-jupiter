@@ -17,7 +17,7 @@
 package io.github.bonigarcia.test.concurrent;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -40,13 +40,13 @@ public class TwoChromesConcurrentTest {
     public void testWithOneChrome(ChromeDriver driver)
             throws InterruptedException {
         log.debug("Chrome #1 {}", driver);
-        assertThat(driver, nullValue());
+        assertThat(driver, notNullValue());
     }
 
     @Test
     public void testWithOtherChrome(ChromeDriver driver) {
         log.debug("Chrome #2 {}", driver);
-        assertThat(driver, nullValue());
+        assertThat(driver, notNullValue());
     }
 
 }
