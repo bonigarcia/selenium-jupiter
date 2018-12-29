@@ -24,7 +24,6 @@ import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
-import static java.util.Collections.synchronizedMap;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -97,10 +96,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     private Map<String, DriverHandler> driverHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
-    private Map<String, DockerContainer> containerMap = synchronizedMap(
-            new LinkedHashMap<>());
+    private Map<String, Map<String, DockerContainer>> containersMap = new ConcurrentHashMap<>();
     private DockerService dockerService;
-    private List<Browser> browserList;
+    private Map<String, List<Browser>> browserListMap = new ConcurrentHashMap<>();
     private List<List<Browser>> browserListList;
 
     public SeleniumExtension() {
@@ -152,6 +150,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
 
+        String contextId = extensionContext.getUniqueId();
         Parameter parameter = parameterContext.getParameter();
         Class<?> type = parameter.getType();
         boolean isTemplate = isTestTemplate(extensionContext);
@@ -161,12 +160,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Check template
         Integer index = null;
-        if (isGeneric && browserList != null) {
+        if (isGeneric && browserListMap != null) {
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
-            type = templateHandlerMap.get(browserList.get(index).getType());
-            url = browserList.get(index).getUrl();
+            type = templateHandlerMap
+                    .get(browserListMap.get(contextId).get(index).getType());
+            url = browserListMap.get(contextId).get(index).getUrl();
         }
 
         // WebDriverManager
@@ -194,7 +194,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             if (type.equals(RemoteWebDriver.class)
                     || type.equals(WebDriver.class)
                     || type.equals(List.class)) {
-                initHandlerForDocker(driverHandler);
+                initHandlerForDocker(contextId, driverHandler);
             }
 
             if (!isTemplate && isGeneric && isRemote) {
@@ -227,15 +227,16 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             throws InstantiationException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
         DriverHandler driverHandler;
-        if (isRemote && browserList != null) {
+        String contextId = extensionContext.getUniqueId();
+        if (isRemote && browserListMap != null) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Browser.class)
                     .newInstance(parameter, extensionContext,
-                            browserList.get(index));
+                            browserListMap.get(contextId).get(index));
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
-                && browserList != null) {
+                && browserListMap != null) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Class.class)
@@ -251,12 +252,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return driverHandler;
     }
 
-    public void initHandlerForDocker(DriverHandler driverHandler)
-            throws DockerCertificateException {
-        if (containerMap == null) {
-            containerMap = new LinkedHashMap<>();
-        }
+    public void initHandlerForDocker(String contextId,
+            DriverHandler driverHandler) throws DockerCertificateException {
+
+        LinkedHashMap<String, DockerContainer> containerMap = new LinkedHashMap<>();
         driverHandler.setContainerMap(containerMap);
+        containersMap.put(contextId, containerMap);
 
         if (dockerService == null) {
             dockerService = new DockerService();
@@ -337,6 +338,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
             ExtensionContext extensionContext) {
+        String contextId = extensionContext.getUniqueId();
         try {
             // 1. By JSON content
             String browserJsonContent = config()
@@ -371,8 +373,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 return browserListList.stream()
                         .map(b -> invocationContext(b, this));
             }
-            if (browserList != null) {
-                return Stream.of(invocationContext(browserList, this));
+            if (browserListMap != null) {
+                return Stream.of(
+                        invocationContext(browserListMap.get(contextId), this));
             }
 
         } catch (IOException e) {
@@ -383,7 +386,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 "No browser scenario registered for test template");
     }
 
-    private TestTemplateInvocationContext invocationContext(
+    private synchronized TestTemplateInvocationContext invocationContext(
             List<Browser> template, SeleniumExtension parent) {
         return new TestTemplateInvocationContext() {
             @Override
@@ -408,7 +411,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     public Object resolveParameter(
                             ParameterContext parameterContext,
                             ExtensionContext extensionContext) {
-                        parent.browserList = template;
+                        String contextId = extensionContext.getUniqueId();
+                        log.trace("Setting browser list {} for context id {}",
+                                template, contextId);
+                        parent.browserListMap.put(contextId, template);
+
                         return parent.resolveParameter(parameterContext,
                                 extensionContext);
                     }
@@ -433,8 +440,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 && testMethod.get().isAnnotationPresent(TestTemplate.class);
     }
 
-    public void setBrowserList(List<Browser> browserList) {
-        this.browserList = browserList;
+    public void putBrowserList(String key, List<Browser> browserList) {
+        this.browserListMap.put(key, browserList);
     }
 
     public void addBrowsers(Browser... browsers) {
@@ -447,23 +454,24 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public String executeCommandInContainer(WebDriver driver,
             String... command) {
         try {
-            String output = "";
-            DockerContainer selenoidContainer = containerMap.values().iterator()
-                    .next();
-            URL selenoidUrl = new URL(selenoidContainer.getContainerUrl());
-            URL selenoidBaseUrl = new URL(selenoidUrl.getProtocol(),
-                    selenoidUrl.getHost(), selenoidUrl.getPort(), "/");
+            for (String contextId : containersMap.keySet()) {
+                DockerContainer selenoidContainer = containersMap.get(contextId)
+                        .values().iterator().next();
+                URL selenoidUrl = new URL(selenoidContainer.getContainerUrl());
+                URL selenoidBaseUrl = new URL(selenoidUrl.getProtocol(),
+                        selenoidUrl.getHost(), selenoidUrl.getPort(), "/");
 
-            SelenoidService selenoidService = new SelenoidService(
-                    selenoidBaseUrl.toString());
-            Optional<String> containerId = selenoidService
-                    .getContainerId(driver);
+                SelenoidService selenoidService = new SelenoidService(
+                        selenoidBaseUrl.toString());
+                Optional<String> containerId = selenoidService
+                        .getContainerId(driver);
 
-            if (containerId.isPresent()) {
-                output = dockerService.execCommandInContainer(containerId.get(),
-                        command);
+                if (containerId.isPresent()) {
+                    return dockerService
+                            .execCommandInContainer(containerId.get(), command);
+                }
             }
-            return output;
+            return "";
 
         } catch (Exception e) {
             throw new SeleniumJupiterException(e);

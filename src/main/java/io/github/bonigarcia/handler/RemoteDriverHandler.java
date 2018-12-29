@@ -158,7 +158,8 @@ public class RemoteDriverHandler extends DriverHandler {
             Browser candidate = new Browser(browserCandidate, versionCandidate);
             log.debug("Using generic handler, trying with {}",
                     browserCandidate);
-            parent.setBrowserList(singletonList(candidate));
+            parent.putBrowserList(context.getUniqueId(),
+                    singletonList(candidate));
             try {
                 object = parent.resolveParameter(parameterContext, context);
             } catch (Exception e) {
