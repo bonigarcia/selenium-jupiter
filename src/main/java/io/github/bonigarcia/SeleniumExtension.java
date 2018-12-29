@@ -160,7 +160,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Check template
         Integer index = null;
-        if (isGeneric && browserListMap != null) {
+        if (isGeneric && !browserListMap.isEmpty()) {
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
@@ -228,7 +228,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             InvocationTargetException, NoSuchMethodException {
         DriverHandler driverHandler;
         String contextId = extensionContext.getUniqueId();
-        if (isRemote && browserListMap != null) {
+        if (isRemote && !browserListMap.isEmpty()) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Browser.class)
@@ -236,7 +236,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                             browserListMap.get(contextId).get(index));
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
-                && browserListMap != null) {
+                && !browserListMap.isEmpty()) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Class.class)
