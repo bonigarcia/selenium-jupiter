@@ -279,12 +279,21 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @SuppressWarnings("unchecked")
     @Override
-    public void afterEach(ExtensionContext context) {
+    public void afterEach(ExtensionContext extensionContext) {
         // Make screenshots if required and close browsers
-        ScreenshotManager screenshotManager = new ScreenshotManager(context);
+        ScreenshotManager screenshotManager = new ScreenshotManager(
+                extensionContext);
 
-        String contextId = context.getUniqueId();
+        String contextId = extensionContext.getUniqueId();
         DriverHandler driverHandler = driverHandlerMap.get(contextId);
+        if (driverHandler == null) {
+            int i = contextId.lastIndexOf('/');
+            if (i != -1) {
+                contextId = contextId.substring(0, i);
+                driverHandler = driverHandlerMap.get(contextId);
+            }
+        }
+
         log.trace("After each for {} (id {})", driverHandler, contextId);
 
         try {
