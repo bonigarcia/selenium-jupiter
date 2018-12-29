@@ -146,6 +146,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 && !isTestTemplate(extensionContext);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
@@ -164,9 +165,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
+            List<Browser> browserFromContextId = (List<Browser>) getValueFromContextId(
+                    browserListMap, contextId);
             type = templateHandlerMap
-                    .get(browserListMap.get(contextId).get(index).getType());
-            url = browserListMap.get(contextId).get(index).getUrl();
+                    .get(browserFromContextId.get(index).getType());
+            url = browserFromContextId.get(index).getUrl();
         }
 
         // WebDriverManager
@@ -221,6 +224,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
     }
 
+    @SuppressWarnings("unchecked")
     private DriverHandler getDriverHandler(ExtensionContext extensionContext,
             Parameter parameter, Class<?> type, Integer index,
             Class<?> constructorClass, boolean isRemote)
@@ -229,11 +233,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         DriverHandler driverHandler;
         String contextId = extensionContext.getUniqueId();
         if (isRemote && !browserListMap.isEmpty()) {
+            List<Browser> browserListFromContextId = (List<Browser>) getValueFromContextId(
+                    browserListMap, contextId);
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Browser.class)
                     .newInstance(parameter, extensionContext,
-                            browserListMap.get(contextId).get(index));
+                            browserListFromContextId.get(index));
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
                 && !browserListMap.isEmpty()) {
@@ -329,6 +335,18 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Clear handler map
         driverHandlerMap.remove(contextId);
+    }
+
+    private Object getValueFromContextId(Map<String, ?> map, String contextId) {
+        Object output = map.get(contextId);
+        if (output == null) {
+            int i = contextId.lastIndexOf('/');
+            if (i != -1) {
+                contextId = contextId.substring(0, i);
+                output = map.get(contextId);
+            }
+        }
+        return output;
     }
 
     @Override
