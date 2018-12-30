@@ -165,11 +165,15 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             index = isTemplate
                     ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                     : 0;
-            List<Browser> browserFromContextId = (List<Browser>) getValueFromContextId(
+            List<Browser> browserListFromContextId = (List<Browser>) getValueFromContextId(
                     browserListMap, contextId);
-            type = templateHandlerMap
-                    .get(browserFromContextId.get(index).getType());
-            url = browserFromContextId.get(index).getUrl();
+            if (browserListFromContextId == null) {
+                log.warn("Browser list for context id {} not found", contextId);
+            } else {
+                type = templateHandlerMap
+                        .get(browserListFromContextId.get(index).getType());
+                url = browserListFromContextId.get(index).getUrl();
+            }
         }
 
         // WebDriverManager
@@ -230,16 +234,20 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             Class<?> constructorClass, boolean isRemote)
             throws InstantiationException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
-        DriverHandler driverHandler;
+        DriverHandler driverHandler = null;
         String contextId = extensionContext.getUniqueId();
         if (isRemote && !browserListMap.isEmpty()) {
             List<Browser> browserListFromContextId = (List<Browser>) getValueFromContextId(
                     browserListMap, contextId);
-            driverHandler = (DriverHandler) constructorClass
-                    .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Browser.class)
-                    .newInstance(parameter, extensionContext,
-                            browserListFromContextId.get(index));
+            if (browserListFromContextId == null) {
+                log.warn("Browser list for context id {} not found", contextId);
+            } else {
+                driverHandler = (DriverHandler) constructorClass
+                        .getDeclaredConstructor(Parameter.class,
+                                ExtensionContext.class, Browser.class)
+                        .newInstance(parameter, extensionContext,
+                                browserListFromContextId.get(index));
+            }
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
                 && !browserListMap.isEmpty()) {
@@ -291,16 +299,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 extensionContext);
 
         String contextId = extensionContext.getUniqueId();
-        DriverHandler driverHandler = driverHandlerMap.get(contextId);
-        if (driverHandler == null) {
-            int i = contextId.lastIndexOf('/');
-            if (i != -1) {
-                contextId = contextId.substring(0, i);
-                driverHandler = driverHandlerMap.get(contextId);
-            }
-        }
-
+        DriverHandler driverHandler = (DriverHandler) getValueFromContextId(
+                driverHandlerMap, contextId);
         log.trace("After each for {} (id {})", driverHandler, contextId);
+        if (driverHandler == null) {
+            log.warn("Driver handler for context id {} not found", contextId);
+            return;
+        }
 
         try {
             Object object = driverHandler.getObject();
