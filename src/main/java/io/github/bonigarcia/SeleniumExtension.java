@@ -486,9 +486,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public String executeCommandInContainer(WebDriver driver,
             String... command) {
         try {
-            for (String contextId : containersMap.keySet()) {
-                DockerContainer selenoidContainer = containersMap.get(contextId)
-                        .values().iterator().next();
+            for (Map.Entry<String, Map<String, DockerContainer>> entry : containersMap
+                    .entrySet()) {
+                DockerContainer selenoidContainer = containersMap
+                        .get(entry.getKey()).values().iterator().next();
                 URL selenoidUrl = new URL(selenoidContainer.getContainerUrl());
                 URL selenoidBaseUrl = new URL(selenoidUrl.getProtocol(),
                         selenoidUrl.getHost(), selenoidUrl.getPort(), "/");
