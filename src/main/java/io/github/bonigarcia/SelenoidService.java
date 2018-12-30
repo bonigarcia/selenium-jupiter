@@ -66,7 +66,7 @@ public class SelenoidService {
         int i = browsers.indexOf(sessionId);
         if (i != -1) {
             int j = browsers.indexOf(CONTAINER, i) + CONTAINER.length();
-            int k = browsers.indexOf(",", j);
+            int k = browsers.indexOf(',', j);
             if (j != -1 && k != -1) {
                 String containerId = browsers.substring(j, k);
                 output = Optional.of(containerId);
