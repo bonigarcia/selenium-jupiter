@@ -24,6 +24,7 @@ import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -488,8 +489,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         browserListList.add(asList(browsers));
     }
 
-    public String executeCommandInContainer(WebDriver driver,
-            String... command) {
+    public Optional<String> getContainerId(WebDriver driver) {
         try {
             for (Map.Entry<String, Map<String, DockerContainer>> entry : containersMap
                     .entrySet()) {
@@ -505,15 +505,18 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .getContainerId(driver);
 
                 if (containerId.isPresent()) {
-                    return dockerService
-                            .execCommandInContainer(containerId.get(), command);
+                    return containerId;
                 }
             }
-            return "";
+            return empty();
 
         } catch (Exception e) {
             throw new SeleniumJupiterException(e);
         }
+    }
+
+    public DockerService getDockerService() {
+        return dockerService;
     }
 
 }

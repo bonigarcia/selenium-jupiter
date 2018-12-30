@@ -248,6 +248,10 @@ public class DockerService {
         return dockerPollTimeMs;
     }
 
+    public DockerClient getDockerClient() {
+        return dockerClient;
+    }
+
     public void close() {
         dockerClient.close();
     }
