@@ -217,6 +217,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             handleException(parameter, driverHandler, constructorClass, e);
         }
 
+        return resolveHandler(parameter, driverHandler);
+    }
+
+    private Object resolveHandler(Parameter parameter,
+            DriverHandler driverHandler) {
         if (driverHandler != null) {
             driverHandler.resolve();
             return driverHandler.getObject();
