@@ -223,7 +223,7 @@ public class RemoteDriverHandler extends DriverHandler {
                     log.warn(
                             "Exception creating WebDriver object {} ... retrying in {} ms",
                             e1.getClass().getSimpleName(), pollTimeSec);
-                    sleep(pollTimeSec * 1000);
+                    sleep(SECONDS.toMillis(pollTimeSec));
                 } catch (InterruptedException e2) {
                     log.warn("Interrupted exception creating WebDriver object",
                             e2);
