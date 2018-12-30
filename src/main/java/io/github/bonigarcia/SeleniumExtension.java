@@ -146,7 +146,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 && !isTestTemplate(extensionContext);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
@@ -158,22 +157,15 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         boolean isGeneric = type.equals(RemoteWebDriver.class)
                 || type.equals(WebDriver.class);
         String url = null;
+        Browser browser = null;
 
         // Check template
-        Integer index = null;
         if (isGeneric && !browserListMap.isEmpty()) {
-            index = isTemplate
-                    ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
-                    : 0;
-            List<Browser> browserListFromContextId = (List<Browser>) getValueFromContextId(
-                    browserListMap, contextId);
-            if (browserListFromContextId == null) {
-                log.warn("Browser list for context id {} not found", contextId);
-            } else {
-                type = templateHandlerMap
-                        .get(browserListFromContextId.get(index).getType());
-                url = browserListFromContextId.get(index).getUrl();
-            }
+            browser = getBrowser(contextId, parameter, isTemplate);
+        }
+        if (browser != null) {
+            type = templateHandlerMap.get(browser.getType());
+            url = browser.getUrl();
         }
 
         // WebDriverManager
@@ -196,7 +188,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
-                    index, constructorClass, isRemote);
+                    constructorClass, browser);
 
             if (type.equals(RemoteWebDriver.class)
                     || type.equals(WebDriver.class)
@@ -220,6 +212,23 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return resolveHandler(parameter, driverHandler);
     }
 
+    @SuppressWarnings("unchecked")
+    private Browser getBrowser(String contextId, Parameter parameter,
+            boolean isTemplate) {
+        Integer index = isTemplate
+                ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
+                : 0;
+        Browser browser = null;
+        List<Browser> browserList = (List<Browser>) getValueFromContextId(
+                browserListMap, contextId);
+        if (browserList == null) {
+            log.warn("Browser list for context id {} not found", contextId);
+        } else {
+            browser = browserList.get(index);
+        }
+        return browser;
+    }
+
     private Object resolveHandler(Parameter parameter,
             DriverHandler driverHandler) {
         if (driverHandler != null) {
@@ -233,26 +242,17 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
     }
 
-    @SuppressWarnings("unchecked")
     private DriverHandler getDriverHandler(ExtensionContext extensionContext,
-            Parameter parameter, Class<?> type, Integer index,
-            Class<?> constructorClass, boolean isRemote)
+            Parameter parameter, Class<?> type, Class<?> constructorClass,
+            Browser browser)
             throws InstantiationException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
         DriverHandler driverHandler = null;
-        String contextId = extensionContext.getUniqueId();
-        if (isRemote && !browserListMap.isEmpty()) {
-            List<Browser> browserListFromContextId = (List<Browser>) getValueFromContextId(
-                    browserListMap, contextId);
-            if (browserListFromContextId == null) {
-                log.warn("Browser list for context id {} not found", contextId);
-            } else {
-                driverHandler = (DriverHandler) constructorClass
-                        .getDeclaredConstructor(Parameter.class,
-                                ExtensionContext.class, Browser.class)
-                        .newInstance(parameter, extensionContext,
-                                browserListFromContextId.get(index));
-            }
+        if (browser != null) {
+            driverHandler = (DriverHandler) constructorClass
+                    .getDeclaredConstructor(Parameter.class,
+                            ExtensionContext.class, Browser.class)
+                    .newInstance(parameter, extensionContext, browser);
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
                 && !browserListMap.isEmpty()) {
