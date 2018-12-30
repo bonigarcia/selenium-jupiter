@@ -28,6 +28,7 @@ import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -92,27 +93,32 @@ public class RemoteDriverHandler extends DriverHandler {
                 if (dockerBrowser.isPresent()) {
                     object = dockerDriverHandler.resolve(dockerBrowser.get());
                 } else {
-                    Optional<Capabilities> capabilities = annotationsReader
-                            .getCapabilities(parameter, testInstance);
-
-                    Optional<URL> url;
-                    if (browser != null && !browser.getUrl().isEmpty()) {
-                        url = Optional.of(new URL(browser.getUrl()));
-                        capabilities = Optional.of(new DesiredCapabilities(
-                                browser.getType(), browser.getVersion(), ANY));
-                    } else {
-                        url = annotationsReader.getUrl(parameter, testInstance);
-                    }
-
-                    if (url.isPresent() && capabilities.isPresent()) {
-                        object = resolveRemote(url.get(), capabilities.get());
-                    } else {
-                        object = resolveGeneric();
-                    }
+                    resolveOtherThanDocker(testInstance);
                 }
             }
         } catch (Exception e) {
             handleException(e);
+        }
+    }
+
+    private void resolveOtherThanDocker(Optional<Object> testInstance)
+            throws IllegalAccessException, MalformedURLException {
+        Optional<Capabilities> capabilities = annotationsReader
+                .getCapabilities(parameter, testInstance);
+
+        Optional<URL> url;
+        if (browser != null && !browser.getUrl().isEmpty()) {
+            url = Optional.of(new URL(browser.getUrl()));
+            capabilities = Optional.of(new DesiredCapabilities(
+                    browser.getType(), browser.getVersion(), ANY));
+        } else {
+            url = annotationsReader.getUrl(parameter, testInstance);
+        }
+
+        if (url.isPresent() && capabilities.isPresent()) {
+            object = resolveRemote(url.get(), capabilities.get());
+        } else {
+            object = resolveGeneric();
         }
     }
 
