@@ -212,15 +212,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return resolveHandler(parameter, driverHandler);
     }
 
-    @SuppressWarnings("unchecked")
     private Browser getBrowser(String contextId, Parameter parameter,
             boolean isTemplate) {
         Integer index = isTemplate
                 ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
                 : 0;
         Browser browser = null;
-        List<Browser> browserList = (List<Browser>) getValueFromContextId(
-                browserListMap, contextId);
+        List<Browser> browserList = getValueFromContextId(browserListMap,
+                contextId);
         if (browserList == null) {
             log.warn("Browser list for context id {} not found", contextId);
         } else {
@@ -304,8 +303,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 extensionContext);
 
         String contextId = extensionContext.getUniqueId();
-        DriverHandler driverHandler = (DriverHandler) getValueFromContextId(
-                driverHandlerMap, contextId);
+        DriverHandler driverHandler = getValueFromContextId(driverHandlerMap,
+                contextId);
         log.trace("After each for {} (id {})", driverHandler, contextId);
         if (driverHandler == null) {
             log.warn("Driver handler for context id {} not found", contextId);
@@ -347,8 +346,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         driverHandlerMap.remove(contextId);
     }
 
-    private Object getValueFromContextId(Map<String, ?> map, String contextId) {
-        Object output = map.get(contextId);
+    private <T extends Object> T getValueFromContextId(Map<String, T> map,
+            String contextId) {
+        T output = map.get(contextId);
         if (output == null) {
             int i = contextId.lastIndexOf('/');
             if (i != -1) {
