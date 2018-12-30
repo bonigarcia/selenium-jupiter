@@ -147,6 +147,10 @@ public class DockerDriverHandler {
     public WebDriver resolve(BrowserType browser, String version,
             String deviceName, String url) {
         try {
+            if (url != null && !url.isEmpty()) {
+                dockerService.updateDockerClient(url);
+            }
+
             if (recording) {
                 hostVideoFolder = new File(getOutputFolder(context));
             }

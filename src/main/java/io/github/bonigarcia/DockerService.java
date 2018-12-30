@@ -252,4 +252,9 @@ public class DockerService {
         dockerClient.close();
     }
 
+    public void updateDockerClient(String url) {
+        log.debug("Updating Docker client using URL {}", url);
+        dockerClient = DefaultDockerClient.builder().uri(url).build();
+    }
+
 }
