@@ -198,18 +198,17 @@ public class DockerDriverHandler {
         String seleniumServerUrl = config().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
-        String hubUrl = seleniumServerUrlAvailable ? seleniumServerUrl
-                : startDockerBrowser(browser, versionFromLabel);
-
-        WebDriver webdriver = createWebDriverObject(hubUrl, capabilities);
+        URL hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
+                : startDockerBrowser(browser, versionFromLabel));
+        WebDriver webdriver = RemoteDriverHandler.createRemoteWebDriver(hubUrl,
+                capabilities);
 
         SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
         updateName(browser, imageVersion, webdriver);
 
         if (enableVnc && !seleniumServerUrlAvailable) {
-            URL selenoidHubUrl = new URL(hubUrl);
-            String selenoidHost = selenoidHubUrl.getHost();
-            int selenoidPort = selenoidHubUrl.getPort();
+            String selenoidHost = hubUrl.getHost();
+            int selenoidPort = hubUrl.getPort();
 
             String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
                     sessionId.toString(), config().getSelenoidVncPassword());
@@ -235,45 +234,6 @@ public class DockerDriverHandler {
         if (recording) {
             recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
         }
-        return webdriver;
-    }
-
-    private WebDriver createWebDriverObject(String hubUrl,
-            DesiredCapabilities capabilities) {
-        WebDriver webdriver = null;
-        int dockerWaitTimeoutSec = dockerService.getDockerWaitTimeoutSec();
-        int dockerPollTimeMs = dockerService.getDockerPollTimeMs();
-        long timeoutMs = currentTimeMillis()
-                + SECONDS.toMillis(dockerWaitTimeoutSec);
-        do {
-            if (currentTimeMillis() > timeoutMs) {
-                throw new SeleniumJupiterException(
-                        "Timeout of " + dockerWaitTimeoutSec
-                                + "  seconds creting WebDriver object");
-            }
-            try {
-                log.debug("Creating WebDriver object for {} at {}",
-                        capabilities.getBrowserName(), hubUrl);
-                log.trace("Complete {}", capabilities);
-                webdriver = new RemoteWebDriver(new URL(hubUrl), capabilities);
-            } catch (Exception e1) {
-                try {
-                    log.warn(
-                            "Exception creating WebDriver object {} ... retrying in {} ms",
-                            e1.getClass().getSimpleName(), dockerPollTimeMs);
-                    sleep(dockerPollTimeMs);
-                } catch (InterruptedException e2) {
-                    log.warn("Interrupted exception creating WebDriver object",
-                            e2);
-                    currentThread().interrupt();
-                }
-            }
-
-        } while (webdriver == null);
-
-        log.trace("Created WebDriver object (session id {})",
-                ((RemoteWebDriver) webdriver).getSessionId());
-
         return webdriver;
     }
 

@@ -185,6 +185,11 @@ public class Config {
     ConfigKey<Integer> serverPort = new ConfigKey<>("sel.jup.server.port",
             Integer.class);
 
+    ConfigKey<Integer> remoteWebdriverWaitTimeoutSec = new ConfigKey<>(
+            "sel.jup.remote.webdriver.wait.timeout.sec", Integer.class);
+    ConfigKey<Integer> remoteWebdriverPollTimeSec = new ConfigKey<>(
+            "sel.jup.remote.webdriver.poll.time.sec", Integer.class);
+
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
         String name = configKey.getName();
@@ -828,6 +833,24 @@ public class Config {
 
     public Config setServerPort(int value) {
         this.serverPort.setValue(value);
+        return this;
+    }
+
+    public int getRemoteWebdriverWaitTimeoutSec() {
+        return resolve(remoteWebdriverWaitTimeoutSec);
+    }
+
+    public Config setRemoteWebdriverWaitTimeoutSec(int value) {
+        this.remoteWebdriverWaitTimeoutSec.setValue(value);
+        return this;
+    }
+
+    public int getRemoteWebdriverPollTimeSec() {
+        return resolve(remoteWebdriverPollTimeSec);
+    }
+
+    public Config setRemoteWebdriverPollTimeSec(int value) {
+        this.remoteWebdriverPollTimeSec.setValue(value);
         return this;
     }
 

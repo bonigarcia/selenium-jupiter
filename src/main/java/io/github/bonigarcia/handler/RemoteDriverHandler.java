@@ -17,9 +17,15 @@
 package io.github.bonigarcia.handler;
 
 import static io.github.bonigarcia.SeleniumJupiter.config;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
+import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openqa.selenium.Platform.ANY;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.net.URL;
@@ -34,6 +40,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
@@ -47,6 +54,8 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @since 1.2.0
  */
 public class RemoteDriverHandler extends DriverHandler {
+
+    static final Logger log = getLogger(lookup().lookupClass());
 
     private DockerDriverHandler dockerDriverHandler;
     private Browser browser;
@@ -117,7 +126,7 @@ public class RemoteDriverHandler extends DriverHandler {
     }
 
     private WebDriver resolveRemote(URL url, Capabilities capabilities) {
-        return new RemoteWebDriver(url, capabilities);
+        return createRemoteWebDriver(url, capabilities);
     }
 
     private WebDriver resolveGeneric() {
@@ -184,6 +193,44 @@ public class RemoteDriverHandler extends DriverHandler {
 
     public void setParameterContext(ParameterContext parameterContext) {
         this.parameterContext = parameterContext;
+    }
+
+    public static WebDriver createRemoteWebDriver(URL hubUrl,
+            Capabilities capabilities) {
+        WebDriver webdriver = null;
+        int waitTimeoutSec = config().getRemoteWebdriverWaitTimeoutSec();
+        int pollTimeSec = config().getRemoteWebdriverPollTimeSec();
+        long timeoutMs = currentTimeMillis() + SECONDS.toMillis(waitTimeoutSec);
+        do {
+            if (currentTimeMillis() > timeoutMs) {
+                throw new SeleniumJupiterException(
+                        "Timeout of " + waitTimeoutSec
+                                + "  seconds creating WebDriver object");
+            }
+            try {
+                log.debug("Creating WebDriver object for {} at {}",
+                        capabilities.getBrowserName(), hubUrl);
+                log.trace("Complete {}", capabilities);
+                webdriver = new RemoteWebDriver(hubUrl, capabilities);
+            } catch (Exception e1) {
+                try {
+                    log.warn(
+                            "Exception creating WebDriver object {} ... retrying in {} ms",
+                            e1.getClass().getSimpleName(), pollTimeSec);
+                    sleep(pollTimeSec * 1000);
+                } catch (InterruptedException e2) {
+                    log.warn("Interrupted exception creating WebDriver object",
+                            e2);
+                    currentThread().interrupt();
+                }
+            }
+
+        } while (webdriver == null);
+
+        log.trace("Created WebDriver object (session id {})",
+                ((RemoteWebDriver) webdriver).getSessionId());
+
+        return webdriver;
     }
 
 }
