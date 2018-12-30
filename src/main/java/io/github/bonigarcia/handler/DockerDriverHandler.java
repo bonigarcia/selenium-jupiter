@@ -226,7 +226,10 @@ public class DockerDriverHandler {
                         + "<meta http-equiv=\"refresh\" content=\"0; url=%s\">\n"
                         + "</head>\n" + "<body>\n" + "</body>\n" + "</html>",
                         novncUrl);
-                write(Paths.get(outputFolder, name + ".html"),
+                String htmlPageName = name + ".html";
+                log.debug("Redirecting VNC URL to HTML page at {}/{}",
+                        outputFolder, htmlPageName);
+                write(Paths.get(outputFolder, htmlPageName),
                         vncHtmlPage.getBytes());
             }
         }
