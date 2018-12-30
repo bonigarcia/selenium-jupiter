@@ -255,8 +255,8 @@ public class DockerDriverHandler {
             } catch (Exception e1) {
                 try {
                     log.warn(
-                            "Exception creating WebDriver object: {} {} ... retrying in {} ms",
-                            e1.getClass(), e1.getMessage(), dockerPollTimeMs);
+                            "Exception creating WebDriver object {} ... retrying in {} ms",
+                            e1.getClass().getSimpleName(), dockerPollTimeMs);
                     sleep(dockerPollTimeMs);
                 } catch (InterruptedException e2) {
                     log.warn("Interrupted exception creating WebDriver object",
