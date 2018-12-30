@@ -49,7 +49,7 @@ import io.github.bonigarcia.SelenoidConfig;
  */
 public abstract class DriverHandler {
 
-    final Logger log = getLogger(lookup().lookupClass());
+    static final Logger log = getLogger(lookup().lookupClass());
 
     AnnotationsReader annotationsReader = new AnnotationsReader();
     Parameter parameter;

@@ -20,12 +20,10 @@ import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
-import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openqa.selenium.Platform.ANY;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
@@ -41,7 +39,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
@@ -55,8 +52,6 @@ import io.github.bonigarcia.SeleniumJupiterException;
  * @since 1.2.0
  */
 public class RemoteDriverHandler extends DriverHandler {
-
-    static final Logger log = getLogger(lookup().lookupClass());
 
     private DockerDriverHandler dockerDriverHandler;
     private Browser browser;
