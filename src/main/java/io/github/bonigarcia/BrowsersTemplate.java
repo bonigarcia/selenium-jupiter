@@ -27,6 +27,8 @@ import java.util.stream.Stream;
  */
 public class BrowsersTemplate {
 
+    static final String IN_DOCKER = "-in-docker";
+
     List<List<Browser>> browsers;
 
     public Stream<List<Browser>> getStream() {
@@ -80,8 +82,12 @@ public class BrowsersTemplate {
 
         public BrowserType toBrowserType() {
             return BrowserType
-                    .valueOf(getType().replace("-in-docker", "").toUpperCase());
+                    .valueOf(getType().replace(IN_DOCKER, "").toUpperCase());
 
+        }
+
+        public boolean isDockerBrowser() {
+            return getType().contains(IN_DOCKER);
         }
 
         @Override

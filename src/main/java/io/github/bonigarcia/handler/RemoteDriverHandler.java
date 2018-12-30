@@ -76,8 +76,7 @@ public class RemoteDriverHandler extends DriverHandler {
                     testInstance, annotationsReader, containerMap,
                     dockerService, selenoidConfig);
 
-            if (browser != null && (browser.getUrl() == null
-                    || browser.getUrl().isEmpty())) {
+            if (browser != null && browser.isDockerBrowser()) {
                 object = dockerDriverHandler.resolve(browser.toBrowserType(),
                         browser.getVersion(), browser.getDeviceName(),
                         browser.getUrl());
@@ -216,7 +215,7 @@ public class RemoteDriverHandler extends DriverHandler {
             } catch (Exception e1) {
                 try {
                     log.warn(
-                            "Exception creating WebDriver object {} ... retrying in {} ms",
+                            "Exception creating WebDriver object {} ... retrying in {} second(s)",
                             e1.getClass().getSimpleName(), pollTimeSec);
                     sleep(SECONDS.toMillis(pollTimeSec));
                 } catch (InterruptedException e2) {
