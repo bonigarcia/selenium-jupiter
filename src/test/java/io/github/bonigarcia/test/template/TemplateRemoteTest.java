@@ -36,7 +36,7 @@ public class TemplateRemoteTest {
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
-    static void setup() throws InterruptedException {
+    static void setup() {
         // Start hub
         GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
 
@@ -51,8 +51,6 @@ public class TemplateRemoteTest {
         GridLauncherV3.main(new String[] { "-role", "node", "-hub",
                 "http://localhost:4444/grid/register", "-browser",
                 "browserName=firefox", "-port", "5556" });
-
-        Thread.sleep(1000);
 
         // Register Chrome and Firefox in template
         Browser chrome = BrowserBuilder.chrome()
