@@ -188,7 +188,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
-                    constructorClass, browser);
+                    constructorClass, browser, isRemote);
 
             if (type.equals(RemoteWebDriver.class)
                     || type.equals(WebDriver.class)
@@ -243,11 +243,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     private DriverHandler getDriverHandler(ExtensionContext extensionContext,
             Parameter parameter, Class<?> type, Class<?> constructorClass,
-            Browser browser)
+            Browser browser, boolean isRemote)
             throws InstantiationException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
         DriverHandler driverHandler = null;
-        if (browser != null) {
+        if (isRemote && browser != null) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
                             ExtensionContext.class, Browser.class)
