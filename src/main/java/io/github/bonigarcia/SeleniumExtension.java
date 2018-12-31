@@ -94,7 +94,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     static final String CLASSPATH_PREFIX = "classpath:";
 
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
-    private Map<String, DriverHandler> driverHandlerMap = new ConcurrentHashMap<>();
+    private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, DockerContainer>> containersMap = new ConcurrentHashMap<>();
@@ -203,14 +203,26 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .setParameterContext(parameterContext);
             }
 
-            driverHandlerMap.put(extensionContext.getUniqueId(), driverHandler);
-            log.trace("Adding {} to handler map (id {})", driverHandler,
-                    extensionContext.getUniqueId());
+            putDriverHandlerInMap(extensionContext.getUniqueId(),
+                    driverHandler);
+
         } catch (Exception e) {
             handleException(parameter, driverHandler, constructorClass, e);
         }
 
         return resolveHandler(parameter, driverHandler);
+    }
+
+    private void putDriverHandlerInMap(String contextId,
+            DriverHandler driverHandler) {
+        if (driverHandlerMap.containsKey(contextId)) {
+            driverHandlerMap.get(contextId).add(driverHandler);
+        } else {
+            List<DriverHandler> driverHandlers = new ArrayList<>();
+            driverHandlers.add(driverHandler);
+            driverHandlerMap.put(contextId, driverHandlers);
+        }
+        log.trace("Adding {} to handler map (id {})", driverHandler, contextId);
     }
 
     private Browser getBrowser(String contextId, Parameter parameter,
@@ -304,43 +316,46 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 extensionContext);
 
         String contextId = extensionContext.getUniqueId();
-        DriverHandler driverHandler = getValueFromContextId(driverHandlerMap,
-                contextId);
-        log.trace("After each for {} (id {})", driverHandler, contextId);
-        if (driverHandler == null) {
+
+        List<DriverHandler> driverHandlers = getValueFromContextId(
+                driverHandlerMap, contextId);
+        if (driverHandlers == null) {
             log.warn("Driver handler for context id {} not found", contextId);
             return;
         }
 
-        try {
-            Object object = driverHandler.getObject();
-            if (object != null) {
-                if (List.class.isAssignableFrom(object.getClass())) {
-                    List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
-                    for (int i = 0; i < webDriverList.size(); i++) {
-                        screenshotManager.makeScreenshot(webDriverList.get(i),
-                                driverHandler.getName() + "_" + i);
-                        webDriverList.get(i).quit();
-                    }
+        for (DriverHandler driverHandler : driverHandlers) {
+            try {
+                Object object = driverHandler.getObject();
+                if (object != null) {
+                    if (List.class.isAssignableFrom(object.getClass())) {
+                        List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
+                        for (int i = 0; i < webDriverList.size(); i++) {
+                            screenshotManager.makeScreenshot(
+                                    webDriverList.get(i),
+                                    driverHandler.getName() + "_" + i);
+                            webDriverList.get(i).quit();
+                        }
 
-                } else {
-                    WebDriver webDriver = (WebDriver) object;
-                    if (driverHandler.getName() != null) {
-                        screenshotManager.makeScreenshot(webDriver,
-                                driverHandler.getName());
+                    } else {
+                        WebDriver webDriver = (WebDriver) object;
+                        if (driverHandler.getName() != null) {
+                            screenshotManager.makeScreenshot(webDriver,
+                                    driverHandler.getName());
+                        }
+                        webDriver.quit();
                     }
-                    webDriver.quit();
                 }
+            } catch (Exception e) {
+                log.warn("Exception closing webdriver instance", e);
             }
-        } catch (Exception e) {
-            log.warn("Exception closing webdriver instance", e);
-        }
 
-        // Clean handler
-        try {
-            driverHandler.cleanup();
-        } catch (Exception e) {
-            log.warn("Exception cleaning handler {}", driverHandler, e);
+            // Clean handler
+            try {
+                driverHandler.cleanup();
+            } catch (Exception e) {
+                log.warn("Exception cleaning handler {}", driverHandler, e);
+            }
         }
 
         // Clear handler map
