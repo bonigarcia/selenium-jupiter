@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia;
 
+import static com.google.common.collect.ImmutableList.copyOf;
 import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -324,7 +325,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             return;
         }
 
-        for (DriverHandler driverHandler : driverHandlers) {
+        for (DriverHandler driverHandler : copyOf(driverHandlers).reverse()) {
             try {
                 Object object = driverHandler.getObject();
                 if (object != null) {
