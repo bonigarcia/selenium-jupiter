@@ -309,7 +309,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void afterEach(ExtensionContext extensionContext) {
         // Make screenshots if required and close browsers
@@ -326,29 +325,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
 
         for (DriverHandler driverHandler : copyOf(driverHandlers).reverse()) {
+            // Quit WebDriver object
+            Object object = driverHandler.getObject();
             try {
-                Object object = driverHandler.getObject();
-                if (object != null) {
-                    if (List.class.isAssignableFrom(object.getClass())) {
-                        List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
-                        for (int i = 0; i < webDriverList.size(); i++) {
-                            screenshotManager.makeScreenshot(
-                                    webDriverList.get(i),
-                                    driverHandler.getName() + "_" + i);
-                            webDriverList.get(i).quit();
-                        }
-
-                    } else {
-                        WebDriver webDriver = (WebDriver) object;
-                        if (driverHandler.getName() != null) {
-                            screenshotManager.makeScreenshot(webDriver,
-                                    driverHandler.getName());
-                        }
-                        webDriver.quit();
-                    }
-                }
+                quitWebDriver(object, driverHandler, screenshotManager);
             } catch (Exception e) {
-                log.warn("Exception closing webdriver instance", e);
+                log.warn("Exception closing webdriver object {}", object, e);
             }
 
             // Clean handler
@@ -361,6 +343,29 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Clear handler map
         driverHandlerMap.remove(contextId);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void quitWebDriver(Object object, DriverHandler driverHandler,
+            ScreenshotManager screenshotManager) {
+        if (object != null) {
+            if (List.class.isAssignableFrom(object.getClass())) {
+                List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
+                for (int i = 0; i < webDriverList.size(); i++) {
+                    screenshotManager.makeScreenshot(webDriverList.get(i),
+                            driverHandler.getName() + "_" + i);
+                    webDriverList.get(i).quit();
+                }
+
+            } else {
+                WebDriver webDriver = (WebDriver) object;
+                if (driverHandler.getName() != null) {
+                    screenshotManager.makeScreenshot(webDriver,
+                            driverHandler.getName());
+                }
+                webDriver.quit();
+            }
+        }
     }
 
     private <T extends Object> T getValueFromContextId(Map<String, T> map,
