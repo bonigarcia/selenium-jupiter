@@ -597,17 +597,18 @@ public class DockerDriverHandler {
                     .binds(binds).cmd(cmd).entryPoint(entryPoint).envs(envs)
                     .network(network);
             selenoidContainer = dockerBuilder.build();
+            containerMap.put(selenoidImage, selenoidContainer);
+
             String containerId = dockerService
                     .startContainer(selenoidContainer);
+            selenoidContainer.setContainerId(containerId);
             String selenoidHost = dockerService.getHost(containerId, network);
             String selenoidPort = dockerService.getBindPort(containerId,
                     internalSelenoidPort + "/tcp");
             String selenoidUrl = format("http://%s:%s/wd/hub", selenoidHost,
                     selenoidPort);
-            selenoidContainer.setContainerId(containerId);
-            selenoidContainer.setContainerUrl(selenoidUrl);
 
-            containerMap.put(selenoidImage, selenoidContainer);
+            selenoidContainer.setContainerUrl(selenoidUrl);
         }
         return selenoidContainer;
     }
