@@ -219,7 +219,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         String newContextId = searchContextIdKeyInMap(driverHandlerMap,
                 contextId);
         log.trace(
-                "Put driver handler in map (context id {}, new context id {})",
+                "Put driver handler {} in map (context id {}, new context id {})",
                 driverHandler, contextId, newContextId);
         if (driverHandlerMap.containsKey(contextId)) {
             driverHandlerMap.get(contextId).add(driverHandler);
@@ -233,7 +233,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             List<DriverHandler> driverHandlers = new ArrayList<>();
             driverHandlers.add(driverHandler);
             driverHandlerMap.put(contextId, driverHandlers);
-            log.trace("Adding {} to handler new map (new id)", driverHandler,
+            log.trace("Adding {} to handler new map (id {})", driverHandler,
                     contextId);
         }
     }
