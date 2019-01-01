@@ -216,14 +216,26 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     private void putDriverHandlerInMap(String contextId,
             DriverHandler driverHandler) {
+        String newContextId = searchContextIdKeyInMap(driverHandlerMap,
+                contextId);
+        log.trace(
+                "Put driver handler in map (context id {}, new context id {})",
+                driverHandler, contextId, newContextId);
         if (driverHandlerMap.containsKey(contextId)) {
             driverHandlerMap.get(contextId).add(driverHandler);
+            log.trace("Adding {} to handler existing map (id {})",
+                    driverHandler, contextId);
+        } else if (driverHandlerMap.containsKey(newContextId)) {
+            driverHandlerMap.get(newContextId).add(driverHandler);
+            log.trace("Adding {} to handler existing map (new id {})",
+                    driverHandler, newContextId);
         } else {
             List<DriverHandler> driverHandlers = new ArrayList<>();
             driverHandlers.add(driverHandler);
             driverHandlerMap.put(contextId, driverHandlers);
+            log.trace("Adding {} to handler new map (new id)", driverHandler,
+                    contextId);
         }
-        log.trace("Adding {} to handler map (id {})", driverHandler, contextId);
     }
 
     private Browser getBrowser(String contextId, Parameter parameter,
@@ -289,6 +301,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         LinkedHashMap<String, DockerContainer> containerMap = new LinkedHashMap<>();
         driverHandler.setContainerMap(containerMap);
+        log.trace("Adding new container map (context id {}) (handler {})",
+                contextId, driverHandler);
         containersMap.put(contextId, containerMap);
 
         if (dockerService == null) {
@@ -316,6 +330,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 extensionContext);
 
         String contextId = extensionContext.getUniqueId();
+        log.trace("After each for context id {}", contextId);
 
         List<DriverHandler> driverHandlers = getValueFromContextId(
                 driverHandlerMap, contextId);
@@ -370,15 +385,19 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     private <T extends Object> T getValueFromContextId(Map<String, T> map,
             String contextId) {
-        T output = map.get(contextId);
-        if (output == null) {
+        String newContextId = searchContextIdKeyInMap(map, contextId);
+        return map.get(newContextId);
+    }
+
+    private String searchContextIdKeyInMap(Map<String, ?> map,
+            String contextId) {
+        if (!map.containsKey(contextId)) {
             int i = contextId.lastIndexOf('/');
             if (i != -1) {
                 contextId = contextId.substring(0, i);
-                output = map.get(contextId);
             }
         }
-        return output;
+        return contextId;
     }
 
     @Override

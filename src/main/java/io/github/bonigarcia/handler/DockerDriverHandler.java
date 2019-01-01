@@ -413,6 +413,9 @@ public class DockerDriverHandler {
             if (containerMap != null && !containerMap.isEmpty()
                     && dockerService != null) {
                 int numContainers = containerMap.size();
+                log.trace("There are {} container(s): {}", numContainers,
+                        containerMap);
+
                 if (numContainers > 0) {
                     ExecutorService executorService = newFixedThreadPool(
                             numContainers);
