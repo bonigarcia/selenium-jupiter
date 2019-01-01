@@ -125,8 +125,7 @@ public class DockerDriverHandler {
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
             Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig,
-            Config config) {
+            DockerService dockerService, SelenoidConfig selenoidConfig) {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
@@ -134,7 +133,7 @@ public class DockerDriverHandler {
         this.containerMap = containerMap;
         this.dockerService = dockerService;
         this.selenoidConfig = selenoidConfig;
-        this.config = config;
+        this.config = selenoidConfig.getConfig();
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -554,7 +553,7 @@ public class DockerDriverHandler {
     }
 
     public DockerContainer startSelenoidContainer()
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
 
         DockerContainer selenoidContainer;
         String selenoidImage = getConfig().getSelenoidImage();
@@ -636,8 +635,7 @@ public class DockerDriverHandler {
     }
 
     public DockerContainer startAndroidContainer(String androidImage,
-            String deviceName)
-            throws DockerException, InterruptedException, IOException {
+            String deviceName) throws DockerException, InterruptedException {
 
         DockerContainer androidContainer;
         if (containerMap.containsKey(androidImage)) {
@@ -762,7 +760,7 @@ public class DockerDriverHandler {
     }
 
     public DockerContainer startNoVncContainer()
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
 
         DockerContainer novncContainer;
         String novncImage = getConfig().getNovncImage();

@@ -64,7 +64,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
 import com.google.gson.Gson;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.BrowsersTemplate.Browser;
@@ -300,7 +299,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     public void initHandlerForDocker(String contextId,
-            DriverHandler driverHandler) throws DockerCertificateException {
+            DriverHandler driverHandler) {
 
         LinkedHashMap<String, DockerContainer> containerMap = new LinkedHashMap<>();
         driverHandler.setContainerMap(containerMap);

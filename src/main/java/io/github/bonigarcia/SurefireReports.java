@@ -43,8 +43,8 @@ public class SurefireReports {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String getOutputFolder(ExtensionContext context, String outputFolder) {
-        // String outputFolder = getConfig().getOutputFolder();
+    public static String getOutputFolder(ExtensionContext context,
+            String outputFolder) {
         Optional<Method> testMethod = context.getTestMethod();
         Optional<Class<?>> testInstance = context.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {
