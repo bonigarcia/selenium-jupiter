@@ -100,7 +100,7 @@ public class ListDriverHandler extends DriverHandler {
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                 context, parameter, testInstance, annotationsReader,
-                containerMap, dockerService, selenoidConfig);
+                containerMap, dockerService, selenoidConfig, config);
         firstDockerDriverHandler.setIndex("_0");
         firstDockerDriverHandler.startSelenoidContainer();
         if (getConfig().isVnc()) {
@@ -142,7 +142,7 @@ public class ListDriverHandler extends DriverHandler {
                     ? firstDockerDriverHandler
                     : new DockerDriverHandler(context, parameter, testInstance,
                             annotationsReader, containerMap, dockerService,
-                            selenoidConfig);
+                            selenoidConfig, config);
             dockerDriverHandler.setIndex("_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler

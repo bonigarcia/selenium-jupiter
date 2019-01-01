@@ -125,7 +125,8 @@ public class DockerDriverHandler {
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
             Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig) {
+            DockerService dockerService, SelenoidConfig selenoidConfig,
+            Config config) {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
@@ -133,7 +134,7 @@ public class DockerDriverHandler {
         this.containerMap = containerMap;
         this.dockerService = dockerService;
         this.selenoidConfig = selenoidConfig;
-        this.config = selenoidConfig.getConfig();
+        this.config = config;
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
