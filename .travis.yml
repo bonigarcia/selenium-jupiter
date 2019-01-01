@@ -24,3 +24,5 @@ script:
     - mvn test
     - bash <(curl -s https://codecov.io/bash)
     - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mvn sonar:sonar; fi
+    - NUM_CONTAINERS=`docker ps | grep imagename | wc -l`
+    - if [ $NUM_CONTAINERS != 0 ]; then echo "There are $NUM_CONTAINERS running container(s)"; exit 1; fi
