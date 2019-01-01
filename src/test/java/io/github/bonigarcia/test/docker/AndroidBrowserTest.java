@@ -34,8 +34,7 @@ public class AndroidBrowserTest {
     DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(config);
 
     @ParameterizedTest
-    @ValueSource(strings = { "5.0.1", "5.1.1", "6.0", "7.0", "7.1.1", "8.0",
-            "8.1" })
+    @ValueSource(strings = { "5.0.1", "9.0" })
     void testAndroidVersions(String version) throws Exception {
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName());

@@ -464,53 +464,60 @@ public class DockerDriverHandler {
         String browserVersion;
         switch (version) {
         case "5.0.1":
-        case LATEST + "-6":
+        case LATEST + "-7":
             androidImage = getConfig().getAndroidImage501();
             apiLevel = "21";
             browserName = BROWSER;
             browserVersion = "37.0";
             break;
         case "5.1.1":
-        case LATEST + "-5":
+        case LATEST + "-6":
             androidImage = getConfig().getAndroidImage511();
             apiLevel = "22";
             browserName = BROWSER;
             browserVersion = "39.0";
             break;
         case "6.0":
-        case LATEST + "-4":
+        case LATEST + "-5":
             androidImage = getConfig().getAndroidImage60();
             apiLevel = "23";
             browserName = BROWSER;
             browserVersion = "44.0";
             break;
         case "7.0":
-        case LATEST + "-3":
+        case LATEST + "-4":
             androidImage = getConfig().getAndroidImage701();
             apiLevel = "24";
             browserName = CHROME;
             browserVersion = "51.0";
             break;
         case "7.1.1":
-        case LATEST + "-2":
+        case LATEST + "-3":
             androidImage = getConfig().getAndroidImage711();
             apiLevel = "25";
             browserName = CHROME;
             browserVersion = "55.0";
             break;
         case "8.0":
-        case LATEST + "-1":
+        case LATEST + "-2":
             androidImage = getConfig().getAndroidImage80();
             apiLevel = "26";
             browserName = CHROME;
             browserVersion = "58.0";
             break;
         case "8.1":
-        case LATEST:
+        case LATEST + "-1":
             androidImage = getConfig().getAndroidImage81();
             apiLevel = "27";
             browserName = CHROME;
             browserVersion = "61.0";
+            break;
+        case "9.0":
+        case LATEST:
+            androidImage = getConfig().getAndroidImage90();
+            apiLevel = "28";
+            browserName = CHROME;
+            browserVersion = "66.0";
             break;
         default:
             throw new SeleniumJupiterException(

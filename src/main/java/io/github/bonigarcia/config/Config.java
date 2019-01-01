@@ -173,6 +173,8 @@ public class Config {
             "sel.jup.android.image.8.0", String.class);
     ConfigKey<String> androidImage81 = new ConfigKey<>(
             "sel.jup.android.image.8.1", String.class);
+    ConfigKey<String> androidImage90 = new ConfigKey<>(
+            "sel.jup.android.image.9.0", String.class);
     ConfigKey<String> androidNoVncPort = new ConfigKey<>(
             "sel.jup.android.novnc.port", String.class);
     ConfigKey<String> androidAppiumPort = new ConfigKey<>(
@@ -793,6 +795,14 @@ public class Config {
 
     public void setAndroidImage81(String value) {
         this.androidImage81.setValue(value);
+    }
+
+    public String getAndroidImage90() {
+        return resolve(androidImage90);
+    }
+
+    public void setAndroidImage90(String value) {
+        this.androidImage90.setValue(value);
     }
 
     public String getAndroidNoVncPort() {
