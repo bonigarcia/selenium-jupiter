@@ -20,22 +20,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Method;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.config.Config;
 
-@ExtendWith(SeleniumExtension.class)
 public class ForcedEmptyConfigJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
     static void setup() throws Exception {
-        Config config = SeleniumJupiter.config();
+        Config config = seleniumExtension.getConfig();
         config.setExceptionWhenNoDriver(false);
         for (Method method : config.getClass().getMethods()) {
             if (method.getName().startsWith("set")) {
@@ -50,11 +50,6 @@ public class ForcedEmptyConfigJupiterTest {
                 }
             }
         }
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
     }
 
     @Test

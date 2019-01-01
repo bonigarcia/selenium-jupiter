@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
@@ -37,6 +36,8 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.config.Config;
+
 /**
  * Options/capabilities reader from annotated parameters or test instance to the
  * proper type (ChromeOptions, FirefoxOptions, Capabilities, etc).
@@ -47,6 +48,12 @@ import org.slf4j.Logger;
 public class AnnotationsReader {
 
     final Logger log = getLogger(lookup().lookupClass());
+
+    Config config;
+
+    public AnnotationsReader(Config config) {
+        this.config = config;
+    }
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
@@ -82,7 +89,7 @@ public class AnnotationsReader {
             Optional<Object> testInstance)
             throws MalformedURLException, IllegalAccessException {
         Optional<URL> out = empty();
-        String seleniumServerUrl = config().getSeleniumServerUrl();
+        String seleniumServerUrl = getConfig().getSeleniumServerUrl();
 
         if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
             out = of(new URL(seleniumServerUrl));
@@ -214,6 +221,10 @@ public class AnnotationsReader {
             return empty();
         }
         return of(asList(st.nextToken(), st.nextToken()));
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

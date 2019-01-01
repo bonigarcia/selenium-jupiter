@@ -16,13 +16,8 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
-import static java.lang.System.currentTimeMillis;
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openqa.selenium.Platform.ANY;
 
 import java.lang.reflect.Parameter;
@@ -38,12 +33,13 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.WebDriverCreator;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for RemoteWebDriver.
@@ -57,14 +53,16 @@ public class RemoteDriverHandler extends DriverHandler {
     private Browser browser;
     private SeleniumExtension parent;
     private ParameterContext parameterContext;
+    private WebDriverCreator webDriverCreator;
 
-    public RemoteDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public RemoteDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     public RemoteDriverHandler(Parameter parameter, ExtensionContext context,
-            Browser browser) {
-        super(parameter, context);
+            Config config, Browser browser) {
+        super(parameter, context, config);
         this.browser = browser;
     }
 
@@ -74,7 +72,7 @@ public class RemoteDriverHandler extends DriverHandler {
             Optional<Object> testInstance = context.getTestInstance();
             dockerDriverHandler = new DockerDriverHandler(context, parameter,
                     testInstance, annotationsReader, containerMap,
-                    dockerService, selenoidConfig);
+                    dockerService, selenoidConfig, getConfig());
 
             if (browser != null && browser.isDockerBrowser()) {
                 object = dockerDriverHandler.resolve(browser.toBrowserType(),
@@ -126,14 +124,17 @@ public class RemoteDriverHandler extends DriverHandler {
     }
 
     private WebDriver resolveRemote(URL url, Capabilities capabilities) {
-        return createRemoteWebDriver(url, capabilities);
+        if (webDriverCreator == null) {
+            webDriverCreator = new WebDriverCreator(getConfig());
+        }
+        return webDriverCreator.createRemoteWebDriver(url, capabilities);
     }
 
     private WebDriver resolveGeneric() {
-        String defaultBrowser = config().getDefaultBrowser();
-        String defaultVersion = config().getDefaultVersion();
-        String defaultBrowserFallback = config().getDefaultBrowserFallback();
-        String defaultBrowserFallbackVersion = config()
+        String defaultBrowser = getConfig().getDefaultBrowser();
+        String defaultVersion = getConfig().getDefaultVersion();
+        String defaultBrowserFallback = getConfig().getDefaultBrowserFallback();
+        String defaultBrowserFallbackVersion = getConfig()
                 .getDefaultBrowserFallbackVersion();
         String separator = ",";
 
@@ -193,44 +194,6 @@ public class RemoteDriverHandler extends DriverHandler {
 
     public void setParameterContext(ParameterContext parameterContext) {
         this.parameterContext = parameterContext;
-    }
-
-    public static WebDriver createRemoteWebDriver(URL hubUrl,
-            Capabilities capabilities) {
-        WebDriver webdriver = null;
-        int waitTimeoutSec = config().getRemoteWebdriverWaitTimeoutSec();
-        int pollTimeSec = config().getRemoteWebdriverPollTimeSec();
-        long timeoutMs = currentTimeMillis() + SECONDS.toMillis(waitTimeoutSec);
-        do {
-            if (currentTimeMillis() > timeoutMs) {
-                throw new SeleniumJupiterException(
-                        "Timeout of " + waitTimeoutSec
-                                + "  seconds creating WebDriver object");
-            }
-            try {
-                log.debug("Creating WebDriver object for {} at {}",
-                        capabilities.getBrowserName(), hubUrl);
-                log.trace("Complete {}", capabilities);
-                webdriver = new RemoteWebDriver(hubUrl, capabilities);
-            } catch (Exception e1) {
-                try {
-                    log.warn(
-                            "Exception creating WebDriver object {} ... retrying in {} second(s)",
-                            e1.getClass().getSimpleName(), pollTimeSec);
-                    sleep(SECONDS.toMillis(pollTimeSec));
-                } catch (InterruptedException e2) {
-                    log.warn("Interrupted exception creating WebDriver object",
-                            e2);
-                    currentThread().interrupt();
-                }
-            }
-
-        } while (webdriver == null);
-
-        log.trace("Created WebDriver object (session id {})",
-                ((RemoteWebDriver) webdriver).getSessionId());
-
-        return webdriver;
     }
 
 }

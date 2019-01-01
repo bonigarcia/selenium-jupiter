@@ -27,28 +27,28 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class ScreenshotSurefireTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     File imageName;
 
     @BeforeAll
     void setup() {
-        SeleniumJupiter.config().enableScreenshotAtTheEndOfTests();
-        SeleniumJupiter.config().takeScreenshotAsBase64AndPng();
-        SeleniumJupiter.config().useSurefireOutputFolder();
+        seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumExtension.getConfig().takeScreenshotAsBase64AndPng();
+        seleniumExtension.getConfig().useSurefireOutputFolder();
     }
 
     @AfterAll
     void teardown() {
-        SeleniumJupiter.config().reset();
         assertTrue(imageName.exists());
         imageName.delete();
     }

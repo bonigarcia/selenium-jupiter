@@ -21,28 +21,23 @@ import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class DockerChromeBetaJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().setVnc(true);
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setVnc(true);
     }
 
     @Test

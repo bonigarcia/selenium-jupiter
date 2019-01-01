@@ -19,28 +19,23 @@ package io.github.bonigarcia.test.forced;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class ForcedDockerNetworkJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeEach
     void setup() {
-        SeleniumJupiter.config().setExceptionWhenNoDriver(false);
-        SeleniumJupiter.config().setDockerNetwork("host");
-    }
-
-    @AfterEach
-    void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
+        seleniumExtension.getConfig().setDockerNetwork("host");
     }
 
     @Test

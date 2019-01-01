@@ -37,6 +37,7 @@ import io.github.bonigarcia.Binary;
 import io.github.bonigarcia.Extensions;
 import io.github.bonigarcia.Options;
 import io.github.bonigarcia.Preferences;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for FirefoxDriver.
@@ -46,12 +47,13 @@ import io.github.bonigarcia.Preferences;
  */
 public class FirefoxDriverHandler extends DriverHandler {
 
-    public FirefoxDriverHandler() {
-        super();
+    public FirefoxDriverHandler(Config config) {
+        super(config);
     }
 
-    public FirefoxDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public FirefoxDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

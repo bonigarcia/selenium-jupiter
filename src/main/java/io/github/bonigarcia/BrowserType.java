@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.Integer.parseInt;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.Platform.ANY;
@@ -28,6 +27,7 @@ import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
 import io.github.bonigarcia.handler.FirefoxDriverHandler;
@@ -51,32 +51,32 @@ public enum BrowserType {
     String optionsKey;
     DesiredCapabilities capabilities;
 
-    public void init() {
+    public void init(Config config) {
         switch (this) {
         case ANDROID:
-            driverHandler = new ChromeDriverHandler();
+            driverHandler = new ChromeDriverHandler(config);
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities();
             break;
         case FIREFOX:
-            dockerImage = config().getFirefoxImageFormat();
-            path = config().getFirefoxPath();
-            driverHandler = new FirefoxDriverHandler();
+            dockerImage = config.getFirefoxImageFormat();
+            path = config.getFirefoxPath();
+            driverHandler = new FirefoxDriverHandler(config);
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             capabilities = new DesiredCapabilities("firefox", "", ANY);
             break;
         case OPERA:
-            dockerImage = config().getOperaImageFormat();
-            path = config().getOperaPath();
-            driverHandler = new OperaDriverHandler();
+            dockerImage = config.getOperaImageFormat();
+            path = config.getOperaPath();
+            driverHandler = new OperaDriverHandler(config);
             optionsKey = OperaOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("operablink", "", ANY);
             break;
         case CHROME:
         default:
-            dockerImage = config().getChromeImageFormat();
-            path = config().getChromePath();
-            driverHandler = new ChromeDriverHandler();
+            dockerImage = config.getChromeImageFormat();
+            path = config.getChromePath();
+            driverHandler = new ChromeDriverHandler(config);
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("chrome", "", ANY);
             break;

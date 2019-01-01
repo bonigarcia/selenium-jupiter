@@ -30,43 +30,31 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SelenoidConfig;
+import io.github.bonigarcia.config.Config;
 
-@ExtendWith(MockitoExtension.class)
 public class SelenoidConfigTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    @InjectMocks
-    SelenoidConfig selenoidConfig;
-
-    @BeforeAll
-    static void setup() {
-        SeleniumJupiter.config().setChromeLatestVersion("65.0");
-        SeleniumJupiter.config().setFirefoxLatestVersion("58.0");
-        SeleniumJupiter.config().setOperaLatestVersion("51.0");
-        SeleniumJupiter.config().setBrowserListFromDockerHub(false);
+    Config config = new Config();
+    {
+        config.setChromeLatestVersion("65.0");
+        config.setFirefoxLatestVersion("58.0");
+        config.setOperaLatestVersion("51.0");
+        config.setBrowserListFromDockerHub(false);
     }
 
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
-    }
+    SelenoidConfig selenoidConfig = new SelenoidConfig(config);
 
     @ParameterizedTest
     @CsvSource({ "3.6, 4.0, 48.0", "46.0, 47.0, 48.0", "46, 47.0, 48" })

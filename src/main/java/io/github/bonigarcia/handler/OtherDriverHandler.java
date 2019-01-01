@@ -22,6 +22,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 
+import io.github.bonigarcia.config.Config;
+
 /**
  * Resolver for other drivers.
  *
@@ -32,13 +34,14 @@ public class OtherDriverHandler extends DriverHandler {
 
     private Class<?> type;
 
-    public OtherDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public OtherDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     public OtherDriverHandler(Parameter parameter, ExtensionContext context,
-            Class<?> type) {
-        super(parameter, context);
+            Config config, Class<?> type) {
+        super(parameter, context, config);
         this.type = type;
     }
 

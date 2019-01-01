@@ -21,26 +21,21 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class ForcedSafariJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeEach
     void setup() {
-        SeleniumJupiter.config().setExceptionWhenNoDriver(false);
-    }
-
-    @AfterEach
-    void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
     }
 
     @Test

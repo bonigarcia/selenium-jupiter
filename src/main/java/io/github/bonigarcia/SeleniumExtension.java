@@ -17,7 +17,6 @@
 package io.github.bonigarcia;
 
 import static com.google.common.collect.ImmutableList.copyOf;
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.readAllBytes;
@@ -69,6 +68,7 @@ import com.spotify.docker.client.exceptions.DockerCertificateException;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.BrowsersTemplate.Browser;
+import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
@@ -94,6 +94,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     static final String CLASSPATH_PREFIX = "classpath:";
 
+    private Config config = new Config();
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
     private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
@@ -259,7 +260,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (driverHandler != null) {
             driverHandler.resolve();
             return driverHandler.getObject();
-        } else if (config().isExceptionWhenNoDriver()) {
+        } else if (getConfig().isExceptionWhenNoDriver()) {
             throw new SeleniumJupiterException(
                     "No valid handler for " + parameter + " was found");
         } else {
@@ -276,21 +277,23 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (isRemote && browser != null) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Browser.class)
-                    .newInstance(parameter, extensionContext, browser);
+                            ExtensionContext.class, Config.class, Browser.class)
+                    .newInstance(parameter, extensionContext, getConfig(),
+                            browser);
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
                 && !browserListMap.isEmpty()) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Class.class)
-                    .newInstance(parameter, extensionContext, type);
+                            ExtensionContext.class, Config.class, Class.class)
+                    .newInstance(parameter, extensionContext, getConfig(),
+                            type);
 
         } else {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class)
-                    .newInstance(parameter, extensionContext);
+                            ExtensionContext.class, Config.class)
+                    .newInstance(parameter, extensionContext, getConfig());
 
         }
         return driverHandler;
@@ -306,7 +309,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         containersMap.put(contextId, containerMap);
 
         if (dockerService == null) {
-            dockerService = new DockerService();
+            dockerService = new DockerService(getConfig());
         }
         driverHandler.setDockerService(dockerService);
     }
@@ -327,7 +330,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     public void afterEach(ExtensionContext extensionContext) {
         // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(
-                extensionContext);
+                extensionContext, getConfig());
 
         String contextId = extensionContext.getUniqueId();
         log.trace("After each for context id {}", contextId);
@@ -419,11 +422,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         String contextId = extensionContext.getUniqueId();
         try {
             // 1. By JSON content
-            String browserJsonContent = config()
+            String browserJsonContent = getConfig()
                     .getBrowserTemplateJsonContent();
             if (browserJsonContent.isEmpty()) {
                 // 2. By JSON file
-                String browserJsonFile = config().getBrowserTemplateJsonFile();
+                String browserJsonFile = getConfig()
+                        .getBrowserTemplateJsonFile();
                 if (browserJsonFile.startsWith(CLASSPATH_PREFIX)) {
                     String browserJsonInClasspath = browserJsonFile
                             .substring(CLASSPATH_PREFIX.length());
@@ -557,6 +561,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     public DockerService getDockerService() {
         return dockerService;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

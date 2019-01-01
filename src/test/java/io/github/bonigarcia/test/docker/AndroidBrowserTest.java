@@ -16,49 +16,35 @@
  */
 package io.github.bonigarcia.test.docker;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import io.github.bonigarcia.DockerContainer;
-import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.DockerDriverHandler;
 
-@ExtendWith(MockitoExtension.class)
 public class AndroidBrowserTest {
 
-    @InjectMocks
-    DockerDriverHandler dockerDriverHandler;
-
-    @Mock
-    DockerService dockerService;
-
-    @Mock
-    Map<String, DockerContainer> containerMap;
+    Config config = new Config();
+    DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(config);
 
     @ParameterizedTest
-    @ValueSource(strings = { "5.0.1", "5.1.1", "6.0", "7.0", "7.1.1" })
+    @ValueSource(strings = { "5.0.1", "5.1.1", "6.0", "7.0", "7.1.1", "8.0",
+            "8.1" })
     void testAndroidVersions(String version) throws Exception {
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
-                config().getAndroidDeviceName());
+                config.getAndroidDeviceName());
         assertThat(androidUrl, notNullValue());
     }
 
     @Test
     void testAndroidWrongVersion() throws Exception {
-        config().setAndroidDefaultVersion("");
+        config.setAndroidDefaultVersion("");
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler.startAndroidBrowser("", "");
         });

@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -31,6 +30,7 @@ import org.slf4j.Logger;
 import com.google.gson.GsonBuilder;
 
 import io.github.bonigarcia.DockerBrowserConfig.Browser;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Utilities related with Selenoid.
@@ -43,9 +43,15 @@ public class SelenoidConfig {
     final Logger log = getLogger(lookup().lookupClass());
 
     DockerBrowserConfig browsers;
+    Config config;
 
     public SelenoidConfig() {
-        browsers = new DockerBrowserConfig(getDockerEnvs());
+        // Default constructor
+    }
+
+    public SelenoidConfig(Config config) {
+        this.config = config;
+        browsers = new DockerBrowserConfig(getDockerEnvs(), getConfig());
     }
 
     public String getBrowsersJsonAsString() {
@@ -97,10 +103,10 @@ public class SelenoidConfig {
 
     public List<String> getDockerEnvs() {
         List<String> envs = new ArrayList<>();
-        envs.add("DOCKER_API_VERSION=" + config().getDockerApiVersion());
-        envs.add("TZ=" + config().getDockerTimeZone());
-        envs.add("LANG=" + config().getDockerLang());
-        if (config().isVnc()) {
+        envs.add("DOCKER_API_VERSION=" + getConfig().getDockerApiVersion());
+        envs.add("TZ=" + getConfig().getDockerTimeZone());
+        envs.add("LANG=" + getConfig().getDockerLang());
+        if (getConfig().isVnc()) {
             envs.add("ENABLE_WINDOW_MANAGER=true");
         }
         return envs;
@@ -115,6 +121,10 @@ public class SelenoidConfig {
             return null;
         }
         return String.valueOf(latestVersionInt - beforeVersion) + ".0";
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

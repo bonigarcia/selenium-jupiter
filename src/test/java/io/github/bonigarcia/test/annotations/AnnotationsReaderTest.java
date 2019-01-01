@@ -33,11 +33,12 @@ import org.openqa.selenium.Capabilities;
 import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.Options;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.config.Config;
 
 public class AnnotationsReaderTest {
 
-    private AnnotationsReader annotationsReader = new AnnotationsReader();
-    private Optional<Object> testInstance = Optional.of(new ClassWithOptions());
+    AnnotationsReader annotationsReader = new AnnotationsReader(new Config());
+    Optional<Object> testInstance = Optional.of(new ClassWithOptions());
 
     @Test
     void testThrowsExceptionWithNullTestInstance() throws Exception {

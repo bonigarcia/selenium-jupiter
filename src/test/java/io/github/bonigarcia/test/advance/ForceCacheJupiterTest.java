@@ -24,21 +24,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Redudant test for Travis CI suite")
 // tag::snippet-in-doc[]
-@ExtendWith(SeleniumExtension.class)
 public class ForceCacheJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().wdm().setForceCache(true);
+        seleniumExtension.getConfig().wdm().setForceCache(true);
     }
 
     @Test

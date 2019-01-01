@@ -20,27 +20,22 @@ import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class BrowserListFromDockerHubWithFallbackJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeEach
     void setup() {
-        SeleniumJupiter.config().setDockerHubUrl("");
-    }
-
-    @AfterEach
-    void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setDockerHubUrl("");
     }
 
     @Test

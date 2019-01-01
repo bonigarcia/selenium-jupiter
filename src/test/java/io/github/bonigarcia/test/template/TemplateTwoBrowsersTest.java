@@ -20,30 +20,24 @@ package io.github.bonigarcia.test.template;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class TemplateTwoBrowsersTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().setBrowserTemplateJsonFile(
+        seleniumExtension.getConfig().setBrowserTemplateJsonFile(
                 "./src/test/resources/browsers-two.json");
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
     }
 
     // tag::snippet-in-doc[]

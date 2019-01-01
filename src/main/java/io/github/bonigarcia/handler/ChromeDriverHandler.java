@@ -32,6 +32,7 @@ import io.github.bonigarcia.Arguments;
 import io.github.bonigarcia.Binary;
 import io.github.bonigarcia.Extensions;
 import io.github.bonigarcia.Options;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for ChromeDriver.
@@ -41,12 +42,13 @@ import io.github.bonigarcia.Options;
  */
 public class ChromeDriverHandler extends DriverHandler {
 
-    public ChromeDriverHandler() {
-        super();
+    public ChromeDriverHandler(Config config) {
+        super(config);
     }
 
-    public ChromeDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public ChromeDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

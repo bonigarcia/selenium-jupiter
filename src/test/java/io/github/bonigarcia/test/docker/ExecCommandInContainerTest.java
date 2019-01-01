@@ -24,7 +24,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -34,7 +33,6 @@ import org.slf4j.Logger;
 import com.spotify.docker.client.exceptions.DockerException;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
 public class ExecCommandInContainerTest {
 
@@ -45,12 +43,8 @@ public class ExecCommandInContainerTest {
 
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().setDockerServerUrl("http://localhost:2375");
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig()
+                .setDockerServerUrl("http://localhost:2375");
     }
 
     @Test

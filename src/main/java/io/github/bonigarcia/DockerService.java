@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -43,6 +42,8 @@ import com.spotify.docker.client.messages.HostConfig;
 import com.spotify.docker.client.messages.PortBinding;
 import com.spotify.docker.client.messages.ProgressMessage;
 
+import io.github.bonigarcia.config.Config;
+
 /**
  * Docker Service.
  *
@@ -53,21 +54,28 @@ public class DockerService {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    private Config config;
     private String dockerDefaultSocket;
     private int dockerWaitTimeoutSec;
     private int dockerPollTimeMs;
     private DockerClient dockerClient;
     private List<String> pulledImages = new ArrayList<>();
 
-    public DockerService() throws DockerCertificateException {
-        dockerDefaultSocket = config().getDockerDefaultSocket();
-        dockerWaitTimeoutSec = config().getDockerWaitTimeoutSec();
-        dockerPollTimeMs = config().getDockerPollTimeMs();
+    public DockerService(Config config) {
+        this.config = config;
 
-        String dockerServerUrl = config().getDockerServerUrl();
+        dockerDefaultSocket = getConfig().getDockerDefaultSocket();
+        dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
+        dockerPollTimeMs = getConfig().getDockerPollTimeMs();
+
+        String dockerServerUrl = getConfig().getDockerServerUrl();
         Builder dockerClientBuilder = null;
         if (dockerServerUrl.isEmpty()) {
-            dockerClientBuilder = DefaultDockerClient.fromEnv();
+            try {
+                dockerClientBuilder = DefaultDockerClient.fromEnv();
+            } catch (DockerCertificateException e) {
+                throw new SeleniumJupiterException(e);
+            }
         } else {
             log.debug("Using Docker server URL {}", dockerServerUrl);
             dockerClientBuilder = DefaultDockerClient.builder()
@@ -224,7 +232,7 @@ public class DockerService {
 
     public void stopContainer(String containerId)
             throws DockerException, InterruptedException {
-        int stopTimeoutSec = config().getDockerStopTimeoutSec();
+        int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         log.trace("Stopping container {} (timeout {} seconds)", containerId,
                 stopTimeoutSec);
         dockerClient.stopContainer(containerId, stopTimeoutSec);
@@ -259,6 +267,10 @@ public class DockerService {
     public void updateDockerClient(String url) {
         log.debug("Updating Docker client using URL {}", url);
         dockerClient = DefaultDockerClient.builder().uri(url).build();
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

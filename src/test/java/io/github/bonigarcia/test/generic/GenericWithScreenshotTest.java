@@ -27,29 +27,29 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class GenericWithScreenshotTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     File imageFile;
 
     @BeforeAll
     void setup() {
-        SeleniumJupiter.config().enableScreenshotAtTheEndOfTests();
-        SeleniumJupiter.config().takeScreenshotAsPng();
-        SeleniumJupiter.config().setDefaultVersion("71.0");
+        seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumExtension.getConfig().takeScreenshotAsPng();
+        seleniumExtension.getConfig().setDefaultVersion("71.0");
     }
 
     @AfterAll
     void teardown() {
-        SeleniumJupiter.config().reset();
         assertTrue(imageFile.exists());
         imageFile.delete();
     }

@@ -33,6 +33,7 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.AppiumDriverHandler;
 import io.github.bonigarcia.handler.ChromeDriverHandler;
 import io.github.bonigarcia.handler.DriverHandler;
@@ -82,8 +83,8 @@ public class ForcedAnnotationReaderTest {
                 .getParameters()[0];
         assertThrows(SeleniumJupiterException.class, () -> {
             handler.getDeclaredConstructor(Parameter.class,
-                    ExtensionContext.class).newInstance(parameter, null)
-                    .resolve();
+                    ExtensionContext.class, Config.class)
+                    .newInstance(parameter, null, new Config()).resolve();
         });
     }
 

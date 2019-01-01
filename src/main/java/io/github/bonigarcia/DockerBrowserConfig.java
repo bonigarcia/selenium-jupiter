@@ -19,7 +19,6 @@ package io.github.bonigarcia;
 import static io.github.bonigarcia.BrowserType.CHROME;
 import static io.github.bonigarcia.BrowserType.FIREFOX;
 import static io.github.bonigarcia.BrowserType.OPERA;
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.stream.Collectors.toList;
@@ -36,6 +35,7 @@ import org.slf4j.Logger;
 import com.google.gson.annotations.SerializedName;
 
 import io.github.bonigarcia.DockerHubTags.DockerHubTag;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Enumeration for Selenoid browsers.
@@ -50,10 +50,12 @@ public class DockerBrowserConfig {
     BrowserConfig chrome;
     BrowserConfig firefox;
     BrowserConfig operablink;
+    transient Config config;
 
-    public DockerBrowserConfig(List<String> envs) {
+    public DockerBrowserConfig(List<String> envs, Config config) {
+        this.config = config;
 
-        if (config().isBrowserListFromDockerHub()) {
+        if (config.isBrowserListFromDockerHub()) {
             try {
                 initBrowserConfigFromDockerHub(envs);
             } catch (Exception e) {
@@ -66,22 +68,23 @@ public class DockerBrowserConfig {
             initBrowserConfigFromProperties(envs);
         }
 
-        chrome.addBrowser("beta", new Browser(config().getChromeBetaImage(),
-                config().getChromeBetaPath(), envs));
+        chrome.addBrowser("beta", new Browser(getConfig().getChromeBetaImage(),
+                getConfig().getChromeBetaPath(), envs));
         chrome.addBrowser("unstable",
-                new Browser(config().getChromeUnstableImage(),
-                        config().getChromeUnstablePath(), envs));
+                new Browser(getConfig().getChromeUnstableImage(),
+                        getConfig().getChromeUnstablePath(), envs));
 
-        firefox.addBrowser("beta", new Browser(config().getFirefoxBetaImage(),
-                config().getFirefoxBetaPath(), envs));
+        firefox.addBrowser("beta",
+                new Browser(getConfig().getFirefoxBetaImage(),
+                        getConfig().getFirefoxBetaPath(), envs));
         firefox.addBrowser("unstable",
-                new Browser(config().getFirefoxUnstableImage(),
-                        config().getFirefoxUnstablePath(), envs));
+                new Browser(getConfig().getFirefoxUnstableImage(),
+                        getConfig().getFirefoxUnstablePath(), envs));
     }
 
     public void initBrowserConfigFromDockerHub(List<String> envs)
             throws IOException {
-        DockerHubService dockerHubService = new DockerHubService();
+        DockerHubService dockerHubService = new DockerHubService(getConfig());
         List<DockerHubTag> listTags = dockerHubService.listTags();
         chrome = getBrowserConfigFromDockerHub(CHROME, listTags, envs);
         firefox = getBrowserConfigFromDockerHub(FIREFOX, listTags, envs);
@@ -98,7 +101,7 @@ public class DockerBrowserConfig {
             List<DockerHubTag> dockerHubTags, List<String> envs) {
         List<String> browserList = null;
         String latestVersion = null;
-        browserType.init();
+        browserType.init(getConfig());
 
         VersionComparator versionComparator = new VersionComparator();
         switch (browserType) {
@@ -144,20 +147,20 @@ public class DockerBrowserConfig {
             BrowserType browserType, List<String> envs) {
         String firstVersion = null;
         String latestVersion = null;
-        browserType.init();
+        browserType.init(getConfig());
         switch (browserType) {
         case FIREFOX:
-            firstVersion = config().getFirefoxFirstVersion();
-            latestVersion = config().getFirefoxLatestVersion();
+            firstVersion = getConfig().getFirefoxFirstVersion();
+            latestVersion = getConfig().getFirefoxLatestVersion();
             break;
         case OPERA:
-            firstVersion = config().getOperaFirstVersion();
-            latestVersion = config().getOperaLatestVersion();
+            firstVersion = getConfig().getOperaFirstVersion();
+            latestVersion = getConfig().getOperaLatestVersion();
             break;
         case CHROME:
         default:
-            firstVersion = config().getChromeFirstVersion();
-            latestVersion = config().getChromeLatestVersion();
+            firstVersion = getConfig().getChromeFirstVersion();
+            latestVersion = getConfig().getChromeLatestVersion();
             break;
         }
 
@@ -188,7 +191,11 @@ public class DockerBrowserConfig {
         }
     }
 
-    public static class BrowserConfig {
+    public Config getConfig() {
+        return config;
+    }
+
+    public class BrowserConfig {
         @SerializedName("default")
         String defaultBrowser;
         Map<String, Browser> versions;
@@ -211,9 +218,9 @@ public class DockerBrowserConfig {
         }
     }
 
-    public static class Browser {
+    public class Browser {
         String image;
-        String port = config().getSelenoidPort();
+        String port = getConfig().getSelenoidPort();
         String path;
         Tmpfs tmpfs = new Tmpfs();
         List<String> env = new ArrayList<>();
@@ -229,9 +236,9 @@ public class DockerBrowserConfig {
         }
     }
 
-    public static class Tmpfs {
+    public class Tmpfs {
         @SerializedName("/tmp")
-        String tmp = "size=" + config().getSelenoidTmpfsSize();
+        String tmp = "size=" + getConfig().getSelenoidTmpfsSize();
     }
 
 }

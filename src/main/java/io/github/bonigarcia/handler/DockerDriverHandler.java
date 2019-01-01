@@ -19,7 +19,6 @@ package io.github.bonigarcia.handler;
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.BrowserType.ANDROID;
 import static io.github.bonigarcia.BrowserType.OPERA;
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static io.github.bonigarcia.SurefireReports.getOutputFolder;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
@@ -69,7 +68,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
 
@@ -82,6 +80,8 @@ import io.github.bonigarcia.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.SelenoidConfig;
+import io.github.bonigarcia.WebDriverCreator;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for DockerDriver's.
@@ -98,6 +98,7 @@ public class DockerDriverHandler {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    Config config;
     DockerService dockerService;
     SelenoidConfig selenoidConfig;
     Map<String, DockerContainer> containerMap;
@@ -109,23 +110,23 @@ public class DockerDriverHandler {
     Optional<Object> testInstance;
     AnnotationsReader annotationsReader;
     String index;
-    boolean recording = config().isRecording();
-    String selenoidImage = config().getSelenoidImage();
-    String novncImage = config().getNovncImage();
     String androidNoVncUrl;
     List<File> filesInVideoFolder;
     String browserName;
+    WebDriverCreator webDriverCreator;
 
-    public DockerDriverHandler() throws DockerCertificateException {
-        this.selenoidConfig = new SelenoidConfig();
-        this.dockerService = new DockerService();
+    public DockerDriverHandler(Config config) {
+        this.config = config;
+        this.selenoidConfig = new SelenoidConfig(getConfig());
+        this.dockerService = new DockerService(getConfig());
         this.containerMap = new LinkedHashMap<>();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
             Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig) {
+            DockerService dockerService, SelenoidConfig selenoidConfig,
+            Config config) {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
@@ -133,6 +134,7 @@ public class DockerDriverHandler {
         this.containerMap = containerMap;
         this.dockerService = dockerService;
         this.selenoidConfig = selenoidConfig;
+        this.config = config;
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -151,8 +153,9 @@ public class DockerDriverHandler {
                 dockerService.updateDockerClient(url);
             }
 
-            if (recording) {
-                hostVideoFolder = new File(getOutputFolder(context));
+            if (getConfig().isRecording()) {
+                hostVideoFolder = new File(getOutputFolder(context,
+                        getConfig().getOutputFolder()));
             }
 
             WebDriver webdriver;
@@ -160,7 +163,7 @@ public class DockerDriverHandler {
                 webdriver = getDriverForAndroid(browser, version, deviceName);
             } else {
                 if (selenoidConfig == null) {
-                    selenoidConfig = new SelenoidConfig();
+                    selenoidConfig = new SelenoidConfig(getConfig());
                 }
                 webdriver = getDriverForBrowser(browser, version);
             }
@@ -177,7 +180,7 @@ public class DockerDriverHandler {
     private WebDriver getDriverForBrowser(BrowserType browser, String version)
             throws IllegalAccessException, IOException, DockerException,
             InterruptedException {
-        boolean enableVnc = config().isVnc();
+        boolean enableVnc = getConfig().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
 
         String imageVersion;
@@ -195,12 +198,16 @@ public class DockerDriverHandler {
             imageVersion = selenoidConfig.getDefaultBrowser(browser);
         }
 
-        String seleniumServerUrl = config().getSeleniumServerUrl();
+        String seleniumServerUrl = getConfig().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
         URL hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
                 : startDockerBrowser(browser, versionFromLabel));
-        WebDriver webdriver = RemoteDriverHandler.createRemoteWebDriver(hubUrl,
+
+        if (webDriverCreator == null) {
+            webDriverCreator = new WebDriverCreator(getConfig());
+        }
+        WebDriver webdriver = webDriverCreator.createRemoteWebDriver(hubUrl,
                 capabilities);
 
         SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
@@ -211,16 +218,17 @@ public class DockerDriverHandler {
             int selenoidPort = hubUrl.getPort();
 
             String novncUrl = getNoVncUrl(selenoidHost, selenoidPort,
-                    sessionId.toString(), config().getSelenoidVncPassword());
+                    sessionId.toString(), getConfig().getSelenoidVncPassword());
             logSessionId(sessionId);
             logNoVncUrl(novncUrl);
 
-            String vncExport = config().getVncExport();
+            String vncExport = getConfig().getVncExport();
             log.trace("Exporting VNC URL as Java property {}", vncExport);
             System.setProperty(vncExport, novncUrl);
 
-            if (config().isVncRedirectHtmlPage()) {
-                String outputFolder = getOutputFolder(context);
+            if (getConfig().isVncRedirectHtmlPage()) {
+                String outputFolder = getOutputFolder(context,
+                        getConfig().getOutputFolder());
                 String vncHtmlPage = format("<!DOCTYPE html>\n" + "<html>\n"
                         + "<head>\n"
                         + "<meta http-equiv=\"refresh\" content=\"0; url=%s\">\n"
@@ -234,7 +242,7 @@ public class DockerDriverHandler {
             }
         }
 
-        if (recording) {
+        if (getConfig().isRecording()) {
             recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
         }
         return webdriver;
@@ -253,16 +261,16 @@ public class DockerDriverHandler {
     private WebDriver getDriverForAndroid(BrowserType browser, String version,
             String deviceName) throws DockerException, InterruptedException,
             IOException, IllegalAccessException {
-        browser.init();
-        if (recording) {
+        browser.init(getConfig());
+        if (getConfig().isRecording()) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
         if (version == null || version.isEmpty()) {
-            version = config().getAndroidDefaultVersion();
+            version = getConfig().getAndroidDefaultVersion();
         }
         String deviceNameCapability = deviceName != null
                 && !deviceName.isEmpty() ? deviceName
-                        : config().getAndroidDeviceName();
+                        : getConfig().getAndroidDeviceName();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
 
         DesiredCapabilities capabilities = getCapabilitiesForAndroid(browser,
@@ -275,7 +283,7 @@ public class DockerDriverHandler {
                 "Waiting for Android device ... this might take long, please wait (retries each 5 seconds)");
 
         AndroidDriver<WebElement> androidDriver = null;
-        int androidDeviceTimeoutSec = config().getAndroidDeviceTimeoutSec();
+        int androidDeviceTimeoutSec = getConfig().getAndroidDeviceTimeoutSec();
         long endTimeMillis = currentTimeMillis()
                 + androidDeviceTimeoutSec * 1000;
         do {
@@ -299,7 +307,7 @@ public class DockerDriverHandler {
         log.info("Android device ready {}", androidDriver);
         updateName(browser, version, androidDriver);
 
-        if (config().isVnc()) {
+        if (getConfig().isVnc()) {
             logSessionId(androidDriver.getSessionId());
             logNoVncUrl(androidNoVncUrl);
         }
@@ -339,15 +347,15 @@ public class DockerDriverHandler {
         if (enableVnc) {
             capabilities.setCapability("enableVNC", true);
             capabilities.setCapability("screenResolution",
-                    config().getVncScreenResolution());
+                    getConfig().getVncScreenResolution());
         }
 
-        if (recording) {
+        if (getConfig().isRecording()) {
             capabilities.setCapability("enableVideo", true);
             capabilities.setCapability("videoScreenSize",
-                    config().getRecordingVideoScreenSize());
+                    getConfig().getRecordingVideoScreenSize());
             capabilities.setCapability("videoFrameRate",
-                    config().getRecordingVideoFrameRate());
+                    getConfig().getRecordingVideoFrameRate());
         }
 
         Optional<Capabilities> optionalCapabilities = annotationsReader != null
@@ -397,12 +405,12 @@ public class DockerDriverHandler {
     public void cleanup() {
         try {
             // Wait for recordings
-            if (recording) {
+            if (getConfig().isRecording()) {
                 waitForRecording();
             }
             // Clear VNC URL
-            String vncExport = config().getVncExport();
-            if (config().isVnc() && System.getProperty(vncExport) != null) {
+            String vncExport = getConfig().getVncExport();
+            if (getConfig().isVnc() && System.getProperty(vncExport) != null) {
                 log.trace("Clearing Java property {}", vncExport);
                 System.clearProperty(vncExport);
             }
@@ -457,49 +465,49 @@ public class DockerDriverHandler {
         switch (version) {
         case "5.0.1":
         case LATEST + "-6":
-            androidImage = config().getAndroidImage501();
+            androidImage = getConfig().getAndroidImage501();
             apiLevel = "21";
             browserName = BROWSER;
             browserVersion = "37.0";
             break;
         case "5.1.1":
         case LATEST + "-5":
-            androidImage = config().getAndroidImage511();
+            androidImage = getConfig().getAndroidImage511();
             apiLevel = "22";
             browserName = BROWSER;
             browserVersion = "39.0";
             break;
         case "6.0":
         case LATEST + "-4":
-            androidImage = config().getAndroidImage60();
+            androidImage = getConfig().getAndroidImage60();
             apiLevel = "23";
             browserName = BROWSER;
             browserVersion = "44.0";
             break;
         case "7.0":
         case LATEST + "-3":
-            androidImage = config().getAndroidImage701();
+            androidImage = getConfig().getAndroidImage701();
             apiLevel = "24";
             browserName = CHROME;
             browserVersion = "51.0";
             break;
         case "7.1.1":
         case LATEST + "-2":
-            androidImage = config().getAndroidImage711();
+            androidImage = getConfig().getAndroidImage711();
             apiLevel = "25";
             browserName = CHROME;
             browserVersion = "55.0";
             break;
         case "8.0":
         case LATEST + "-1":
-            androidImage = config().getAndroidImage80();
+            androidImage = getConfig().getAndroidImage80();
             apiLevel = "26";
             browserName = CHROME;
             browserVersion = "58.0";
             break;
         case "8.1":
         case LATEST:
-            androidImage = config().getAndroidImage81();
+            androidImage = getConfig().getAndroidImage81();
             apiLevel = "27";
             browserName = CHROME;
             browserVersion = "61.0";
@@ -542,20 +550,23 @@ public class DockerDriverHandler {
             throws DockerException, InterruptedException, IOException {
 
         DockerContainer selenoidContainer;
+        String selenoidImage = getConfig().getSelenoidImage();
+        boolean recording = getConfig().isRecording();
+
         if (containerMap.containsKey(selenoidImage)) {
             log.trace("Selenoid container already available");
             selenoidContainer = containerMap.get(selenoidImage);
         } else {
             // Pull images
             dockerService.pullImageIfNecessary(selenoidImage);
-            String recordingImage = config().getRecordingImage();
+            String recordingImage = getConfig().getRecordingImage();
             if (recording) {
                 dockerService.pullImageIfNecessary(recordingImage);
             }
 
             // portBindings
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
-            String defaultSelenoidPort = config().getSelenoidPort();
+            String defaultSelenoidPort = getConfig().getSelenoidPort();
             String internalSelenoidPort = defaultSelenoidPort;
             portBindings.put(internalSelenoidPort,
                     asList(randomPort(ALL_IPV4_ADDRESSES)));
@@ -571,10 +582,11 @@ public class DockerDriverHandler {
 
             // entrypoint & cmd
             List<String> entryPoint = asList("");
-            String internalBrowserPort = config().getSelenoidPort();
+            String internalBrowserPort = getConfig().getSelenoidPort();
             String browsersJson = selenoidConfig.getBrowsersJsonAsString();
-            String browserTimeout = config().getBrowserSessionTimeoutDuration();
-            String network = config().getDockerNetwork();
+            String browserTimeout = getConfig()
+                    .getBrowserSessionTimeoutDuration();
+            String network = getConfig().getDockerNetwork();
 
             List<String> cmd = asList("sh", "-c",
                     "mkdir -p /etc/selenoid/; echo '" + browsersJson
@@ -630,21 +642,22 @@ public class DockerDriverHandler {
 
             // portBindings
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
-            String internalAppiumPort = config().getAndroidAppiumPort();
+            String internalAppiumPort = getConfig().getAndroidAppiumPort();
             portBindings.put(internalAppiumPort,
                     asList(randomPort(ALL_IPV4_ADDRESSES)));
-            String internalNoVncPort = config().getAndroidNoVncPort();
+            String internalNoVncPort = getConfig().getAndroidNoVncPort();
             portBindings.put(internalNoVncPort,
                     asList(randomPort(ALL_IPV4_ADDRESSES)));
 
             // binds
+            boolean recording = getConfig().isRecording();
             List<String> binds = new ArrayList<>();
             if (recording) {
                 binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
             }
 
             // network
-            String network = config().getDockerNetwork();
+            String network = getConfig().getDockerNetwork();
 
             // envs
             List<String> envs = new ArrayList<>();
@@ -745,6 +758,8 @@ public class DockerDriverHandler {
             throws DockerException, InterruptedException, IOException {
 
         DockerContainer novncContainer;
+        String novncImage = getConfig().getNovncImage();
+
         if (containerMap.containsKey(novncImage)) {
             log.debug("noVNC container already available");
             novncContainer = containerMap.get(novncImage);
@@ -753,11 +768,11 @@ public class DockerDriverHandler {
             dockerService.pullImageIfNecessary(novncImage);
 
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
-            String defaultNovncPort = config().getNovncPort();
+            String defaultNovncPort = getConfig().getNovncPort();
             portBindings.put(defaultNovncPort,
                     asList(randomPort(ALL_IPV4_ADDRESSES)));
 
-            String network = config().getDockerNetwork();
+            String network = getConfig().getDockerNetwork();
             novncContainer = DockerContainer.dockerBuilder(novncImage)
                     .portBindings(portBindings).network(network).build();
             String containerId = dockerService.startContainer(novncContainer);
@@ -839,6 +854,10 @@ public class DockerDriverHandler {
 
     public void setIndex(String index) {
         this.index = index;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

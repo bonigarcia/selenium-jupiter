@@ -17,7 +17,6 @@
 package io.github.bonigarcia;
 
 import static io.github.bonigarcia.SurefireReports.getOutputFolder;
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.BASE64;
@@ -32,6 +31,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.config.Config;
+
 /**
  * Utilities for screenshots.
  *
@@ -43,15 +44,17 @@ public class ScreenshotManager {
     final Logger log = getLogger(lookup().lookupClass());
 
     ExtensionContext context;
+    Config config;
 
-    public ScreenshotManager(ExtensionContext context) {
+    public ScreenshotManager(ExtensionContext context, Config config) {
         this.context = context;
+        this.config = config;
     }
 
     boolean isScreenshotRequired() {
         Optional<Throwable> executionException = context
                 .getExecutionException();
-        String screenshotAtTheEnd = config().getScreenshotAtTheEndOfTests();
+        String screenshotAtTheEnd = getConfig().getScreenshotAtTheEndOfTests();
 
         return screenshotAtTheEnd.equalsIgnoreCase("true")
                 || (executionException.isPresent()
@@ -60,7 +63,7 @@ public class ScreenshotManager {
 
     void makeScreenshot(WebDriver driver, String fileName) {
         if (isScreenshotRequired() && driver != null) {
-            String screenshotFormat = config().getScreenshotFormat();
+            String screenshotFormat = getConfig().getScreenshotFormat();
             switch (screenshotFormat) {
             case "png":
                 logFileScreenshot(driver, fileName);
@@ -95,11 +98,17 @@ public class ScreenshotManager {
         try {
             File screenshotFile = ((TakesScreenshot) driver)
                     .getScreenshotAs(FILE);
-            String outputFolder = getOutputFolder(context);
+            String outputFolder = getOutputFolder(context,
+                    getConfig().getOutputFolder());
             copyFile(screenshotFile, new File(outputFolder, fileName + ".png"));
 
         } catch (Exception e) {
             log.trace("Exception getting screenshot as file", e);
         }
     }
+
+    Config getConfig() {
+        return config;
+    }
+
 }

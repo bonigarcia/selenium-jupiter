@@ -27,6 +27,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.Options;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Handler for Edge.
@@ -36,8 +37,9 @@ import io.github.bonigarcia.Options;
  */
 public class EdgeDriverHandler extends DriverHandler {
 
-    public EdgeDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public EdgeDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

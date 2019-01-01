@@ -42,14 +42,7 @@ public class SeleniumJupiter {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
-    protected static Config config;
-
-    public static synchronized Config config() {
-        if (config == null) {
-            config = new Config();
-        }
-        return config;
-    }
+    static Config config = new Config();
 
     public static void main(String[] args) {
         String validBrowsers = "chrome|firefox|opera|android";
@@ -87,14 +80,15 @@ public class SeleniumJupiter {
                 versionMessage);
 
         try {
-            config().setVnc(true);
-            config().setBrowserSessionTimeoutDuration("99h0m0s");
+            config.setVnc(true);
+            config.setBrowserSessionTimeoutDuration("99h0m0s");
 
-            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler();
+            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
+                    config);
 
             BrowserType browserType = BrowserType
                     .valueOf(browser.toUpperCase());
-            browserType.init();
+            browserType.init(config);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserType,
                     version, deviceName, url);
@@ -131,7 +125,7 @@ public class SeleniumJupiter {
     }
 
     private static void startServer(String[] args) {
-        int port = config().getServerPort();
+        int port = config.getServerPort();
         if (args.length > 1 && isNumeric(args[1])) {
             port = parseInt(args[1]);
         }

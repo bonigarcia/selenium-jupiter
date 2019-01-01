@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.io.File.createTempFile;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
@@ -40,6 +39,7 @@ import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.SelenoidConfig;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Abstract resolver.
@@ -51,7 +51,8 @@ public abstract class DriverHandler {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
-    AnnotationsReader annotationsReader = new AnnotationsReader();
+    Config config;
+    AnnotationsReader annotationsReader;
     Parameter parameter;
     ExtensionContext context;
     Map<String, DockerContainer> containerMap;
@@ -61,11 +62,14 @@ public abstract class DriverHandler {
 
     public abstract void resolve();
 
-    public DriverHandler() {
-        // Default constructor
+    public DriverHandler(Config config) {
+        this.config = config;
+        this.annotationsReader = new AnnotationsReader(getConfig());
     }
 
-    public DriverHandler(Parameter parameter, ExtensionContext context) {
+    public DriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        this(config);
         this.parameter = parameter;
         this.context = context;
     }
@@ -89,7 +93,7 @@ public abstract class DriverHandler {
     }
 
     public boolean throwExceptionWhenNoDriver() {
-        return config().isExceptionWhenNoDriver();
+        return getConfig().isExceptionWhenNoDriver();
     }
 
     void handleException(Exception e) {
@@ -138,6 +142,10 @@ public abstract class DriverHandler {
 
     public void setSelenoidConfig(SelenoidConfig selenoidConfig) {
         this.selenoidConfig = selenoidConfig;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
 }

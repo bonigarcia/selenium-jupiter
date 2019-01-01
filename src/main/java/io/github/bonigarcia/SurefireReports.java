@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -44,8 +43,8 @@ public class SurefireReports {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String getOutputFolder(ExtensionContext context) {
-        String outputFolder = config().getOutputFolder();
+    public static String getOutputFolder(ExtensionContext context, String outputFolder) {
+        // String outputFolder = getConfig().getOutputFolder();
         Optional<Method> testMethod = context.getTestMethod();
         Optional<Class<?>> testInstance = context.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {

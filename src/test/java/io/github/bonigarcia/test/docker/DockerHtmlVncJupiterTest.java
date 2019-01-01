@@ -28,29 +28,29 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class DockerHtmlVncJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     File htmlFile;
 
     @BeforeAll
     void setup() {
-        SeleniumJupiter.config().setVnc(true);
-        SeleniumJupiter.config().setVncRedirectHtmlPage(true);
-        SeleniumJupiter.config().useSurefireOutputFolder();
+        seleniumExtension.getConfig().setVnc(true);
+        seleniumExtension.getConfig().setVncRedirectHtmlPage(true);
+        seleniumExtension.getConfig().useSurefireOutputFolder();
     }
 
     @AfterAll
     void teardown() {
-        SeleniumJupiter.config().reset();
         assertTrue(htmlFile.exists());
         htmlFile.delete();
     }

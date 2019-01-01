@@ -26,6 +26,7 @@ import org.openqa.selenium.Capabilities;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for AppiumDriver.
@@ -37,8 +38,9 @@ public class AppiumDriverHandler extends DriverHandler {
 
     private AppiumDriverLocalService appiumDriverLocalService;
 
-    public AppiumDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public AppiumDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

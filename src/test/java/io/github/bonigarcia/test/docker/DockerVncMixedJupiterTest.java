@@ -24,31 +24,26 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import java.io.File;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class DockerVncMixedJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     File htmlFile;
 
     @BeforeAll
     void setup() {
-        SeleniumJupiter.config().setVnc(true);
-    }
-
-    @AfterAll
-    void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setVnc(true);
     }
 
     @Test

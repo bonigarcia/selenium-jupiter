@@ -32,6 +32,7 @@ import io.github.bonigarcia.Arguments;
 import io.github.bonigarcia.Binary;
 import io.github.bonigarcia.Extensions;
 import io.github.bonigarcia.Options;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for OperaDriver.
@@ -41,12 +42,13 @@ import io.github.bonigarcia.Options;
  */
 public class OperaDriverHandler extends DriverHandler {
 
-    public OperaDriverHandler() {
-        super();
+    public OperaDriverHandler(Config config) {
+        super(config);
     }
 
-    public OperaDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public OperaDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

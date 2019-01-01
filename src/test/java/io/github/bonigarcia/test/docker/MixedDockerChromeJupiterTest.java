@@ -29,32 +29,27 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class MixedDockerChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @BeforeEach
     void setup() {
-        SeleniumJupiter.config().setVnc(true);
-    }
-
-    @AfterEach
-    void teardown() {
-        SeleniumJupiter.config().reset();
+        seleniumExtension.getConfig().setVnc(true);
     }
 
     @Test
@@ -86,8 +81,8 @@ public class MixedDockerChromeJupiterTest {
                 log.info("Session id {}",
                         ((RemoteWebDriver) driver).getSessionId());
                 driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-                assertThat(driver.getTitle(), containsString(
-                        "JUnit 5 extension for Selenium"));
+                assertThat(driver.getTitle(),
+                        containsString("JUnit 5 extension for Selenium"));
             } finally {
                 latch.countDown();
             }

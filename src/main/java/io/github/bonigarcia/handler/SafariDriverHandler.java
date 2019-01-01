@@ -26,6 +26,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.Options;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for SafariDriver.
@@ -35,8 +36,9 @@ import io.github.bonigarcia.Options;
  */
 public class SafariDriverHandler extends DriverHandler {
 
-    public SafariDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public SafariDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override

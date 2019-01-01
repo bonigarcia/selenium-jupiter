@@ -19,29 +19,32 @@ package io.github.bonigarcia.test.android;
 import static io.github.bonigarcia.BrowserType.ANDROID;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.SeleniumJupiter;
 import io.github.bonigarcia.SeleniumJupiterException;
+import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.DockerDriverHandler;
 
+@TestInstance(PER_CLASS)
 public class AndroidForcedTimeoutJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     DockerDriverHandler dockerDriverHandler;
+    Config config = new Config();
 
     @BeforeAll
-    static void setup() {
-        SeleniumJupiter.config().setVnc(true);
-        SeleniumJupiter.config().setAndroidDeviceTimeoutSec(10);
+    void setup() {
+        config.setVnc(true);
+        config.setAndroidDeviceTimeoutSec(10);
     }
 
     @AfterEach
@@ -51,15 +54,10 @@ public class AndroidForcedTimeoutJupiterTest {
         }
     }
 
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
-    }
-
     @Test
     void androidTimeoutTest() {
         assertThrows(SeleniumJupiterException.class, () -> {
-            dockerDriverHandler = new DockerDriverHandler();
+            dockerDriverHandler = new DockerDriverHandler(config);
             WebDriver driver = dockerDriverHandler.resolve(ANDROID, "8.0",
                     "Samsung Galaxy S6", "");
             log.debug("WebDriver object: {}", driver);

@@ -20,28 +20,23 @@ package io.github.bonigarcia.test.template;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 public class TemplateTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config()
+        seleniumExtension.getConfig()
                 .setBrowserTemplateJsonFile("classpath:browsers-docker.json");
-    }
-
-    @AfterAll
-    static void teardown() {
-        SeleniumJupiter.config().reset();
     }
 
     // tag::snippet-in-doc[]

@@ -23,21 +23,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.Options;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
 @Disabled("Edge not available on Travis CI")
-@ExtendWith(SeleniumExtension.class)
 public class EdgeWithGlobalOptionsJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().wdm().setDriverVersion("3.14393");
+        seleniumExtension.getConfig().wdm().setDriverVersion("3.14393");
     }
 
     @Options

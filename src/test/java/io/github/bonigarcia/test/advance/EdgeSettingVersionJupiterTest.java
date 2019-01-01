@@ -24,21 +24,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Edge not available on Travis CI")
 // tag::snippet-in-doc[]
-@ExtendWith(SeleniumExtension.class)
 public class EdgeSettingVersionJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     @BeforeAll
     static void setup() {
-        SeleniumJupiter.config().wdm().setDriverVersion("3.14393");
+        seleniumExtension.getConfig().wdm().setDriverVersion("3.14393");
     }
 
     @Test

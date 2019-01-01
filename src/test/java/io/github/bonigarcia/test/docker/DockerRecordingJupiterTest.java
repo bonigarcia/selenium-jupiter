@@ -30,17 +30,18 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
-import io.github.bonigarcia.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
 @TestInstance(PER_CLASS)
 public class DockerRecordingJupiterTest {
+
+    @RegisterExtension
+    static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -48,12 +49,11 @@ public class DockerRecordingJupiterTest {
 
     @BeforeEach
     void setup() {
-        SeleniumJupiter.config().setRecording(true);
+        seleniumExtension.getConfig().setRecording(true);
     }
 
     @AfterAll
     void teardown() {
-        SeleniumJupiter.config().reset();
         if (recordingFile != null) {
             assertTrue(recordingFile.exists());
             log.info("Deleting recording {} ... {}", recordingFile,

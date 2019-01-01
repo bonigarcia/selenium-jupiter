@@ -16,20 +16,23 @@
  */
 package io.github.bonigarcia.test.docker;
 
-import io.github.bonigarcia.DockerHubService;
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.Test;
+
+import io.github.bonigarcia.DockerHubService;
+import io.github.bonigarcia.config.Config;
 
 public class BrowserListFromDockerHubJupiterTest {
 
     @Test
     public void listImagesTest() throws IOException {
-        DockerHubService service = new DockerHubService();
+        DockerHubService service = new DockerHubService(new Config());
         List<?> list = service.listTags();
         assertThat(list, notNullValue());
         assertThat(list.isEmpty(), is(false));

@@ -31,12 +31,13 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import io.github.bonigarcia.SelenoidConfig;
+import io.github.bonigarcia.config.Config;
 
 @ExtendWith(MockitoExtension.class)
 public class SelenoidConfigFromHubTest {
 
     @InjectMocks
-    SelenoidConfig selenoidConfig;
+    SelenoidConfig selenoidConfig = new SelenoidConfig(new Config());
 
     @Test
     @SuppressWarnings("serial")

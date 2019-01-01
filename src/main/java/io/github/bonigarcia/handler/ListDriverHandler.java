@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.handler;
 
-import static io.github.bonigarcia.SeleniumJupiter.config;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -40,6 +39,7 @@ import com.spotify.docker.client.exceptions.DockerException;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.SelenoidConfig;
+import io.github.bonigarcia.config.Config;
 
 /**
  * Resolver for lists of RemoteWebDriver.
@@ -52,15 +52,16 @@ public class ListDriverHandler extends DriverHandler {
     private List<DockerDriverHandler> dockerDriverHandlerList = new ArrayList<>();
     private ExecutorService executorService;
 
-    public ListDriverHandler(Parameter parameter, ExtensionContext context) {
-        super(parameter, context);
+    public ListDriverHandler(Parameter parameter, ExtensionContext context,
+            Config config) {
+        super(parameter, context, config);
     }
 
     @Override
     public void resolve() {
         try {
             if (selenoidConfig == null) {
-                selenoidConfig = new SelenoidConfig();
+                selenoidConfig = new SelenoidConfig(getConfig());
             }
 
             Optional<Object> testInstance = context.getTestInstance();
@@ -99,15 +100,15 @@ public class ListDriverHandler extends DriverHandler {
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                 context, parameter, testInstance, annotationsReader,
-                containerMap, dockerService, selenoidConfig);
+                containerMap, dockerService, selenoidConfig, getConfig());
         firstDockerDriverHandler.setIndex("_0");
         firstDockerDriverHandler.startSelenoidContainer();
-        if (config().isVnc()) {
+        if (getConfig().isVnc()) {
             firstDockerDriverHandler.startNoVncContainer();
         }
         containerMap = firstDockerDriverHandler.getContainerMap();
 
-        boolean browserListInParallel = config().isBrowserListInParallel();
+        boolean browserListInParallel = getConfig().isBrowserListInParallel();
         if (browserListInParallel) {
             executorService = newFixedThreadPool(numBrowsers);
         }
@@ -122,7 +123,7 @@ public class ListDriverHandler extends DriverHandler {
                         dockerBrowser, driverList, latch, i);
             }
         }
-        int timeout = numBrowsers * config().getDockerWaitTimeoutSec();
+        int timeout = numBrowsers * getConfig().getDockerWaitTimeoutSec();
         if (!latch.await(timeout, SECONDS)) {
             throw new SeleniumJupiterException(
                     "Timeout of " + timeout + " seconds waiting for start "
@@ -141,7 +142,7 @@ public class ListDriverHandler extends DriverHandler {
                     ? firstDockerDriverHandler
                     : new DockerDriverHandler(context, parameter, testInstance,
                             annotationsReader, containerMap, dockerService,
-                            selenoidConfig);
+                            selenoidConfig, getConfig());
             dockerDriverHandler.setIndex("_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler
