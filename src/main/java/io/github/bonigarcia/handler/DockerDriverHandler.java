@@ -454,7 +454,7 @@ public class DockerDriverHandler {
     }
 
     public String startAndroidBrowser(String version, String deviceName)
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
         if (!IS_OS_LINUX) {
             throw new SeleniumJupiterException(
                     "Android devices are only supported in Linux hosts");
@@ -535,7 +535,7 @@ public class DockerDriverHandler {
     }
 
     public String startDockerBrowser(BrowserType browser, String version)
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
 
         String browserImage;
         if (version == null || version.isEmpty()
@@ -750,7 +750,7 @@ public class DockerDriverHandler {
 
     private String getNoVncUrl(String selenoidHost, int selenoidPort,
             String sessionId, String novncPassword)
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
 
         DockerContainer novncContainer = startNoVncContainer();
         String novncUrl = novncContainer.getContainerUrl();

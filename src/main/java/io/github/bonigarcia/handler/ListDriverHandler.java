@@ -19,7 +19,6 @@ package io.github.bonigarcia.handler;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -93,7 +92,7 @@ public class ListDriverHandler extends DriverHandler {
 
     private void resolveBrowserList(Optional<Object> testInstance,
             DockerBrowser dockerBrowser)
-            throws DockerException, InterruptedException, IOException {
+            throws DockerException, InterruptedException {
         List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
         int numBrowsers = dockerBrowser.size();
         CountDownLatch latch = new CountDownLatch(numBrowsers);
