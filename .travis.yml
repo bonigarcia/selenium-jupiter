@@ -26,4 +26,4 @@ script:
     - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then mvn sonar:sonar; fi
     - NUM_CONTAINERS=`docker ps | grep imagename | wc -l`
     - echo "There are $NUM_CONTAINERS running container(s) after tests"
-    - if [ $NUM_CONTAINERS != 0 ]; exit 1; fi
+    - if [ $NUM_CONTAINERS != 0 ]; then exit 1; fi
