@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia;
 
+import static com.spotify.docker.client.DockerClient.RemoveContainerParam.forceKill;
+import static com.spotify.docker.client.DockerClient.Signal.SIGKILL;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -92,7 +94,7 @@ public class DockerService {
                 : dockerClient.getHost();
     }
 
-    public String startContainer(DockerContainer dockerContainer)
+    public synchronized String startContainer(DockerContainer dockerContainer)
             throws DockerException, InterruptedException {
         String imageId = dockerContainer.getImageId();
         log.info("Starting Docker container {}", imageId);
@@ -220,7 +222,8 @@ public class DockerService {
         return exists;
     }
 
-    public void stopAndRemoveContainer(String containerId, String imageId) {
+    public synchronized void stopAndRemoveContainer(String containerId,
+            String imageId) {
         log.info("Stopping Docker container {}", imageId);
         try {
             stopContainer(containerId);
@@ -230,12 +233,12 @@ public class DockerService {
         }
     }
 
-    public void stopContainer(String containerId)
+    public synchronized void stopContainer(String containerId)
             throws DockerException, InterruptedException {
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {
-            log.debug("Killing container {}", containerId);
-            dockerClient.killContainer(containerId);
+            log.trace("Killing container {}", containerId);
+            dockerClient.killContainer(containerId, SIGKILL);
         } else {
             log.trace("Stopping container {} (timeout {} seconds)", containerId,
                     stopTimeoutSec);
@@ -243,10 +246,15 @@ public class DockerService {
         }
     }
 
-    public void removeContainer(String containerId)
+    public synchronized void removeContainer(String containerId)
             throws DockerException, InterruptedException {
         log.trace("Removing container {}", containerId);
-        dockerClient.removeContainer(containerId);
+        int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
+        if (stopTimeoutSec == 0) {
+            dockerClient.removeContainer(containerId, forceKill());
+        } else {
+            dockerClient.removeContainer(containerId);
+        }
     }
 
     public String getDockerDefaultSocket() {
