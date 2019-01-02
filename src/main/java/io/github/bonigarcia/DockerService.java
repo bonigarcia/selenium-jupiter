@@ -233,9 +233,14 @@ public class DockerService {
     public void stopContainer(String containerId)
             throws DockerException, InterruptedException {
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
-        log.trace("Stopping container {} (timeout {} seconds)", containerId,
-                stopTimeoutSec);
-        dockerClient.stopContainer(containerId, stopTimeoutSec);
+        if (stopTimeoutSec == 0) {
+            log.debug("Killing container {}", containerId);
+            dockerClient.killContainer(containerId);
+        } else {
+            log.trace("Stopping container {} (timeout {} seconds)", containerId,
+                    stopTimeoutSec);
+            dockerClient.stopContainer(containerId, stopTimeoutSec);
+        }
     }
 
     public void removeContainer(String containerId)
