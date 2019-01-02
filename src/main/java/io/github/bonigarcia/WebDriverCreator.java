@@ -62,7 +62,7 @@ public class WebDriverCreator {
             }
             try {
                 log.debug("Creating WebDriver object for {} at {}",
-                        capabilities.getBrowserName(), hubUrl);
+                        capabilities.getBrowserName().toUpperCase(), hubUrl);
                 log.trace("Complete {}", capabilities);
                 webdriver = new RemoteWebDriver(hubUrl, capabilities);
             } catch (Exception e1) {
