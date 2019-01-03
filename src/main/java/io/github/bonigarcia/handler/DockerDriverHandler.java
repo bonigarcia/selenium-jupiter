@@ -73,6 +73,7 @@ import com.spotify.docker.client.messages.PortBinding;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.AnnotationsReader;
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.BrowserType;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.DockerContainer;
@@ -115,10 +116,10 @@ public class DockerDriverHandler {
     String browserName;
     WebDriverCreator webDriverCreator;
 
-    public DockerDriverHandler(Config config, BrowserType browserType,
+    public DockerDriverHandler(Config config, BrowserInstance browserInstance,
             String version) {
         this.config = config;
-        this.selenoidConfig = new SelenoidConfig(getConfig(), browserType,
+        this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
                 version);
         this.dockerService = new DockerService(getConfig());
         this.containerMap = new LinkedHashMap<>();
@@ -127,29 +128,33 @@ public class DockerDriverHandler {
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
             Optional<Object> testInstance, AnnotationsReader annotationsReader,
             Map<String, DockerContainer> containerMap,
-            DockerService dockerService, SelenoidConfig selenoidConfig,
-            Config config) {
+            DockerService dockerService, Config config,
+            BrowserInstance browserInstance, String version) {
         this.context = context;
         this.parameter = parameter;
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
         this.containerMap = containerMap;
         this.dockerService = dockerService;
-        this.selenoidConfig = selenoidConfig;
         this.config = config;
+        this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
+                version);
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
-        BrowserType browser = dockerBrowser.type();
+        BrowserType browserType = dockerBrowser.type();
+        BrowserInstance browserInstance = new BrowserInstance(config,
+                browserType);
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
 
-        return resolve(browser, version, deviceName, url);
+        return resolve(browserInstance, version, deviceName, url);
     }
 
-    public WebDriver resolve(BrowserType browser, String version,
+    public WebDriver resolve(BrowserInstance browserInstance, String version,
             String deviceName, String url) {
+        BrowserType browserType = browserInstance.getBrowserType();
         try {
             if (url != null && !url.isEmpty()) {
                 dockerService.updateDockerClient(url);
@@ -161,30 +166,29 @@ public class DockerDriverHandler {
             }
 
             WebDriver webdriver;
-            if (browser == ANDROID) {
-                webdriver = getDriverForAndroid(browser, version, deviceName);
+            if (browserType == ANDROID) {
+                webdriver = getDriverForAndroid(browserInstance, version,
+                        deviceName);
             } else {
-                if (selenoidConfig == null) {
-                    selenoidConfig = new SelenoidConfig(getConfig(), browser,
-                            version);
-                }
-                webdriver = getDriverForBrowser(browser, version);
+                webdriver = getDriverForBrowser(browserInstance, version);
             }
             return webdriver;
 
         } catch (Exception e) {
             String errorMessage = format(
-                    "Exception resolving driver in Docker (%s %s)", browser,
+                    "Exception resolving driver in Docker (%s %s)", browserType,
                     version);
             throw new SeleniumJupiterException(errorMessage, e);
         }
     }
 
-    private WebDriver getDriverForBrowser(BrowserType browser, String version)
-            throws IllegalAccessException, IOException, DockerException,
-            InterruptedException {
+    private WebDriver getDriverForBrowser(BrowserInstance browserInstance,
+            String version) throws IllegalAccessException, IOException,
+            DockerException, InterruptedException {
         boolean enableVnc = getConfig().isVnc();
-        DesiredCapabilities capabilities = getCapabilities(browser, enableVnc);
+        DesiredCapabilities capabilities = getCapabilities(browserInstance,
+                enableVnc);
+        BrowserType browserType = browserInstance.getBrowserType();
 
         String imageVersion;
         String versionFromLabel = version;
@@ -194,27 +198,29 @@ public class DockerDriverHandler {
                 versionFromLabel = selenoidConfig.getDockerBrowserConfig()
                         .getVersion();
             }
-            imageVersion = selenoidConfig.getImageVersion(browser,
+            imageVersion = selenoidConfig.getImageVersion(browserType,
                     versionFromLabel);
             capabilities.setCapability("version", imageVersion);
         } else {
-            imageVersion = selenoidConfig.getDefaultBrowser(browser);
+            imageVersion = selenoidConfig.getDefaultBrowser(browserType);
         }
 
         String seleniumServerUrl = getConfig().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
         URL hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
-                : startDockerBrowser(browser, versionFromLabel));
+                : startDockerBrowser(browserInstance, versionFromLabel));
 
         if (webDriverCreator == null) {
             webDriverCreator = new WebDriverCreator(getConfig());
         }
+        log.trace("Creating webdriver for {} {} ({})", browserType, version,
+                hubUrl);
         WebDriver webdriver = webDriverCreator.createRemoteWebDriver(hubUrl,
                 capabilities);
 
         SessionId sessionId = ((RemoteWebDriver) webdriver).getSessionId();
-        updateName(browser, imageVersion, webdriver);
+        updateName(browserType, imageVersion, webdriver);
 
         if (enableVnc && !seleniumServerUrlAvailable) {
             String selenoidHost = hubUrl.getHost();
@@ -261,10 +267,9 @@ public class DockerDriverHandler {
         log.info("{}", novncUrl);
     }
 
-    private WebDriver getDriverForAndroid(BrowserType browser, String version,
-            String deviceName) throws DockerException, InterruptedException,
-            IOException, IllegalAccessException {
-        browser.init(getConfig());
+    private WebDriver getDriverForAndroid(BrowserInstance browserInstance,
+            String version, String deviceName) throws DockerException,
+            InterruptedException, IOException, IllegalAccessException {
         if (getConfig().isRecording()) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
@@ -276,8 +281,8 @@ public class DockerDriverHandler {
                         : getConfig().getAndroidDeviceName();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
 
-        DesiredCapabilities capabilities = getCapabilitiesForAndroid(browser,
-                deviceNameCapability);
+        DesiredCapabilities capabilities = getCapabilitiesForAndroid(
+                browserInstance, deviceNameCapability);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
@@ -308,7 +313,7 @@ public class DockerDriverHandler {
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
-        updateName(browser, version, androidDriver);
+        updateName(browserInstance.getBrowserType(), version, androidDriver);
 
         if (getConfig().isVnc()) {
             logSessionId(androidDriver.getSessionId());
@@ -344,9 +349,9 @@ public class DockerDriverHandler {
         }
     }
 
-    private DesiredCapabilities getCapabilities(BrowserType browser,
+    private DesiredCapabilities getCapabilities(BrowserInstance browserInstance,
             boolean enableVnc) throws IllegalAccessException, IOException {
-        DesiredCapabilities capabilities = browser.getCapabilities();
+        DesiredCapabilities capabilities = browserInstance.getCapabilities();
         if (enableVnc) {
             capabilities.setCapability("enableVNC", true);
             capabilities.setCapability("screenResolution",
@@ -364,33 +369,33 @@ public class DockerDriverHandler {
         Optional<Capabilities> optionalCapabilities = annotationsReader != null
                 ? annotationsReader.getCapabilities(parameter, testInstance)
                 : Optional.of(new DesiredCapabilities());
-        MutableCapabilities options = browser.getDriverHandler()
+        MutableCapabilities options = browserInstance.getDriverHandler()
                 .getOptions(parameter, testInstance);
 
         // Due to bug in operablink the binary path must be set
-        if (browser == OPERA) {
+        if (browserInstance.getBrowserType() == OPERA) {
             ((OperaOptions) options).setBinary("/usr/bin/opera");
         }
 
         if (optionalCapabilities.isPresent()) {
             options.merge(optionalCapabilities.get());
         }
-        capabilities.setCapability(browser.getOptionsKey(), options);
+        capabilities.setCapability(browserInstance.getOptionsKey(), options);
         log.trace("Using {}", capabilities);
         return capabilities;
     }
 
-    private DesiredCapabilities getCapabilitiesForAndroid(BrowserType browser,
-            String deviceNameCapability)
+    private DesiredCapabilities getCapabilitiesForAndroid(
+            BrowserInstance browserInstance, String deviceNameCapability)
             throws IllegalAccessException, IOException {
-        DesiredCapabilities capabilities = browser.getCapabilities();
+        DesiredCapabilities capabilities = browserInstance.getCapabilities();
         capabilities.setCapability("browserName", browserName);
         capabilities.setCapability("deviceName", deviceNameCapability);
 
         Optional<Capabilities> optionalCapabilities = annotationsReader != null
                 ? annotationsReader.getCapabilities(parameter, testInstance)
                 : Optional.of(new DesiredCapabilities());
-        MutableCapabilities options = browser.getDriverHandler()
+        MutableCapabilities options = browserInstance.getDriverHandler()
                 .getOptions(parameter, testInstance);
 
         if (optionalCapabilities.isPresent()) {
@@ -537,18 +542,20 @@ public class DockerDriverHandler {
 
     }
 
-    public String startDockerBrowser(BrowserType browser, String version)
-            throws DockerException, InterruptedException {
+    public String startDockerBrowser(BrowserInstance browserInstance,
+            String version) throws DockerException, InterruptedException {
 
         String browserImage;
+        BrowserType browserType = browserInstance.getBrowserType();
         if (version == null || version.isEmpty()
                 || version.equalsIgnoreCase(LATEST)) {
-            log.info("Using {} version {} (latest)", browser,
-                    selenoidConfig.getDefaultBrowser(browser));
-            browserImage = selenoidConfig.getLatestImage(browser);
+            log.info("Using {} version {} (latest)", browserType,
+                    selenoidConfig.getDefaultBrowser(browserType));
+            browserImage = selenoidConfig.getLatestImage(browserInstance);
         } else {
-            log.info("Using {} version {}", browser, version);
-            browserImage = selenoidConfig.getImageFromVersion(browser, version);
+            log.info("Using {} version {}", browserInstance, version);
+            browserImage = selenoidConfig.getImageFromVersion(browserType,
+                    version);
         }
         dockerService.pullImage(browserImage);
 
@@ -634,6 +641,7 @@ public class DockerDriverHandler {
                     selenoidPort);
 
             selenoidContainer.setContainerUrl(selenoidUrl);
+            log.trace("Selenium server URL {}", selenoidUrl);
         }
         return selenoidContainer;
     }

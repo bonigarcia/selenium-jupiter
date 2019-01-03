@@ -35,9 +35,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.spotify.docker.client.exceptions.DockerException;
 
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumJupiterException;
-import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.config.Config;
 
 /**
@@ -76,10 +76,6 @@ public class ListDriverHandler extends DriverHandler {
 
             if (dockerBrowser.isPresent()) {
                 DockerBrowser browser = dockerBrowser.get();
-                if (selenoidConfig == null) {
-                    selenoidConfig = new SelenoidConfig(getConfig(),
-                            browser.type(), browser.version());
-                }
                 resolveBrowserList(testInstance, browser);
 
             } else {
@@ -97,10 +93,13 @@ public class ListDriverHandler extends DriverHandler {
         List<RemoteWebDriver> driverList = new CopyOnWriteArrayList<>();
         int numBrowsers = dockerBrowser.size();
         CountDownLatch latch = new CountDownLatch(numBrowsers);
+        BrowserInstance browserInstance = new BrowserInstance(config,
+                dockerBrowser.type());
+        String version = dockerBrowser.version();
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                 context, parameter, testInstance, annotationsReader,
-                containerMap, dockerService, selenoidConfig, config);
+                containerMap, dockerService, config, browserInstance, version);
         firstDockerDriverHandler.setIndex("_0");
         firstDockerDriverHandler.startSelenoidContainer();
         if (getConfig().isVnc()) {
@@ -116,11 +115,11 @@ public class ListDriverHandler extends DriverHandler {
             if (browserListInParallel) {
                 final int index = i;
                 executorService.submit(() -> resolveDockerBrowser(
-                        firstDockerDriverHandler, testInstance, dockerBrowser,
-                        driverList, latch, index));
+                        firstDockerDriverHandler, testInstance, browserInstance,
+                        dockerBrowser, driverList, latch, index));
             } else {
                 resolveDockerBrowser(firstDockerDriverHandler, testInstance,
-                        dockerBrowser, driverList, latch, i);
+                        browserInstance, dockerBrowser, driverList, latch, i);
             }
         }
         int timeout = numBrowsers * getConfig().getDockerWaitTimeoutSec();
@@ -134,15 +133,15 @@ public class ListDriverHandler extends DriverHandler {
 
     private void resolveDockerBrowser(
             DockerDriverHandler firstDockerDriverHandler,
-            Optional<Object> testInstance, DockerBrowser dockerBrowser,
-            final List<RemoteWebDriver> driverList, CountDownLatch latch,
-            int index) {
+            Optional<Object> testInstance, BrowserInstance browserInstance,
+            DockerBrowser dockerBrowser, final List<RemoteWebDriver> driverList,
+            CountDownLatch latch, int index) {
         try {
             DockerDriverHandler dockerDriverHandler = index == 0
                     ? firstDockerDriverHandler
                     : new DockerDriverHandler(context, parameter, testInstance,
                             annotationsReader, containerMap, dockerService,
-                            selenoidConfig, config);
+                            config, browserInstance, dockerBrowser.version());
             dockerDriverHandler.setIndex("_" + index);
             dockerDriverHandlerList.add(dockerDriverHandler);
             driverList.add((RemoteWebDriver) dockerDriverHandler

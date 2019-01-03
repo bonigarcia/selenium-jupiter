@@ -39,6 +39,7 @@ import com.google.common.collect.MapDifference;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.config.Config;
 
@@ -52,13 +53,14 @@ public class SelenoidConfigTest {
         config.setBrowserListFromDockerHub(false);
     }
 
-    SelenoidConfig selenoidConfig = new SelenoidConfig(config, CHROME, "");
+    BrowserInstance chrome = new BrowserInstance(config, CHROME);
+    SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");
 
     @ParameterizedTest
     @CsvSource({ "3.6, 4.0, 48.0", "46.0, 47.0, 48.0", "46, 47.0, 48" })
     void testNextVersion(String version, String expectedNextVersion,
             String latestVersion) {
-        String nextVersion = CHROME.getNextVersion(version, latestVersion);
+        String nextVersion = chrome.getNextVersion(version, latestVersion);
         assertThat(nextVersion, equalTo(expectedNextVersion));
     }
 

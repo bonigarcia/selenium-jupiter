@@ -16,23 +16,6 @@
  */
 package io.github.bonigarcia;
 
-import static java.lang.Integer.parseInt;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.openqa.selenium.Platform.ANY;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-
-import io.github.bonigarcia.config.Config;
-import io.github.bonigarcia.handler.ChromeDriverHandler;
-import io.github.bonigarcia.handler.DriverHandler;
-import io.github.bonigarcia.handler.FirefoxDriverHandler;
-import io.github.bonigarcia.handler.OperaDriverHandler;
-
 /**
  * Enumeration for Selenoid browsers.
  *
@@ -42,86 +25,5 @@ import io.github.bonigarcia.handler.OperaDriverHandler;
 public enum BrowserType {
 
     CHROME, FIREFOX, OPERA, ANDROID;
-
-    final Logger log = getLogger(lookup().lookupClass());
-
-    String dockerImage;
-    String path;
-    DriverHandler driverHandler;
-    String optionsKey;
-    DesiredCapabilities capabilities;
-
-    public void init(Config config) {
-        switch (this) {
-        case ANDROID:
-            driverHandler = new ChromeDriverHandler(config);
-            optionsKey = ChromeOptions.CAPABILITY;
-            capabilities = new DesiredCapabilities();
-            break;
-        case FIREFOX:
-            dockerImage = config.getFirefoxImageFormat();
-            path = config.getFirefoxPath();
-            driverHandler = new FirefoxDriverHandler(config);
-            optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
-            capabilities = new DesiredCapabilities("firefox", "", ANY);
-            break;
-        case OPERA:
-            dockerImage = config.getOperaImageFormat();
-            path = config.getOperaPath();
-            driverHandler = new OperaDriverHandler(config);
-            optionsKey = OperaOptions.CAPABILITY;
-            capabilities = new DesiredCapabilities("operablink", "", ANY);
-            break;
-        case CHROME:
-        default:
-            dockerImage = config.getChromeImageFormat();
-            path = config.getChromePath();
-            driverHandler = new ChromeDriverHandler(config);
-            optionsKey = ChromeOptions.CAPABILITY;
-            capabilities = new DesiredCapabilities("chrome", "", ANY);
-            break;
-        }
-    }
-
-    public String getNextVersion(String version, String latestVersion) {
-        int iVersion = version.indexOf('.');
-        iVersion = iVersion != -1 ? iVersion : version.length();
-        int nextVersionInt = parseInt(version.substring(0, iVersion)) + 1;
-
-        int iLatestVersion = latestVersion.indexOf('.');
-        iLatestVersion = iLatestVersion != -1 ? iLatestVersion
-                : latestVersion.length();
-        int latestVersionInt = parseInt(
-                latestVersion.substring(0, iLatestVersion)) + 1;
-
-        if (nextVersionInt > latestVersionInt) {
-            return null;
-        }
-        return String.valueOf(nextVersionInt) + ".0";
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public DriverHandler getDriverHandler() {
-        return driverHandler;
-    }
-
-    public String getOptionsKey() {
-        return optionsKey;
-    }
-
-    public String getDockerImage(String version) {
-        return String.format(getDockerImage(), version);
-    }
-
-    public String getDockerImage() {
-        return dockerImage;
-    }
-
-    public DesiredCapabilities getCapabilities() {
-        return capabilities;
-    }
 
 }

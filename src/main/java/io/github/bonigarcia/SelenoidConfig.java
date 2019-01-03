@@ -49,12 +49,12 @@ public class SelenoidConfig {
         // Default constructor
     }
 
-    public SelenoidConfig(Config config, BrowserType browserType,
+    public SelenoidConfig(Config config, BrowserInstance browserInstance,
             String version) {
         this.config = config;
-        if (browserType != ANDROID) {
+        if (browserInstance.getBrowserType() != ANDROID) {
             browsers = new DockerBrowserConfig(getDockerEnvs(), getConfig(),
-                    browserType, version);
+                    browserInstance, version);
         }
     }
 
@@ -87,8 +87,9 @@ public class SelenoidConfig {
                 .get(getImageVersion(browser, version)).getImage();
     }
 
-    public String getLatestImage(BrowserType browser) {
-        return format(browser.getDockerImage(), getDefaultBrowser(browser));
+    public String getLatestImage(BrowserInstance browserInstance) {
+        return format(browserInstance.getDockerImage(),
+                getDefaultBrowser(browserInstance.getBrowserType()));
     }
 
     public String getDefaultBrowser(BrowserType browser) {

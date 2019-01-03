@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.DockerDriverHandler;
@@ -32,12 +33,13 @@ import io.github.bonigarcia.handler.DockerDriverHandler;
 public class AndroidBrowserTest {
 
     Config config = new Config();
+    BrowserInstance android = new BrowserInstance(config, ANDROID);
 
     @ParameterizedTest
     @ValueSource(strings = { "5.0.1", "9.0" })
     void testAndroidVersions(String version) throws Exception {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                config, ANDROID, version);
+                config, android, version);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName());
         assertThat(androidUrl, notNullValue());
@@ -47,7 +49,7 @@ public class AndroidBrowserTest {
     void testAndroidWrongVersion() throws Exception {
         config.setAndroidDefaultVersion("");
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                config, ANDROID, "");
+                config, android, "");
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler.startAndroidBrowser("", "");
         });

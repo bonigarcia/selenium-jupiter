@@ -31,15 +31,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.config.Config;
 
 @ExtendWith(MockitoExtension.class)
 public class SelenoidConfigFromHubTest {
 
+    Config config = new Config();
+
+    BrowserInstance chrome = new BrowserInstance(config, CHROME);
+
     @InjectMocks
-    SelenoidConfig selenoidConfig = new SelenoidConfig(new Config(), CHROME,
-            "");
+    SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");
 
     @Test
     @SuppressWarnings("serial")

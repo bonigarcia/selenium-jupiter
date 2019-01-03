@@ -94,7 +94,7 @@ public class DockerService {
                 : dockerClient.getHost();
     }
 
-    public synchronized String startContainer(DockerContainer dockerContainer)
+    public String startContainer(DockerContainer dockerContainer)
             throws DockerException, InterruptedException {
         String imageId = dockerContainer.getImageId();
         log.info("Starting Docker container {}", imageId);
@@ -222,8 +222,7 @@ public class DockerService {
         return exists;
     }
 
-    public synchronized void stopAndRemoveContainer(String containerId,
-            String imageId) {
+    public void stopAndRemoveContainer(String containerId, String imageId) {
         log.info("Stopping Docker container {}", imageId);
         try {
             stopContainer(containerId);
@@ -233,7 +232,7 @@ public class DockerService {
         }
     }
 
-    public synchronized void stopContainer(String containerId)
+    public void stopContainer(String containerId)
             throws DockerException, InterruptedException {
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {
@@ -246,7 +245,7 @@ public class DockerService {
         }
     }
 
-    public synchronized void removeContainer(String containerId)
+    public void removeContainer(String containerId)
             throws DockerException, InterruptedException {
         log.trace("Removing container {}", containerId);
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();

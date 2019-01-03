@@ -29,7 +29,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.BrowserType;
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.DockerDriverHandler;
@@ -58,7 +58,7 @@ public class AndroidForcedTimeoutJupiterTest {
     @Test
     void androidTimeoutTest() {
         assertThrows(SeleniumJupiterException.class, () -> {
-            BrowserType android = ANDROID;
+            BrowserInstance android = new BrowserInstance(config, ANDROID);
             String version = "9.0";
             dockerDriverHandler = new DockerDriverHandler(config, android,
                     version);

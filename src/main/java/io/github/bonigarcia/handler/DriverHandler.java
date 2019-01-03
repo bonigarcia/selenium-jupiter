@@ -38,7 +38,6 @@ import io.github.bonigarcia.AnnotationsReader;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerService;
 import io.github.bonigarcia.SeleniumJupiterException;
-import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.config.Config;
 
 /**
@@ -57,7 +56,6 @@ public abstract class DriverHandler {
     ExtensionContext context;
     Map<String, DockerContainer> containerMap;
     DockerService dockerService;
-    SelenoidConfig selenoidConfig;
     Object object;
 
     public abstract void resolve();
@@ -138,10 +136,6 @@ public abstract class DriverHandler {
 
     public void setDockerService(DockerService dockerService) {
         this.dockerService = dockerService;
-    }
-
-    public void setSelenoidConfig(SelenoidConfig selenoidConfig) {
-        this.selenoidConfig = selenoidConfig;
     }
 
     public Config getConfig() {

@@ -57,11 +57,9 @@ public class DockerBrowserConfig {
     transient InternalPreferences preferences;
 
     public DockerBrowserConfig(List<String> envs, Config config,
-            BrowserType browserType, String label) {
+            BrowserInstance browserInstance, String label) {
         this.config = config;
         this.preferences = new InternalPreferences(config);
-
-        browserType.init(getConfig());
 
         boolean isLatest = label == null || label.isEmpty()
                 || label.equalsIgnoreCase(LATEST);
@@ -70,18 +68,17 @@ public class DockerBrowserConfig {
                 && label.equalsIgnoreCase("unstable");
 
         if (isLatest) {
-            version = getLatestVersion(browserType);
+            version = getLatestVersion(browserInstance);
         } else if (label.startsWith(LATEST)) {
-            version = getVersionFromLabel(browserType, label);
+            version = getVersionFromLabel(browserInstance, label);
         } else if (!isBeta && !isUnstable && !label.endsWith(VERSION_SUFFIX)) {
             version = label + VERSION_SUFFIX;
         } else {
             version = label;
         }
 
-        Browser browser = getBrowser(envs, browserType, isBeta, isUnstable);
-
-        switch (browserType) {
+        Browser browser = getBrowser(envs, browserInstance, isBeta, isUnstable);
+        switch (browserInstance.getBrowserType()) {
         case FIREFOX:
             firefox = new BrowserConfig(version);
             firefox.addBrowser(version, browser);
@@ -96,13 +93,14 @@ public class DockerBrowserConfig {
             chrome.addBrowser(version, browser);
             break;
         }
-
     }
 
-    private Browser getBrowser(List<String> envs, BrowserType browserType,
-            boolean isBeta, boolean isUnstable) {
-        String dockerImage = format(browserType.getDockerImage(), version);
-        String path = browserType.getPath();
+    private Browser getBrowser(List<String> envs,
+            BrowserInstance browserInstance, boolean isBeta,
+            boolean isUnstable) {
+        String dockerImage = format(browserInstance.getDockerImage(), version);
+        String path = browserInstance.getPath();
+        BrowserType browserType = browserInstance.getBrowserType();
         if (isBeta && browserType == CHROME) {
             dockerImage = getConfig().getChromeBetaImage();
             path = getConfig().getChromeBetaPath();
@@ -120,11 +118,11 @@ public class DockerBrowserConfig {
         return browser;
     }
 
-    private String getLatestVersion(BrowserType browserType) {
+    private String getLatestVersion(BrowserInstance browserInstance) {
         String latestVersion = null;
         if (config.isBrowserListFromDockerHub()) {
             // First seek in preferences
-            String key = browserType.name();
+            String key = browserInstance.getBrowserName();
             String versionFromPreferences = preferences
                     .getValueFromPreferences(key);
             boolean versionInPreferences = versionFromPreferences != null
@@ -147,27 +145,30 @@ public class DockerBrowserConfig {
             }
             if (!versionInPreferences) {
                 try {
-                    latestVersion = getLatestVersionFromDockerHub(browserType);
+                    latestVersion = getLatestVersionFromDockerHub(
+                            browserInstance);
                 } catch (Exception e) {
                     log.warn(
                             "There was an error in browser initilization from Docker hub"
                                     + " ... using properties values instead");
-                    latestVersion = getLatestVersionFromProperties(browserType);
+                    latestVersion = getLatestVersionFromProperties(
+                            browserInstance);
                 }
             }
         } else {
-            latestVersion = getLatestVersionFromProperties(browserType);
+            latestVersion = getLatestVersionFromProperties(browserInstance);
         }
         return latestVersion;
     }
 
-    public String getVersionFromLabel(BrowserType browser, String label) {
+    public String getVersionFromLabel(BrowserInstance browserInstance,
+            String label) {
         int beforeVersion = Integer.parseInt(label.replace(LATEST + "-", ""));
-        String latestVersion = getLatestVersion(browser);
+        String latestVersion = getLatestVersion(browserInstance);
         String previousVersion = getPreviousVersion(beforeVersion,
                 latestVersion);
-        log.debug("Version {} for {} (latest version {}) = {}", label, browser,
-                latestVersion, previousVersion);
+        log.debug("Version {} for {} (latest version {}) = {}", label,
+                browserInstance, latestVersion, previousVersion);
         return previousVersion;
     }
 
@@ -182,7 +183,7 @@ public class DockerBrowserConfig {
         return String.valueOf(latestVersionInt - beforeVersion) + ".0";
     }
 
-    public String getLatestVersionFromDockerHub(BrowserType browserType)
+    public String getLatestVersionFromDockerHub(BrowserInstance browserInstance)
             throws IOException {
         VersionComparator versionComparator = new VersionComparator();
         List<String> browserList = null;
@@ -190,7 +191,7 @@ public class DockerBrowserConfig {
         DockerHubService dockerHubService = new DockerHubService(getConfig());
         List<DockerHubTag> dockerHubTags = dockerHubService.listTags();
 
-        switch (browserType) {
+        switch (browserInstance.getBrowserType()) {
         case FIREFOX:
             final String firefoxPreffix = "firefox_";
             browserList = dockerHubTags.stream()
@@ -219,14 +220,15 @@ public class DockerBrowserConfig {
             break;
         }
 
-        preferences.putValueInPreferencesIfEmpty(browserType.name(),
-                latestVersion);
+        preferences.putValueInPreferencesIfEmpty(
+                browserInstance.getBrowserName(), latestVersion);
         return latestVersion;
     }
 
-    private String getLatestVersionFromProperties(BrowserType browserType) {
+    private String getLatestVersionFromProperties(
+            BrowserInstance browserInstance) {
         String latestVersion = null;
-        switch (browserType) {
+        switch (browserInstance.getBrowserType()) {
         case FIREFOX:
             latestVersion = getConfig().getFirefoxLatestVersion();
             break;

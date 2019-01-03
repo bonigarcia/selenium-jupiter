@@ -34,6 +34,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import io.github.bonigarcia.BrowserInstance;
 import io.github.bonigarcia.BrowsersTemplate.Browser;
 import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.SeleniumExtension;
@@ -70,12 +71,14 @@ public class RemoteDriverHandler extends DriverHandler {
     public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
+            BrowserInstance browserInstance = new BrowserInstance(config,
+                    browser.toBrowserType());
             dockerDriverHandler = new DockerDriverHandler(context, parameter,
                     testInstance, annotationsReader, containerMap,
-                    dockerService, selenoidConfig, config);
-
+                    dockerService, config, browserInstance,
+                    browser.getVersion());
             if (browser != null && browser.isDockerBrowser()) {
-                object = dockerDriverHandler.resolve(browser.toBrowserType(),
+                object = dockerDriverHandler.resolve(browserInstance,
                         browser.getVersion(), browser.getDeviceName(),
                         browser.getUrl());
             } else {

@@ -39,7 +39,7 @@ import io.github.bonigarcia.config.Config;
  * @since 3.0.0
  */
 public class WebDriverCreator {
-    
+
     final Logger log = getLogger(lookup().lookupClass());
 
     Config config;
@@ -89,7 +89,5 @@ public class WebDriverCreator {
     public Config getConfig() {
         return config;
     }
-    
-    
 
 }
