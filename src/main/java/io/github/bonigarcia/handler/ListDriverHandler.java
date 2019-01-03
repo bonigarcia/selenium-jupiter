@@ -59,10 +59,6 @@ public class ListDriverHandler extends DriverHandler {
     @Override
     public void resolve() {
         try {
-            if (selenoidConfig == null) {
-                selenoidConfig = new SelenoidConfig(getConfig());
-            }
-
             Optional<Object> testInstance = context.getTestInstance();
             ParameterizedType parameterizedType = (ParameterizedType) parameter
                     .getParameterizedType();
@@ -79,7 +75,12 @@ public class ListDriverHandler extends DriverHandler {
                     .getDocker(parameter);
 
             if (dockerBrowser.isPresent()) {
-                resolveBrowserList(testInstance, dockerBrowser.get());
+                DockerBrowser browser = dockerBrowser.get();
+                if (selenoidConfig == null) {
+                    selenoidConfig = new SelenoidConfig(getConfig(),
+                            browser.type(), browser.version());
+                }
+                resolveBrowserList(testInstance, browser);
 
             } else {
                 log.warn("Annotation @DockerBrowser should be declared");

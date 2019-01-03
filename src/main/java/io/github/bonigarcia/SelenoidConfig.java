@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia;
 
-import static java.lang.Integer.parseInt;
+import static io.github.bonigarcia.BrowserType.ANDROID;
 import static java.lang.String.format;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -49,24 +49,18 @@ public class SelenoidConfig {
         // Default constructor
     }
 
-    public SelenoidConfig(Config config) {
+    public SelenoidConfig(Config config, BrowserType browserType,
+            String version) {
         this.config = config;
-        browsers = new DockerBrowserConfig(getDockerEnvs(), getConfig());
+        if (browserType != ANDROID) {
+            browsers = new DockerBrowserConfig(getDockerEnvs(), getConfig(),
+                    browserType, version);
+        }
     }
 
     public String getBrowsersJsonAsString() {
         return new GsonBuilder().disableHtmlEscaping().create()
                 .toJson(browsers);
-    }
-
-    public String getVersionFromLabel(BrowserType browser, String label) {
-        int beforeVersion = Integer.parseInt(label.replace("latest-", ""));
-        String latestVersion = getLatestImage(browser);
-        String previousVersion = getPreviousVersion(beforeVersion,
-                latestVersion);
-        log.debug("Version {} for {} (latest version {}) = {}", label, browser,
-                latestVersion, previousVersion);
-        return previousVersion;
     }
 
     public String getImageVersion(BrowserType browser, String version) {
@@ -112,19 +106,12 @@ public class SelenoidConfig {
         return envs;
     }
 
-    private String getPreviousVersion(int beforeVersion, String latestVersion) {
-        int iLatestVersion = latestVersion.indexOf('_') + 1;
-        int jLatestVersion = latestVersion.indexOf('.');
-        int latestVersionInt = parseInt(
-                latestVersion.substring(iLatestVersion, jLatestVersion));
-        if (beforeVersion > latestVersionInt) {
-            return null;
-        }
-        return String.valueOf(latestVersionInt - beforeVersion) + ".0";
-    }
-
     public Config getConfig() {
         return config;
+    }
+
+    public DockerBrowserConfig getDockerBrowserConfig() {
+        return browsers;
     }
 
 }

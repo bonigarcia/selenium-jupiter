@@ -49,12 +49,10 @@ public class SelenoidConfigTest {
     Config config = new Config();
     {
         config.setChromeLatestVersion("65.0");
-        config.setFirefoxLatestVersion("58.0");
-        config.setOperaLatestVersion("51.0");
         config.setBrowserListFromDockerHub(false);
     }
 
-    SelenoidConfig selenoidConfig = new SelenoidConfig(config);
+    SelenoidConfig selenoidConfig = new SelenoidConfig(config, CHROME, "");
 
     @ParameterizedTest
     @CsvSource({ "3.6, 4.0, 48.0", "46.0, 47.0, 48.0", "46, 47.0, 48" })
@@ -84,7 +82,6 @@ public class SelenoidConfigTest {
         MapDifference<String, Object> difference = difference(browserMap,
                 expectedBrowserMap);
         log.debug("{}", difference);
-
         assertTrue(difference.areEqual());
     }
 

@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.CHROME;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -37,7 +38,8 @@ import io.github.bonigarcia.config.Config;
 public class SelenoidConfigFromHubTest {
 
     @InjectMocks
-    SelenoidConfig selenoidConfig = new SelenoidConfig(new Config());
+    SelenoidConfig selenoidConfig = new SelenoidConfig(new Config(), CHROME,
+            "");
 
     @Test
     @SuppressWarnings("serial")
@@ -52,8 +54,6 @@ public class SelenoidConfigFromHubTest {
                 .fromJson(browsersJsonFromProperties, mapType);
 
         assertTrue(browserMap.containsKey("chrome"));
-        assertTrue(browserMap.containsKey("firefox"));
-        assertTrue(browserMap.containsKey("operablink"));
     }
 
 }

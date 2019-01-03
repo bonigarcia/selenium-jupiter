@@ -186,11 +186,12 @@ public class Config {
 
     ConfigKey<Integer> serverPort = new ConfigKey<>("sel.jup.server.port",
             Integer.class);
-
     ConfigKey<Integer> remoteWebdriverWaitTimeoutSec = new ConfigKey<>(
             "sel.jup.remote.webdriver.wait.timeout.sec", Integer.class);
     ConfigKey<Integer> remoteWebdriverPollTimeSec = new ConfigKey<>(
             "sel.jup.remote.webdriver.poll.time.sec", Integer.class);
+    ConfigKey<Integer> ttlSec = new ConfigKey<>("sel.jup.ttl.sec",
+            Integer.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -861,6 +862,15 @@ public class Config {
 
     public Config setRemoteWebdriverPollTimeSec(int value) {
         this.remoteWebdriverPollTimeSec.setValue(value);
+        return this;
+    }
+
+    public int getTtlSec() {
+        return resolve(ttlSec);
+    }
+
+    public Config setTtlSec(int value) {
+        this.ttlSec.setValue(value);
         return this;
     }
 

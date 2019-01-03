@@ -115,9 +115,11 @@ public class DockerDriverHandler {
     String browserName;
     WebDriverCreator webDriverCreator;
 
-    public DockerDriverHandler(Config config) {
+    public DockerDriverHandler(Config config, BrowserType browserType,
+            String version) {
         this.config = config;
-        this.selenoidConfig = new SelenoidConfig(getConfig());
+        this.selenoidConfig = new SelenoidConfig(getConfig(), browserType,
+                version);
         this.dockerService = new DockerService(getConfig());
         this.containerMap = new LinkedHashMap<>();
     }
@@ -163,7 +165,8 @@ public class DockerDriverHandler {
                 webdriver = getDriverForAndroid(browser, version, deviceName);
             } else {
                 if (selenoidConfig == null) {
-                    selenoidConfig = new SelenoidConfig(getConfig());
+                    selenoidConfig = new SelenoidConfig(getConfig(), browser,
+                            version);
                 }
                 webdriver = getDriverForBrowser(browser, version);
             }
@@ -188,8 +191,8 @@ public class DockerDriverHandler {
         if (version != null && !version.isEmpty()
                 && !version.equalsIgnoreCase(LATEST)) {
             if (version.startsWith(LATEST + "-")) {
-                versionFromLabel = selenoidConfig.getVersionFromLabel(browser,
-                        version);
+                versionFromLabel = selenoidConfig.getDockerBrowserConfig()
+                        .getVersion();
             }
             imageVersion = selenoidConfig.getImageVersion(browser,
                     versionFromLabel);

@@ -53,6 +53,8 @@ public class SeleniumJupiter {
             String arg = args[0];
             if (arg.equalsIgnoreCase("server")) {
                 startServer(args);
+            } else if (arg.equalsIgnoreCase("clear-preferences")) {
+                new InternalPreferences(config).clear();
             } else {
                 resolveLocal(args);
             }
@@ -83,12 +85,10 @@ public class SeleniumJupiter {
             config.setVnc(true);
             config.setBrowserSessionTimeoutDuration("99h0m0s");
 
-            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                    config);
-
             BrowserType browserType = BrowserType
                     .valueOf(browser.toUpperCase());
-            browserType.init(config);
+            DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
+                    config, browserType, version);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserType,
                     version, deviceName, url);
@@ -133,19 +133,23 @@ public class SeleniumJupiter {
     }
 
     private static void logCliError(String validBrowsers) {
-        log.error("There are 2 options to run Selenium-Jupiter CLI");
+        log.error("There are 3 options to run Selenium-Jupiter CLI");
         log.error("1. Selenium-Jupiter used to get VNC sessions of browsers:");
         log.error("\tSeleniumJupiter browserName <version> <url> <deviceName>");
         log.error("\t...where:");
         log.error("\tbrowserName = {}", validBrowsers);
         log.error("\tversion = optional version (latest if empty)");
-        log.error(
-                "\turl = optional Docker API URL (unix:///var/run/docker.sock if empty)");
+        log.error("\turl = optional Docker API URL");
         log.error("\tdeviceName = Device name (only for Android)");
         log.error("\t(where browserName={})", validBrowsers);
+
         log.error("2. Selenium-Jupiter as a server:");
         log.error("\tSelenium-Jupiter server <port>");
         log.error("\t(where default port is 4042)");
+
+        log.error(
+                "3. To clear previously Docker image versions (as Java preferences):");
+        log.error("\tSelenium-Jupiter clear-preferences");
     }
 
 }

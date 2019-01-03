@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.docker;
 
+import static io.github.bonigarcia.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,11 +32,12 @@ import io.github.bonigarcia.handler.DockerDriverHandler;
 public class AndroidBrowserTest {
 
     Config config = new Config();
-    DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(config);
 
     @ParameterizedTest
     @ValueSource(strings = { "5.0.1", "9.0" })
     void testAndroidVersions(String version) throws Exception {
+        DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
+                config, ANDROID, version);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName());
         assertThat(androidUrl, notNullValue());
@@ -44,6 +46,8 @@ public class AndroidBrowserTest {
     @Test
     void testAndroidWrongVersion() throws Exception {
         config.setAndroidDefaultVersion("");
+        DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
+                config, ANDROID, "");
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler.startAndroidBrowser("", "");
         });
