@@ -71,21 +71,26 @@ public class RemoteDriverHandler extends DriverHandler {
     public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
-            BrowserInstance browserInstance = new BrowserInstance(config,
-                    browser.toBrowserType());
-            dockerDriverHandler = new DockerDriverHandler(context, parameter,
-                    testInstance, annotationsReader, containerMap,
-                    dockerService, config, browserInstance,
-                    browser.getVersion());
             if (browser != null && browser.isDockerBrowser()) {
+                BrowserInstance browserInstance = new BrowserInstance(config,
+                        browser.toBrowserType());
+                dockerDriverHandler = new DockerDriverHandler(context,
+                        parameter, testInstance, annotationsReader,
+                        containerMap, dockerService, config, browserInstance,
+                        browser.getVersion());
                 object = dockerDriverHandler.resolve(browserInstance,
                         browser.getVersion(), browser.getDeviceName(),
                         browser.getUrl());
             } else {
                 Optional<DockerBrowser> dockerBrowser = annotationsReader
                         .getDocker(parameter);
-
                 if (dockerBrowser.isPresent()) {
+                    BrowserInstance browserInstance = new BrowserInstance(
+                            config, dockerBrowser.get().type());
+                    dockerDriverHandler = new DockerDriverHandler(context,
+                            parameter, testInstance, annotationsReader,
+                            containerMap, dockerService, config,
+                            browserInstance, dockerBrowser.get().version());
                     object = dockerDriverHandler.resolve(dockerBrowser.get());
                 } else {
                     resolveOtherThanDocker(testInstance);
