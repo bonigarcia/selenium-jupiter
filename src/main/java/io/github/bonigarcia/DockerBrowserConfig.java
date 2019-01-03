@@ -79,22 +79,7 @@ public class DockerBrowserConfig {
             version = label;
         }
 
-        String dockerImage = format(browserType.getDockerImage(), version);
-        String path = browserType.getPath();
-        if (isBeta && browserType == CHROME) {
-            dockerImage = getConfig().getChromeBetaImage();
-            path = getConfig().getChromeBetaPath();
-        } else if (isUnstable && browserType == CHROME) {
-            dockerImage = getConfig().getChromeUnstableImage();
-            path = getConfig().getChromeUnstablePath();
-        } else if (isBeta && browserType == FIREFOX) {
-            dockerImage = getConfig().getFirefoxBetaImage();
-            path = getConfig().getFirefoxBetaPath();
-        } else if (isUnstable && browserType == FIREFOX) {
-            dockerImage = getConfig().getFirefoxUnstableImage();
-            path = getConfig().getFirefoxUnstablePath();
-        }
-        Browser browser = new Browser(dockerImage, path, envs);
+        Browser browser = getBrowser(envs, browserType, isBeta, isUnstable);
 
         switch (browserType) {
         case FIREFOX:
@@ -112,6 +97,27 @@ public class DockerBrowserConfig {
             break;
         }
 
+    }
+
+    private Browser getBrowser(List<String> envs, BrowserType browserType,
+            boolean isBeta, boolean isUnstable) {
+        String dockerImage = format(browserType.getDockerImage(), version);
+        String path = browserType.getPath();
+        if (isBeta && browserType == CHROME) {
+            dockerImage = getConfig().getChromeBetaImage();
+            path = getConfig().getChromeBetaPath();
+        } else if (isUnstable && browserType == CHROME) {
+            dockerImage = getConfig().getChromeUnstableImage();
+            path = getConfig().getChromeUnstablePath();
+        } else if (isBeta && browserType == FIREFOX) {
+            dockerImage = getConfig().getFirefoxBetaImage();
+            path = getConfig().getFirefoxBetaPath();
+        } else if (isUnstable && browserType == FIREFOX) {
+            dockerImage = getConfig().getFirefoxUnstableImage();
+            path = getConfig().getFirefoxUnstablePath();
+        }
+        Browser browser = new Browser(dockerImage, path, envs);
+        return browser;
     }
 
     private String getLatestVersion(BrowserType browserType) {
