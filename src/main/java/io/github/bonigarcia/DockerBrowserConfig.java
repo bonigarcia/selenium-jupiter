@@ -121,29 +121,12 @@ public class DockerBrowserConfig {
     private String getLatestVersion(BrowserInstance browserInstance) {
         String latestVersion = null;
         if (config.isBrowserListFromDockerHub()) {
-            // First seek in preferences
             String key = browserInstance.getBrowserName();
-            String versionFromPreferences = preferences
-                    .getValueFromPreferences(key);
-            boolean versionInPreferences = versionFromPreferences != null
-                    && !versionFromPreferences.isEmpty();
+            boolean versionInPreferences = preferences
+                    .checkKeyInPreferences(key);
             if (versionInPreferences) {
-                long expirationTime = preferences
-                        .getExpirationTimeFromPreferences(key);
-                String expirationDate = preferences.formatTime(expirationTime);
-                log.trace(
-                        "Version in preferences: {} (expiration date {}) (key {})",
-                        versionFromPreferences, expirationDate, key);
-                versionInPreferences &= preferences.checkValidity(key,
-                        versionFromPreferences, expirationTime);
-                if (versionInPreferences) {
-                    log.trace(
-                            "Using {} {} (latest value previously resolved, stored as Java preferences and valid until {})",
-                            key, versionFromPreferences, expirationDate);
-                    latestVersion = versionFromPreferences;
-                }
-            }
-            if (!versionInPreferences) {
+                latestVersion = preferences.getValueFromPreferences(key);
+            } else {
                 try {
                     latestVersion = getLatestVersionFromDockerHub(
                             browserInstance);

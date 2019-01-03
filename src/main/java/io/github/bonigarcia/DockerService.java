@@ -22,7 +22,6 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -61,11 +60,12 @@ public class DockerService {
     private int dockerWaitTimeoutSec;
     private int dockerPollTimeMs;
     private DockerClient dockerClient;
-    private List<String> pulledImages = new ArrayList<>();
+    private InternalPreferences preferences;
 
     public DockerService(Config config) {
         this.config = config;
 
+        preferences = new InternalPreferences(getConfig());
         dockerDefaultSocket = getConfig().getDockerDefaultSocket();
         dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
         dockerPollTimeMs = getConfig().getDockerPollTimeMs();
@@ -187,7 +187,7 @@ public class DockerService {
 
     public void pullImage(String imageId)
             throws DockerException, InterruptedException {
-        if (!pulledImages.contains(imageId)) {
+        if (!preferences.checkKeyInPreferences(imageId)) {
             log.info("Pulling Docker image {} ... please wait", imageId);
             dockerClient.pull(imageId, new ProgressHandler() {
                 @Override
@@ -197,15 +197,8 @@ public class DockerService {
                             message);
                 }
             });
-            pulledImages.add(imageId);
             log.trace("Docker image {} downloaded", imageId);
-        }
-    }
-
-    public void pullImageIfNecessary(String imageId)
-            throws DockerException, InterruptedException {
-        if (!existsImage(imageId)) {
-            pullImage(imageId);
+            preferences.putValueInPreferencesIfEmpty(imageId, "true");
         }
     }
 

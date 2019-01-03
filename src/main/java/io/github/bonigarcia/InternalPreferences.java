@@ -108,4 +108,21 @@ public class InternalPreferences {
         return key + TTL;
     }
 
+    public boolean checkKeyInPreferences(String key) {
+        String valueFromPreferences = getValueFromPreferences(key);
+        boolean valueInPreferences = valueFromPreferences != null
+                && !valueFromPreferences.isEmpty();
+        if (valueInPreferences) {
+            long expirationTime = getExpirationTimeFromPreferences(key);
+            String expirationDate = formatTime(expirationTime);
+            valueInPreferences &= checkValidity(key, valueFromPreferences,
+                    expirationTime);
+            if (valueInPreferences) {
+                log.trace("{}={} in preferences (expiration date {})", key,
+                        valueFromPreferences, expirationDate);
+            }
+        }
+        return valueInPreferences;
+    }
+
 }

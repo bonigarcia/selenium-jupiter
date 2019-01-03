@@ -534,7 +534,7 @@ public class DockerDriverHandler {
 
         log.info("Starting {} {} in Android {} (API level {})", browserName,
                 browserVersion, version, apiLevel);
-        dockerService.pullImageIfNecessary(androidImage);
+        dockerService.pullImage(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage,
                 deviceName);
@@ -575,10 +575,10 @@ public class DockerDriverHandler {
             selenoidContainer = containerMap.get(selenoidImage);
         } else {
             // Pull images
-            dockerService.pullImageIfNecessary(selenoidImage);
+            dockerService.pullImage(selenoidImage);
             String recordingImage = getConfig().getRecordingImage();
             if (recording) {
-                dockerService.pullImageIfNecessary(recordingImage);
+                dockerService.pullImage(recordingImage);
             }
 
             // portBindings
@@ -655,7 +655,7 @@ public class DockerDriverHandler {
             androidContainer = containerMap.get(androidImage);
         } else {
             // Pull image
-            dockerService.pullImageIfNecessary(androidImage);
+            dockerService.pullImage(androidImage);
 
             // portBindings
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
@@ -782,7 +782,7 @@ public class DockerDriverHandler {
             novncContainer = containerMap.get(novncImage);
 
         } else {
-            dockerService.pullImageIfNecessary(novncImage);
+            dockerService.pullImage(novncImage);
 
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
             String defaultNovncPort = getConfig().getNovncPort();
