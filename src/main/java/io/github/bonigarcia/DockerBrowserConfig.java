@@ -115,7 +115,7 @@ public class DockerBrowserConfig {
     }
 
     private String getLatestVersion(BrowserType browserType) {
-        String version = null;
+        String latestVersion = null;
         if (config.isBrowserListFromDockerHub()) {
             // First seek in preferences
             String key = browserType.name();
@@ -136,23 +136,23 @@ public class DockerBrowserConfig {
                     log.trace(
                             "Using {} {} (latest value previously resolved, stored as Java preferences and valid until {})",
                             key, versionFromPreferences, expirationDate);
-                    version = versionFromPreferences;
+                    latestVersion = versionFromPreferences;
                 }
             }
             if (!versionInPreferences) {
                 try {
-                    version = getLatestVersionFromDockerHub(browserType);
+                    latestVersion = getLatestVersionFromDockerHub(browserType);
                 } catch (Exception e) {
                     log.warn(
                             "There was an error in browser initilization from Docker hub"
                                     + " ... using properties values instead");
-                    version = getLatestVersionFromProperties(browserType);
+                    latestVersion = getLatestVersionFromProperties(browserType);
                 }
             }
         } else {
-            version = getLatestVersionFromProperties(browserType);
+            latestVersion = getLatestVersionFromProperties(browserType);
         }
-        return version;
+        return latestVersion;
     }
 
     public String getVersionFromLabel(BrowserType browser, String label) {
