@@ -114,8 +114,7 @@ public class DockerBrowserConfig {
             dockerImage = getConfig().getFirefoxUnstableImage();
             path = getConfig().getFirefoxUnstablePath();
         }
-        Browser browser = new Browser(dockerImage, path, envs);
-        return browser;
+        return new Browser(dockerImage, path, envs);
     }
 
     private String getLatestVersion(BrowserInstance browserInstance) {
