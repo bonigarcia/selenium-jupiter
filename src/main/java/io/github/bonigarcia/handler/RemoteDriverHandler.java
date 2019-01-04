@@ -80,7 +80,7 @@ public class RemoteDriverHandler extends DriverHandler {
                         browser.getVersion());
                 object = dockerDriverHandler.resolve(browserInstance,
                         browser.getVersion(), browser.getDeviceName(),
-                        browser.getUrl());
+                        browser.getUrl(), true);
             } else {
                 Optional<DockerBrowser> dockerBrowser = annotationsReader
                         .getDocker(parameter);

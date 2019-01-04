@@ -115,6 +115,7 @@ public class DockerDriverHandler {
     List<File> filesInVideoFolder;
     String browserName;
     WebDriverCreator webDriverCreator;
+    URL hubUrl;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
             String version) {
@@ -149,11 +150,11 @@ public class DockerDriverHandler {
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
 
-        return resolve(browserInstance, version, deviceName, url);
+        return resolve(browserInstance, version, deviceName, url, true);
     }
 
     public WebDriver resolve(BrowserInstance browserInstance, String version,
-            String deviceName, String url) {
+            String deviceName, String url, boolean createWebDriver) {
         BrowserType browserType = browserInstance.getBrowserType();
         try {
             if (url != null && !url.isEmpty()) {
@@ -170,7 +171,8 @@ public class DockerDriverHandler {
                 webdriver = getDriverForAndroid(browserInstance, version,
                         deviceName);
             } else {
-                webdriver = getDriverForBrowser(browserInstance, version);
+                webdriver = getDriverForBrowser(browserInstance, version,
+                        createWebDriver);
             }
             return webdriver;
 
@@ -183,8 +185,9 @@ public class DockerDriverHandler {
     }
 
     private WebDriver getDriverForBrowser(BrowserInstance browserInstance,
-            String version) throws IllegalAccessException, IOException,
-            DockerException, InterruptedException {
+            String version, boolean createWebDriver)
+            throws IllegalAccessException, IOException, DockerException,
+            InterruptedException {
         boolean enableVnc = getConfig().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browserInstance,
                 enableVnc);
@@ -208,8 +211,12 @@ public class DockerDriverHandler {
         String seleniumServerUrl = getConfig().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
-        URL hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
+        hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
                 : startDockerBrowser(browserInstance, versionFromLabel));
+
+        if (!createWebDriver) {
+            return null;
+        }
 
         if (webDriverCreator == null) {
             webDriverCreator = new WebDriverCreator(getConfig());
@@ -875,6 +882,10 @@ public class DockerDriverHandler {
 
     public Config getConfig() {
         return config;
+    }
+
+    public URL getHubUrl() {
+        return hubUrl;
     }
 
 }

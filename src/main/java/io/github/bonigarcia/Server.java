@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia;
 
+import static io.github.bonigarcia.BrowserType.OPERA;
+import static io.github.bonigarcia.BrowserType.valueOf;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -23,6 +25,10 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 
+import com.google.gson.Gson;
+
+import io.github.bonigarcia.config.Config;
+import io.github.bonigarcia.handler.DockerDriverHandler;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 import okhttp3.MediaType;
@@ -42,21 +48,58 @@ public class Server {
 
     public static final MediaType JSON = MediaType
             .parse("application/json; charset=utf-8");
-    public static final String HUB = "http://localhost:9515";
+    public static final String GET = "GET";
+    public static final String DELETE = "DELETE";
+    public static final String POST = "POST";
     public static final String SESSION = "/session";
 
     final Logger log = getLogger(lookup().lookupClass());
 
     public Server(int port) {
         Javalin app = Javalin.create().start(port);
+        Config config = new Config();
+        Gson gson = new Gson();
+        final String[] hubUrl = new String[1];
+        final DockerDriverHandler[] dockerDriverHandler = new DockerDriverHandler[1];
+
         Handler handler = ctx -> {
             String requestMethod = ctx.method();
             String requestPath = ctx.path();
             String requestBody = ctx.body();
             log.info("Server request: {} {}", requestMethod, requestPath);
-            String response = exchange(HUB + requestPath, requestMethod,
+
+            Session session = gson.fromJson(requestBody, Session.class);
+
+            // POST /session
+            if (session != null && session.getDesiredCapabilities() != null) {
+                String browserName = session.getDesiredCapabilities()
+                        .getBrowserName();
+                String version = session.getDesiredCapabilities().getVersion();
+                BrowserType browserType = browserName
+                        .equalsIgnoreCase("operablink") ? OPERA
+                                : valueOf(browserName.toUpperCase());
+                BrowserInstance browserInstance = new BrowserInstance(config,
+                        browserType);
+                dockerDriverHandler[0] = new DockerDriverHandler(config,
+                        browserInstance, version);
+
+                dockerDriverHandler[0].resolve(browserInstance, version, "", "",
+                        false);
+                hubUrl[0] = dockerDriverHandler[0].getHubUrl().toString();
+                log.info("Hub URL {}", hubUrl[0]);
+            }
+
+            // exchange request-response
+            String response = exchange(hubUrl[0] + requestPath, requestMethod,
                     requestBody);
             log.info("Server response: {}", response);
+            ctx.result(response);
+
+            // DELETE /session/sessionId
+            if (requestMethod.equalsIgnoreCase(DELETE)
+                    && requestPath.startsWith(SESSION + "/")) {
+                dockerDriverHandler[0].cleanup();
+            }
         };
 
         app.post(SESSION, handler);
@@ -72,14 +115,14 @@ public class Server {
         OkHttpClient client = new OkHttpClient();
         Builder requestBuilder = new Request.Builder().url(url);
         switch (method) {
-        case "GET":
+        case GET:
             requestBuilder.get();
             break;
-        case "DELETE":
+        case DELETE:
             requestBuilder.delete();
             break;
         default:
-        case "POST":
+        case POST:
             RequestBody body = RequestBody.create(JSON, json);
             requestBuilder.post(body);
             break;
@@ -88,8 +131,30 @@ public class Server {
         return response.body().string();
     }
 
-    public static void main(String[] args) {
-        new Server(4042);
+    static class Session {
+        DesiredCapabilities desiredCapabilities;
+
+        public DesiredCapabilities getDesiredCapabilities() {
+            return desiredCapabilities;
+        }
+    }
+
+    static class DesiredCapabilities {
+        String browserName;
+        String version;
+        String platform;
+
+        public String getBrowserName() {
+            return browserName;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public String getPlatform() {
+            return platform;
+        }
     }
 
 }

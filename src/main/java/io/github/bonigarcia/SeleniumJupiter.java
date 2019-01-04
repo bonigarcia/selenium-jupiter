@@ -91,7 +91,7 @@ public class SeleniumJupiter {
                     config, browserInstance, version);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserInstance,
-                    version, deviceName, url);
+                    version, deviceName, url, true);
 
             getRuntime().addShutdownHook(new Thread() {
                 @Override
