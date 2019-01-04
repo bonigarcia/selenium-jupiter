@@ -21,7 +21,7 @@ before_script:
     - sleep 3
 
 script:
-    - mvn test -Djunit.jupiter.execution.parallel.enabled=true
+    - mvn test
     - bash <(curl -s https://codecov.io/bash)
     - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then mvn sonar:sonar; fi
     - NUM_CONTAINERS=`docker ps | grep imagename | wc -l`
