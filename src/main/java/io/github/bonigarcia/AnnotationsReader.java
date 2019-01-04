@@ -66,10 +66,11 @@ public class AnnotationsReader {
             // Search first DriverCapabilities annotation in parameter
             capabilities = new DesiredCapabilities();
             for (String capability : driverCapabilities.value()) {
-                Optional<List<String>> keyValue = getKeyValue(capability);
+                Optional<List<Object>> keyValue = getKeyValue(capability);
                 if (keyValue.isPresent()) {
                     ((DesiredCapabilities) capabilities).setCapability(
-                            keyValue.get().get(0), keyValue.get().get(1));
+                            keyValue.get().get(0).toString(),
+                            keyValue.get().get(1));
                 }
             }
             out = of(capabilities);
@@ -117,7 +118,7 @@ public class AnnotationsReader {
         boolean isBool = s.equalsIgnoreCase("true")
                 || s.equalsIgnoreCase("false");
         if (!isBool) {
-            log.warn("Value {} is not boolean", s);
+            log.trace("Value {} is not boolean", s);
         }
         return isBool;
     }
@@ -125,7 +126,7 @@ public class AnnotationsReader {
     public boolean isNumeric(String s) {
         boolean numeric = StringUtils.isNumeric(s);
         if (!numeric) {
-            log.warn("Value {} is not numeric", s);
+            log.trace("Value {} is not numeric", s);
         }
         return numeric;
     }
@@ -214,13 +215,21 @@ public class AnnotationsReader {
         return out;
     }
 
-    public Optional<List<String>> getKeyValue(String keyValue) {
+    public Optional<List<Object>> getKeyValue(String keyValue) {
         StringTokenizer st = new StringTokenizer(keyValue, "=");
         if (st.countTokens() != 2) {
             log.warn("Invalid format in {} (expected key=value)", keyValue);
             return empty();
         }
-        return of(asList(st.nextToken(), st.nextToken()));
+        String key = st.nextToken();
+        String value = st.nextToken();
+        Object returnedValue = value;
+        if (isBoolean(value)) {
+            returnedValue = new Boolean(value);
+        } else if (isNumeric(value)) {
+            returnedValue = new Integer(value);
+        }
+        return of(asList(key, returnedValue));
     }
 
     public Config getConfig() {

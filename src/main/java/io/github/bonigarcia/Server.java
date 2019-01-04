@@ -67,6 +67,7 @@ public class Server {
             String requestPath = ctx.path();
             String requestBody = ctx.body();
             log.info("Server request: {} {}", requestMethod, requestPath);
+            log.debug("body: {} ", requestBody);
 
             Session session = gson.fromJson(requestBody, Session.class);
 

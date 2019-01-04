@@ -123,13 +123,13 @@ public class FirefoxDriverHandler extends DriverHandler {
         Preferences preferences = parameter.getAnnotation(Preferences.class);
         if (preferences != null) {
             for (String preference : preferences.value()) {
-                Optional<List<String>> keyValue = annotationsReader
+                Optional<List<Object>> keyValue = annotationsReader
                         .getKeyValue(preference);
                 if (!keyValue.isPresent()) {
                     continue;
                 }
-                String name = keyValue.get().get(0);
-                String value = keyValue.get().get(1);
+                String name = keyValue.get().get(0).toString();
+                String value = keyValue.get().get(1).toString();
                 if (annotationsReader.isBoolean(value)) {
                     firefoxOptions.addPreference(name, valueOf(value));
                 } else if (annotationsReader.isNumeric(value)) {
