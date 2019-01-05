@@ -54,7 +54,7 @@ public class InternalPreferences {
         return prefs.get(key, null);
     }
 
-    public long getExpirationTimeFromPreferences(String key) {
+    private long getExpirationTimeFromPreferences(String key) {
         return prefs.getLong(getExpirationKey(key), 0);
     }
 
@@ -65,14 +65,13 @@ public class InternalPreferences {
                     + SECONDS.toMillis(config.getTtlSec());
             prefs.putLong(getExpirationKey(key), expirationTime);
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "Storing {} for {} as Java preferences (valid until {})",
-                        value, key, formatTime(expirationTime));
+                log.debug("Storing preference {}={} (valid until {})", key,
+                        value, formatTime(expirationTime));
             }
         }
     }
 
-    public void clearFromPreferences(String key) {
+    private void clearFromPreferences(String key) {
         prefs.remove(key);
         prefs.remove(getExpirationKey(key));
     }
@@ -86,21 +85,21 @@ public class InternalPreferences {
         }
     }
 
-    public boolean checkValidity(String key, String value,
+    private boolean checkValidity(String key, String value,
             long expirationTime) {
         long now = new Date().getTime();
         boolean isValid = value != null && expirationTime != 0
                 && expirationTime > now;
         if (!isValid) {
             String expirationDate = formatTime(expirationTime);
-            log.debug("Removing preference {} {} (expired on {})", key, value,
+            log.debug("Removing preference {}={} (expired on {})", key, value,
                     expirationDate);
             clearFromPreferences(key);
         }
         return isValid;
     }
 
-    public String formatTime(long time) {
+    private String formatTime(long time) {
         return dateFormat.format(new Date(time));
     }
 

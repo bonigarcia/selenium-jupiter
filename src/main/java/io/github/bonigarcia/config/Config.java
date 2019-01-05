@@ -192,6 +192,8 @@ public class Config {
             "sel.jup.remote.webdriver.poll.time.sec", Integer.class);
     ConfigKey<Integer> ttlSec = new ConfigKey<>("sel.jup.ttl.sec",
             Integer.class);
+    ConfigKey<Boolean> usePreferences = new ConfigKey<>(
+            "sel.jup.wdm.use.preferences", Boolean.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -871,6 +873,15 @@ public class Config {
 
     public Config setTtlSec(int value) {
         this.ttlSec.setValue(value);
+        return this;
+    }
+
+    public boolean isUsePreferences() {
+        return resolve(usePreferences);
+    }
+
+    public Config setUsePreferences(boolean value) {
+        this.usePreferences.setValue(value);
         return this;
     }
 

@@ -187,7 +187,8 @@ public class DockerService {
 
     public void pullImage(String imageId)
             throws DockerException, InterruptedException {
-        if (!preferences.checkKeyInPreferences(imageId)) {
+        if (!preferences.checkKeyInPreferences(imageId)
+                || !getConfig().isUsePreferences()) {
             log.info("Pulling Docker image {} ... please wait", imageId);
             dockerClient.pull(imageId, new ProgressHandler() {
                 @Override
@@ -198,7 +199,9 @@ public class DockerService {
                 }
             });
             log.trace("Docker image {} downloaded", imageId);
-            preferences.putValueInPreferencesIfEmpty(imageId, "true");
+            if (getConfig().isUsePreferences()) {
+                preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
+            }
         }
     }
 

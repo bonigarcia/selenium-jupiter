@@ -44,6 +44,7 @@ public class DockerVncMixedJupiterTest {
     @BeforeAll
     void setup() {
         seleniumExtension.getConfig().setVnc(true);
+        seleniumExtension.getConfig().setUsePreferences(false);
     }
 
     @Test
