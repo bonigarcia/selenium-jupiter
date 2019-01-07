@@ -117,7 +117,7 @@ public class InternalPreferences {
             valueInPreferences &= checkValidity(key, valueFromPreferences,
                     expirationTime);
             if (valueInPreferences) {
-                log.trace("{}={} in preferences (expiration date {})", key,
+                log.debug("Preference found {}={} (valid until {})", key,
                         valueFromPreferences, expirationDate);
             }
         }
