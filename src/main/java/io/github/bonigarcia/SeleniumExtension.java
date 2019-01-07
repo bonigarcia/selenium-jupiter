@@ -94,6 +94,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     static final String CLASSPATH_PREFIX = "classpath:";
 
     private Config config = new Config();
+    private InternalPreferences preferences = new InternalPreferences(
+            getConfig());
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
     private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
@@ -308,7 +310,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         containersMap.put(contextId, containerMap);
 
         if (dockerService == null) {
-            dockerService = new DockerService(getConfig());
+            dockerService = new DockerService(config, preferences);
         }
         driverHandler.setDockerService(dockerService);
     }
@@ -564,6 +566,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     public Config getConfig() {
         return config;
+    }
+
+    public void clearPreferences() {
+        preferences.clear();
     }
 
 }

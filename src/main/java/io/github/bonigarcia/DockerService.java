@@ -62,10 +62,10 @@ public class DockerService {
     private DockerClient dockerClient;
     private InternalPreferences preferences;
 
-    public DockerService(Config config) {
+    public DockerService(Config config, InternalPreferences preferences) {
         this.config = config;
+        this.preferences = preferences;
 
-        preferences = new InternalPreferences(getConfig());
         dockerDefaultSocket = getConfig().getDockerDefaultSocket();
         dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
         dockerPollTimeMs = getConfig().getDockerPollTimeMs();

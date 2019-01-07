@@ -58,6 +58,7 @@ public class Server {
     public Server(int port) {
         Javalin app = Javalin.create().start(port);
         Config config = new Config();
+        InternalPreferences preferences = new InternalPreferences(config);
         Gson gson = new Gson();
         final String[] hubUrl = new String[1];
         final DockerDriverHandler[] dockerDriverHandler = new DockerDriverHandler[1];
@@ -82,7 +83,7 @@ public class Server {
                 BrowserInstance browserInstance = new BrowserInstance(config,
                         browserType);
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
-                        browserInstance, version);
+                        browserInstance, version, preferences);
 
                 dockerDriverHandler[0].resolve(browserInstance, version, "", "",
                         false);

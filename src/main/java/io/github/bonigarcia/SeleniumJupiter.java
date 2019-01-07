@@ -43,6 +43,7 @@ public class SeleniumJupiter {
     static final Logger log = getLogger(lookup().lookupClass());
 
     static Config config = new Config();
+    static InternalPreferences preferences = new InternalPreferences(config);
 
     public static void main(String[] args) {
         String validBrowsers = "chrome|firefox|opera|android";
@@ -88,7 +89,7 @@ public class SeleniumJupiter {
             BrowserInstance browserInstance = new BrowserInstance(config,
                     BrowserType.valueOf(browser.toUpperCase()));
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                    config, browserInstance, version);
+                    config, browserInstance, version, preferences);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserInstance,
                     version, deviceName, url, true);

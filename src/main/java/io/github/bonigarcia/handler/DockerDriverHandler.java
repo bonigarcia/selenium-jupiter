@@ -79,6 +79,7 @@ import io.github.bonigarcia.DockerBrowser;
 import io.github.bonigarcia.DockerContainer;
 import io.github.bonigarcia.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.DockerService;
+import io.github.bonigarcia.InternalPreferences;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.SelenoidConfig;
 import io.github.bonigarcia.WebDriverCreator;
@@ -118,11 +119,11 @@ public class DockerDriverHandler {
     URL hubUrl;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
-            String version) {
+            String version, InternalPreferences preferences) {
         this.config = config;
-        this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
+        this.selenoidConfig = new SelenoidConfig(config, browserInstance,
                 version);
-        this.dockerService = new DockerService(getConfig());
+        this.dockerService = new DockerService(config, preferences);
         this.containerMap = new LinkedHashMap<>();
     }
 

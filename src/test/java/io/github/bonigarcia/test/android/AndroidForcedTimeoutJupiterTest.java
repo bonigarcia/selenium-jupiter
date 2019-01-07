@@ -30,6 +30,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.BrowserInstance;
+import io.github.bonigarcia.InternalPreferences;
 import io.github.bonigarcia.SeleniumJupiterException;
 import io.github.bonigarcia.config.Config;
 import io.github.bonigarcia.handler.DockerDriverHandler;
@@ -41,6 +42,7 @@ public class AndroidForcedTimeoutJupiterTest {
 
     DockerDriverHandler dockerDriverHandler;
     Config config = new Config();
+    InternalPreferences preferences = new InternalPreferences(config);
 
     @BeforeAll
     void setup() {
@@ -61,7 +63,7 @@ public class AndroidForcedTimeoutJupiterTest {
             BrowserInstance android = new BrowserInstance(config, ANDROID);
             String version = "9.0";
             dockerDriverHandler = new DockerDriverHandler(config, android,
-                    version);
+                    version, preferences);
             WebDriver driver = dockerDriverHandler.resolve(android, version,
                     "Samsung Galaxy S6", "", true);
             log.debug("WebDriver object: {}", driver);
