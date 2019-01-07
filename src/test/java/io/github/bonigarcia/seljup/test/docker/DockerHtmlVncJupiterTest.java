@@ -62,7 +62,7 @@ public class DockerHtmlVncJupiterTest {
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
-        String folder = "target/surefire-reports/io.github.bonigarcia.test.docker.DockerHtmlVncJupiterTest";
+        String folder = "target/surefire-reports/io.github.bonigarcia.seljup.test.docker.DockerHtmlVncJupiterTest";
         htmlFile = new File(folder, "testHtmlVnc_arg0_CHROME_71.0_"
                 + driver.getSessionId() + ".html");
     }
