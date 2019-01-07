@@ -64,7 +64,7 @@ public class Server {
         final DockerDriverHandler[] dockerDriverHandler = new DockerDriverHandler[1];
         String path = config.getServerPath();
         final String serverPath = path.endsWith("/")
-                ? path = path.substring(0, path.length() - 1)
+                ? path.substring(0, path.length() - 1)
                 : path;
 
         Handler handler = ctx -> {
