@@ -13,14 +13,6 @@
             <unpack>true</unpack>
         </dependencySet>
         <dependencySet>
-            <scope>test</scope>
-            <unpack>true</unpack>
-            <includes>
-                <include>ch.qos.logback:logback-classic:jar</include>
-            </includes>
-            <useTransitiveFiltering>true</useTransitiveFiltering>
-        </dependencySet>
-        <dependencySet>
             <scope>provided</scope>
             <unpack>true</unpack>
             <includes>
