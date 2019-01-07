@@ -66,17 +66,13 @@ public class SeleniumJupiter {
         String browser = args[0];
         String version = "";
         String deviceName = "";
-        String url = "";
         String versionMessage = "(latest)";
         if (args.length > 1) {
             version = args[1];
             versionMessage = version;
         }
         if (args.length > 2) {
-            url = args[2];
-        }
-        if (args.length > 3) {
-            deviceName = join(" ", copyOfRange(args, 3, args.length));
+            deviceName = join(" ", copyOfRange(args, 2, args.length));
         }
 
         log.info("Using SeleniumJupiter to execute {} {} in Docker", browser,
@@ -92,7 +88,7 @@ public class SeleniumJupiter {
                     config, browserInstance, version, preferences);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserInstance,
-                    version, deviceName, url, true);
+                    version, deviceName, config.getDockerServerUrl(), true);
 
             getRuntime().addShutdownHook(new Thread() {
                 @Override
@@ -136,11 +132,10 @@ public class SeleniumJupiter {
     private static void logCliError(String validBrowsers) {
         log.error("There are 3 options to run Selenium-Jupiter CLI");
         log.error("1. Selenium-Jupiter used to get VNC sessions of browsers:");
-        log.error("\tSeleniumJupiter browserName <version> <url> <deviceName>");
+        log.error("\tSeleniumJupiter browserName <version> <deviceName>");
         log.error("\t...where:");
         log.error("\tbrowserName = {}", validBrowsers);
-        log.error("\tversion = optional version (latest if empty)");
-        log.error("\turl = optional Docker API URL");
+        log.error("\tversion = optional version (latest by default)");
         log.error("\tdeviceName = Device name (only for Android)");
         log.error("\t(where browserName={})", validBrowsers);
 
