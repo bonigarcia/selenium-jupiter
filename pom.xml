@@ -48,7 +48,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Main class -->
-        <sel.jup.mainClass>io.github.bonigarcia.SeleniumJupiter</sel.jup.mainClass>
+        <sel.jup.mainClass>io.github.bonigarcia.seljup.SeleniumJupiter</sel.jup.mainClass>
     </properties>
 
     <name>selenium-jupiter</name>
