@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.test.forced;
 
+import static io.github.bonigarcia.wdm.OperatingSystem.WIN;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class ForcedEdgeJupiterTest {
 
@@ -36,7 +38,7 @@ public class ForcedEdgeJupiterTest {
     @BeforeEach
     void setup() {
         seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
-        seleniumExtension.getConfig().wdm().setOs("WIN");
+        WebDriverManager.edgedriver().operatingSystem(WIN);
     }
 
     @Test

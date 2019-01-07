@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,34 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
-// end::snippet-in-doc[]
-@Disabled("Edge not available on Travis CI")
-// tag::snippet-in-doc[]
-public class EdgeSettingVersionJupiterTest {
-
-    @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+@ExtendWith(SeleniumExtension.class)
+public class MultipleConfigWdmJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().edgedriver().version("3.14393");
+        WebDriverManager.chromedriver().version("2.43");
+        WebDriverManager.firefoxdriver().version("0.22.0");
     }
 
     @Test
-    void webrtcTest(EdgeDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+    void multipleConfigTest(ChromeDriver chrome, FirefoxDriver firefox) {
+        String sut = "https://bonigarcia.github.io/selenium-jupiter/";
+        String title = "JUnit 5 extension for Selenium";
+
+        chrome.get(sut);
+        firefox.get(sut);
+
+        assertThat(chrome.getTitle(), containsString(title));
+        assertThat(firefox.getTitle(), containsString(title));
     }
 
 }
-// end::snippet-in-doc[]

@@ -38,7 +38,7 @@ public class EdgeWithGlobalOptionsJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().wdm().setDriverVersion("3.14393");
+        seleniumExtension.getConfig().edgedriver().version("3.14393");
     }
 
     @Options
@@ -49,7 +49,7 @@ public class EdgeWithGlobalOptionsJupiterTest {
 
     @Test
     public void edgeTest(EdgeDriver driver) {
-        driver.get("http://www.seleniumhq.org/");
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
     }

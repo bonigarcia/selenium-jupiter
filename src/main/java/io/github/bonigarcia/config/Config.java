@@ -911,8 +911,28 @@ public class Config {
         this.screenshotFormat.setValue("base64andpng");
     }
 
-    public io.github.bonigarcia.wdm.Config wdm() {
-        return WebDriverManager.config();
+    public WebDriverManager chromedriver() {
+        return WebDriverManager.chromedriver();
+    }
+
+    public WebDriverManager edgedriver() {
+        return WebDriverManager.edgedriver();
+    }
+
+    public WebDriverManager firefoxdriver() {
+        return WebDriverManager.firefoxdriver();
+    }
+
+    public WebDriverManager iedriver() {
+        return WebDriverManager.iedriver();
+    }
+
+    public WebDriverManager operadriver() {
+        return WebDriverManager.operadriver();
+    }
+
+    public WebDriverManager phantomjs() {
+        return WebDriverManager.phantomjs();
     }
 
 }

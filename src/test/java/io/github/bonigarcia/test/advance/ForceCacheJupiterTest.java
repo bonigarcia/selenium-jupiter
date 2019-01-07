@@ -39,7 +39,8 @@ public class ForceCacheJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().wdm().setForceCache(true);
+        seleniumExtension.getConfig().chromedriver().config()
+                .setForceCache(true);
     }
 
     @Test
