@@ -1,3 +1,28 @@
+selenium-jupiter (3.0.0)
+
+  + Selenium-Jupiter server
+  + Thread-safe handling to allow concurrent tests (JUnit 5.3)
+  + Remove global instance of configuration object (use @RegisterExtension instead)
+  + Allow using @Options annotation for different browsers (ChromeOptions, FirefoxOptions, etc.)
+  + Include parameter in test templates for Selenium Server URL (issue #17)
+  + RemoteWebDriver creation using timeout and poll time
+  + Use Java preferences to store latest versions of Docker browsers (Chrome, Firefox, Opera) and pulled images
+  + Fix issue #22 (template-tests with multiple test methods per class)
+  + Fix issue #20 (@Options annotation is ignored when there is a superclass)
+  + Fix issue #36 (when DockerDriverHandler stats container with Android, it doesn't pass proxy settings)
+  + Fix issue #31 (when sel.jup.browser.list.from.docker.hub=true legacy docker images are not available)
+  + Fix issue #29 (use thread-safe collections for concurrent tests)
+  + Maven dependency: org.seleniumhq.selenium:selenium-java 3.141.59
+  + Maven dependency: io.github.bonigarcia:webdrivermanager 3.2.0
+  + Maven dependency: io.appium:java-client 7.0.0
+  + Maven dependency: com.spotify:docker-client 8.14.5
+  + Maven dependency: com.codeborne:phantomjsdriver 1.4.4
+  + Docker hub dependency: aerokube/selenoid:1.8.4
+  + Docker hub dependency: butomo1989/docker-android-x86*:1.5-p6
+
+ -- Boni Garcia <boni.gg@gmail.com>  Mon, 07 Jan 2018 17:02:00 +0200
+
+
 selenium-jupiter (2.2.0)
 
   + Include Android browsers in Docker using butomo1989 images

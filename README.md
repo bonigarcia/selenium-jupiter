@@ -19,7 +19,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>2.2.0</version>
+	<version>3.0.0</version>
 </dependency>
 ```
 
@@ -79,18 +79,113 @@ public class SeleniumJupiterDockerTest {
 
     @Test
     public void testFirefox(
-            @DockerBrowser(type = FIREFOX, version = "60.0") RemoteWebDriver driver) {
-        // use Firefox (version 60.0) in this test
+            @DockerBrowser(type = FIREFOX, version = "64.0") RemoteWebDriver driver) {
+        // use Firefox (version 64.0) in this test
     }
 
     @Test
     public void testAndroid(
-            @DockerBrowser(type = ANDROID, version = "7.1.1") RemoteWebDriver driver) {
-        // use Android (version 7.1.1) in this test
+            @DockerBrowser(type = ANDROID, version = "9.0") RemoteWebDriver driver) {
+        // use Android (version 9.0) in this test
     }
 
 }
 ```
+
+
+## Selenium-Jupiter CLI
+
+As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Line Interface (CLI), i.e. the shell, to get VNC sessions of Docker browsers (Chrome, Firefox, Opera, Android). There are two ways of using this feature:
+
+* Directly from the source code, using Maven. The command to be used is ``mvn exec:java -Dexec.args="browserName"``. For instance:
+
+```
+> mvn exec:java -Dexec.args="chrome"
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Selenium-Jupiter 3.0.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
+[INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
+[DEBUG] Preference found CHROME=71.0 (valid until 2019-01-07 19:53:47)
+[INFO] Using CHROME version 71.0 (latest)
+[DEBUG] Preference found selenoid/vnc:chrome_71.0=pulled (valid until 2019-01-07 19:53:51)
+[DEBUG] Preference found aerokube/selenoid:1.8.4=pulled (valid until 2019-01-07 19:53:53)
+[INFO] Starting Docker container aerokube/selenoid:1.8.4
+[DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32782/wd/hub
+Jan 07, 2019 6:54:19 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+[DEBUG] Preference found psharkey/novnc:3.3-t6=pulled (valid until 2019-01-07 19:53:59)
+[INFO] Starting Docker container psharkey/novnc:3.3-t6
+[INFO] Session id fe492bee1ecebceb645cf58275a63bd6
+[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
+[INFO] http://172.17.0.1:32783/vnc.html?host=172.17.0.1&port=32782&path=vnc/fe492bee1ecebceb645cf58275a63bd6&resize=scale&autoconnect=true&password=selenoid
+[INFO] Press ENTER to exit
+
+[INFO] Stopping Docker container aerokube/selenoid:1.8.4
+[INFO] Stopping Docker container psharkey/novnc:3.3-t6
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 21.240 s
+[INFO] Finished at: 2019-01-07T16:26:47+01:00
+[INFO] Final Memory: 33M/453M
+[INFO] ------------------------------------------------------------------------
+```
+
+* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.0.0/selenium-jupiter-3.0.0-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.0.0-fat.jar browserName``, for instance:
+
+```
+> java -jar selenium-jupiter-3.0.0-fat.jar chrome
+[INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
+[DEBUG] Preference found CHROME=71.0 (valid until 2019-01-07 19:53:47)
+[INFO] Using CHROME version 71.0 (latest)
+[DEBUG] Preference found selenoid/vnc:chrome_71.0=pulled (valid until 2019-01-07 19:53:51)
+[DEBUG] Preference found aerokube/selenoid:1.8.4=pulled (valid until 2019-01-07 19:53:53)
+[INFO] Starting Docker container aerokube/selenoid:1.8.4
+[DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32784/wd/hub
+Jan 07, 2019 6:55:17 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+[DEBUG] Preference found psharkey/novnc:3.3-t6=pulled (valid until 2019-01-07 19:53:59)
+[INFO] Starting Docker container psharkey/novnc:3.3-t6
+[INFO] Session id 8edd28c130bb2bc62f8e4467c20f4dc0
+[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
+[INFO] http://172.17.0.1:32785/vnc.html?host=172.17.0.1&port=32784&path=vnc/8edd28c130bb2bc62f8e4467c20f4dc0&resize=scale&autoconnect=true&password=selenoid
+[INFO] Press ENTER to exit
+
+[INFO] Stopping Docker container aerokube/selenoid:1.8.4
+[INFO] Stopping Docker container psharkey/novnc:3.3-t6
+```
+
+## Selenium-Jupiter Server
+
+As of version 3.0.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
+
+* Directly from the source code and Maven. The command to be used is ``mvn exec:java -Dexec.args="server <port>"``. If the second argument is not specified, the default port will be used (4042):
+
+```
+$ mvn exec:java -Dexec.args="server"
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Selenium-Jupiter 3.0.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
+[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
+```
+
+* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.0.0/selenium-jupiter-3.2.0-fat.jar). For instance:
+
+```
+> java -jar webdrivermanager-3.0.0-fat.jar server
+[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
+```
+
+When the Selenium-Jupiter server is up and running, it acts as a regular Selenium Server for Docker browsers (Chrome, Firefox,. Opera, Android), and its URL can be used in tests using regular Selenium's ``RemoteWebDriver`` objects.
+
 
 ## Documentation
 
@@ -98,7 +193,7 @@ You can find more details and examples on the [Selenium-Jupiter user guide].
 
 ## About
 
-Selenium-Jupiter (Copyright &copy; 2017-2018) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
+Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Boni Garcia]: http://bonigarcia.github.io/
