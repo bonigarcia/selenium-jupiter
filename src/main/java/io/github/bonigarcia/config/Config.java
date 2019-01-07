@@ -186,6 +186,9 @@ public class Config {
 
     ConfigKey<Integer> serverPort = new ConfigKey<>("sel.jup.server.port",
             Integer.class);
+    ConfigKey<String> serverPath = new ConfigKey<>("sel.jup.server.path",
+            String.class);
+
     ConfigKey<Integer> remoteWebdriverWaitTimeoutSec = new ConfigKey<>(
             "sel.jup.remote.webdriver.wait.timeout.sec", Integer.class);
     ConfigKey<Integer> remoteWebdriverPollTimeSec = new ConfigKey<>(
@@ -846,6 +849,15 @@ public class Config {
 
     public Config setServerPort(int value) {
         this.serverPort.setValue(value);
+        return this;
+    }
+
+    public String getServerPath() {
+        return resolve(serverPath);
+    }
+
+    public Config setServerPath(String value) {
+        this.serverPath.setValue(value);
         return this;
     }
 

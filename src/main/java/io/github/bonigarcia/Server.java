@@ -62,6 +62,10 @@ public class Server {
         Gson gson = new Gson();
         final String[] hubUrl = new String[1];
         final DockerDriverHandler[] dockerDriverHandler = new DockerDriverHandler[1];
+        String path = config.getServerPath();
+        final String serverPath = path.endsWith("/")
+                ? path = path.substring(0, path.length() - 1)
+                : path;
 
         Handler handler = ctx -> {
             String requestMethod = ctx.method();
@@ -92,24 +96,27 @@ public class Server {
             }
 
             // exchange request-response
-            String response = exchange(hubUrl[0] + requestPath, requestMethod,
-                    requestBody);
+            String response = exchange(
+                    hubUrl[0] + requestPath.replace(serverPath, ""),
+                    requestMethod, requestBody);
             log.info("Server response: {}", response);
             ctx.result(response);
 
             // DELETE /session/sessionId
             if (requestMethod.equalsIgnoreCase(DELETE)
-                    && requestPath.startsWith(SESSION + "/")) {
+                    && requestPath.startsWith(serverPath + SESSION + "/")) {
                 dockerDriverHandler[0].cleanup();
             }
         };
 
-        app.post(SESSION, handler);
-        app.post(SESSION + "/*", handler);
-        app.get(SESSION + "/*", handler);
-        app.delete(SESSION + "/*", handler);
+        app.post(serverPath + SESSION, handler);
+        app.post(serverPath + SESSION + "/*", handler);
+        app.get(serverPath + SESSION + "/*", handler);
+        app.delete(serverPath + SESSION + "/*", handler);
 
-        log.info("Selenium-Jupiter server listening on port {}", port);
+        String serverUrl = String.format("http://localhost:%d%s", port,
+                serverPath);
+        log.info("Selenium-Jupiter server listening on {}", serverUrl);
     }
 
     public static String exchange(String url, String method, String json)

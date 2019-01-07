@@ -70,7 +70,8 @@ class ServerJupiterTest {
     @ParameterizedTest
     @MethodSource("capabilitesProvider")
     void testServer(Capabilities capabilities) throws MalformedURLException {
-        String serverUrl = String.format("http://localhost:%s/", serverPort);
+        String serverUrl = String.format("http://localhost:%s/wd/hub/",
+                serverPort);
         RemoteWebDriver driver = new RemoteWebDriver(new URL(serverUrl),
                 capabilities);
         assertNotNull(driver);
