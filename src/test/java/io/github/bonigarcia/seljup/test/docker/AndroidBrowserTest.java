@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.InternalPreferences;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
@@ -34,8 +35,10 @@ import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
 public class AndroidBrowserTest {
 
     Config config = new Config();
+    AnnotationsReader annotationsReader = new AnnotationsReader();
     InternalPreferences preferences = new InternalPreferences(config);
-    BrowserInstance android = new BrowserInstance(config, ANDROID);
+    BrowserInstance android = new BrowserInstance(config, annotationsReader,
+            ANDROID);
 
     @ParameterizedTest
     @ValueSource(strings = { "5.0.1", "9.0" })

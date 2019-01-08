@@ -25,6 +25,7 @@ import org.openqa.selenium.Capabilities;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
 
@@ -39,8 +40,8 @@ public class AppiumDriverHandler extends DriverHandler {
     private AppiumDriverLocalService appiumDriverLocalService;
 
     public AppiumDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class AppiumDriverHandler extends DriverHandler {
                     .getCapabilities(parameter, testInstance);
 
             Optional<URL> url = annotationsReader.getUrl(parameter,
-                    testInstance);
+                    testInstance, config.getSeleniumServerUrl());
             if (capabilities.isPresent()) {
                 URL appiumServerUrl;
                 if (url.isPresent()) {

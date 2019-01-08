@@ -35,6 +35,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.spotify.docker.client.exceptions.DockerException;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
@@ -52,8 +53,8 @@ public class ListDriverHandler extends DriverHandler {
     private ExecutorService executorService;
 
     public ListDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ListDriverHandler extends DriverHandler {
         int numBrowsers = dockerBrowser.size();
         CountDownLatch latch = new CountDownLatch(numBrowsers);
         BrowserInstance browserInstance = new BrowserInstance(config,
-                dockerBrowser.type());
+                annotationsReader, dockerBrowser.type());
         String version = dockerBrowser.version();
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(

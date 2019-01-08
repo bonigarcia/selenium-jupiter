@@ -32,6 +32,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.Extensions;
@@ -47,13 +48,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class FirefoxDriverHandler extends DriverHandler {
 
-    public FirefoxDriverHandler(Config config) {
-        super(config);
+    public FirefoxDriverHandler(Config config,
+            AnnotationsReader annotationsReader) {
+        super(config, annotationsReader);
     }
 
     public FirefoxDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override

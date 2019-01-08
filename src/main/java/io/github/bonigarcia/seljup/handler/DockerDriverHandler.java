@@ -77,12 +77,12 @@ import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.BrowserType;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.DockerContainer;
+import io.github.bonigarcia.seljup.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.seljup.DockerService;
 import io.github.bonigarcia.seljup.InternalPreferences;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.WebDriverCreator;
-import io.github.bonigarcia.seljup.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -146,7 +146,7 @@ public class DockerDriverHandler {
     public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browserType = dockerBrowser.type();
         BrowserInstance browserInstance = new BrowserInstance(config,
-                browserType);
+                annotationsReader, browserType);
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
@@ -161,7 +161,6 @@ public class DockerDriverHandler {
             if (url != null && !url.isEmpty()) {
                 dockerService.updateDockerClient(url);
             }
-
             if (getConfig().isRecording()) {
                 hostVideoFolder = new File(getOutputFolder(context,
                         getConfig().getOutputFolder()));

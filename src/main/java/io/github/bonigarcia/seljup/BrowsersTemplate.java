@@ -80,6 +80,10 @@ public class BrowsersTemplate {
             return url;
         }
 
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
         public BrowserType toBrowserType() {
             return BrowserType
                     .valueOf(getType().replace(IN_DOCKER, "").toUpperCase());

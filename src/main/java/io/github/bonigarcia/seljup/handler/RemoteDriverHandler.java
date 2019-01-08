@@ -34,12 +34,13 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.WebDriverCreator;
-import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -57,13 +58,14 @@ public class RemoteDriverHandler extends DriverHandler {
     private WebDriverCreator webDriverCreator;
 
     public RemoteDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     public RemoteDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, Browser browser) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader,
+            Browser browser) {
+        super(parameter, context, config, annotationsReader);
         this.browser = browser;
     }
 
@@ -73,7 +75,7 @@ public class RemoteDriverHandler extends DriverHandler {
             Optional<Object> testInstance = context.getTestInstance();
             if (browser != null && browser.isDockerBrowser()) {
                 BrowserInstance browserInstance = new BrowserInstance(config,
-                        browser.toBrowserType());
+                        annotationsReader, browser.toBrowserType());
                 dockerDriverHandler = new DockerDriverHandler(context,
                         parameter, testInstance, annotationsReader,
                         containerMap, dockerService, config, browserInstance,
@@ -86,7 +88,8 @@ public class RemoteDriverHandler extends DriverHandler {
                         .getDocker(parameter);
                 if (dockerBrowser.isPresent()) {
                     BrowserInstance browserInstance = new BrowserInstance(
-                            config, dockerBrowser.get().type());
+                            config, annotationsReader,
+                            dockerBrowser.get().type());
                     dockerDriverHandler = new DockerDriverHandler(context,
                             parameter, testInstance, annotationsReader,
                             containerMap, dockerService, config,
@@ -107,12 +110,14 @@ public class RemoteDriverHandler extends DriverHandler {
                 .getCapabilities(parameter, testInstance);
 
         Optional<URL> url;
-        if (browser != null && !browser.getUrl().isEmpty()) {
+        if (browser != null && browser.getUrl() != null
+                && !browser.getUrl().isEmpty()) {
             url = Optional.of(new URL(browser.getUrl()));
             capabilities = Optional.of(new DesiredCapabilities(
                     browser.getType(), browser.getVersion(), ANY));
         } else {
-            url = annotationsReader.getUrl(parameter, testInstance);
+            url = annotationsReader.getUrl(parameter, testInstance,
+                    config.getSeleniumServerUrl());
         }
 
         if (url.isPresent() && capabilities.isPresent()) {

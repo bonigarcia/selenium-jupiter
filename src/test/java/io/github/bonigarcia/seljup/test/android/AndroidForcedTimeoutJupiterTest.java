@@ -29,6 +29,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.InternalPreferences;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
@@ -42,6 +43,7 @@ public class AndroidForcedTimeoutJupiterTest {
 
     DockerDriverHandler dockerDriverHandler;
     Config config = new Config();
+    AnnotationsReader annotationsReader = new AnnotationsReader();
     InternalPreferences preferences = new InternalPreferences(config);
 
     @BeforeAll
@@ -60,7 +62,8 @@ public class AndroidForcedTimeoutJupiterTest {
     @Test
     void androidTimeoutTest() {
         assertThrows(SeleniumJupiterException.class, () -> {
-            BrowserInstance android = new BrowserInstance(config, ANDROID);
+            BrowserInstance android = new BrowserInstance(config,
+                    annotationsReader, ANDROID);
             String version = "9.0";
             dockerDriverHandler = new DockerDriverHandler(config, android,
                     version, preferences);

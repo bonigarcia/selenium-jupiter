@@ -36,8 +36,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.seljup.config.Config;
-
 /**
  * Options/capabilities reader from annotated parameters or test instance to the
  * proper type (ChromeOptions, FirefoxOptions, Capabilities, etc).
@@ -48,12 +46,6 @@ import io.github.bonigarcia.seljup.config.Config;
 public class AnnotationsReader {
 
     final Logger log = getLogger(lookup().lookupClass());
-
-    Config config;
-
-    public AnnotationsReader(Config config) {
-        this.config = config;
-    }
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
             Optional<Object> testInstance) throws IllegalAccessException {
@@ -87,10 +79,9 @@ public class AnnotationsReader {
     }
 
     public Optional<URL> getUrl(Parameter parameter,
-            Optional<Object> testInstance)
+            Optional<Object> testInstance, String seleniumServerUrl)
             throws MalformedURLException, IllegalAccessException {
         Optional<URL> out = empty();
-        String seleniumServerUrl = getConfig().getSeleniumServerUrl();
 
         if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
             out = of(new URL(seleniumServerUrl));
@@ -230,10 +221,6 @@ public class AnnotationsReader {
             returnedValue = new Integer(value);
         }
         return of(asList(key, returnedValue));
-    }
-
-    public Config getConfig() {
-        return config;
     }
 
 }

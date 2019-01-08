@@ -39,6 +39,7 @@ import com.google.common.collect.MapDifference;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.config.Config;
@@ -52,8 +53,10 @@ public class SelenoidConfigTest {
         config.setChromeLatestVersion("65.0");
         config.setBrowserListFromDockerHub(false);
     }
+    AnnotationsReader annotationsReader = new AnnotationsReader();
 
-    BrowserInstance chrome = new BrowserInstance(config, CHROME);
+    BrowserInstance chrome = new BrowserInstance(config, annotationsReader,
+            CHROME);
     SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");
 
     @ParameterizedTest

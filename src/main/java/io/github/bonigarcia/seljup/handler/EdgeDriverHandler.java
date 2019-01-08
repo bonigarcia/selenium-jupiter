@@ -26,6 +26,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.config.Config;
 
@@ -38,8 +39,8 @@ import io.github.bonigarcia.seljup.config.Config;
 public class EdgeDriverHandler extends DriverHandler {
 
     public EdgeDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override

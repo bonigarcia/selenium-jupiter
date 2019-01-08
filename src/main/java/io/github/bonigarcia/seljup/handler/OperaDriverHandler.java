@@ -28,6 +28,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.Extensions;
@@ -42,13 +43,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class OperaDriverHandler extends DriverHandler {
 
-    public OperaDriverHandler(Config config) {
-        super(config);
+    public OperaDriverHandler(Config config,
+            AnnotationsReader annotationsReader) {
+        super(config, annotationsReader);
     }
 
     public OperaDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override

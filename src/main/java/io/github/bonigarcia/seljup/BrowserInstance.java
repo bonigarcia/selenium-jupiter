@@ -51,27 +51,23 @@ public class BrowserInstance {
     String optionsKey;
     DesiredCapabilities capabilities;
 
-    public BrowserInstance(Config config, BrowserType browserType) {
+    public BrowserInstance(Config config, AnnotationsReader annotationsReader,
+            BrowserType browserType) {
         this.config = config;
         this.browserType = browserType;
 
         switch (browserType) {
-        case ANDROID:
-            driverHandler = new ChromeDriverHandler(config);
-            optionsKey = ChromeOptions.CAPABILITY;
-            capabilities = new DesiredCapabilities();
-            break;
         case FIREFOX:
             dockerImage = config.getFirefoxImageFormat();
             path = config.getFirefoxPath();
-            driverHandler = new FirefoxDriverHandler(config);
+            driverHandler = new FirefoxDriverHandler(config, annotationsReader);
             optionsKey = FirefoxOptions.FIREFOX_OPTIONS;
             capabilities = new DesiredCapabilities("firefox", "", ANY);
             break;
         case OPERA:
             dockerImage = config.getOperaImageFormat();
             path = config.getOperaPath();
-            driverHandler = new OperaDriverHandler(config);
+            driverHandler = new OperaDriverHandler(config, annotationsReader);
             optionsKey = OperaOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("operablink", "", ANY);
             break;
@@ -79,7 +75,7 @@ public class BrowserInstance {
         default:
             dockerImage = config.getChromeImageFormat();
             path = config.getChromePath();
-            driverHandler = new ChromeDriverHandler(config);
+            driverHandler = new ChromeDriverHandler(config, annotationsReader);
             optionsKey = ChromeOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("chrome", "", ANY);
             break;

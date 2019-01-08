@@ -28,6 +28,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.Extensions;
@@ -42,13 +43,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class ChromeDriverHandler extends DriverHandler {
 
-    public ChromeDriverHandler(Config config) {
-        super(config);
+    public ChromeDriverHandler(Config config,
+            AnnotationsReader annotationsReader) {
+        super(config, annotationsReader);
     }
 
     public ChromeDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override

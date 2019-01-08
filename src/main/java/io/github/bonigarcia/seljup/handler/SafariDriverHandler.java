@@ -25,6 +25,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.config.Config;
 
@@ -37,8 +38,8 @@ import io.github.bonigarcia.seljup.config.Config;
 public class SafariDriverHandler extends DriverHandler {
 
     public SafariDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     @Override

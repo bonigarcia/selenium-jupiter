@@ -33,11 +33,10 @@ import org.openqa.selenium.Capabilities;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
-import io.github.bonigarcia.seljup.config.Config;
 
 public class AnnotationsReaderTest {
 
-    AnnotationsReader annotationsReader = new AnnotationsReader(new Config());
+    AnnotationsReader annotationsReader = new AnnotationsReader();
     Optional<Object> testInstance = Optional.of(new ClassWithOptions());
 
     @Test

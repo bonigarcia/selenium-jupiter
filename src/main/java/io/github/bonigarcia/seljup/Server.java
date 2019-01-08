@@ -58,6 +58,7 @@ public class Server {
     public Server(int port) {
         Javalin app = Javalin.create().start(port);
         Config config = new Config();
+        AnnotationsReader annotationsReader = new AnnotationsReader();
         InternalPreferences preferences = new InternalPreferences(config);
         Gson gson = new Gson();
         final String[] hubUrl = new String[1];
@@ -85,7 +86,7 @@ public class Server {
                         .equalsIgnoreCase("operablink") ? OPERA
                                 : valueOf(browserName.toUpperCase());
                 BrowserInstance browserInstance = new BrowserInstance(config,
-                        browserType);
+                        annotationsReader, browserType);
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
                         browserInstance, version, preferences);
 

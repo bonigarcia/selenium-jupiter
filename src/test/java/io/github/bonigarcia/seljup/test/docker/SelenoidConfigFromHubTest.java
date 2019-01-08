@@ -31,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.config.Config;
@@ -39,8 +40,9 @@ import io.github.bonigarcia.seljup.config.Config;
 public class SelenoidConfigFromHubTest {
 
     Config config = new Config();
-
-    BrowserInstance chrome = new BrowserInstance(config, CHROME);
+    AnnotationsReader annotationsReader = new AnnotationsReader();
+    BrowserInstance chrome = new BrowserInstance(config, annotationsReader,
+            CHROME);
 
     @InjectMocks
     SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");

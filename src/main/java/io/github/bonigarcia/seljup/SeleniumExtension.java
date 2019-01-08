@@ -94,6 +94,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     static final String CLASSPATH_PREFIX = "classpath:";
 
     private Config config = new Config();
+    private AnnotationsReader annotationsReader = new AnnotationsReader();
     private InternalPreferences preferences = new InternalPreferences(
             getConfig());
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
@@ -167,15 +168,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (isGeneric && !browserListMap.isEmpty()) {
             browser = getBrowser(contextId, parameter, isTemplate);
         }
+        Optional<String> urlFromAnnotation = getUrlFromAnnotation(parameter,
+                extensionContext);
+        if (urlFromAnnotation.isPresent() && browser != null) {
+            browser.setUrl(urlFromAnnotation.get());
+        }
         if (browser != null) {
             type = templateHandlerMap.get(browser.getType());
             url = browser.getUrl();
-        }
-
-        // WebDriverManager
-        if (!typeList.contains(type)) {
-            WebDriverManager.getInstance(type).setup();
-            typeList.add(type);
         }
 
         // Handler
@@ -188,6 +188,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (url != null && !url.isEmpty()) {
             constructorClass = RemoteDriverHandler.class;
             isRemote = true;
+        }
+
+        // WebDriverManager
+        if (!typeList.contains(type) && !isRemote) {
+            WebDriverManager.getInstance(type).setup();
+            typeList.add(type);
         }
 
         try {
@@ -278,26 +284,46 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (isRemote && browser != null) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Config.class, Browser.class)
+                            ExtensionContext.class, Config.class,
+                            AnnotationsReader.class, Browser.class)
                     .newInstance(parameter, extensionContext, getConfig(),
-                            browser);
+                            getAnnotationsReader(), browser);
 
         } else if (constructorClass.equals(OtherDriverHandler.class)
                 && !browserListMap.isEmpty()) {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Config.class, Class.class)
+                            ExtensionContext.class, Config.class,
+                            AnnotationsReader.class, Class.class)
                     .newInstance(parameter, extensionContext, getConfig(),
-                            type);
+                            getAnnotationsReader(), type);
 
         } else {
             driverHandler = (DriverHandler) constructorClass
                     .getDeclaredConstructor(Parameter.class,
-                            ExtensionContext.class, Config.class)
-                    .newInstance(parameter, extensionContext, getConfig());
+                            ExtensionContext.class, Config.class,
+                            AnnotationsReader.class)
+                    .newInstance(parameter, extensionContext, getConfig(),
+                            getAnnotationsReader());
 
         }
         return driverHandler;
+    }
+
+    private Optional<String> getUrlFromAnnotation(Parameter parameter,
+            ExtensionContext extensionContext) {
+        Optional<String> out = empty();
+        try {
+            Optional<URL> urlFromAnnotation = annotationsReader.getUrl(
+                    parameter, extensionContext.getTestInstance(),
+                    config.getSeleniumServerUrl());
+            if (urlFromAnnotation.isPresent()) {
+                out = Optional.of(urlFromAnnotation.get().toString());
+            }
+        } catch (Exception e) {
+            log.warn("Exception getting URL from annotation", e);
+        }
+        return out;
     }
 
     public void initHandlerForDocker(String contextId,
@@ -566,6 +592,10 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     public Config getConfig() {
         return config;
+    }
+
+    public AnnotationsReader getAnnotationsReader() {
+        return annotationsReader;
     }
 
     public void clearPreferences() {

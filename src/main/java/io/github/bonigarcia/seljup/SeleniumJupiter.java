@@ -43,6 +43,7 @@ public class SeleniumJupiter {
     static final Logger log = getLogger(lookup().lookupClass());
 
     static Config config = new Config();
+    static AnnotationsReader annotationsReader = new AnnotationsReader();
     static InternalPreferences preferences = new InternalPreferences(config);
 
     public static void main(String[] args) {
@@ -83,6 +84,7 @@ public class SeleniumJupiter {
             config.setBrowserSessionTimeoutDuration("99h0m0s");
 
             BrowserInstance browserInstance = new BrowserInstance(config,
+                    annotationsReader,
                     BrowserType.valueOf(browser.toUpperCase()));
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                     config, browserInstance, version, preferences);

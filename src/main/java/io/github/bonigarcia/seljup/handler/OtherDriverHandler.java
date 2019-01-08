@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -35,13 +36,13 @@ public class OtherDriverHandler extends DriverHandler {
     private Class<?> type;
 
     public OtherDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
     }
 
     public OtherDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, Class<?> type) {
-        super(parameter, context, config);
+            Config config, AnnotationsReader annotationsReader, Class<?> type) {
+        super(parameter, context, config, annotationsReader);
         this.type = type;
     }
 
