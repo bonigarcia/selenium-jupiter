@@ -35,13 +35,13 @@ public class AndroidJupiterTest {
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
-    // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
         seleniumExtension.getConfig().setVnc(true);
         seleniumExtension.getConfig().setRecording(true);
     }
 
+    // end::snippet-in-doc[]
     @Disabled
     // tag::snippet-in-doc[]
     @Test
