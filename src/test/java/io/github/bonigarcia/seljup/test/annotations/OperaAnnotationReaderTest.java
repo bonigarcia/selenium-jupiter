@@ -26,21 +26,19 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.test.advance.OperaWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.seljup.test.advance.OperaWithOptionsJupiterTest;
 
-@ExtendWith(MockitoExtension.class)
 public class OperaAnnotationReaderTest {
 
-    @InjectMocks
-    OperaDriverHandler annotationsReader;
+    DriverHandler annotationsReader = new OperaDriverHandler(null, null, null,
+            new AnnotationsReader());
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(OperaWithOptionsJupiterTest.class,

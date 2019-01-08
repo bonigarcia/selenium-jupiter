@@ -27,23 +27,21 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.seljup.test.advance.FirefoxWithGlobalOptionsJupiterTest;
 import io.github.bonigarcia.seljup.test.advance.FirefoxWithOptionsJupiterTest;
 
-@ExtendWith(MockitoExtension.class)
 public class FirefoxAnnotationReaderTest {
 
-    @InjectMocks
-    FirefoxDriverHandler annotationsReader;
+    DriverHandler annotationsReader = new FirefoxDriverHandler(null, null, null,
+            new AnnotationsReader());
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(FirefoxWithOptionsJupiterTest.class,

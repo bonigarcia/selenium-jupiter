@@ -25,22 +25,20 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
+import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.test.advance.EdgeWithGlobalOptionsJupiterTest;
 
-@ExtendWith(MockitoExtension.class)
 public class EdgeAnnotationReaderTest {
 
-    @InjectMocks
-    EdgeDriverHandler annotationsReader;
+    DriverHandler annotationsReader = new EdgeDriverHandler(null, null, null,
+            new AnnotationsReader());
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(EdgeWithGlobalOptionsJupiterTest.class);
