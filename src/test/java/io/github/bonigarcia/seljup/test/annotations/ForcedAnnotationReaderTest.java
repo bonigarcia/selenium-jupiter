@@ -32,6 +32,7 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.appium.java_client.AppiumDriver;
+import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.AppiumDriverHandler;
@@ -83,8 +84,11 @@ public class ForcedAnnotationReaderTest {
                 .getParameters()[0];
         assertThrows(SeleniumJupiterException.class, () -> {
             handler.getDeclaredConstructor(Parameter.class,
-                    ExtensionContext.class, Config.class)
-                    .newInstance(parameter, null, new Config()).resolve();
+                    ExtensionContext.class, Config.class,
+                    AnnotationsReader.class)
+                    .newInstance(parameter, null, new Config(),
+                            new AnnotationsReader())
+                    .resolve();
         });
     }
 
