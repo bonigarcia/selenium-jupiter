@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.docker;
+package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -41,12 +41,13 @@ public class AndroidBrowserTest {
             ANDROID);
 
     @ParameterizedTest
-    @ValueSource(strings = { "5.0.1", "9.0" })
+    @ValueSource(strings = { "9.0" })
     void testAndroidVersions(String version) throws Exception {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, version, preferences);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName());
+        dockerDriverHandler.cleanup();
         assertThat(androidUrl, notNullValue());
     }
 

@@ -38,7 +38,6 @@ public class AndroidJupiterTest {
     @BeforeAll
     static void setup() {
         seleniumExtension.getConfig().setVnc(true);
-        seleniumExtension.getConfig().setRecording(true);
     }
 
     // end::snippet-in-doc[]
