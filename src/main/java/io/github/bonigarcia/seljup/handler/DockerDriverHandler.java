@@ -560,7 +560,7 @@ public class DockerDriverHandler {
                     selenoidConfig.getDefaultBrowser(browserType));
             browserImage = selenoidConfig.getLatestImage(browserInstance);
         } else {
-            log.info("Using {} version {}", browserInstance, version);
+            log.info("Using {} version {}", browserType, version);
             browserImage = selenoidConfig.getImageFromVersion(browserType,
                     version);
         }
