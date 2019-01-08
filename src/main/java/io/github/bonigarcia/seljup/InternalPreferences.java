@@ -65,7 +65,7 @@ public class InternalPreferences {
                     + SECONDS.toMillis(config.getTtlSec());
             prefs.putLong(getExpirationKey(key), expirationTime);
             if (log.isDebugEnabled()) {
-                log.debug("Storing preference {}={} (valid until {})", key,
+                log.trace("Storing preference {}={} (valid until {})", key,
                         value, formatTime(expirationTime));
             }
         }
@@ -92,7 +92,7 @@ public class InternalPreferences {
                 && expirationTime > now;
         if (!isValid) {
             String expirationDate = formatTime(expirationTime);
-            log.debug("Removing preference {}={} (expired on {})", key, value,
+            log.trace("Removing preference {}={} (expired on {})", key, value,
                     expirationDate);
             clearFromPreferences(key);
         }
@@ -117,7 +117,7 @@ public class InternalPreferences {
             valueInPreferences &= checkValidity(key, valueFromPreferences,
                     expirationTime);
             if (valueInPreferences) {
-                log.debug("Preference found {}={} (valid until {})", key,
+                log.trace("Preference found {}={} (valid until {})", key,
                         valueFromPreferences, expirationDate);
             }
         }

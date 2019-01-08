@@ -189,7 +189,7 @@ public class DockerService {
             throws DockerException, InterruptedException {
         if (!preferences.checkKeyInPreferences(imageId)
                 || !getConfig().isUsePreferences()) {
-            log.info("Pulling Docker image {} ... please wait", imageId);
+            log.info("Pulling Docker image {}", imageId);
             dockerClient.pull(imageId, new ProgressHandler() {
                 @Override
                 public void progress(ProgressMessage message)
