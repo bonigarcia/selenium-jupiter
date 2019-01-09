@@ -686,14 +686,16 @@ public class DockerDriverHandler {
             // envs
             List<String> envs = new ArrayList<>();
             envs.add("DEVICE=" + deviceName);
-            envs.add("APPIUM=True");
+            envs.add("APPIUM=true");
             List<String> proxyEnvVars = asList("HTTP_PROXY", "HTTPS_PROXY",
                     "NO_PROXY", "http_proxy", "https_proxy", "no_proxy");
             proxyEnvVars.stream().filter(envName -> isNotBlank(getenv(envName)))
                     .forEach(envName -> envs
                             .add(envName + "=" + getenv(envName)));
             if (recording) {
-                envs.add("AUTO_RECORD=True");
+                envs.add("AUTO_RECORD=true");
+            } else {
+                envs.add("AUTO_RECORD=false");
             }
 
             // Build container
