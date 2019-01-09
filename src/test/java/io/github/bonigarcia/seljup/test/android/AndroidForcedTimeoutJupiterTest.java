@@ -61,7 +61,7 @@ public class AndroidForcedTimeoutJupiterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "9.0" })
+    @ValueSource(strings = { "8.1" })
     void androidTimeoutTest(String version) {
         assertThrows(SeleniumJupiterException.class, () -> {
             BrowserInstance android = new BrowserInstance(config,

@@ -41,7 +41,7 @@ public class AndroidBrowserTest {
             ANDROID);
 
     @ParameterizedTest
-    @ValueSource(strings = { "9.0" })
+    @ValueSource(strings = { "8.1" })
     void testAndroidVersions(String version) throws Exception {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, version, preferences);
