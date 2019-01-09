@@ -154,7 +154,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
-
         String contextId = extensionContext.getUniqueId();
         Parameter parameter = parameterContext.getParameter();
         Class<?> type = parameter.getType();
@@ -184,17 +183,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
         boolean isRemote = constructorClass.equals(RemoteDriverHandler.class);
-
         if (url != null && !url.isEmpty()) {
             constructorClass = RemoteDriverHandler.class;
             isRemote = true;
         }
 
         // WebDriverManager
-        if (!typeList.contains(type) && !isRemote) {
-            WebDriverManager.getInstance(type).setup();
-            typeList.add(type);
-        }
+        runWebDriverManagerIfNeded(type, isRemote);
 
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
@@ -220,6 +215,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
 
         return resolveHandler(parameter, driverHandler);
+    }
+
+    private void runWebDriverManagerIfNeded(Class<?> type, boolean isRemote) {
+        if (!typeList.contains(type) && !isRemote) {
+            WebDriverManager.getInstance(type).setup();
+            typeList.add(type);
+        }
     }
 
     private void putDriverHandlerInMap(String contextId,
