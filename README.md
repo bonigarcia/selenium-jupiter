@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class SeleniumJupiterTest {
@@ -57,16 +57,16 @@ Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver b
 As of version 2, *Selenium-Jupiter* allows to use browsers in [Docker] containers. The only requirement is to get installed [Docker Engine] in the machine running the tests. A simple example using this feature is the following:
 
 ```java
-import static io.github.bonigarcia.BrowserType.ANDROID;
-import static io.github.bonigarcia.BrowserType.CHROME;
-import static io.github.bonigarcia.BrowserType.FIREFOX;
+import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.DockerBrowser;
-import io.github.bonigarcia.SeleniumExtension;
+import io.github.bonigarcia.seljup.DockerBrowser;
+import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class SeleniumJupiterDockerTest {
