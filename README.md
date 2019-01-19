@@ -109,15 +109,11 @@ As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Li
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[DEBUG] Preference found CHROME=71.0 (valid until 2019-01-07 19:53:47)
 [INFO] Using CHROME version 71.0 (latest)
-[DEBUG] Preference found selenoid/vnc:chrome_71.0=pulled (valid until 2019-01-07 19:53:51)
-[DEBUG] Preference found aerokube/selenoid:1.8.4=pulled (valid until 2019-01-07 19:53:53)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32782/wd/hub
 Jan 07, 2019 6:54:19 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: OSS
-[DEBUG] Preference found psharkey/novnc:3.3-t6=pulled (valid until 2019-01-07 19:53:59)
 [INFO] Starting Docker container psharkey/novnc:3.3-t6
 [INFO] Session id fe492bee1ecebceb645cf58275a63bd6
 [INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
@@ -140,15 +136,11 @@ INFO: Detected dialect: OSS
 ```
 > java -jar selenium-jupiter-3.0.0-fat.jar chrome
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[DEBUG] Preference found CHROME=71.0 (valid until 2019-01-07 19:53:47)
 [INFO] Using CHROME version 71.0 (latest)
-[DEBUG] Preference found selenoid/vnc:chrome_71.0=pulled (valid until 2019-01-07 19:53:51)
-[DEBUG] Preference found aerokube/selenoid:1.8.4=pulled (valid until 2019-01-07 19:53:53)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32784/wd/hub
 Jan 07, 2019 6:55:17 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: OSS
-[DEBUG] Preference found psharkey/novnc:3.3-t6=pulled (valid until 2019-01-07 19:53:59)
 [INFO] Starting Docker container psharkey/novnc:3.3-t6
 [INFO] Session id 8edd28c130bb2bc62f8e4467c20f4dc0
 [INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
