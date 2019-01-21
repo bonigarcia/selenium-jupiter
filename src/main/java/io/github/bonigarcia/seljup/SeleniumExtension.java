@@ -135,6 +135,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(templateHandlerMap, "appium", AppiumDriver.class);
         addEntry(templateHandlerMap, "phantomjs", PhantomJSDriver.class);
         addEntry(templateHandlerMap, "iexplorer", InternetExplorerDriver.class);
+        addEntry(templateHandlerMap, "internet explorer", InternetExplorerDriver.class);
         addEntry(templateHandlerMap, "chrome-in-docker", RemoteWebDriver.class);
         addEntry(templateHandlerMap, "firefox-in-docker",
                 RemoteWebDriver.class);
