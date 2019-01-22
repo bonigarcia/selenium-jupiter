@@ -1,6 +1,6 @@
 selenium-jupiter (3.0.1)
 
-  + Docker hub dependency: butomo1989/docker-android-x86*:1.6-p2
+  + Docker hub dependency: butomo1989/docker-android-x86*:1.5-p6 (using old versions due to bugs in newer)
 
  -- Boni Garcia <boni.gg@gmail.com>
 
