@@ -738,8 +738,8 @@ public class DockerDriverHandler {
                     .binds(binds).envs(envs).network(network).privileged();
 
             if (cloudType == GENYMOTION_SAAS) {
-                Device[] devices = new Device[1];
-                devices[0] = new Device(deviceName,
+                Devices[] devices = new Devices[1];
+                devices[0] = new Devices(deviceName,
                         getConfig().getAndroidGenymotionTemplate());
                 String deviceJson = new GsonBuilder().disableHtmlEscaping()
                         .create().toJson(devices);
@@ -938,11 +938,11 @@ public class DockerDriverHandler {
         return hubUrl;
     }
 
-    public class Device {
+    public class Devices {
         String template;
         String device;
 
-        public Device(String device, String template) {
+        public Devices(String device, String template) {
             this.device = device;
             this.template = template;
         }
