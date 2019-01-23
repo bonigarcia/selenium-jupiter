@@ -175,6 +175,18 @@ public class Config {
             "sel.jup.android.image.8.1", String.class);
     ConfigKey<String> androidImage90 = new ConfigKey<>(
             "sel.jup.android.image.9.0", String.class);
+    ConfigKey<String> androidImageGenymotion = new ConfigKey<>(
+            "sel.jup.android.image.genymotion", String.class);
+    ConfigKey<String> androidGenymotionUser = new ConfigKey<>(
+            "sel.jup.android.genymotion.user", String.class);
+    ConfigKey<String> androidGenymotionPassword = new ConfigKey<>(
+            "sel.jup.android.genymotion.password", String.class);
+    ConfigKey<String> androidGenymotionLicense = new ConfigKey<>(
+            "sel.jup.android.genymotion.license", String.class);
+    ConfigKey<String> androidGenymotionTemplate = new ConfigKey<>(
+            "sel.jup.android.genymotion.template", String.class);
+    ConfigKey<String> androidGenymotionAwsJson = new ConfigKey<>(
+            "sel.jup.android.genymotion.aws.json", String.class);
     ConfigKey<String> androidNoVncPort = new ConfigKey<>(
             "sel.jup.android.novnc.port", String.class);
     ConfigKey<String> androidAppiumPort = new ConfigKey<>(
@@ -809,6 +821,54 @@ public class Config {
 
     public void setAndroidImage90(String value) {
         this.androidImage90.setValue(value);
+    }
+
+    public String getAndroidImageGenymotion() {
+        return resolve(androidImageGenymotion);
+    }
+
+    public void setAndroidImageGenymotion(String value) {
+        this.androidImageGenymotion.setValue(value);
+    }
+
+    public String getAndroidGenymotionUser() {
+        return resolve(androidGenymotionUser);
+    }
+
+    public void setAndroidGenymotionUser(String value) {
+        this.androidGenymotionUser.setValue(value);
+    }
+
+    public String getAndroidGenymotionPassword() {
+        return resolve(androidGenymotionPassword);
+    }
+
+    public void setAndroidGenymotionPassword(String value) {
+        this.androidGenymotionPassword.setValue(value);
+    }
+
+    public String getAndroidGenymotionLicense() {
+        return resolve(androidGenymotionLicense);
+    }
+
+    public void setAndroidGenymotionLicense(String value) {
+        this.androidGenymotionLicense.setValue(value);
+    }
+
+    public String getAndroidGenymotionTemplate() {
+        return resolve(androidGenymotionTemplate);
+    }
+
+    public void setAndroidGenymotionTemplate(String value) {
+        this.androidGenymotionTemplate.setValue(value);
+    }
+
+    public String getAndroidGenymotionAwsJson() {
+        return resolve(androidGenymotionAwsJson);
+    }
+
+    public void setAndroidGenymotionAwsJson(String value) {
+        this.androidGenymotionAwsJson.setValue(value);
     }
 
     public String getAndroidNoVncPort() {
