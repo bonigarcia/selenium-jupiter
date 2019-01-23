@@ -31,6 +31,7 @@ public class BrowserBuilder {
     String browserName;
     String deviceName;
     String url;
+    String cloud;
 
     private BrowserBuilder(String type) {
         this.type = type;
@@ -104,8 +105,13 @@ public class BrowserBuilder {
         return this;
     }
 
+    public BrowserBuilder cloud(String cloud) {
+        this.cloud = cloud;
+        return this;
+    }
+
     public Browser build() {
-        return new Browser(type, version, browserName, deviceName, url);
+        return new Browser(type, version, browserName, deviceName, url, cloud);
     }
 
 }

@@ -45,6 +45,7 @@ public class BrowserInstance {
 
     Config config;
     BrowserType browserType;
+    CloudType cloudType;
     String dockerImage;
     String path;
     DriverHandler driverHandler;
@@ -52,9 +53,10 @@ public class BrowserInstance {
     DesiredCapabilities capabilities;
 
     public BrowserInstance(Config config, AnnotationsReader annotationsReader,
-            BrowserType browserType) {
+            BrowserType browserType, CloudType cloudType) {
         this.config = config;
         this.browserType = browserType;
+        this.cloudType = cloudType;
 
         switch (browserType) {
         case FIREFOX:
@@ -125,6 +127,10 @@ public class BrowserInstance {
 
     public BrowserType getBrowserType() {
         return browserType;
+    }
+
+    public CloudType getCloudType() {
+        return cloudType;
     }
 
     public String getBrowserName() {

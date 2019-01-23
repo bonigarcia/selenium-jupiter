@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
+import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,7 +39,7 @@ public class AndroidBrowserTest {
     AnnotationsReader annotationsReader = new AnnotationsReader();
     InternalPreferences preferences = new InternalPreferences(config);
     BrowserInstance android = new BrowserInstance(config, annotationsReader,
-            ANDROID);
+            ANDROID, NONE);
 
     @ParameterizedTest
     @ValueSource(strings = { "8.1" })

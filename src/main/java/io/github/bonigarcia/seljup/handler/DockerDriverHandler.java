@@ -75,6 +75,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.BrowserType;
+import io.github.bonigarcia.seljup.CloudType;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.DockerContainer;
 import io.github.bonigarcia.seljup.DockerContainer.DockerBuilder;
@@ -145,8 +146,9 @@ public class DockerDriverHandler {
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browserType = dockerBrowser.type();
+        CloudType cloudType = dockerBrowser.cloud();
         BrowserInstance browserInstance = new BrowserInstance(config,
-                annotationsReader, browserType);
+                annotationsReader, browserType, cloudType);
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
@@ -286,7 +288,9 @@ public class DockerDriverHandler {
         String deviceNameCapability = deviceName != null
                 && !deviceName.isEmpty() ? deviceName
                         : getConfig().getAndroidDeviceName();
-        String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
+        CloudType cloudType = browserInstance.getCloudType();
+        String appiumUrl = startAndroidBrowser(version, deviceNameCapability,
+                cloudType);
 
         DesiredCapabilities capabilities = getCapabilitiesForAndroid(
                 browserInstance, deviceNameCapability);
@@ -468,8 +472,10 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
-    public String startAndroidBrowser(String version, String deviceName)
-            throws DockerException, InterruptedException {
+    public String startAndroidBrowser(String version, String deviceName,
+            CloudType cloudType) throws DockerException, InterruptedException {
+        // TODO honor cloudType
+
         if (!IS_OS_LINUX) {
             throw new SeleniumJupiterException(
                     "Android devices are only supported in Linux hosts");

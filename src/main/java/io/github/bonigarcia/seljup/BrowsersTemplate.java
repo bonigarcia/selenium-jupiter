@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.seljup;
 
+import static io.github.bonigarcia.seljup.CloudType.NONE;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,14 +43,16 @@ public class BrowsersTemplate {
         String browserName;
         String deviceName;
         String url;
+        String cloud;
 
         public Browser(String type, String version, String browserName,
-                String deviceName, String url) {
+                String deviceName, String url, String cloud) {
             this.type = type;
             this.version = version;
             this.browserName = browserName;
             this.deviceName = deviceName;
             this.url = url;
+            this.cloud = cloud;
         }
 
         public Browser(String type, String version) {
@@ -84,9 +88,26 @@ public class BrowsersTemplate {
             this.url = url;
         }
 
+        public String getCloud() {
+            return cloud;
+        }
+
+        public void setCloud(String cloud) {
+            this.cloud = cloud;
+        }
+
         public BrowserType toBrowserType() {
             return BrowserType
                     .valueOf(getType().replace(IN_DOCKER, "").toUpperCase());
+
+        }
+
+        public CloudType toCloudType() {
+            if (getCloud() == null || getCloud().isEmpty()) {
+                return NONE;
+            } else {
+                return CloudType.valueOf(getCloud().toUpperCase());
+            }
 
         }
 
