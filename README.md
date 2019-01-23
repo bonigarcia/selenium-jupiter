@@ -19,7 +19,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 </dependency>
 ```
 
@@ -104,7 +104,7 @@ As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Li
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.0.0
+[INFO] Building Selenium-Jupiter 3.1.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -131,10 +131,10 @@ INFO: Detected dialect: OSS
 [INFO] ------------------------------------------------------------------------
 ```
 
-* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.0.0/selenium-jupiter-3.0.0-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.0.0-fat.jar browserName``, for instance:
+* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.1.0-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.1.0-fat.jar browserName``, for instance:
 
 ```
-> java -jar selenium-jupiter-3.0.0-fat.jar chrome
+> java -jar selenium-jupiter-3.1.0-fat.jar chrome
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
 [INFO] Using CHROME version 71.0 (latest)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
@@ -153,7 +153,7 @@ INFO: Detected dialect: OSS
 
 ## Selenium-Jupiter Server
 
-As of version 3.0.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
+As of version 3.1.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
 
 * Directly from the source code and Maven. The command to be used is ``mvn exec:java -Dexec.args="server <port>"``. If the second argument is not specified, the default port will be used (4042):
 
@@ -162,17 +162,17 @@ $ mvn exec:java -Dexec.args="server"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.0.0
+[INFO] Building Selenium-Jupiter 3.1.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ```
 
-* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.0.0/selenium-jupiter-3.2.0-fat.jar). For instance:
+* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar). For instance:
 
 ```
-> java -jar webdrivermanager-3.0.0-fat.jar server
+> java -jar webdrivermanager-3.1.0-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ```
 
