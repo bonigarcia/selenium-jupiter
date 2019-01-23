@@ -75,7 +75,9 @@ public class RemoteDriverHandler extends DriverHandler {
             Optional<Object> testInstance = context.getTestInstance();
             if (browser != null && browser.isDockerBrowser()) {
                 BrowserInstance browserInstance = new BrowserInstance(config,
-                        annotationsReader, browser.toBrowserType(), browser.toCloudType());
+                        annotationsReader, browser.toBrowserType(),
+                        browser.toCloudType(),
+                        Optional.of(browser.getBrowserName()));
                 dockerDriverHandler = new DockerDriverHandler(context,
                         parameter, testInstance, annotationsReader,
                         containerMap, dockerService, config, browserInstance,
@@ -90,7 +92,8 @@ public class RemoteDriverHandler extends DriverHandler {
                     BrowserInstance browserInstance = new BrowserInstance(
                             config, annotationsReader,
                             dockerBrowser.get().type(),
-                            dockerBrowser.get().cloud());
+                            dockerBrowser.get().cloud(),
+                            Optional.of(dockerBrowser.get().browserName()));
                     dockerDriverHandler = new DockerDriverHandler(context,
                             parameter, testInstance, annotationsReader,
                             containerMap, dockerService, config,

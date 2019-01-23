@@ -95,7 +95,8 @@ public class ListDriverHandler extends DriverHandler {
         int numBrowsers = dockerBrowser.size();
         CountDownLatch latch = new CountDownLatch(numBrowsers);
         BrowserInstance browserInstance = new BrowserInstance(config,
-                annotationsReader, dockerBrowser.type(), dockerBrowser.cloud());
+                annotationsReader, dockerBrowser.type(), dockerBrowser.cloud(),
+                Optional.of(dockerBrowser.browserName()));
         String version = dockerBrowser.version();
 
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(

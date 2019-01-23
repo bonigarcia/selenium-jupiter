@@ -45,4 +45,6 @@ public @interface DockerBrowser {
 
     public CloudType cloud() default NONE;
 
+    public String browserName() default "";
+
 }

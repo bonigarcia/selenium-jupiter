@@ -120,7 +120,7 @@ public class DockerBrowserConfig {
     private String getLatestVersion(BrowserInstance browserInstance) {
         String latestVersion = null;
         if (config.isBrowserListFromDockerHub()) {
-            String key = browserInstance.getBrowserName();
+            String key = browserInstance.getBrowserTypeAsString();
             boolean versionInPreferences = getConfig().isUsePreferences()
                     && preferences.checkKeyInPreferences(key);
             if (versionInPreferences) {
@@ -204,7 +204,7 @@ public class DockerBrowserConfig {
 
         if (getConfig().isUsePreferences()) {
             preferences.putValueInPreferencesIfEmpty(
-                    browserInstance.getBrowserName(), latestVersion);
+                    browserInstance.getBrowserTypeAsString(), latestVersion);
         }
         return latestVersion;
     }

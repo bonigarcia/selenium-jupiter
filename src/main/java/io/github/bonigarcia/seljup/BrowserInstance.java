@@ -21,6 +21,8 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.util.Optional;
+
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.opera.OperaOptions;
@@ -47,16 +49,21 @@ public class BrowserInstance {
     BrowserType browserType;
     CloudType cloudType;
     String dockerImage;
+    String browserName;
     String path;
     DriverHandler driverHandler;
     String optionsKey;
     DesiredCapabilities capabilities;
 
     public BrowserInstance(Config config, AnnotationsReader annotationsReader,
-            BrowserType browserType, CloudType cloudType) {
+            BrowserType browserType, CloudType cloudType,
+            Optional<String> browserName) {
         this.config = config;
         this.browserType = browserType;
         this.cloudType = cloudType;
+        if (browserName.isPresent()) {
+            this.browserName = browserName.get();
+        }
 
         switch (browserType) {
         case FIREFOX:
@@ -133,8 +140,12 @@ public class BrowserInstance {
         return cloudType;
     }
 
-    public String getBrowserName() {
+    public String getBrowserTypeAsString() {
         return browserType.name();
+    }
+
+    public String getBrowserName() {
+        return browserName;
     }
 
 }

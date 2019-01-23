@@ -21,6 +21,7 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,7 +58,7 @@ public class SelenoidConfigTest {
     AnnotationsReader annotationsReader = new AnnotationsReader();
 
     BrowserInstance chrome = new BrowserInstance(config, annotationsReader,
-            CHROME, NONE);
+            CHROME, NONE, empty());
     SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");
 
     @ParameterizedTest
