@@ -153,7 +153,7 @@ public class DockerDriverHandler {
         CloudType cloudType = dockerBrowser.cloud();
         BrowserInstance browserInstance = new BrowserInstance(config,
                 annotationsReader, browserType, cloudType,
-                Optional.of(dockerBrowser.browserName()));
+                Optional.ofNullable(dockerBrowser.browserName()));
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
