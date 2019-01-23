@@ -47,7 +47,7 @@ public class AndroidBrowserTest {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, version, preferences);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
-                config.getAndroidDeviceName());
+                config.getAndroidDeviceName(), NONE);
         dockerDriverHandler.cleanup();
         assertThat(androidUrl, notNullValue());
     }
@@ -58,7 +58,7 @@ public class AndroidBrowserTest {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, "", preferences);
         assertThrows(SeleniumJupiterException.class, () -> {
-            dockerDriverHandler.startAndroidBrowser("", "");
+            dockerDriverHandler.startAndroidBrowser("", "", NONE);
         });
     }
 
