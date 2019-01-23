@@ -1,6 +1,12 @@
-selenium-jupiter (3.0.1)
+selenium-jupiter (3.1.0)
 
+  + Maven dependency: com.spotify:docker-client 8.15.0
   + Docker hub dependency: butomo1989/docker-android-x86*:1.5-p6 (using old versions due to bugs in newer)
+  + Read @DriverUrl annotation also for @TestTemplate
+  + Set default Android version as 8.1
+  + Fix docker-android boolean parameters as envs
+  + Add support for Genymotion (SaaS, PaaS) in Android devices
+  + Include "internet explorer" label for test templates (issue #44)
 
  -- Boni Garcia <boni.gg@gmail.com>
 
