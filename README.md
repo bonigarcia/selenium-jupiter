@@ -153,7 +153,7 @@ INFO: Detected dialect: OSS
 
 ## Selenium-Jupiter Server
 
-As of version 3.1.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
+As of version 3.0.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
 
 * Directly from the source code and Maven. The command to be used is ``mvn exec:java -Dexec.args="server <port>"``. If the second argument is not specified, the default port will be used (4042):
 
