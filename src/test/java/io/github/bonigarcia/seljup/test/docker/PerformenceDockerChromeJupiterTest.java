@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
+// tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
