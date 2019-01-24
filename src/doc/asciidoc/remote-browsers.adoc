@@ -9,18 +9,18 @@ _Selenium-Jupiter_ also supports remote browsers, using a http://www.seleniumhq.
 
 The annotation `@DriverCapabilities` is used to specify WebDriver capabilities (i.e. type browser, version, platform, etc.). These capabilities are typically used for Selenium Grid tests (i.e. tests using remote browsers). To that aim, a Selenium Hub (also known as _Selenium Server_) should be up an running, and its URL should known. This URL will be specified using the _Selenium-Jupiter_ annotation `@DriverUrl`. 
 
-The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
+The following example provides a complete https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/advance/RemoteWebDriverJupiterTest.java[example] about this. As you can see, in the test setup (`@BeforeAll`) a Selenium Grid is implemented, first starting a Hub (a.k.a. _Selenium Server_), and then a couple of nodes (Chrome a Firefox) are registered in the Hub. Therefore, remote test using `RemoteWebDriver` can be executed, simply pointing to the Hub (whose URL in this case is `http://localhost:4444/wd/hub` in this example) and selecting the browser to be used using the `Capabilities`.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/RemoteWebDriverJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/RemoteWebDriverJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 The following class contains an example which uses Chrome as browser and capabilities defined using `@DriverCapabilities`. Concretely, this example uses the mobile emulation feature provided out of the box by Chrome (i.e. render the web page using small screen resolutions to emulate smartphones).
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithGlobalCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/ChromeWithGlobalCapabilitiesJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Mobile testing with Appium
@@ -29,14 +29,14 @@ The annotation `@DriverCapabilities` can be also used to specify the desired cap
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/AppiumChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/AppiumChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 We can also specify a custom Appium Server URL changing the value of `@DriverUrl`, at field-level or parameter-level:
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 

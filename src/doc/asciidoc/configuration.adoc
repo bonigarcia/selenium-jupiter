@@ -23,6 +23,10 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.default.version` | Version for generic driver |`latest`
 |`sel.jup.default.browser.fallback` | Fallback browser list for generic driver |`chrome,firefox,safari,edge,phantomjs`
 |`sel.jup.default.browser.fallback.version` | Fallback version list for generic driver |`latest,latest,latest,latest,latest`
+|`sel.jup.remote.webdriver.wait.timeout.sec` | Time in seconds to wait the creating of RemoteWebDriver objects | `20`
+|`sel.jup.remote.webdriver.poll.time.sec` | Poll time in seconds to wait while creating RemoteWebDriver objects | `2`
+|`sel.jup.wdm.use.preferences` | As of Selenium-Jupiter, the latest version of Docker browsers are stored persistently as Java preferences. Its use can be deactivated using this flag | `true`
+|`sel.jup.ttl.sec` | The resolved Docker browsers versions has attached a time-to-live in secods, configurable using this key | `3600`
 |`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
 |`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
 |`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker image |`aerokube/selenoid:1.6.0`
@@ -32,7 +36,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.novnc.port` | noVNC Docker port  |`8080`
 |`sel.jup.chrome.image.format` | Selenoid Docker images format for Chrome with VNC |`selenoid/vnc:chrome_%s`
 |`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
-|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`65.0`
+|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`71.0`
 |`sel.jup.chrome.path` | Path for Hub when using Chrome in Docker as browser |`/`
 |`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta`
 |`sel.jup.chrome.beta.path` | Path for Hub when using Chrome beta in Docker as browser |`/wd/hub`
@@ -40,7 +44,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.chrome.unstable.path` | Path for Hub when using Chrome unstable in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
 |`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
-|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`59.0`
+|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`64.0`
 |`sel.jup.firefox.path` | Path for Hub when using Firefox in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta`
 |`sel.jup.firefox.beta.path` | Path for Hub when using Firefox beta in Docker as browser |`/wd/hub`
@@ -48,19 +52,23 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.firefox.unstable.path` | Path for Hub when using Firefox beta in Docker as unstable |`/wd/hub`
 |`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
-|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`51.0`
+|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`57.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
-|`sel.jup.android.default.version` | Default version of Android devices in Docker |`7.1.1`
-|`sel.jup.android.image.api21.linux` | Docker image for version 5.0.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.0.1:0.9-p5`
-|`sel.jup.android.image.api22.linux` | Docker image for version 5.1.1 of Android devices in Linux |`butomo1989/docker-android-x86-5.1.1:0.9-p5`
-|`sel.jup.android.image.api23.linux` | Docker image for version 6.0 of Android devices in Linux |`butomo1989/docker-android-x86-6.0:0.9-p5`
-|`sel.jup.android.image.api24.linux` | Docker image for version 7.0 of Android devices in Linux |`butomo1989/docker-android-x86-7.0:0.9-p5`
-|`sel.jup.android.image.api25.linux` | Docker image for version 7.1.1 of Android devices in Linux |`butomo1989/docker-android-x86-7.1.1:0.9-p5`
-|`sel.jup.android.image.api21.osxwin` | Docker image for version 5.0.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-5.0.1:0.9-p5`
-|`sel.jup.android.image.api22.osxwin` | Docker image for version 5.1.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-5.1.1:0.9-p5`
-|`sel.jup.android.image.api23.osxwin` | Docker image for version 6.0 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-6.0:0.9-p5`
-|`sel.jup.android.image.api24.osxwin` | Docker image for version 7.0 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-7.0:0.9-p5`
-|`sel.jup.android.image.api25.osxwin` | Docker image for version 7.1.1 of Android devices in Mac and Windows |`butomo1989/docker-android-arm-7.1.1:0.9-p5`
+|`sel.jup.android.default.version` | Default version of Android devices in Docker |`8.1`
+|`sel.jup.android.image.5.0.1` | Docker image for version 5.0.1 of Android devices |`butomo1989/docker-android-x86-5.0.1:1.5-p6`
+|`sel.jup.android.image.5.1.1` | Docker image for version 5.1.1 of Android devices |`butomo1989/docker-android-x86-5.1.1:1.5-p6`
+|`sel.jup.android.image.6.0` | Docker image for version 6.0 of Android devices |`butomo1989/docker-android-x86-6.0:1.5-p6`
+|`sel.jup.android.image.7.0` | Docker image for version 7.0 of Android devices |`butomo1989/docker-android-x86-7.0:1.5-p6`
+|`sel.jup.android.image.7.1.1` | Docker image for version 7.1.1 of Android devices |`butomo1989/docker-android-x86-7.1.1:1.5-p6`
+|`sel.jup.android.image.8.0` | Docker image for version 8.0 of Android devices |`butomo1989/docker-android-x86-8.0:1.5-p6`
+|`sel.jup.android.image.8.1` | Docker image for version 8.1 of Android devices |`butomo1989/docker-android-x86-8.1:1.5-p6`
+|`sel.jup.android.image.9.0` | Docker image for version 9.0 of Android devices |`butomo1989/docker-android-x86-9.0:1.5-p6`
+|`sel.jup.android.image.genymotion` | Docker image for Genymotion usage |`butomo1989/docker-android-genymotion:1.5-p6`
+|`sel.jup.android.genymotion.user`| Genymotion user for SaaS |
+|`sel.jup.android.genymotion.password`| Genymotion password for SaaS |
+|`sel.jup.android.genymotion.license`| Genymotion licence for SaaS |
+|`sel.jup.android.genymotion.template`| Genymotion template for SaaS |
+|`sel.jup.android.genymotion.aws.json`| Path of configuration file `aws.json` for Genymotion PaaS  |
 |`sel.jup.android.novnc.port` | Internal port of noVNC in Docker containers for Android devices  |`6080`
 |`sel.jup.android.appium.port` | Internal port of Appium server in Docker containers for Android devices |`4723`
 |`sel.jup.android.device.name` | Default device name for Android in Docker |`Samsung Galaxy S6`
@@ -71,24 +79,29 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
 |`sel.jup.docker.default.socket` | Default Docker socket path |`/var/run/docker.sock`
 |`sel.jup.docker.hub.url` | Docker Hub URL |`https://hub.docker.com/`
-|`sel.jup.docker.stop.timeout.sec` |  Timeout in seconds to stop Docker containers at the end of tests |`5`
+|`sel.jup.docker.stop.timeout.sec` |  Timeout in seconds to stop Docker containers at the end of tests |`0`
 |`sel.jup.docker.api.version` | Docker API version |`1.35`
 |`sel.jup.docker.network` | Docker network |`bridge`
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
+|`sel.jup.docker.lang` | Language for Docker containers |`en`
 |`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
 |`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |
+|`sel.jup.server.port` | Selenium-Jupiter Server port |`4042`
+|`sel.jup.server.path` | Selenium-Jupiter Server path |`/wd/hub`
 |==========================
 
 These properties can be overwritten in different ways. As of version 2.1.0 of _Selenium-Jupiter_, the configuration manager can be used: 
 
 [source,java]
 ----
-SeleniumJupiter.config().setVnc(true);
-SeleniumJupiter.config().setRecording(true);
-SeleniumJupiter.config().useSurefireOutputFolder();
-SeleniumJupiter.config().setBrowserListFromDockerHub(false);
-SeleniumJupiter.config().wdm().setForceCache(true);
-SeleniumJupiter.config().wdm().setOverride(true);
+SeleniumExtension seleniumExtension = new SeleniumExtension();
+
+seleniumExtension.getConfig().setVnc(true);
+seleniumExtension.getConfig().setRecording(true);
+seleniumExtension.getConfig().useSurefireOutputFolder();
+seleniumExtension.getConfig().setBrowserListFromDockerHub(false);
+seleniumExtension.getConfig().chromedriver().setForceCache(true);
+seleniumExtension.getConfig().chromedriver().setOverride(true);
 ----
 
 We can also use Java system properties, for example:
@@ -115,14 +128,14 @@ In this section we are going to present a couple of simple examples tuning someh
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/EdgeSettingVersionJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/EdgeSettingVersionJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 This other example shows how to force cache (i.e. binaries previously downloaded by WebDriverManager) to avoid the connection with online repository to check the latest version: 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/ForceCacheJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/ForceCacheJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 

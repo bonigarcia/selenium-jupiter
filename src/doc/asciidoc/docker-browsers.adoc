@@ -10,11 +10,11 @@ As shown in the following section, the mode of operation is similar to local bro
 
 === Chrome
 
-The following example contains a simple test example using Chrome browsers in Docker. Check out the code https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java[here]. As you can see, the first `@Test` method (called `testChrome`) declares a parameter of type `RemoteWebDriver`. This parameter is annotated with `@DockerBrowser`. This annotation requires to set the browser type, in this case `CHROME`. If no version is specified, then the latest version of the browser will be used. This feature is known as *_evergreen_ Docker browsers*, and it is implementing by consuming the REST API of https://hub.docker.com/[Docker Hub], asking for the list of https://hub.docker.com/u/selenoid/[Selenoid] browsers. On the other hand, the second `@Test` (called `testChromeWithVersion`) a fixed version is set, in this case `67.0`.  
+The following example contains a simple test example using Chrome browsers in Docker. Check out the code https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[here]. As you can see, the first `@Test` method (called `testChrome`) declares a parameter of type `RemoteWebDriver`. This parameter is annotated with `@DockerBrowser`. This annotation requires to set the browser type, in this case `CHROME`. If no version is specified, then the latest version of the browser will be used. This feature is known as *_evergreen_ Docker browsers*, and it is implementing by consuming the REST API of https://hub.docker.com/[Docker Hub], asking for the list of https://hub.docker.com/u/selenoid/[Selenoid] browsers. On the other hand, the second `@Test` (called `testChromeWithVersion`) a fixed version is set, in this case `67.0`.  
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 In this other example, wildcards are used to set the browser version. In the first `@Test` (method `testLatestChrome`), we use the literal `latest` to mark the use of the latest version (in fact the use of `latest` is exactly the same that not declaring the `version` attribute). The second `@Test` (method `testFormerChrome`) sets the version as `latest-1`. This should be read as _latest version minus one_, in other words, the previous version to the stable version at the time of the test execution. Notice that the concrete versions for both test will evolve in time, since new versions are released constantly. All in all, you have the certainty of using the latest versions of the browser without any kind of extra configuration nor maintenance of the underlying infrastructure. 
@@ -23,7 +23,7 @@ Moreover, in third (`testBetaChrome`) and fourth (`testUnstableChrome`) test **b
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerChromeLatestJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeLatestJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 NOTE: The label _latest-*_ is supported, where _*_ is a number for a former version to the current stable. For instance, _latest-2_ means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, _latest-2_ will mean version 61.0).
@@ -34,7 +34,7 @@ The use of Firefox is equivalent. With respect to the previous example, it simpl
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 NOTE: Notice that the version of the second test is simply `60`. The actual version of the image is `60.0`, but _Selenium-Jupiter_ supposes that version is `.0` if not specified.
@@ -45,7 +45,7 @@ Again, the use of Opera browsers in Docker is the same, simply changing the brow
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerOperaJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 
@@ -55,7 +55,7 @@ The use of browser devices in _Selenium-Jupiter_ is straightforward. Simply chan
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerAndroidJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/android/AndroidJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 The supported Android devices are summarized in the following table:
@@ -69,6 +69,9 @@ The supported Android devices are summarized in the following table:
 |6.0| 23 | `chrome`
 |7.0| 24 | `chrome`
 |7.1.1| 25 | `chrome`
+|8.0| 26 | `chrome`
+|8.1| 27 | `chrome`
+|9.0| 28 | `chrome`
 |==========================
 
 Moreover, the type of devices are the following:
@@ -85,11 +88,11 @@ Moreover, the type of devices are the following:
 |Tablet| Nexus 7
 |==========================
 
-By default, the latest version of Android (`7.1.1`) using Chrome in a `Samsung Galaxy S6`. These values can be changed using the link:#configuration[configuration] capabilities or by means of the the following parameters in the `@DockerBrowser` annotation
+Android (`8.1`) with Chrome in `Samsung Galaxy S6` is the default setup for Android devices. These values can be changed using the link:#configuration[configuration] capabilities or by means of the the following parameters in the `@DockerBrowser` annotation
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/DockerAndroidCustomJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/android/AndroidCustomJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 
@@ -135,72 +138,7 @@ Another important new feature of browsers in Docker is the possibility of asking
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/docker/PerformenceDockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/PerformenceDockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly.
-
-
-=== Interactive mode
-
-As of version 2.1.0, _Selenium-Jupiter_ can used interactively from the shell to get the VNC session of Docker browser. There are two ways of using this feature:
-
-* Directly from the source code, using Maven. The command to be used is `mvn exec:java -Dexec.args="browserName <version>"`. For instance:
-
-[source]
-----
-$ mvn exec:java -Dexec.args="chrome beta"
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 2.1.2-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
-[INFO] Using SeleniumJupiter to execute chrome beta in Docker
-[INFO] Getting browser image list from Docker Hub
-[INFO] Using CHROME version beta
-[INFO] Pulling Docker image elastestbrowsers/chrome:beta ... please wait
-[INFO] Starting Docker container aerokube/selenoid:1.6.0
-mar 31, 2018 5:50:15 PM org.openqa.selenium.remote.ProtocolHandshake createSession
-INFORMATION: Detected dialect: OSS
-[INFO] Starting Docker container psharkey/novnc:3.3-t6
-[INFO] Session id 957187e9f3f99312ebd2c81546750643
-[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
-[INFO] http://192.168.99.100:32775/vnc.html?host=192.168.99.100&port=32774&path=vnc/957187e9f3f99312ebd2c81546750643&resize=scale&autoconnect=true&password=selenoid
-[INFO] Press ENTER to exit
-
-[INFO] Stopping Docker container aerokube/selenoid:1.6.0
-[INFO] Stopping Docker container psharkey/novnc:3.3-t6
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:10 min
-[INFO] Finished at: 2018-03-31T17:51:15+02:00
-[INFO] Final Memory: 27M/390M
-[INFO] ------------------------------------------------------------------------
-----
-
-* Using _Selenium-Jupiter_ as a _fat-jar_. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
-
-[source]
-----
-$ java -jar selenium-jupiter-2.1.2-SNAPSHOT-jar-with-dependencies.jar firefox
-[INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
-[INFO] Getting browser image list from Docker Hub
-[INFO] Using FIREFOX version 59.0 (latest)
-[INFO] Pulling Docker image selenoid/vnc:firefox_59.0 ... please wait
-[INFO] Starting Docker container aerokube/selenoid:1.6.3
-mar 31, 2018 5:53:51 PM org.openqa.selenium.remote.ProtocolHandshake createSession
-INFORMATION: Detected dialect: W3C
-[INFO] Starting Docker container psharkey/novnc:3.3-t6
-[INFO] Session id 651fcf54-183e-4732-8fae-6a525140f6f0
-[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
-[INFO] http://192.168.99.100:32777/vnc.html?host=192.168.99.100&port=32776&path=vnc/651fcf54-183e-4732-8fae-6a525140f6f0&resize=scale&autoconnect=true&password=selenoid
-[INFO] Press ENTER to exit
-
-[INFO] Stopping Docker container psharkey/novnc:3.3-t6
-[INFO] Stopping Docker container aerokube/selenoid:1.6.3
-----
-
-NOTE: As of version 2.2.0, the parameter `browserName` can be used to select an `android` device. In this case, a couple of addition parameter can be specified: `browserNameInAdroid` for the browser in Android (`chrome` or `browser`) and `deviceName` for the device type (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.). 

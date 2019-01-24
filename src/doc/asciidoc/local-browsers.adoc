@@ -47,65 +47,65 @@ All in all, using Selenium WebDriver to control browsers using Java was never th
 
 === Chrome
 
-The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[GitHub]. Notice that this class contains two tests (methods annotated with `@Test`). The first one (`testWithOneChrome`) declares just one `ChromeDriver` parameter, and therefore this test controls a single Chrome browser. On the other hand, the second `@Test` (`testWithTwoChromes`) declares two different `ChromeDriver` parameters, and so, it controls two Chrome browsers.
+The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/ChromeJupiterTest.java[GitHub]. Notice that this class contains two tests (methods annotated with `@Test`). The first one (`testWithOneChrome`) declares just one `ChromeDriver` parameter, and therefore this test controls a single Chrome browser. On the other hand, the second `@Test` (`testWithTwoChromes`) declares two different `ChromeDriver` parameters, and so, it controls two Chrome browsers.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Firefox
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java[test] uses Firefox as browser(s). To that aim, `@Test` methods simply need to include `FirefoxDriver` parameters.
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/FirefoxJupiterTest.java[test] uses Firefox as browser(s). To that aim, `@Test` methods simply need to include `FirefoxDriver` parameters.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/FirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Edge
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. This test should be executed on a Windows machine with Edge. 
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. This test should be executed on a Windows machine with Edge. 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 TIP: The required version of _MicrosoftWebDriver.exe_ depends on the version on Edge to be used (more info https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/[here]). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the link:advanced[advance examples section] to find out how to setup the different options of WebDriverManager.
 
 === Opera
 
-Are you one of the few using Opera? No problem, you can still make automated  https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java[tests] with JUnit 5, WebDriver, and _Selenium-Jupiter_, as follows: 
+Are you one of the few using Opera? No problem, you can still make automated  https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tests] with JUnit 5, WebDriver, and _Selenium-Jupiter_, as follows: 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Safari
 
-You can also use https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java[Safari] in conjunction with _Selenium-Jupiter_. Take into account that `SafariDriver` requires Safari 10 running on OSX El Capitan or greater. 
+You can also use https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/SafariJupiterTest.java[Safari] in conjunction with _Selenium-Jupiter_. Take into account that `SafariDriver` requires Safari 10 running on OSX El Capitan or greater. 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/SafariJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === PhamtomJS
 
-PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java[example] demonstrates how to use PhamtomJS with _Selenium-Jupiter_.  
+PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/PhantomjsJupiterTest.java[example] demonstrates how to use PhamtomJS with _Selenium-Jupiter_.  
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/PhantomjsJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === HtmlUnit
 
-HtmlUnit is another headless browser that can be used easily in a Jupiter test, for https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/HtmlUnitJupiterTest.java[example] like this: 
+HtmlUnit is another headless browser that can be used easily in a Jupiter test, for https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/HtmlUnitJupiterTest.java[example] like this: 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/basic/HtmlUnitJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/HtmlUnitJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----

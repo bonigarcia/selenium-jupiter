@@ -17,18 +17,18 @@ In order to support the advance features of Selenium WebDriver, _Selenium-Jupite
 
 The annotations marked as _parameter-level_ are applied to a single WebDriver parameter. The annotations marked as _field-level_ are applied globally in a test class.
 
-The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we are adding an extension to Chrome using the `@Extensions` annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
+The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/advance/ChromeWithOptionsJupiterTest.java[example] shows how to specify options for Chrome. In the first test (called `headlessTest`), we are setting the argument `--headless`, used in Chrome to work as a headless browser. In the second test (`webrtcTest`), we are using two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e. camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we are adding an extension to Chrome using the `@Extensions` annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/ChromeWithOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/ChromeWithOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-As introduced before, this annotation `@Options` can be used also at _field-level_, as shown in this other https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[example]. This test is setting to `true` the Firefox preferences `media.navigator.streams.fake` and `media.navigator.permission.disabled`, used also for WebRTC.
+As introduced before, this annotation `@Options` can be used also at _field-level_, as shown in this other https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[example]. This test is setting to `true` the Firefox preferences `media.navigator.streams.fake` and `media.navigator.permission.disabled`, used also for WebRTC.
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/FirefoxWithGlobalOptionsJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Template tests
@@ -39,7 +39,7 @@ Let's see some examples. Consider the following test. A couple of things are new
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/template/TemplateTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/template/TemplateTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 The last piece we need in this test template is what we call _browser scenario_. As introduced before, this scenario is defined in a JSOn file following a simple notation.
@@ -77,7 +77,6 @@ Generally speaking, a browser within the JSON scenario is defined using the foll
    * `opera-in-docker`: For Opera browsers in Docker.
    * `android`: For web browsers in Android devices in Docker containers.
 - `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported (using the labels `beta` and `unstable` labels respectively).
-- `browserName`: As of version 2.2.0, when the `type` is `android` device, the parameter `browserName` can be used to select the browser in Android (`chrome` or `browser`)
 - `deviceName`: Also for `android` type, the device type can be specified (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).
 
 
@@ -85,7 +84,7 @@ Finally, more than one parameters can be defined in the test template. For insta
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/template/TemplateTwoBrowsersTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/template/TemplateTwoBrowsersTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 The JSON scenario should be defined accordingly. Each browser array in this case (for each test template execution) should declare two browsers. For instance, using the following JSON scenario, the first execution will be based on Chrome in Docker (first parameter) and Firefox in Docker (second parameter); and the second execution will be based on a local Chrome (first parameter) and the headless browser PhantomJS (second parameter).
@@ -105,7 +104,7 @@ As of version 2.2.0, _Selenium-Jupiter_ allows to configure the browser scenario
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/template/TemplateRegisterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/template/TemplateRegisterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Generic driver
@@ -116,7 +115,7 @@ For instance, the following test, if no additional configuration is done, will u
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/test/generic/GenericTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/generic/GenericTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 If the resolution of this browser finishes with exception (for instance, when executing the test in a host without Docker), a list of browser fallback will be used. This list is managed using the configuration key `sel.jup.default.browser.fallback`. By default, this key has the value `chrome,firefox,safari,edge,phantomjs`, meaning that the first fallback browser is a local Chrome, then local Firefox, then local Safari, then local Edge, and finally PhantomJS (headless browser).
@@ -128,7 +127,7 @@ The version of the generic browser (in case of Docker browsers) is managed with 
 
 _Selenium-Jupiter_ provides seamless integration with Jenkins through one of its plugins: the https://wiki.jenkins.io/display/JENKINS/JUnit+Attachments+Plugin[Jenkins attachment plugin]. The idea is to provide the ability to attache output files (typically PNG screenshots and MP4 recordings of Docker browsers), and keep these files attached to the job execution. This is done in _Selenium-Jupiter_ setting the configuration key `sel.jup.output.folder` to an special value: `surefire-reports`.
 
-When this configuration key is configured with that value, _Selenium-Jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/docker/DockerFirefoxWithOptionsJupiterTest.java[test], when is executed in Jenkins (with the attachment plugin) and the following configuration:
+When this configuration key is configured with that value, _Selenium-Jupiter_ will store the generated files in the proper folder, in a way that the Jenkins attachment plugin is able to find those files and export them in the Jenkins GUI. For instance, consider the following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxWithOptionsJupiterTest.java[test], when is executed in Jenkins (with the attachment plugin) and the following configuration:
 
 [source]
 ----
@@ -148,7 +147,7 @@ We can watch the recording simply clicking in the attached MP4 files.
 image::jenkins-attachements-test-mp4.png[scaledwidth=100%]
 
 Test template are also compatible with this feature. For instance, consider the following test
-https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/template/TemplateTest.java[test]. When is executed in Jenkins using the configuration below, the following attachments will be available on Jenkins:
+https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateTest.java[test]. When is executed in Jenkins using the configuration below, the following attachments will be available on Jenkins:
 
 [source]
 ----
@@ -164,3 +163,110 @@ And we will be able to watch the recording:
 [.thumb]
 .Example of template test execution through Jenkins with attachments
 image::jenkins-attachements-template-mp4.png[scaledwidth=100%]
+
+=== Using Genymotion
+
+The use of https://www.genymotion.com/[Genymotion] for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. There are two options to use Genymotion from Selenium-Jupiter:
+
+* As Software as a Service (SaaS): This feature is enabled by selecting `GENYMOTION_SAAS` in the `cloud` parameter of `@DockerBrowser`. To use this option, we need a valid Genymotion account. This account will be configured using the methods `setAndroidGenymotionUser()`, `setAndroidGenymotionPassword()` and `setAndroidGenymotionLicense()` for user, password, and license respectively. Moreoever, we need to specify the name of the Genymotion template to be used in our test using the configuration method `setAndroidGenymotionTemplate()`.
+
+* As Platform as a Service (PaaS): This feature is enabled by selecting `GENYMOTION_PAAS` in the `cloud` parameter of `@DockerBrowser`. So far, Amazon EC2 instances are used in this mode. For this reason, the path of the configuration file `aws.json` needs to be specified using the method `setAndroidGenymotionAwsJson()`.
+
+The following test shows an example of both usages:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/android/AndroidGenymotionJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+=== Selenium-Jupiter CLI
+
+As of version 2.1.0, _Selenium-Jupiter_ can used interactively from the shell as a regular command line interface (CLI) tool. In this mode, _Selenium-Jupiter_ allows to get the VNC session of Docker browser. There are two ways of using this feature:
+
+* Directly from the source code, using Maven. The command to be used is `mvn exec:java -Dexec.args="browserName <version>"`. For instance:
+
+[source]
+----
+$ mvn exec:java -Dexec.args="chrome beta"
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building selenium-jupiter 3.1.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
+[INFO] Using SeleniumJupiter to execute chrome beta in Docker
+[INFO] Using CHROME version beta
+[INFO] Starting Docker container aerokube/selenoid:1.8.4
+[DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32911/wd/hub
+Jan 24, 2019 1:09:04 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+[INFO] Starting Docker container psharkey/novnc:3.3-t6
+[INFO] Session id ee7200775c466c8526c77e7eb2495557
+[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
+[INFO] http://172.17.0.1:32912/vnc.html?host=172.17.0.1&port=32911&path=vnc/ee7200775c466c8526c77e7eb2495557&resize=scale&autoconnect=true&password=selenoid
+[INFO] Press ENTER to exit
+
+[INFO] Stopping Docker container aerokube/selenoid:1.8.4
+[INFO] Stopping Docker container psharkey/novnc:3.3-t6
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:10 min
+[INFO] Finished at: 2018-03-31T17:51:15+02:00
+[INFO] Final Memory: 27M/390M
+[INFO] ------------------------------------------------------------------------
+----
+
+* Using _Selenium-Jupiter_ as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar[fat-jar]. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
+
+[source]
+----
+$ java -jar selenium-jupiter-3.1.0-fat.jar firefox
+[INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
+[INFO] Using FIREFOX version 64.0 (latest)
+[INFO] Pulling Docker image aerokube/selenoid:1.8.4
+[INFO] Starting Docker container aerokube/selenoid:1.8.4
+[DEBUG] Creating WebDriver for FIREFOX at http://172.17.0.1:32909/wd/hub
+Jan 24, 2019 1:08:15 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+[INFO] Starting Docker container psharkey/novnc:3.3-t6
+[INFO] Session id 2356ceb4-53f6-49d5-bae0-3072faa47ad2
+[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
+[INFO] http://172.17.0.1:32910/vnc.html?host=172.17.0.1&port=32909&path=vnc/2356ceb4-53f6-49d5-bae0-3072faa47ad2&resize=scale&autoconnect=true&password=selenoid
+[INFO] Press ENTER to exit
+
+[INFO] Stopping Docker container aerokube/selenoid:1.8.4
+[INFO] Stopping Docker container psharkey/novnc:3.3-t6
+----
+
+NOTE: As of version 2.2.0, the parameter `browserName` can be used to select an `android` device. In this case, an addition parameter can be specified: `deviceName` for the device type (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).
+
+=== Selenium-Jupiter Server
+
+As of version 3.0.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
+
+* Directly from the source code and Maven. The command to be used is ``mvn exec:java -Dexec.args="server <port>"``. If the second argument is not specified, the default port will be used (4042):
+
+[source]
+----
+$ mvn exec:java -Dexec.args="server"
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Selenium-Jupiter 3.1.0
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
+[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
+----
+
+* Using Selenium-Jupiter as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar[fat-jar]. For instance:
+
+[source]
+----
+> java -jar webdrivermanager-3.1.0-fat.jar server
+[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
+----
+
+When the Selenium-Jupiter server is up and running, it acts as a regular Selenium Server for Docker browsers (Chrome, Firefox,. Opera, Android), and its URL can be used in tests using regular Selenium's ``RemoteWebDriver`` objects.
