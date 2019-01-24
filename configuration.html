@@ -900,6 +900,26 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>latest,latest,latest,latest,latest</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.remote.webdriver.wait.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time in seconds to wait the creating of RemoteWebDriver objects</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>20</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.remote.webdriver.poll.time.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Poll time in seconds to wait while creating RemoteWebDriver objects</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.wdm.use.preferences</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">As of Selenium-Jupiter, the latest version of Docker browsers are stored persistently as Java preferences. Its use can be deactivated using this flag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.ttl.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The resolved Docker browsers versions has attached a time-to-live in secods, configurable using this key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3600</code></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.list.from.docker.hub</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Update Docker images list from Docker Hub</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
@@ -911,7 +931,7 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker iamage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker image</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.6.0</code></p></td>
 </tr>
 <tr>
@@ -947,7 +967,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>65.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>71.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
@@ -987,7 +1007,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>59.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>64.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
@@ -1027,7 +1047,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>51.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>57.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
@@ -1036,58 +1056,78 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.default.version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Default version of Android devices in Doker</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>7.1.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default version of Android devices in Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8.1</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api21.linux</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.0.1 of Android devices in Linux</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.0.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.5.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.0.1 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.0.1:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api22.linux</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.1.1 of Android devices in Linux</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.1.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.5.1.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.1.1 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-5.1.1:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api23.linux</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 6.0 of Android devices in Linux</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-6.0:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 6.0 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-6.0:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api24.linux</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.0 of Android devices in Linux</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.0:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.7.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.0 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.0:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api25.linux</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.1.1 of Android devices in Linux</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.1.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.7.1.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.1.1 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-7.1.1:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api21.osxwin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.0.1 of Android devices in Mac and Windows</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-5.0.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.8.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 8.0 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-8.0:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api22.osxwin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 5.1.1 of Android devices in Mac and Windows</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-5.1.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.8.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 8.1 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-8.1:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api23.osxwin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 6.0 of Android devices in Mac and Windows</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-6.0:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.9.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 9.0 of Android devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-x86-9.0:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api24.osxwin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.0 of Android devices in Mac and Windows</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-7.0:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.genymotion</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for Genymotion usage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-genymotion:1.5-p6</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.api25.osxwin</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for version 7.1.1 of Android devices in Mac and Windows</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-arm-7.1.1:0.9-p5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion user for SaaS</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion password for SaaS</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.license</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion licence for SaaS</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion template for SaaS</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.aws.json</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path of configuration file <code>aws.json</code> for Genymotion PaaS</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.novnc.port</code></p></td>
@@ -1142,7 +1182,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.stop.timeout.sec</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timeout in seconds to stop Docker containers at the end of tests</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.api.version</code></p></td>
@@ -1160,6 +1200,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Europe/Madrid</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.lang</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Language for Docker containers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>en</code></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
@@ -1169,6 +1214,16 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>4042</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -1176,12 +1231,14 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">SeleniumJupiter.config().setVnc(<span class="predefined-constant">true</span>);
-SeleniumJupiter.config().setRecording(<span class="predefined-constant">true</span>);
-SeleniumJupiter.config().useSurefireOutputFolder();
-SeleniumJupiter.config().setBrowserListFromDockerHub(<span class="predefined-constant">false</span>);
-SeleniumJupiter.config().wdm().setForceCache(<span class="predefined-constant">true</span>);
-SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">true</span>);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+seleniumExtension.getConfig().useSurefireOutputFolder();
+seleniumExtension.getConfig().setBrowserListFromDockerHub(<span class="predefined-constant">false</span>);
+seleniumExtension.getConfig().chromedriver().setForceCache(<span class="predefined-constant">true</span>);
+seleniumExtension.getConfig().chromedriver().setOverride(<span class="predefined-constant">true</span>);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1210,7 +1267,7 @@ SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">tru
 <div class="sect2">
 <h3 id="tuning-webdrivermanager"><a class="anchor" href="#tuning-webdrivermanager"></a>Tuning WebDriverManager</h3>
 <div class="paragraph">
-<p>As introduced before, <em>Selenium-Jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control localc browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
+<p>As introduced before, <em>Selenium-Jupiter</em> internally uses <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager</a> to manage the required binary to control local browsers. This tool can be configured in several ways, for example to force using a given version of the binary (by default it tries to use the latest version), or force to use the cache (instead of connecting to the online repository to download the binary artifact). For further information about this configuration capabilities, please take a look to the <a href="https://github.com/bonigarcia/webdrivermanager">WebDriverManager documentation</a>.</p>
 </div>
 <div class="paragraph">
 <p>In this section we are going to present a couple of simple examples tuning somehow WebDriverManger. The following example shows how to force a version number for a binary, concretely for Edge:</p>
@@ -1218,23 +1275,24 @@ SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">tru
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeSettingVersionJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        SeleniumJupiter.config().wdm().setDriverVersion(<span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
+        seleniumExtension.getConfig().edgedriver().version(<span class="string"><span class="delimiter">&quot;</span><span class="content">3.14393</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> webrtcTest(EdgeDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
     }
@@ -1248,18 +1306,20 @@ SeleniumJupiter.config().wdm().setOverride(<span class="predefined-constant">tru
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">ForceCacheJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        SeleniumJupiter.config().wdm().setForceCache(<span class="predefined-constant">true</span>);
+        seleniumExtension.getConfig().chromedriver().config()
+                .setForceCache(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
@@ -1335,7 +1395,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-04 13:24:52 CEST
+Last updated 2019-01-24 02:28:03 CET
 </div>
 </div>
 </body>

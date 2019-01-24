@@ -867,7 +867,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <div class="sect2">
 <h3 id="chrome"><a class="anchor" href="#chrome"></a>Chrome</h3>
 <div class="paragraph">
-<p>The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/ChromeJupiterTest.java">GitHub</a>. Notice that this class contains two tests (methods annotated with <code>@Test</code>). The first one (<code>testWithOneChrome</code>) declares just one <code>ChromeDriver</code> parameter, and therefore this test controls a single Chrome browser. On the other hand, the second <code>@Test</code> (<code>testWithTwoChromes</code>) declares two different <code>ChromeDriver</code> parameters, and so, it controls two Chrome browsers.</p>
+<p>The following example contains a simple usage of Chrome in JUnit 5. The complete source code of this test is hosted on <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/ChromeJupiterTest.java">GitHub</a>. Notice that this class contains two tests (methods annotated with <code>@Test</code>). The first one (<code>testWithOneChrome</code>) declares just one <code>ChromeDriver</code> parameter, and therefore this test controls a single Chrome browser. On the other hand, the second <code>@Test</code> (<code>testWithTwoChromes</code>) declares two different <code>ChromeDriver</code> parameters, and so, it controls two Chrome browsers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -880,7 +880,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
@@ -907,7 +907,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <div class="sect2">
 <h3 id="firefox"><a class="anchor" href="#firefox"></a>Firefox</h3>
 <div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/FirefoxJupiterTest.java">test</a> uses Firefox as browser(s). To that aim, <code>@Test</code> methods simply need to include <code>FirefoxDriver</code> parameters.</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/FirefoxJupiterTest.java">test</a> uses Firefox as browser(s). To that aim, <code>@Test</code> methods simply need to include <code>FirefoxDriver</code> parameters.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -920,7 +920,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
@@ -948,7 +948,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <div class="sect2">
 <h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
 <div class="paragraph">
-<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -959,7 +959,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
@@ -990,7 +990,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
 <div class="paragraph">
-<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>Selenium-Jupiter</em>, as follows:</p>
+<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>Selenium-Jupiter</em>, as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1001,7 +1001,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
@@ -1020,7 +1020,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="safari"><a class="anchor" href="#safari"></a>Safari</h3>
 <div class="paragraph">
-<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>Selenium-Jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
+<p>You can also use <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/SafariJupiterTest.java">Safari</a> in conjunction with <em>Selenium-Jupiter</em>. Take into account that <code>SafariDriver</code> requires Safari 10 running on OSX El Capitan or greater.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1031,7 +1031,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.safari.SafariDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">SafariJupiterTest</span> {
@@ -1050,7 +1050,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="phamtomjs"><a class="anchor" href="#phamtomjs"></a>PhamtomJS</h3>
 <div class="paragraph">
-<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>Selenium-Jupiter</em>.</p>
+<p>PhamtomJS is a headless browser (i.e. a browser without GUI), and it can be convenient for different types of tests.  The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/PhantomjsJupiterTest.java">example</a> demonstrates how to use PhamtomJS with <em>Selenium-Jupiter</em>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1061,7 +1061,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.phantomjs.PhantomJSDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
@@ -1079,7 +1079,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <div class="sect2">
 <h3 id="htmlunit"><a class="anchor" href="#htmlunit"></a>HtmlUnit</h3>
 <div class="paragraph">
-<p>HtmlUnit is another headless browser that can be used easily in a Jupiter test, for <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/test/basic/HtmlUnitJupiterTest.java">example</a> like this:</p>
+<p>HtmlUnit is another headless browser that can be used easily in a Jupiter test, for <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/HtmlUnitJupiterTest.java">example</a> like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1090,7 +1090,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.htmlunit.HtmlUnitDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
@@ -1111,7 +1111,7 @@ The required version of <em>MicrosoftWebDriver.exe</em> depends on the version o
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-04 11:42:00 CEST
+Last updated 2019-01-24 02:28:03 CET
 </div>
 </div>
 </body>
