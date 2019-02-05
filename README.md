@@ -26,7 +26,7 @@
 
 ## Motivation
 
-*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use browsers (Chrome, Firefox, Opera, and Android devices) in Docker containers in an effortless manner.
+*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
 
 
 ## Selenium-Jupiter as Java dependency
