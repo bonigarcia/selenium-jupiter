@@ -16,8 +16,9 @@
 1. [Motivation](#motivation)
 2. [Selenium-Jupiter as Java dependency](#selenium-jupiter-as-java-dependency)
    1. [Local browsers](#local-browsers)
-   2. [Docker browsers](#docker-browsers)
-   3. [Examples](#examples)
+   2. [Remote browsers](#remote-browsers)
+   3. [Docker browsers](#docker-browsers)
+   4. [Examples](#examples)
 3. [Selenium-Jupiter CLI](#selenium-jupiter-cli)
 4. [Selenium-Jupiter server](#selenium-jupiter-server)
 5. [Help](#help)
@@ -62,22 +63,65 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SeleniumJupiterTest {
+public class SeleniumJupiterLocalTest {
 
     @Test
-    public void testChrome(ChromeDriver driver) {
-    	// use chrome in this test
+    public void testLocalChrome(ChromeDriver driver) {
+        // use local Chrome in this test
     }
 
     @Test
-    public void testFirefox(FirefoxDriver driver) {
-    	// use firefox in this test
+    public void testLocalFirefox(FirefoxDriver driver) {
+        // use local Firefox in this test
     }
 
 }
 ```
 
 Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver binaries (i.e. *chromedriver*, *geckodriver*,  *operadriver*, and so on) required to use local browsers.
+
+
+
+### Remote browsers
+
+*Selenium-Jupiter* can also be used to control remote browsers programmatically using [Selenium Grid]. To do that, a couple of custom annotations can be used (parameter-level or field-level): `DriverUrl` (to identify the Selenium Server URL) and `DriverCapabilities` (to configure the desired capabilities). For instance:
+
+```java
+import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.DriverUrl;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+
+@ExtendWith(SeleniumExtension.class)
+public class SeleniumJupiterRemoteTest {
+
+    @DriverUrl
+    String url = "http://localhost:4445/wd/hub";
+
+    @DriverCapabilities
+    Capabilities capabilities = firefox();
+
+    @Test
+    void testWithRemoteChrome(@DriverUrl("http://localhost:4444/wd/hub")
+            @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
+        // use remote Chrome in this test
+    }
+
+    @Test
+    void testWithRemoteFirefox(RemoteWebDriver driver) {
+        // use remote Firefox in this test
+    }
+
+
+}
+```
 
 ### Docker browsers
 
@@ -101,19 +145,19 @@ public class SeleniumJupiterDockerTest {
     @Test
     public void testChrome(
             @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
-        // use Chrome (latest version) in this test
+        // use Chrome (latest version) in a Docker container in this test
     }
 
     @Test
     public void testFirefox(
             @DockerBrowser(type = FIREFOX, version = "64.0") RemoteWebDriver driver) {
-        // use Firefox (version 64.0) in this test
+        // use Firefox (version 64.0) in a Docker container in this test
     }
 
     @Test
     public void testAndroid(
             @DockerBrowser(type = ANDROID, version = "8.1") RemoteWebDriver driver) {
-        // use Android (version 8.1) in this test
+        // use Android (version 8.1) in a Docker container in this test
     }
 
 }
@@ -227,6 +271,7 @@ Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] lice
 [GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
+[Selenium Grid]: https://www.seleniumhq.org/docs/07_selenium_grid.jsp
 [Selenium WebDriver]: http://docs.seleniumhq.org/projects/webdriver/
 [Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
 [Selenium-Jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
