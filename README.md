@@ -23,6 +23,14 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 </dependency>
 ```
 
+... or in Gradle project:
+
+```
+dependencies {
+    testCompile("io.github.bonigarcia:selenium-jupiter:3.1.0")
+}
+```
+
 *Selenium-Jupiter* is typically used by tests. In that case, the scope of the dependency should be test (`<scope>test</scope>`).
 
 Once we have included this dependency, *Selenium-Jupiter* manages the WebDriver instances and inject them as parameters in your JUnit 5 tests:
