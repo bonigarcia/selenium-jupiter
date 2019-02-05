@@ -35,9 +35,10 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 
 ```xml
 <dependency>
-	<groupId>io.github.bonigarcia</groupId>
-	<artifactId>selenium-jupiter</artifactId>
-	<version>3.1.0</version>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>selenium-jupiter</artifactId>
+    <version>3.1.0</version>
+    <scope>test</scope>
 </dependency>
 ```
 
@@ -49,7 +50,7 @@ dependencies {
 }
 ```
 
-*Selenium-Jupiter* is typically used by tests. In that case, the scope of the dependency should be test (`<scope>test</scope>`).
+*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testCompile` in Gradle .
 
 ### Local browsers
 
