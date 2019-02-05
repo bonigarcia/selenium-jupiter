@@ -9,9 +9,25 @@
 
 # Selenium-Jupiter [![][Logo]][GitHub Repository]
 
-*Selenium-Jupiter* is a JUnit 5 extension aimed to ease the use of Selenium (WebDriver and Grid) in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
+*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of Selenium (WebDriver and Grid) in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
 
-## Basic usage
+## Table of contents
+
+1. [Motivation](#motivation)
+2. [Selenium-Jupiter as Java dependency](#selenium-jupiter-as-java-dependency)
+   1. [Docker browsers](#docker-browsers)
+   1. [Examples](#examples)
+3. [Selenium-Jupiter CLI](#selenium-jupiter-cli)
+4. [Selenium-Jupiter server](#selenium-jupiter-server)
+5. [Help](#help)
+6. [About](#about)
+
+## Motivation
+
+*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in a easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use browsers (Chrome, Firefox, Opera, and Android devices) in Docker containers in an effortless manner.
+
+
+## Selenium-Jupiter as Java dependency
 
 In order to include *Selenium-Jupiter* in a Maven project, first add the following dependency to your `pom.xml` (Java 8 required):
 
@@ -60,7 +76,7 @@ public class SeleniumJupiterTest {
 
 Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver binaries (i.e. *chromedriver*, *geckodriver*,  *operadriver*, and so on) required to use local browsers.
 
-## Docker browsers
+### Docker browsers
 
 As of version 2, *Selenium-Jupiter* allows to use browsers in [Docker] containers. The only requirement is to get installed [Docker Engine] in the machine running the tests. A simple example using this feature is the following:
 
@@ -99,6 +115,10 @@ public class SeleniumJupiterDockerTest {
 
 }
 ```
+
+### Examples
+
+You can find more details and examples on the [Selenium-Jupiter user guide].
 
 
 ## Selenium-Jupiter CLI
@@ -187,9 +207,10 @@ $ mvn exec:java -Dexec.args="server"
 When the Selenium-Jupiter server is up and running, it acts as a regular Selenium Server for Docker browsers (Chrome, Firefox,. Opera, Android), and its URL can be used in tests using regular Selenium's ``RemoteWebDriver`` objects.
 
 
-## Documentation
+## Help
 
-You can find more details and examples on the [Selenium-Jupiter user guide].
+If you have questions on how to use *Selenium-Jupiter* properly with a special configuration or suchlike, please consider asking a question on [Stack Overflow] and tag it with  *selenium-jupiter*.
+
 
 ## About
 
@@ -197,11 +218,14 @@ Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] lice
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Boni Garcia]: http://bonigarcia.github.io/
+[dependency injection for constructors and methods]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection
 [Docker]: https://www.docker.com/
 [Docker Engine]: https://www.docker.com/get-docker
 [GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
+[JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
 [Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
 [Selenium-Jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
-[Selenium Webdriver]: http://docs.seleniumhq.org/projects/webdriver/
+[Stack Overflow]: https://stackoverflow.com/questions/tagged/selenium-jupiter
+[test templates]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
