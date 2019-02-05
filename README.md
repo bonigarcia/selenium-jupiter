@@ -15,8 +15,9 @@
 
 1. [Motivation](#motivation)
 2. [Selenium-Jupiter as Java dependency](#selenium-jupiter-as-java-dependency)
-   1. [Docker browsers](#docker-browsers)
-   1. [Examples](#examples)
+   1. [Local browsers](#local-browsers)
+   2. [Docker browsers](#docker-browsers)
+   3. [Examples](#examples)
 3. [Selenium-Jupiter CLI](#selenium-jupiter-cli)
 4. [Selenium-Jupiter server](#selenium-jupiter-server)
 5. [Help](#help)
@@ -24,7 +25,7 @@
 
 ## Motivation
 
-*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in a easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use browsers (Chrome, Firefox, Opera, and Android devices) in Docker containers in an effortless manner.
+*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use browsers (Chrome, Firefox, Opera, and Android devices) in Docker containers in an effortless manner.
 
 
 ## Selenium-Jupiter as Java dependency
@@ -49,7 +50,9 @@ dependencies {
 
 *Selenium-Jupiter* is typically used by tests. In that case, the scope of the dependency should be test (`<scope>test</scope>`).
 
-Once we have included this dependency, *Selenium-Jupiter* manages the WebDriver instances and inject them as parameters in your JUnit 5 tests:
+### Local browsers
+
+Once we have included this dependency, *Selenium-Jupiter* can be used to control local browsers programmatically using [Selenium WebDriver]. To do that, we simply need to specify the flavor of the browser to be used by declaring `WebDriver` parameters in tests or constructors. For instance, we declare a `ChromeDriver` parameter to use Chrome, `FirefoxDriver` for Firefox, and so on. For instance:  
 
 ```java
 import org.junit.jupiter.api.Test;
@@ -118,7 +121,7 @@ public class SeleniumJupiterDockerTest {
 
 ### Examples
 
-You can find more details and examples on the [Selenium-Jupiter user guide].
+You can find more features, details and examples on the [Selenium-Jupiter user guide].
 
 
 ## Selenium-Jupiter CLI
@@ -224,6 +227,7 @@ Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] lice
 [GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
+[Selenium WebDriver]: http://docs.seleniumhq.org/projects/webdriver/
 [Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
 [Selenium-Jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
 [Stack Overflow]: https://stackoverflow.com/questions/tagged/selenium-jupiter
