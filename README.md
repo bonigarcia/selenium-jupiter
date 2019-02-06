@@ -157,8 +157,8 @@ public class SeleniumJupiterDockerTest {
 
     @Test
     public void testAndroid(
-            @DockerBrowser(type = ANDROID, version = "8.1") RemoteWebDriver driver) {
-        // use Android (version 8.1) in a Docker container in this test
+            @DockerBrowser(type = ANDROID, version = "9.0") RemoteWebDriver driver) {
+        // use Android (version 9.0) in a Docker container in this test
     }
 
 }

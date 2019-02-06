@@ -88,7 +88,7 @@ Moreover, the type of devices are the following:
 |Tablet| Nexus 7
 |==========================
 
-Android (`8.1`) with Chrome in `Samsung Galaxy S6` is the default setup for Android devices. These values can be changed using the link:#configuration[configuration] capabilities or by means of the the following parameters in the `@DockerBrowser` annotation
+Android (`9.0`) with Chrome in `Samsung Galaxy S6` is the default setup for Android devices. These values can be changed using the link:#configuration[configuration] capabilities or by means of the the following parameters in the `@DockerBrowser` annotation
 
 [source,java]
 ----

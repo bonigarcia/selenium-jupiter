@@ -37,7 +37,7 @@ public class AndroidCustomJupiterTest {
     @Disabled
     // tag::snippet-in-doc[]
     @Test
-    public void testAndroid(@DockerBrowser(type = ANDROID, version = "8.1",
+    public void testAndroid(@DockerBrowser(type = ANDROID, version = "9.0",
             deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

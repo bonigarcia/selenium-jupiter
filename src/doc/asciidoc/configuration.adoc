@@ -54,7 +54,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
 |`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`57.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
-|`sel.jup.android.default.version` | Default version of Android devices in Docker |`8.1`
+|`sel.jup.android.default.version` | Default version of Android devices in Docker |`9.0`
 |`sel.jup.android.image.5.0.1` | Docker image for version 5.0.1 of Android devices |`butomo1989/docker-android-x86-5.0.1:1.5-p6`
 |`sel.jup.android.image.5.1.1` | Docker image for version 5.1.1 of Android devices |`butomo1989/docker-android-x86-5.1.1:1.5-p6`
 |`sel.jup.android.image.6.0` | Docker image for version 6.0 of Android devices |`butomo1989/docker-android-x86-6.0:1.5-p6`
