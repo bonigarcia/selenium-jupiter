@@ -195,6 +195,12 @@ public class Config {
             "sel.jup.android.device.name", String.class);
     ConfigKey<Integer> androidDeviceTimeoutSec = new ConfigKey<>(
             "sel.jup.android.device.timeout.sec", Integer.class);
+    ConfigKey<String> androidScreenWidth = new ConfigKey<>(
+            "sel.jup.android.screen.width", String.class);
+    ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
+            "sel.jup.android.screen.heigth", String.class);
+    ConfigKey<String> androidScreenDepth = new ConfigKey<>(
+            "sel.jup.android.screen.depth", String.class);
 
     ConfigKey<Integer> serverPort = new ConfigKey<>("sel.jup.server.port",
             Integer.class);
@@ -901,6 +907,30 @@ public class Config {
 
     public void setAndroidDeviceTimeoutSec(Integer value) {
         this.androidDeviceTimeoutSec.setValue(value);
+    }
+
+    public String getAndroidScreenWidth() {
+        return resolve(androidScreenWidth);
+    }
+
+    public void setAndroidScreenWidth(String value) {
+        this.androidScreenWidth.setValue(value);
+    }
+
+    public String getAndroidScreenHeigth() {
+        return resolve(androidScreenHeigth);
+    }
+
+    public void setAndroidScreenHeigth(String value) {
+        this.androidScreenHeigth.setValue(value);
+    }
+
+    public String getAndroidScreenDepth() {
+        return resolve(androidScreenDepth);
+    }
+
+    public void setAndroidScreenDepth(String value) {
+        this.androidScreenDepth.setValue(value);
     }
 
     public int getServerPort() {

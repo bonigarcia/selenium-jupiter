@@ -706,10 +706,16 @@ public class DockerDriverHandler {
 
             // network
             String network = getConfig().getDockerNetwork();
+            String screenWidth = getConfig().getAndroidScreenWidth();
+            String screenHeigth = getConfig().getAndroidScreenHeigth();
+            String screenDepth = getConfig().getAndroidScreenDepth();
 
             // envs
             List<String> envs = new ArrayList<>();
             envs.add("DEVICE=" + deviceName);
+            envs.add("SCREEN_WIDTH=" + screenWidth);
+            envs.add("SCREEN_HEIGHT=" + screenHeigth);
+            envs.add("SCREEN_DEPTH=" + screenDepth);
             envs.add("APPIUM=true");
             List<String> proxyEnvVars = asList("HTTP_PROXY", "HTTPS_PROXY",
                     "NO_PROXY", "http_proxy", "https_proxy", "no_proxy");
