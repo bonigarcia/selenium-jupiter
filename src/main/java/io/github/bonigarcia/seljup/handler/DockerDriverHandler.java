@@ -49,7 +49,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -123,6 +127,9 @@ public class DockerDriverHandler {
     WebDriverCreator webDriverCreator;
     URL hubUrl;
 
+    boolean androidLogging = config().isAndroidLogging();
+    File hostAndroidLogsFolder;
+
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
             String version, InternalPreferences preferences) {
         this.config = config;
@@ -171,6 +178,20 @@ public class DockerDriverHandler {
             if (getConfig().isRecording()) {
                 hostVideoFolder = new File(getOutputFolder(context,
                         getConfig().getOutputFolder()));
+            }
+
+            if (androidLogging) {
+                String dateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd--HH-mm-ss").format(LocalDateTime.now());
+                String logsFolder = config().getAndroidLogsFolder();
+                Path path = Paths.get(getOutputFolder(context), logsFolder, dateTime);
+                try {
+                    Files.createDirectories(path);
+                    hostAndroidLogsFolder = path.toFile();
+                    log.info("Android logs will be stored in " + path.toAbsolutePath());
+                } catch (IOException e) {
+                    log.error("Failed to create directories for android logs " + path.toAbsolutePath(), e);
+                    androidLogging = false;
+                }
             }
 
             WebDriver webdriver;
@@ -698,6 +719,9 @@ public class DockerDriverHandler {
             List<String> binds = new ArrayList<>();
             if (recording) {
                 binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
+            }
+            if(androidLogging) {
+                binds.add(getDockerPath(hostAndroidLogsFolder) + ":/var/log/supervisor");
             }
             if (cloudType == GENYMOTION_PAAS) {
                 binds.add(getConfig().getAndroidGenymotionAwsJson()

@@ -195,6 +195,14 @@ public class Config {
             "sel.jup.android.device.name", String.class);
     ConfigKey<Integer> androidDeviceTimeoutSec = new ConfigKey<>(
             "sel.jup.android.device.timeout.sec", Integer.class);
+    ConfigKey<Integer> androidDeviceStartupTimeoutSec = new ConfigKey<>(
+            "sel.jup.android.device.startup.timeout.sec", Integer.class);
+    ConfigKey<Integer> androidAppiumPingPeriodSec = new ConfigKey<>(
+            "sel.jup.android.appium.ping.period.sec", Integer.class);
+    ConfigKey<Boolean> androidLogging = new ConfigKey<>("sel.jup.android.logging",
+            Boolean.class);
+    ConfigKey<String> androidLogsFolder = new ConfigKey<>("sel.jup.android.logs.folder",
+            String.class);
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
     ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
@@ -907,6 +915,38 @@ public class Config {
 
     public void setAndroidDeviceTimeoutSec(Integer value) {
         this.androidDeviceTimeoutSec.setValue(value);
+    }
+
+    public Integer getAndroidDeviceStartupTimeoutSec() {
+        return resolve(androidDeviceStartupTimeoutSec);
+    }
+
+    public void setAndroidDeviceStartupTimeoutSec(Integer value) {
+        this.androidDeviceStartupTimeoutSec.setValue(value);
+    }
+
+    public Integer getAndroidAppiumPingPeriodSec() {
+        return resolve(androidAppiumPingPeriodSec);
+    }
+
+    public void setAndroidAppiumPingPeriodSec(Integer androidAppiumPingPeriodSec) {
+        this.androidAppiumPingPeriodSec.setValue(androidAppiumPingPeriodSec);
+    }
+
+    public boolean isAndroidLogging() {
+        return resolve(androidLogging);
+    }
+
+    public void setAndroidLogging(boolean value) {
+        this.androidLogging.setValue(value);
+    }
+
+    public String getAndroidLogsFolder() {
+        return resolve(androidLogsFolder);
+    }
+
+    public void setAndroidLogsFolder(String androidLogsFolder) {
+        this.androidLogsFolder.setValue(androidLogsFolder);
     }
 
     public String getAndroidScreenWidth() {
