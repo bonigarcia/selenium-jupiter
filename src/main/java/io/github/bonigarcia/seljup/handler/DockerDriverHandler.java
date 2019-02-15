@@ -127,7 +127,7 @@ public class DockerDriverHandler {
     WebDriverCreator webDriverCreator;
     URL hubUrl;
 
-    boolean androidLogging = getConfig().isAndroidLogging();
+    boolean androidLogging;
     File hostAndroidLogsFolder;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
@@ -137,6 +137,7 @@ public class DockerDriverHandler {
                 version);
         this.dockerService = new DockerService(config, preferences);
         this.containerMap = new LinkedHashMap<>();
+        this.androidLogging = config.isAndroidLogging();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
@@ -153,6 +154,7 @@ public class DockerDriverHandler {
         this.config = config;
         this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
                 version);
+        this.androidLogging = config.isAndroidLogging();
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
