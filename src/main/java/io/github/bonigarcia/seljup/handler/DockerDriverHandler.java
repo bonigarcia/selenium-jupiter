@@ -326,8 +326,21 @@ public class DockerDriverHandler {
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
                 browserName);
+
+        Integer androidStartupTimeoutSec = getConfig().getAndroidDeviceStartupTimeoutSec();
+        if (0 < androidStartupTimeoutSec) {
+            log.info(
+                    "Waiting for Android device to start for " + androidStartupTimeoutSec + " seconds ...");
+            sleep(androidStartupTimeoutSec * 1000);
+        }
+
+        int androidAppiumPingPeriodSec = getConfig().getAndroidAppiumPingPeriodSec();
+        if(androidAppiumPingPeriodSec < 5) {
+            androidAppiumPingPeriodSec = 5;
+        }
         log.info(
-                "Waiting for Android device ... this might take long, please wait (retries each 5 seconds)");
+                "Waiting for Appium creates session in Android device ... this might take long, please wait (retries each "
+                        + androidAppiumPingPeriodSec + " seconds)");
 
         AndroidDriver<WebElement> androidDriver = null;
         int androidDeviceTimeoutSec = getConfig().getAndroidDeviceTimeoutSec();
@@ -348,7 +361,7 @@ public class DockerDriverHandler {
                 if (errorMessage.contains("Could not find package")) {
                     throw new SeleniumJupiterException(errorMessage);
                 }
-                sleep(5000);
+                sleep(androidAppiumPingPeriodSec * 1000);
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
