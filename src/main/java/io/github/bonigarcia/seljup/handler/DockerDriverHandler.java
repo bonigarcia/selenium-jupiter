@@ -127,7 +127,7 @@ public class DockerDriverHandler {
     WebDriverCreator webDriverCreator;
     URL hubUrl;
 
-    boolean androidLogging = config().isAndroidLogging();
+    boolean androidLogging = getConfig().isAndroidLogging();
     File hostAndroidLogsFolder;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
@@ -182,8 +182,8 @@ public class DockerDriverHandler {
 
             if (androidLogging) {
                 String dateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd--HH-mm-ss").format(LocalDateTime.now());
-                String logsFolder = config().getAndroidLogsFolder();
-                Path path = Paths.get(getOutputFolder(context), logsFolder, dateTime);
+                String logsFolder = getConfig().getAndroidLogsFolder();
+                Path path = Paths.get(getOutputFolder(context, getConfig().getOutputFolder()), logsFolder, dateTime);
                 try {
                     Files.createDirectories(path);
                     hostAndroidLogsFolder = path.toFile();
