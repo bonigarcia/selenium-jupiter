@@ -53,6 +53,7 @@ public class AndroidForcedTimeoutJupiterTest {
     void setup() {
         config.setVnc(true);
         config.setAndroidDeviceTimeoutSec(10);
+        config.setAndroidLogging(true);
     }
 
     @AfterEach
