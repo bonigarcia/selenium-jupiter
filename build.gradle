@@ -9,7 +9,7 @@ ext {
 	dockerclient = '8.15.0'
 	phantomjsdriver = '1.4.4' 
 	slf4j = '1.7.25'
-	logback-classic = '1.2.3'
+	logback = '1.2.3'
 	retrofit = '2.5.0'
 	javalin = '2.6.0'
 	okhttp = '3.13.1'
@@ -54,7 +54,7 @@ dependencies {
     compile("com.squareup.retrofit2:retrofit:${retrofit}")
     compile("com.squareup.retrofit2:adapter-rxjava:${retrofit}")
     compile("com.squareup.retrofit2:converter-gson:${retrofit}")
-    compile("ch.qos.logback:logback-classic:${logback-classic}")
+    compile("ch.qos.logback:logback-classic:${logback}")
     compile("org.junit.jupiter:junit-jupiter-api:${junitjupiter}")
     compile("io.javalin:javalin:${javalin}")
     compile("com.squareup.okhttp3:okhttp:${okhttp}")
