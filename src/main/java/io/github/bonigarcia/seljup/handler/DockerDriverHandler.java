@@ -763,39 +763,10 @@ public class DockerDriverHandler {
                         + ":/root/tmp");
             }
 
-            // network
-            String network = getConfig().getDockerNetwork();
-            String screenWidth = getConfig().getAndroidScreenWidth();
-            String screenHeigth = getConfig().getAndroidScreenHeigth();
-            String screenDepth = getConfig().getAndroidScreenDepth();
-
             // envs
-            List<String> envs = new ArrayList<>();
-            envs.add("DEVICE=" + deviceName);
-            envs.add("SCREEN_WIDTH=" + screenWidth);
-            envs.add("SCREEN_HEIGHT=" + screenHeigth);
-            envs.add("SCREEN_DEPTH=" + screenDepth);
-            envs.add("APPIUM=true");
-            List<String> proxyEnvVars = asList("HTTP_PROXY", "HTTPS_PROXY",
-                    "NO_PROXY", "http_proxy", "https_proxy", "no_proxy");
-            proxyEnvVars.stream().filter(envName -> isNotBlank(getenv(envName)))
-                    .forEach(envName -> envs
-                            .add(envName + "=" + getenv(envName)));
-            if (recording) {
-                envs.add("AUTO_RECORD=true");
-            } else {
-                envs.add("AUTO_RECORD=false");
-            }
-
-            if (cloudType == GENYMOTION_SAAS) {
-                envs.add("TYPE=SaaS");
-                envs.add("USER=" + getConfig().getAndroidGenymotionUser());
-                envs.add("PASS=" + getConfig().getAndroidGenymotionPassword());
-                envs.add(
-                        "LICENSE=" + getConfig().getAndroidGenymotionLicense());
-            } else if (cloudType == GENYMOTION_PAAS) {
-                envs.add("TYPE=aws");
-            }
+            String network = getConfig().getDockerNetwork();
+            List<String> envs = getAndroidEnvs(deviceName, cloudType,
+                    recording);
 
             // Build container
             DockerBuilder dockerBuilder = DockerContainer
@@ -836,6 +807,38 @@ public class DockerDriverHandler {
             containerMap.put(androidImage, androidContainer);
         }
         return androidContainer;
+    }
+
+    private List<String> getAndroidEnvs(String deviceName, CloudType cloudType,
+            boolean recording) {
+        List<String> envs = new ArrayList<>();
+        String screenWidth = getConfig().getAndroidScreenWidth();
+        String screenHeigth = getConfig().getAndroidScreenHeigth();
+        String screenDepth = getConfig().getAndroidScreenDepth();
+        envs.add("DEVICE=" + deviceName);
+        envs.add("SCREEN_WIDTH=" + screenWidth);
+        envs.add("SCREEN_HEIGHT=" + screenHeigth);
+        envs.add("SCREEN_DEPTH=" + screenDepth);
+        envs.add("APPIUM=true");
+        List<String> proxyEnvVars = asList("HTTP_PROXY", "HTTPS_PROXY",
+                "NO_PROXY", "http_proxy", "https_proxy", "no_proxy");
+        proxyEnvVars.stream().filter(envName -> isNotBlank(getenv(envName)))
+                .forEach(envName -> envs.add(envName + "=" + getenv(envName)));
+        if (recording) {
+            envs.add("AUTO_RECORD=true");
+        } else {
+            envs.add("AUTO_RECORD=false");
+        }
+
+        if (cloudType == GENYMOTION_SAAS) {
+            envs.add("TYPE=SaaS");
+            envs.add("USER=" + getConfig().getAndroidGenymotionUser());
+            envs.add("PASS=" + getConfig().getAndroidGenymotionPassword());
+            envs.add("LICENSE=" + getConfig().getAndroidGenymotionLicense());
+        } else if (cloudType == GENYMOTION_PAAS) {
+            envs.add("TYPE=aws");
+        }
+        return envs;
     }
 
     private int getDockerBrowserCount() {
