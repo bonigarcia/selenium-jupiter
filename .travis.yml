@@ -1,6 +1,7 @@
 language: java
 sudo: false
 dist: trusty
+install: true
 
 services:
   - docker
