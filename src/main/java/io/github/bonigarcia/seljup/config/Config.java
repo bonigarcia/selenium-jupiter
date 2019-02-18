@@ -199,10 +199,10 @@ public class Config {
             "sel.jup.android.device.startup.timeout.sec", Integer.class);
     ConfigKey<Integer> androidAppiumPingPeriodSec = new ConfigKey<>(
             "sel.jup.android.appium.ping.period.sec", Integer.class);
-    ConfigKey<Boolean> androidLogging = new ConfigKey<>("sel.jup.android.logging",
-            Boolean.class);
-    ConfigKey<String> androidLogsFolder = new ConfigKey<>("sel.jup.android.logs.folder",
-            String.class);
+    ConfigKey<Boolean> androidLogging = new ConfigKey<>(
+            "sel.jup.android.logging", Boolean.class);
+    ConfigKey<String> androidLogsFolder = new ConfigKey<>(
+            "sel.jup.android.logs.folder", String.class);
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
     ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
@@ -929,7 +929,8 @@ public class Config {
         return resolve(androidAppiumPingPeriodSec);
     }
 
-    public void setAndroidAppiumPingPeriodSec(Integer androidAppiumPingPeriodSec) {
+    public void setAndroidAppiumPingPeriodSec(
+            Integer androidAppiumPingPeriodSec) {
         this.androidAppiumPingPeriodSec.setValue(androidAppiumPingPeriodSec);
     }
 

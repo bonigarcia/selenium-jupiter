@@ -183,15 +183,21 @@ public class DockerDriverHandler {
             }
 
             if (androidLogging) {
-                String dateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd--HH-mm-ss").format(LocalDateTime.now());
+                String dateTime = DateTimeFormatter
+                        .ofPattern("uuuu-MM-dd--HH-mm-ss")
+                        .format(LocalDateTime.now());
                 String logsFolder = getConfig().getAndroidLogsFolder();
-                Path path = Paths.get(getOutputFolder(context, getConfig().getOutputFolder()), logsFolder, dateTime);
+                Path path = Paths.get(
+                        getOutputFolder(context, getConfig().getOutputFolder()),
+                        logsFolder, dateTime);
                 try {
                     Files.createDirectories(path);
                     hostAndroidLogsFolder = path.toFile();
-                    log.info("Android logs will be stored in " + path.toAbsolutePath());
+                    log.info("Android logs will be stored in "
+                            + path.toAbsolutePath());
                 } catch (IOException e) {
-                    log.error("Failed to create directories for android logs " + path.toAbsolutePath(), e);
+                    log.error("Failed to create directories for android logs "
+                            + path.toAbsolutePath(), e);
                     androidLogging = false;
                 }
             }
@@ -327,15 +333,17 @@ public class DockerDriverHandler {
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
                 browserName);
 
-        Integer androidStartupTimeoutSec = getConfig().getAndroidDeviceStartupTimeoutSec();
+        int androidStartupTimeoutSec = getConfig()
+                .getAndroidDeviceStartupTimeoutSec();
         if (0 < androidStartupTimeoutSec) {
-            log.info(
-                    "Waiting for Android device to start for " + androidStartupTimeoutSec + " seconds ...");
-            sleep(androidStartupTimeoutSec * 1000);
+            log.info("Waiting for Android device to start for "
+                    + androidStartupTimeoutSec + " seconds ...");
+            sleep(SECONDS.toMillis(androidStartupTimeoutSec));
         }
 
-        int androidAppiumPingPeriodSec = getConfig().getAndroidAppiumPingPeriodSec();
-        if(androidAppiumPingPeriodSec < 5) {
+        int androidAppiumPingPeriodSec = getConfig()
+                .getAndroidAppiumPingPeriodSec();
+        if (androidAppiumPingPeriodSec < 5) {
             androidAppiumPingPeriodSec = 5;
         }
         log.info(
@@ -361,7 +369,7 @@ public class DockerDriverHandler {
                 if (errorMessage.contains("Could not find package")) {
                     throw new SeleniumJupiterException(errorMessage);
                 }
-                sleep(androidAppiumPingPeriodSec * 1000);
+                sleep(SECONDS.toMillis(androidAppiumPingPeriodSec));
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
@@ -735,8 +743,9 @@ public class DockerDriverHandler {
             if (recording) {
                 binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
             }
-            if(androidLogging) {
-                binds.add(getDockerPath(hostAndroidLogsFolder) + ":/var/log/supervisor");
+            if (androidLogging) {
+                binds.add(getDockerPath(hostAndroidLogsFolder)
+                        + ":/var/log/supervisor");
             }
             if (cloudType == GENYMOTION_PAAS) {
                 binds.add(getConfig().getAndroidGenymotionAwsJson()
