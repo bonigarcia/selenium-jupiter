@@ -106,6 +106,7 @@ public class DockerDriverHandler {
     static final String LATEST = "latest";
     static final String BROWSER = "browser";
     static final String CHROME = "chrome";
+    static final int APPIUM_MIN_PING_SEC = 5;
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -181,26 +182,7 @@ public class DockerDriverHandler {
                 hostVideoFolder = new File(getOutputFolder(context,
                         getConfig().getOutputFolder()));
             }
-
-            if (androidLogging) {
-                String dateTime = DateTimeFormatter
-                        .ofPattern("uuuu-MM-dd--HH-mm-ss")
-                        .format(LocalDateTime.now());
-                String logsFolder = getConfig().getAndroidLogsFolder();
-                Path path = Paths.get(
-                        getOutputFolder(context, getConfig().getOutputFolder()),
-                        logsFolder, dateTime);
-                try {
-                    Files.createDirectories(path);
-                    hostAndroidLogsFolder = path.toFile();
-                    log.info("Android logs will be stored in "
-                            + path.toAbsolutePath());
-                } catch (IOException e) {
-                    log.error("Failed to create directories for android logs "
-                            + path.toAbsolutePath(), e);
-                    androidLogging = false;
-                }
-            }
+            checkAndroidLogging();
 
             WebDriver webdriver;
             if (browserType == ANDROID) {
@@ -217,6 +199,28 @@ public class DockerDriverHandler {
                     "Exception resolving driver in Docker (%s %s)", browserType,
                     version);
             throw new SeleniumJupiterException(errorMessage, e);
+        }
+    }
+
+    private void checkAndroidLogging() {
+        if (androidLogging) {
+            String dateTime = DateTimeFormatter
+                    .ofPattern("uuuu-MM-dd--HH-mm-ss")
+                    .format(LocalDateTime.now());
+            String logsFolder = getConfig().getAndroidLogsFolder();
+            Path path = Paths.get(
+                    getOutputFolder(context, getConfig().getOutputFolder()),
+                    logsFolder, dateTime);
+            try {
+                Files.createDirectories(path);
+                hostAndroidLogsFolder = path.toFile();
+                log.debug("Android logs will be stored in {}",
+                        hostAndroidLogsFolder);
+            } catch (IOException e) {
+                log.warn("Failed to create directories for Android logs {}",
+                        path.toAbsolutePath(), e);
+                androidLogging = false;
+            }
         }
     }
 
@@ -336,19 +340,19 @@ public class DockerDriverHandler {
         int androidStartupTimeoutSec = getConfig()
                 .getAndroidDeviceStartupTimeoutSec();
         if (0 < androidStartupTimeoutSec) {
-            log.info("Waiting for Android device to start for "
-                    + androidStartupTimeoutSec + " seconds ...");
+            log.debug("Waiting for Android device to start for {} seconds",
+                    androidStartupTimeoutSec);
             sleep(SECONDS.toMillis(androidStartupTimeoutSec));
         }
 
         int androidAppiumPingPeriodSec = getConfig()
                 .getAndroidAppiumPingPeriodSec();
-        if (androidAppiumPingPeriodSec < 5) {
-            androidAppiumPingPeriodSec = 5;
+        if (androidAppiumPingPeriodSec < APPIUM_MIN_PING_SEC) {
+            androidAppiumPingPeriodSec = APPIUM_MIN_PING_SEC;
         }
-        log.info(
-                "Waiting for Appium creates session in Android device ... this might take long, please wait (retries each "
-                        + androidAppiumPingPeriodSec + " seconds)");
+        log.debug(
+                "Waiting for Appium creates session in Android device ... this might take long, please wait (retries each {} seconds)",
+                androidAppiumPingPeriodSec);
 
         AndroidDriver<WebElement> androidDriver = null;
         int androidDeviceTimeoutSec = getConfig().getAndroidDeviceTimeoutSec();
@@ -359,17 +363,8 @@ public class DockerDriverHandler {
                 androidDriver = new AndroidDriver<>(new URL(appiumUrl),
                         capabilities);
             } catch (Exception e) {
-                if (currentTimeMillis() > endTimeMillis) {
-                    throw new SeleniumJupiterException("Timeout ("
-                            + androidDeviceTimeoutSec
-                            + " seconds) waiting for Android device in Docker");
-                }
-                String errorMessage = getErrorMessage(e);
-                log.debug("Android device not ready: {}", errorMessage);
-                if (errorMessage.contains("Could not find package")) {
-                    throw new SeleniumJupiterException(errorMessage);
-                }
-                sleep(SECONDS.toMillis(androidAppiumPingPeriodSec));
+                checkAndroidException(androidAppiumPingPeriodSec,
+                        androidDeviceTimeoutSec, endTimeMillis, e);
             }
         } while (androidDriver == null);
         log.info("Android device ready {}", androidDriver);
@@ -380,6 +375,22 @@ public class DockerDriverHandler {
             logNoVncUrl(androidNoVncUrl);
         }
         return androidDriver;
+    }
+
+    private void checkAndroidException(int androidAppiumPingPeriodSec,
+            int androidDeviceTimeoutSec, long endTimeMillis, Exception e)
+            throws InterruptedException {
+        if (currentTimeMillis() > endTimeMillis) {
+            throw new SeleniumJupiterException(
+                    "Timeout (" + androidDeviceTimeoutSec
+                            + " seconds) waiting for Android device in Docker");
+        }
+        String errorMessage = getErrorMessage(e);
+        log.debug("Android device not ready: {}", errorMessage);
+        if (errorMessage.contains("Could not find package")) {
+            throw new SeleniumJupiterException(errorMessage);
+        }
+        sleep(SECONDS.toMillis(androidAppiumPingPeriodSec));
     }
 
     private String getErrorMessage(Exception e) {
