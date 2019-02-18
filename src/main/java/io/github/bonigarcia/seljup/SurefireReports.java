@@ -45,6 +45,9 @@ public class SurefireReports {
 
     public static String getOutputFolder(ExtensionContext context,
             String outputFolder) {
+        if (context == null) {
+            return "";
+        }
         Optional<Method> testMethod = context.getTestMethod();
         Optional<Class<?>> testInstance = context.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {

@@ -127,8 +127,6 @@ public class DockerDriverHandler {
     String browserName;
     WebDriverCreator webDriverCreator;
     URL hubUrl;
-
-    boolean androidLogging;
     File hostAndroidLogsFolder;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
@@ -138,7 +136,6 @@ public class DockerDriverHandler {
                 version);
         this.dockerService = new DockerService(config, preferences);
         this.containerMap = new LinkedHashMap<>();
-        this.androidLogging = config.isAndroidLogging();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
@@ -155,7 +152,6 @@ public class DockerDriverHandler {
         this.config = config;
         this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
                 version);
-        this.androidLogging = config.isAndroidLogging();
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -182,7 +178,6 @@ public class DockerDriverHandler {
                 hostVideoFolder = new File(getOutputFolder(context,
                         getConfig().getOutputFolder()));
             }
-            checkAndroidLogging();
 
             WebDriver webdriver;
             if (browserType == ANDROID) {
@@ -202,26 +197,25 @@ public class DockerDriverHandler {
         }
     }
 
-    private void checkAndroidLogging() {
-        if (androidLogging) {
-            String dateTime = DateTimeFormatter
-                    .ofPattern("uuuu-MM-dd--HH-mm-ss")
-                    .format(LocalDateTime.now());
-            String logsFolder = getConfig().getAndroidLogsFolder();
-            Path path = Paths.get(
-                    getOutputFolder(context, getConfig().getOutputFolder()),
-                    logsFolder, dateTime);
-            try {
-                Files.createDirectories(path);
-                hostAndroidLogsFolder = path.toFile();
-                log.debug("Android logs will be stored in {}",
-                        hostAndroidLogsFolder);
-            } catch (IOException e) {
-                log.warn("Failed to create directories for Android logs {}",
-                        path.toAbsolutePath(), e);
-                androidLogging = false;
-            }
+    private boolean isAndroidLogging() {
+        boolean androidLogging = getConfig().isAndroidLogging();
+        String dateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd--HH-mm-ss")
+                .format(LocalDateTime.now());
+        String logsFolder = getConfig().getAndroidLogsFolder();
+        Path path = Paths.get(
+                getOutputFolder(context, getConfig().getOutputFolder()),
+                logsFolder, dateTime);
+        try {
+            Files.createDirectories(path);
+            hostAndroidLogsFolder = path.toFile();
+            log.debug("Android logs will be stored in {}",
+                    hostAndroidLogsFolder);
+        } catch (IOException e) {
+            log.warn("Failed to create directories for Android logs {}",
+                    path.toAbsolutePath(), e);
+            androidLogging = false;
         }
+        return androidLogging;
     }
 
     private WebDriver getDriverForBrowser(BrowserInstance browserInstance,
@@ -754,7 +748,7 @@ public class DockerDriverHandler {
             if (recording) {
                 binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
             }
-            if (androidLogging) {
+            if (isAndroidLogging()) {
                 binds.add(getDockerPath(hostAndroidLogsFolder)
                         + ":/var/log/supervisor");
             }
