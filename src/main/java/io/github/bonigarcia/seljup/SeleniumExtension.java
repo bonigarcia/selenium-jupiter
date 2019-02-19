@@ -135,7 +135,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(templateHandlerMap, "appium", AppiumDriver.class);
         addEntry(templateHandlerMap, "phantomjs", PhantomJSDriver.class);
         addEntry(templateHandlerMap, "iexplorer", InternetExplorerDriver.class);
-        addEntry(templateHandlerMap, "internet explorer", InternetExplorerDriver.class);
+        addEntry(templateHandlerMap, "internet explorer",
+                InternetExplorerDriver.class);
         addEntry(templateHandlerMap, "chrome-in-docker", RemoteWebDriver.class);
         addEntry(templateHandlerMap, "firefox-in-docker",
                 RemoteWebDriver.class);
@@ -166,7 +167,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Check template
         if (isGeneric && !browserListMap.isEmpty()) {
-            browser = getBrowser(contextId, parameter, isTemplate);
+            browser = getBrowser(contextId, parameter,
+                    parameterContext.getIndex());
         }
         Optional<String> urlFromAnnotation = getUrlFromAnnotation(parameter,
                 extensionContext);
@@ -250,16 +252,16 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     private Browser getBrowser(String contextId, Parameter parameter,
-            boolean isTemplate) {
-        Integer index = isTemplate
-                ? Integer.valueOf(parameter.getName().replaceAll("arg", ""))
-                : 0;
+            int index) {
         Browser browser = null;
         List<Browser> browserList = getValueFromContextId(browserListMap,
                 contextId);
         if (browserList == null) {
             log.warn("Browser list for context id {} not found", contextId);
         } else {
+            if (index >= browserList.size()) {
+                index = browserList.size() - 1;
+            }
             browser = browserList.get(index);
         }
         return browser;
