@@ -165,26 +165,26 @@ public class SeleniumJupiterDockerTest {
 
 ### Appium
 
-*Selenium-Jupiter* also allows to control mobile devices using [Appium]. The following snippet shows an example using the annotation `@DriverCapabilities` to set the required capabilities. By default the Appium Server is supposed to be listening on `http://localhost:4723/wd/hub` (this URL can be change by means of the annotation `@DriverUrl`):
+*Selenium-Jupiter* also allows to control mobile devices using [Appium]. The following snippet shows an example. This test uses the annotation `@DriverCapabilities` at parameter-level to set the required capabilities and `@DriverUrl` to set the Appium Server URL:
 
 ```java
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 public class AppiumJupiterTest {
 
     @Test
-    void testAppium(
+    void testAppium(@DriverUrl("http://localhost:4723/wd/hub")
             @DriverCapabilities({ "browserName=chrome",
                     "deviceName=Android" }) AppiumDriver<WebElement> driver) {
-        // use Chrome in Appium device in this test
+        // use Chrome in Android device through Appium in this test
     }
 
 }
