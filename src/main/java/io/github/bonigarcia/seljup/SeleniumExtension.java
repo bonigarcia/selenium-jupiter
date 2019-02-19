@@ -167,8 +167,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Check template
         if (isGeneric && !browserListMap.isEmpty()) {
-            browser = getBrowser(contextId, parameter,
-                    parameterContext.getIndex());
+            browser = getBrowser(contextId, parameterContext.getIndex());
         }
         Optional<String> urlFromAnnotation = getUrlFromAnnotation(parameter,
                 extensionContext);
@@ -251,8 +250,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
     }
 
-    private Browser getBrowser(String contextId, Parameter parameter,
-            int index) {
+    private Browser getBrowser(String contextId, int index) {
         Browser browser = null;
         List<Browser> browserList = getValueFromContextId(browserListMap,
                 contextId);
