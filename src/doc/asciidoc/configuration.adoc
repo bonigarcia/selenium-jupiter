@@ -73,7 +73,11 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.android.appium.port` | Internal port of Appium server in Docker containers for Android devices |`4723`
 |`sel.jup.android.device.name` | Default device name for Android in Docker |`Samsung Galaxy S6`
 |`sel.jup.android.browser.name` | Default browser name for Android in Docker |`chrome`
-|`sel.jup.android.device.timeout.sec` |Timeout (in seconds) to wait Android devices to be available |`200`
+|`sel.jup.android.device.timeout.sec` | Timeout (in seconds) to wait Android devices to be available |`200`
+|`sel.jup.android.device.startup.timeout.sec` | Amount of time that should pass between start of container and the first attempt to connect to Appium in container |`75`
+|`sel.jup.android.appium.ping.period.sec` | Amount of time that should pass after failed attempt to initialize Appium before the next attempt |`10`
+|`sel.jup.android.logging` | If true Android and Appium log files will be written into *sel.jup.android.logs.folder* directory |`false`
+|`sel.jup.android.logs.folder` | Folder with Android logs relative to *sel.jup.output.folder*. It contains files such as *appium.log* (Appium server log) or *docker-android.stdout.log* (Android emulator log) |`androidLogs`
 |`sel.jup.docker.server.url` | URL to connect with the Docker Host |
 |`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`
 |`sel.jup.docker.poll.time.ms` | Poll time (in ms) for asking to Docker container if alive |`200`
