@@ -1,3 +1,16 @@
+selenium-jupiter (3.1.1)
+
+  + Fix #46 Bump several dependencies versions
+  + Fix #47 Get parameter index from context
+  + Fix #48 Add timeout for Android start in docker container
+  + Fix #50 Add possibility to capture log files from Android
+  + Set default Android version as 9.0
+  + Include configuration keys for Android screen (width, height, depth)
+  + Remove support for Genymotion PaaS due to lack of documentation
+
+ -- Boni Garcia <boni.gg@gmail.com>  Tue, 19 Feb 2019 16:30:00 +0200
+
+
 selenium-jupiter (3.1.0)
 
   + Maven dependency: com.spotify:docker-client 8.15.0
@@ -8,7 +21,7 @@ selenium-jupiter (3.1.0)
   + Add support for Genymotion (SaaS, PaaS) in Android devices
   + Include "internet explorer" label for test templates (issue #44)
 
- -- Boni Garcia <boni.gg@gmail.com>
+ -- Boni Garcia <boni.gg@gmail.com>  Wed, 23 Jan 2019 23:33:00 +0200
 
 
 selenium-jupiter (3.0.0)
