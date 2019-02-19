@@ -53,13 +53,13 @@ public class ScreenshotPngTest {
     }
 
     @Test
-    void screenshotTest(ChromeDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
+    void screenshotTest(ChromeDriver arg0) {
+        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(arg0.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
         imageFile = new File("screenshotTest_arg0_ChromeDriver_"
-                + driver.getSessionId() + ".png");
+                + arg0.getSessionId() + ".png");
     }
 
 }

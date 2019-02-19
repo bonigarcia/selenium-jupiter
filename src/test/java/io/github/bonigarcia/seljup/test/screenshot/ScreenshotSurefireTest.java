@@ -54,14 +54,14 @@ public class ScreenshotSurefireTest {
     }
 
     @Test
-    void screenshotTest(ChromeDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
+    void screenshotTest(ChromeDriver arg0) {
+        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(arg0.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
         imageName = new File(
                 "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",
-                "screenshotTest_arg0_ChromeDriver_" + driver.getSessionId()
+                "screenshotTest_arg0_ChromeDriver_" + arg0.getSessionId()
                         + ".png");
     }
 

@@ -55,13 +55,13 @@ public class GenericWithScreenshotTest {
     }
 
     @Test
-    void screenshotGenericTest(WebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
+    void screenshotGenericTest(WebDriver arg0) {
+        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(arg0.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
         imageFile = new File("screenshotGenericTest_arg0_CHROME_71.0_"
-                + ((RemoteWebDriver) driver).getSessionId() + ".png");
+                + ((RemoteWebDriver) arg0).getSessionId() + ".png");
     }
 
 }
