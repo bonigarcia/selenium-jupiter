@@ -199,21 +199,24 @@ public class DockerDriverHandler {
 
     private boolean isAndroidLogging() {
         boolean androidLogging = getConfig().isAndroidLogging();
-        String dateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd--HH-mm-ss")
-                .format(LocalDateTime.now());
-        String logsFolder = getConfig().getAndroidLogsFolder();
-        Path path = Paths.get(
-                getOutputFolder(context, getConfig().getOutputFolder()),
-                logsFolder, dateTime);
-        try {
-            Files.createDirectories(path);
-            hostAndroidLogsFolder = path.toFile();
-            log.debug("Android logs will be stored in {}",
-                    hostAndroidLogsFolder);
-        } catch (IOException e) {
-            log.warn("Failed to create directories for Android logs {}",
-                    path.toAbsolutePath(), e);
-            androidLogging = false;
+        if (androidLogging) {
+            String dateTime = DateTimeFormatter
+                    .ofPattern("uuuu-MM-dd--HH-mm-ss")
+                    .format(LocalDateTime.now());
+            String logsFolder = getConfig().getAndroidLogsFolder();
+            Path path = Paths.get(
+                    getOutputFolder(context, getConfig().getOutputFolder()),
+                    logsFolder, dateTime);
+            try {
+                Files.createDirectories(path);
+                hostAndroidLogsFolder = path.toFile();
+                log.debug("Android logs will be stored in {}",
+                        hostAndroidLogsFolder);
+            } catch (IOException e) {
+                log.warn("Failed to create directories for Android logs {}",
+                        path.toAbsolutePath(), e);
+                androidLogging = false;
+            }
         }
         return androidLogging;
     }
@@ -945,9 +948,12 @@ public class DockerDriverHandler {
                     hostVideoFolder.listFiles());
             Iterator<?> iterator = disjunction(filesInVideoFolder,
                     newFilesInVideoFolder).iterator();
-            if (iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 String filename = iterator.next().toString();
-                recordingFile = new File(filename);
+                if (filename.endsWith("mp4")) {
+                    recordingFile = new File(filename);
+                    break;
+                }
             }
         }
 
