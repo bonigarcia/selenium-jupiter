@@ -68,7 +68,6 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.android.genymotion.password`| Genymotion password for SaaS |
 |`sel.jup.android.genymotion.license`| Genymotion licence for SaaS |
 |`sel.jup.android.genymotion.template`| Genymotion template for SaaS |
-|`sel.jup.android.genymotion.aws.json`| Path of configuration file `aws.json` for Genymotion PaaS  |
 |`sel.jup.android.novnc.port` | Internal port of noVNC in Docker containers for Android devices  |`6080`
 |`sel.jup.android.appium.port` | Internal port of Appium server in Docker containers for Android devices |`4723`
 |`sel.jup.android.device.name` | Default device name for Android in Docker |`Samsung Galaxy S6`

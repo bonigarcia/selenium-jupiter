@@ -185,8 +185,6 @@ public class Config {
             "sel.jup.android.genymotion.license", String.class);
     ConfigKey<String> androidGenymotionTemplate = new ConfigKey<>(
             "sel.jup.android.genymotion.template", String.class);
-    ConfigKey<String> androidGenymotionAwsJson = new ConfigKey<>(
-            "sel.jup.android.genymotion.aws.json", String.class);
     ConfigKey<String> androidNoVncPort = new ConfigKey<>(
             "sel.jup.android.novnc.port", String.class);
     ConfigKey<String> androidAppiumPort = new ConfigKey<>(
@@ -875,14 +873,6 @@ public class Config {
 
     public void setAndroidGenymotionTemplate(String value) {
         this.androidGenymotionTemplate.setValue(value);
-    }
-
-    public String getAndroidGenymotionAwsJson() {
-        return resolve(androidGenymotionAwsJson);
-    }
-
-    public void setAndroidGenymotionAwsJson(String value) {
-        this.androidGenymotionAwsJson.setValue(value);
     }
 
     public String getAndroidNoVncPort() {

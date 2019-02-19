@@ -24,6 +24,6 @@ package io.github.bonigarcia.seljup;
  */
 public enum CloudType {
 
-    NONE, GENYMOTION_SAAS, GENYMOTION_PAAS;
+    NONE, GENYMOTION_SAAS;
 
 }

@@ -19,7 +19,6 @@ package io.github.bonigarcia.seljup.handler;
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
-import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_PAAS;
 import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
@@ -755,10 +754,6 @@ public class DockerDriverHandler {
                 binds.add(getDockerPath(hostAndroidLogsFolder)
                         + ":/var/log/supervisor");
             }
-            if (cloudType == GENYMOTION_PAAS) {
-                binds.add(getConfig().getAndroidGenymotionAwsJson()
-                        + ":/root/tmp");
-            }
 
             // envs
             String network = getConfig().getDockerNetwork();
@@ -832,8 +827,6 @@ public class DockerDriverHandler {
             envs.add("USER=" + getConfig().getAndroidGenymotionUser());
             envs.add("PASS=" + getConfig().getAndroidGenymotionPassword());
             envs.add("LICENSE=" + getConfig().getAndroidGenymotionLicense());
-        } else if (cloudType == GENYMOTION_PAAS) {
-            envs.add("TYPE=aws");
         }
         return envs;
     }

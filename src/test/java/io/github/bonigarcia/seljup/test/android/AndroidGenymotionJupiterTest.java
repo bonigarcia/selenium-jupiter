@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
-import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_PAAS;
 import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -49,20 +48,11 @@ public class AndroidGenymotionJupiterTest {
         config.setAndroidGenymotionPassword("my-genymotion-pass");
         config.setAndroidGenymotionLicense("my-genymotion-license");
         config.setAndroidGenymotionTemplate("my-genymotion-template");
-        config.setAndroidGenymotionAwsJson("/path/to/aws.json/");
     }
 
     @Test
     public void testAndroidInGenymotionSaas(
             @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "Nexus6V8", browserName = "chrome") RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
-    }
-
-    @Test
-    public void testAndroidInGenymotionPass(
-            @DockerBrowser(type = ANDROID, cloud = GENYMOTION_PAAS, deviceName = "Nexus6V8", browserName = "chrome") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

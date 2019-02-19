@@ -166,13 +166,9 @@ image::jenkins-attachements-template-mp4.png[scaledwidth=100%]
 
 === Using Genymotion
 
-The use of https://www.genymotion.com/[Genymotion] for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. There are two options to use Genymotion from Selenium-Jupiter:
+The use of https://www.genymotion.com/[Genymotion] for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach.
 
-* As Software as a Service (SaaS): This feature is enabled by selecting `GENYMOTION_SAAS` in the `cloud` parameter of `@DockerBrowser`. To use this option, we need a valid Genymotion account. This account will be configured using the methods `setAndroidGenymotionUser()`, `setAndroidGenymotionPassword()` and `setAndroidGenymotionLicense()` for user, password, and license respectively. Moreoever, we need to specify the name of the Genymotion template to be used in our test using the configuration method `setAndroidGenymotionTemplate()`.
-
-* As Platform as a Service (PaaS): This feature is enabled by selecting `GENYMOTION_PAAS` in the `cloud` parameter of `@DockerBrowser`. So far, Amazon EC2 instances are used in this mode. For this reason, the path of the configuration file `aws.json` needs to be specified using the method `setAndroidGenymotionAwsJson()`.
-
-The following test shows an example of both usages:
+In order to use this feature, we need to select `GENYMOTION_SAAS` in the `cloud` parameter of `@DockerBrowser` in a test. First, we need a valid Genymotion account. This account will be configured using the methods `setAndroidGenymotionUser()`, `setAndroidGenymotionPassword()` and `setAndroidGenymotionLicense()` for user, password, and license respectively. Moreover, we need to specify the name of the Genymotion template to be used in our test using the configuration method `setAndroidGenymotionTemplate()`. The following test shows an example of this feature:
 
 [source,java]
 ----
