@@ -14,11 +14,10 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.appium;
 
 // tag::snippet-in-doc[]
-import java.io.File;
-import java.net.URISyntaxException;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
@@ -27,10 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
@@ -38,31 +35,23 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class AppiumApkJupiterTest {
-
-    @DriverCapabilities
-    DesiredCapabilities capabilities = new DesiredCapabilities();
-    {
-        try {
-            File apk = new File(this.getClass()
-                    .getResource("/selendroid-test-app.apk").toURI());
-            capabilities.setCapability("app", apk.getAbsolutePath());
-            capabilities.setCapability("deviceName", "Android");
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
+public class AppiumChromeJupiterTest {
 
     @Test
-    void testWithAndroid(AppiumDriver<MobileElement> driver)
+    void testWithAndroid(
+            @DriverCapabilities({ "browserName=chrome",
+                    "deviceName=Android" }) AppiumDriver<WebElement> driver)
             throws InterruptedException {
-        WebElement button = driver.findElement(By.id("buttonStartWebview"));
-        button.click();
 
-        WebElement inputField = driver.findElement(By.id("name_input"));
-        inputField.clear();
-        inputField.sendKeys("Custom name");
+        String context = driver.getContext();
+        driver.context("NATIVE_APP");
+        driver.findElement(By.id("com.android.chrome:id/terms_accept")).click();
+        driver.findElement(By.id("com.android.chrome:id/negative_button"))
+                .click();
+        driver.context(context);
+
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertTrue(driver.getTitle().contains("JUnit 5 extension"));
     }
 
 }

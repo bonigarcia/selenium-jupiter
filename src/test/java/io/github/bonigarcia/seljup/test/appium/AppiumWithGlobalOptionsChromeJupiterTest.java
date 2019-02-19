@@ -14,44 +14,46 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.appium;
 
 // tag::snippet-in-doc[]
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 // end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class AppiumChromeJupiterTest {
+public class AppiumWithGlobalOptionsChromeJupiterTest {
+
+    @DriverUrl
+    String url = "http://localhost:4723/wd/hub";
+
+    @DriverCapabilities
+    DesiredCapabilities capabilities = new DesiredCapabilities();
+    {
+        capabilities.setCapability("browserName", "chrome");
+        capabilities.setCapability("deviceName", "Samsung Galaxy S6");
+    }
 
     @Test
-    void testWithAndroid(
-            @DriverCapabilities({ "browserName=chrome",
-                    "deviceName=Android" }) AppiumDriver<WebElement> driver)
-            throws InterruptedException {
-
-        String context = driver.getContext();
-        driver.context("NATIVE_APP");
-        driver.findElement(By.id("com.android.chrome:id/terms_accept")).click();
-        driver.findElement(By.id("com.android.chrome:id/negative_button"))
-                .click();
-        driver.context(context);
-
+    void testWithAndroid(AppiumDriver<WebElement> driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertTrue(driver.getTitle().contains("JUnit 5 extension"));
+        assertThat(driver.getTitle(),
+                containsString("JUnit 5 extension for Selenium"));
     }
 
 }

@@ -14,46 +14,55 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.appium;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.io.File;
+import java.net.URISyntaxException;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 // end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class AppiumWithGlobalOptionsChromeJupiterTest {
-
-    @DriverUrl
-    String url = "http://localhost:4723/wd/hub";
+public class AppiumApkJupiterTest {
 
     @DriverCapabilities
     DesiredCapabilities capabilities = new DesiredCapabilities();
     {
-        capabilities.setCapability("browserName", "chrome");
-        capabilities.setCapability("deviceName", "Samsung Galaxy S6");
+        try {
+            File apk = new File(this.getClass()
+                    .getResource("/selendroid-test-app.apk").toURI());
+            capabilities.setCapability("app", apk.getAbsolutePath());
+            capabilities.setCapability("deviceName", "Android");
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void testWithAndroid(AppiumDriver<WebElement> driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+    void testWithAndroid(AppiumDriver<MobileElement> driver)
+            throws InterruptedException {
+        WebElement button = driver.findElement(By.id("buttonStartWebview"));
+        button.click();
+
+        WebElement inputField = driver.findElement(By.id("name_input"));
+        inputField.clear();
+        inputField.sendKeys("Custom name");
     }
 
 }

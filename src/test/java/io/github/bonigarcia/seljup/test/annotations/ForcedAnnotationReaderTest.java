@@ -42,7 +42,7 @@ import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
-import io.github.bonigarcia.seljup.test.forced.ForcedAppiumJupiterTest;
+import io.github.bonigarcia.seljup.test.appium.ForcedAppiumJupiterTest;
 import io.github.bonigarcia.seljup.test.forced.ForcedBadChromeJupiterTest;
 import io.github.bonigarcia.seljup.test.forced.ForcedBadFirefoxJupiterTest;
 import io.github.bonigarcia.seljup.test.forced.ForcedEdgeJupiterTest;
