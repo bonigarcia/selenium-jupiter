@@ -22,7 +22,7 @@
         <jnr-ffi.version>2.1.9</jnr-ffi.version>
 
         <!-- Test dependencies -->
-        <junit.jupiter.version>5.4.0-RC2</junit.jupiter.version>
+        <junit.jupiter.version>5.4.0</junit.jupiter.version>
         <mockito.version>2.24.0</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <htmlunit.driver.version>2.33.3</htmlunit.driver.version>
