@@ -9,7 +9,7 @@
 
 # Selenium-Jupiter [![][Logo]][GitHub Repository]
 
-*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of Selenium (WebDriver and Grid) in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
+*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of Selenium (WebDriver and Grid) and Appium in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Table of contents
 
@@ -18,7 +18,8 @@
    1. [Local browsers](#local-browsers)
    2. [Remote browsers](#remote-browsers)
    3. [Docker browsers](#docker-browsers)
-   4. [Examples](#examples)
+   4. [Appium](#appium)
+   5. [Examples](#examples)
 3. [Selenium-Jupiter CLI](#selenium-jupiter-cli)
 4. [Selenium-Jupiter server](#selenium-jupiter-server)
 5. [Help](#help)
@@ -162,6 +163,34 @@ public class SeleniumJupiterDockerTest {
     }
 
 }
+```
+
+### Appium
+
+*Selenium-Jupiter* also allows to control mobile devices using [Appium]. The following snippet shows an example using the annotation `@DriverCapabilities` to set the required capabilities. By default the Appium Server is supposed to be listening on `http://localhost:4723/wd/hub` (this URL can be change by means of the annotation `@DriverUrl`):
+
+```java
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.openqa.selenium.WebElement;
+
+import io.appium.java_client.AppiumDriver;
+import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+
+@ExtendWith(SeleniumExtension.class)
+public class AppiumJupiterTest {
+
+    @Test
+    void testAppium(
+            @DriverCapabilities({ "browserName=chrome",
+                    "deviceName=Android" }) AppiumDriver<WebElement> driver) {
+        // use Chrome in Appium device in this test
+    }
+
+}
+// end::snippet-in-doc[]
 ```
 
 ### Examples
