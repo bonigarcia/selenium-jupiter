@@ -1292,20 +1292,10 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="sect2">
 <h3 id="using-genymotion"><a class="anchor" href="#using-genymotion"></a>Using Genymotion</h3>
 <div class="paragraph">
-<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. There are two options to use Genymotion from Selenium-Jupiter:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>As Software as a Service (SaaS): This feature is enabled by selecting <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code>. To use this option, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreoever, we need to specify the name of the Genymotion template to be used in our test using the configuration method <code>setAndroidGenymotionTemplate()</code>.</p>
-</li>
-<li>
-<p>As Platform as a Service (PaaS): This feature is enabled by selecting <code>GENYMOTION_PAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code>. So far, Amazon EC2 instances are used in this mode. For this reason, the path of the configuration file <code>aws.json</code> needs to be specified using the method <code>setAndroidGenymotionAwsJson()</code>.</p>
-</li>
-</ul>
+<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach.</p>
 </div>
 <div class="paragraph">
-<p>The following test shows an example of both usages:</p>
+<p>In order to use this feature, we need to select <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code> in a test. First, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreover, we need to specify the name of the Genymotion template to be used in our test using the configuration method <code>setAndroidGenymotionTemplate()</code>. The following test shows an example of this feature:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1329,20 +1319,12 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
         config.setAndroidGenymotionPassword(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-pass</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionLicense(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-license</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionTemplate(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-template</span><span class="delimiter">&quot;</span></span>);
-        config.setAndroidGenymotionAwsJson(<span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/aws.json/</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionSaas(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver.getTitle(),
-                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionPass(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_PAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>)
+            RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1370,7 +1352,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.1.0
+[INFO] Building selenium-jupiter 3.1.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1400,13 +1382,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.1.0-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.1.1-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 64.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -1455,7 +1437,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.1.0
+[INFO] Building Selenium-Jupiter 3.1.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1465,13 +1447,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.1.0-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.1.1-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -1484,7 +1466,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-24 02:28:03 CET
+Last updated 2019-02-20 11:14:29 CET
 </div>
 </div>
 </body>

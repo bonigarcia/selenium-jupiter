@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
 <meta name="author" content="Boni García">
-<title>Selenium-Jupiter: JUnit 5 extension for Selenium</title>
+<title>Selenium-Jupiter: JUnit 5 extension for Selenium and Appium</title>
 <style>
 #toc@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,700);
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text:400,400italic);
@@ -781,11 +781,11 @@ table.CodeRay td.code>pre{padding:0}
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1><strong><em>Selenium-Jupiter</em></strong>: JUnit 5 extension for Selenium</h1>
+<h1><strong><em>Selenium-Jupiter</em></strong>: JUnit 5 extension for Selenium and Appium</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
 <span id="email" class="email"><a href="mailto:boni.garcia@urjc.es">boni.garcia@urjc.es</a></span><br>
-<span id="revdate">Version 3.1.0</span>
+<span id="revdate">Version 3.1.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -869,9 +869,19 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>3.1.0<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>3.1.1<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The dependency (typically <em>test</em>) to be declared in a Gradle project is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.1.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+}</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -881,7 +891,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 3.1.0 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.2.0</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, and <strong>spotify <em>docker-client</em> 8.15.0</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 3.1.1 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.3.0</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, and <strong>spotify <em>docker-client</em> 8.15.0</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
@@ -1194,18 +1204,6 @@ WebDriverManager.iedriver().setup();;</code></pre>
 
 }</code></pre>
 </div>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-The required version of <em>MicrosoftWebDriver.exe</em> depends on the version on Edge to be used (more info <a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">here</a>). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the <a href="advanced">advance examples section</a> to find out how to setup the different options of WebDriverManager.
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect2">
@@ -1557,6 +1555,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
     <span class="directive">static</span> <span class="type">void</span> setup() {
         seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
         seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+        seleniumExtension.getConfig().setAndroidLogging(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
@@ -1673,7 +1672,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
 </tbody>
 </table>
 <div class="paragraph">
-<p>Android (<code>8.1</code>) with Chrome in <code>Samsung Galaxy S6</code> is the default setup for Android devices. These values can be changed using the <a href="#configuration">configuration</a> capabilities or by means of the the following parameters in the <code>@DockerBrowser</code> annotation</p>
+<p>Android (<code>9.0</code>) with Chrome in <code>Samsung Galaxy S6</code> is the default setup for Android devices. These values can be changed using the <a href="#configuration">configuration</a> capabilities or by means of the the following parameters in the <code>@DockerBrowser</code> annotation</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1688,7 +1687,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
 <span class="directive">public</span> <span class="type">class</span> <span class="class">AndroidCustomJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">8.1</span><span class="delimiter">&quot;</span></span>,
+    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">9.0</span><span class="delimiter">&quot;</span></span>,
             deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -2511,20 +2510,10 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="sect2">
 <h3 id="using-genymotion"><a class="anchor" href="#using-genymotion"></a>Using Genymotion</h3>
 <div class="paragraph">
-<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. There are two options to use Genymotion from Selenium-Jupiter:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>As Software as a Service (SaaS): This feature is enabled by selecting <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code>. To use this option, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreoever, we need to specify the name of the Genymotion template to be used in our test using the configuration method <code>setAndroidGenymotionTemplate()</code>.</p>
-</li>
-<li>
-<p>As Platform as a Service (PaaS): This feature is enabled by selecting <code>GENYMOTION_PAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code>. So far, Amazon EC2 instances are used in this mode. For this reason, the path of the configuration file <code>aws.json</code> needs to be specified using the method <code>setAndroidGenymotionAwsJson()</code>.</p>
-</li>
-</ul>
+<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach.</p>
 </div>
 <div class="paragraph">
-<p>The following test shows an example of both usages:</p>
+<p>In order to use this feature, we need to select <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code> in a test. First, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreover, we need to specify the name of the Genymotion template to be used in our test using the configuration method <code>setAndroidGenymotionTemplate()</code>. The following test shows an example of this feature:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2548,20 +2537,12 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
         config.setAndroidGenymotionPassword(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-pass</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionLicense(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-license</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionTemplate(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-template</span><span class="delimiter">&quot;</span></span>);
-        config.setAndroidGenymotionAwsJson(<span class="string"><span class="delimiter">&quot;</span><span class="content">/path/to/aws.json/</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionSaas(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
-        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
-        assertThat(driver.getTitle(),
-                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
-    }
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionPass(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_PAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>)
+            RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -2589,7 +2570,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.1.0
+[INFO] Building selenium-jupiter 3.1.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -2619,13 +2600,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.1.0-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.1.1-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 64.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -2674,7 +2655,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.1.0
+[INFO] Building Selenium-Jupiter 3.1.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -2684,13 +2665,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.1.0-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.1.1-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -2964,7 +2945,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.default.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Default version of Android devices in Docker</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>9.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.5.0.1</code></p></td>
@@ -3032,11 +3013,6 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.aws.json</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Path of configuration file <code>aws.json</code> for Genymotion PaaS</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.novnc.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Internal port of noVNC in Docker containers for Android devices</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>6080</code></p></td>
@@ -3060,6 +3036,41 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.timeout.sec</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timeout (in seconds) to wait Android devices to be available</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.startup.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amount of time that should pass between start of container and the first attempt to connect to Appium in container</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>75</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.ping.period.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amount of time that should pass after failed attempt to initialize Appium before the next attempt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.logging</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true Android and Appium log files will be written into <code>sel.jup.android.logs.folder</code> directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.logs.folder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Folder with Android logs relative to <code>sel.jup.output.folder</code>. It contains files such as <em>appium.log</em> (Appium server log) or <em>docker-android.stdout.log</em> (Android emulator log)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>androidLogs</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.width</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen width (in pixels)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1900</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.height</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen height (in pixels)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>900</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.depth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen color depth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>24+32</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.server.url</code></p></td>
@@ -3436,8 +3447,8 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 3.1.0<br>
-Last updated 2019-01-24 02:28:03 CET
+Version 3.1.1<br>
+Last updated 2019-02-20 11:18:41 CET
 </div>
 </div>
 </body>
