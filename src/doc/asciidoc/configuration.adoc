@@ -78,7 +78,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.android.logging` | If true Android and Appium log files will be written into `sel.jup.android.logs.folder` directory |`false`
 |`sel.jup.android.logs.folder` | Folder with Android logs relative to `sel.jup.output.folder`. It contains files such as _appium.log_ (Appium server log) or _docker-android.stdout.log_ (Android emulator log) |`androidLogs`
 |`sel.jup.android.screen.width` | Android device screen width (in pixels) |`1900`
-|`sel.jup.android.screen.heigth` | Android device screen height (in pixels) |`900`
+|`sel.jup.android.screen.height` | Android device screen height (in pixels) |`900`
 |`sel.jup.android.screen.depth` | Android device screen color depth |`24+32`
 |`sel.jup.docker.server.url` | URL to connect with the Docker Host |
 |`sel.jup.docker.wait.timeout.sec` | Timeout (in seconds) to wait for Docker container |`20`

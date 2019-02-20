@@ -204,7 +204,7 @@ public class Config {
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
     ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
-            "sel.jup.android.screen.heigth", String.class);
+            "sel.jup.android.screen.height", String.class);
     ConfigKey<String> androidScreenDepth = new ConfigKey<>(
             "sel.jup.android.screen.depth", String.class);
 
