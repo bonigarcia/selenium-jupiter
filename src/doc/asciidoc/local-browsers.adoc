@@ -72,8 +72,6 @@ The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/tes
 include::../../test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-TIP: The required version of _MicrosoftWebDriver.exe_ depends on the version on Edge to be used (more info https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/[here]). By default, WebDriverManager downloads and uses the latest version of the binaries. Nevertheless, a concrete version can be fixed. Take a look to the link:advanced[advance examples section] to find out how to setup the different options of WebDriverManager.
-
 === Opera
 
 Are you one of the few using Opera? No problem, you can still make automated  https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tests] with JUnit 5, WebDriver, and _Selenium-Jupiter_, as follows: 
