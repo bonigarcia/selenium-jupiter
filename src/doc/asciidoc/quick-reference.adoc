@@ -8,7 +8,7 @@ Using _Selenium-Jupiter_ is very easy. First, you need to import the dependency 
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>3.1.0</version>
+	<version>3.1.1</version>
 	<scope>test</scope>
 </dependency>
 
