@@ -52,7 +52,8 @@ public class AndroidGenymotionJupiterTest {
 
     @Test
     public void testAndroidInGenymotionSaas(
-            @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "Nexus6V8", browserName = "chrome") RemoteWebDriver driver) {
+            @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "Nexus6V8", browserName = "chrome")
+            RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
