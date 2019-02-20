@@ -1026,6 +1026,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
     <span class="directive">static</span> <span class="type">void</span> setup() {
         seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
         seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+        seleniumExtension.getConfig().setAndroidLogging(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
@@ -1142,7 +1143,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
 </tbody>
 </table>
 <div class="paragraph">
-<p>Android (<code>8.1</code>) with Chrome in <code>Samsung Galaxy S6</code> is the default setup for Android devices. These values can be changed using the <a href="#configuration">configuration</a> capabilities or by means of the the following parameters in the <code>@DockerBrowser</code> annotation</p>
+<p>Android (<code>9.0</code>) with Chrome in <code>Samsung Galaxy S6</code> is the default setup for Android devices. These values can be changed using the <a href="#configuration">configuration</a> capabilities or by means of the the following parameters in the <code>@DockerBrowser</code> annotation</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1157,7 +1158,7 @@ Notice that the version of the second test is simply <code>60</code>. The actual
 <span class="directive">public</span> <span class="type">class</span> <span class="class">AndroidCustomJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">8.1</span><span class="delimiter">&quot;</span></span>,
+    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">9.0</span><span class="delimiter">&quot;</span></span>,
             deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -1295,7 +1296,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-24 02:28:03 CET
+Last updated 2019-02-20 11:14:29 CET
 </div>
 </div>
 </body>

@@ -1057,7 +1057,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.default.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Default version of Android devices in Docker</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>8.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>9.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.5.0.1</code></p></td>
@@ -1125,11 +1125,6 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.aws.json</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Path of configuration file <code>aws.json</code> for Genymotion PaaS</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.novnc.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Internal port of noVNC in Docker containers for Android devices</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>6080</code></p></td>
@@ -1153,6 +1148,41 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.timeout.sec</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timeout (in seconds) to wait Android devices to be available</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>200</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.device.startup.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amount of time that should pass between start of container and the first attempt to connect to Appium in container</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>75</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.ping.period.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amount of time that should pass after failed attempt to initialize Appium before the next attempt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.logging</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true Android and Appium log files will be written into <code>sel.jup.android.logs.folder</code> directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.logs.folder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Folder with Android logs relative to <code>sel.jup.output.folder</code>. It contains files such as <em>appium.log</em> (Appium server log) or <em>docker-android.stdout.log</em> (Android emulator log)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>androidLogs</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.width</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen width (in pixels)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1900</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.height</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen height (in pixels)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>900</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.depth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen color depth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>24+32</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.server.url</code></p></td>
@@ -1395,7 +1425,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-01-24 02:28:03 CET
+Last updated 2019-02-20 11:14:29 CET
 </div>
 </div>
 </body>
