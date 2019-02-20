@@ -12,7 +12,7 @@ Using _Selenium-Jupiter_ is very easy. First, you need to import the dependency 
 	<scope>test</scope>
 </dependency>
 
-... or in Gradle project:
+The dependency (typically _test_) to be declared in a Gradle project is as follows:
 
 [source,json]
 dependencies {
