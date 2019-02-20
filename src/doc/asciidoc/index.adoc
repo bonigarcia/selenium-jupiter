@@ -1,4 +1,4 @@
-= *_Selenium-Jupiter_*: JUnit 5 extension for Selenium (WebDriver and Grid) and Appium
+= *_Selenium-Jupiter_*: JUnit 5 extension for Selenium and Appium
 Boni García <boni.garcia@urjc.es>
 Version {project-version}
 
