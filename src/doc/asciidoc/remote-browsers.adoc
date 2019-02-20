@@ -29,14 +29,14 @@ The annotation `@DriverCapabilities` can be also used to specify the desired cap
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/seljup/test/advance/AppiumChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/appium/AppiumChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 We can also specify a custom Appium Server URL changing the value of `@DriverUrl`, at field-level or parameter-level:
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/seljup/test/advance/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/appium/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 
