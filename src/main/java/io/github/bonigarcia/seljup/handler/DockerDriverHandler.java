@@ -47,6 +47,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -127,6 +129,7 @@ public class DockerDriverHandler {
     WebDriverCreator webDriverCreator;
     URL hubUrl;
     File hostAndroidLogsFolder;
+    URL remoteUrl;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
             String version, InternalPreferences preferences) {
@@ -171,6 +174,7 @@ public class DockerDriverHandler {
         BrowserType browserType = browserInstance.getBrowserType();
         try {
             if (url != null && !url.isEmpty()) {
+                remoteUrl = new URL(url);
                 dockerService.updateDockerClient(url);
             }
             if (getConfig().isRecording()) {
@@ -247,8 +251,22 @@ public class DockerDriverHandler {
         String seleniumServerUrl = getConfig().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
+
         hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
                 : startDockerBrowser(browserInstance, versionFromLabel));
+
+        if (remoteUrl != null) {
+            try {
+                String remoteHost = remoteUrl.getHost();
+                log.trace("Converting {} to use {}", hubUrl, remoteHost);
+                URI uri = new URI(hubUrl.toString());
+                hubUrl = new URI(uri.getScheme(), null, remoteHost,
+                        uri.getPort(), uri.getPath(), uri.getQuery(),
+                        uri.getFragment()).toURL();
+            } catch (URISyntaxException e) {
+                log.warn("Exception converting URL {}", remoteUrl, e);
+            }
+        }
 
         if (!createWebDriver) {
             return null;

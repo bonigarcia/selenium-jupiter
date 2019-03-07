@@ -61,6 +61,7 @@ public class DockerService {
     private int dockerPollTimeMs;
     private DockerClient dockerClient;
     private InternalPreferences preferences;
+    private boolean localDaemon = true;
 
     public DockerService(Config config, InternalPreferences preferences) {
         this.config = config;
@@ -188,7 +189,7 @@ public class DockerService {
     public void pullImage(String imageId)
             throws DockerException, InterruptedException {
         if (!preferences.checkKeyInPreferences(imageId)
-                || !getConfig().isUsePreferences()) {
+                || !getConfig().isUsePreferences() || !localDaemon) {
             log.info("Pulling Docker image {}", imageId);
             dockerClient.pull(imageId, new ProgressHandler() {
                 @Override
@@ -199,7 +200,7 @@ public class DockerService {
                 }
             });
             log.trace("Docker image {} downloaded", imageId);
-            if (getConfig().isUsePreferences()) {
+            if (getConfig().isUsePreferences() && localDaemon) {
                 preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
             }
         }
@@ -276,6 +277,7 @@ public class DockerService {
     public void updateDockerClient(String url) {
         log.debug("Updating Docker client using URL {}", url);
         dockerClient = DefaultDockerClient.builder().uri(url).build();
+        localDaemon = false;
     }
 
     public Config getConfig() {
