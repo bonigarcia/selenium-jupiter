@@ -275,9 +275,11 @@ public class DockerService {
     }
 
     public void updateDockerClient(String url) {
-        log.debug("Updating Docker client using URL {}", url);
-        dockerClient = DefaultDockerClient.builder().uri(url).build();
-        localDaemon = false;
+        if (localDaemon) {
+            log.debug("Updating Docker client using URL {}", url);
+            dockerClient = DefaultDockerClient.builder().uri(url).build();
+            localDaemon = false;
+        }
     }
 
     public Config getConfig() {

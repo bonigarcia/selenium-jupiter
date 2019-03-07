@@ -99,6 +99,11 @@ public class ListDriverHandler extends DriverHandler {
                 Optional.ofNullable(dockerBrowser.browserName()));
         String version = dockerBrowser.version();
 
+        String url = dockerBrowser.url();
+        if (url != null && !url.isEmpty()) {
+            dockerService.updateDockerClient(url);
+        }
+
         DockerDriverHandler firstDockerDriverHandler = new DockerDriverHandler(
                 context, parameter, testInstance, annotationsReader,
                 containerMap, dockerService, config, browserInstance, version);
