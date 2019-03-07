@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -248,25 +249,8 @@ public class DockerDriverHandler {
             imageVersion = selenoidConfig.getDefaultBrowser(browserType);
         }
 
-        String seleniumServerUrl = getConfig().getSeleniumServerUrl();
-        boolean seleniumServerUrlAvailable = seleniumServerUrl != null
-                && !seleniumServerUrl.isEmpty();
-
-        hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
-                : startDockerBrowser(browserInstance, versionFromLabel));
-
-        if (remoteUrl != null) {
-            try {
-                String remoteHost = remoteUrl.getHost();
-                log.trace("Converting {} to use {}", hubUrl, remoteHost);
-                URI uri = new URI(hubUrl.toString());
-                hubUrl = new URI(uri.getScheme(), null, remoteHost,
-                        uri.getPort(), uri.getPath(), uri.getQuery(),
-                        uri.getFragment()).toURL();
-            } catch (URISyntaxException e) {
-                log.warn("Exception converting URL {}", remoteUrl, e);
-            }
-        }
+        boolean seleniumServerUrlAvailable = setHubUrl(browserInstance,
+                versionFromLabel);
 
         if (!createWebDriver) {
             return null;
@@ -316,6 +300,29 @@ public class DockerDriverHandler {
             recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
         }
         return webdriver;
+    }
+
+    private boolean setHubUrl(BrowserInstance browserInstance,
+            String versionFromLabel) throws MalformedURLException,
+            DockerException, InterruptedException {
+        String seleniumServerUrl = getConfig().getSeleniumServerUrl();
+        boolean seleniumServerUrlAvailable = seleniumServerUrl != null
+                && !seleniumServerUrl.isEmpty();
+        hubUrl = new URL(seleniumServerUrlAvailable ? seleniumServerUrl
+                : startDockerBrowser(browserInstance, versionFromLabel));
+        if (remoteUrl != null) {
+            try {
+                String remoteHost = remoteUrl.getHost();
+                log.trace("Converting {} to use {}", hubUrl, remoteHost);
+                URI uri = new URI(hubUrl.toString());
+                hubUrl = new URI(uri.getScheme(), null, remoteHost,
+                        uri.getPort(), uri.getPath(), uri.getQuery(),
+                        uri.getFragment()).toURL();
+            } catch (URISyntaxException e) {
+                log.warn("Exception converting URL {}", remoteUrl, e);
+            }
+        }
+        return seleniumServerUrlAvailable;
     }
 
     private void logSessionId(SessionId sessionId) {
