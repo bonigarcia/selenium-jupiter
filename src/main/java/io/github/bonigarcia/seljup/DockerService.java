@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup;
 import static com.spotify.docker.client.DockerClient.RemoveContainerParam.forceKill;
 import static com.spotify.docker.client.DockerClient.Signal.SIGKILL;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -27,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
@@ -152,18 +152,19 @@ public class DockerService {
 
     public String execCommandInContainer(String containerId, String... command)
             throws DockerException, InterruptedException {
-        String[] shCommand = { "sh", "-c" };
-        String[] finalCommand = (String[]) ArrayUtils.addAll(shCommand,
-                command);
-        String commandStr = Arrays.toString(finalCommand);
+        String commandStr = Arrays.toString(command);
         log.trace("Running command {} in container {}", commandStr,
                 containerId);
-        String execId = dockerClient.execCreate(containerId, finalCommand,
+        String execId = dockerClient.execCreate(containerId, command,
                 DockerClient.ExecCreateParam.attachStdout(),
                 DockerClient.ExecCreateParam.attachStderr()).id();
         String output = null;
         try (LogStream stream = dockerClient.execStart(execId)) {
-            output = stream.readFully();
+            if (stream.hasNext()) {
+                output = UTF_8.decode(stream.next().content()).toString();
+            }
+        } catch (Exception e) {
+            log.trace("Exception executing command in container", e);
         }
         log.trace("Result of command {} in container {}: {}", commandStr,
                 containerId, output);
