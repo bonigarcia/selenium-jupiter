@@ -18,7 +18,6 @@ package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +40,7 @@ public class AndroidBrowserTest {
     AnnotationsReader annotationsReader = new AnnotationsReader();
     InternalPreferences preferences = new InternalPreferences(config);
     BrowserInstance android = new BrowserInstance(config, annotationsReader,
-            ANDROID, NONE, empty(), emptyList());
+            ANDROID, NONE, empty(), empty());
 
     @ParameterizedTest
     @ValueSource(strings = { "9.0" })

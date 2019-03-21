@@ -21,6 +21,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,11 +60,13 @@ public class BrowserInstance {
 
     public BrowserInstance(Config config, AnnotationsReader annotationsReader,
             BrowserType browserType, CloudType cloudType,
-            Optional<String> browserName, List<String> volumes) {
+            Optional<String> browserName, Optional<String[]> volumes) {
         this.config = config;
         this.browserType = browserType;
         this.cloudType = cloudType;
-        this.volumes = volumes;
+        if (volumes.isPresent()) {
+            this.volumes = Arrays.asList(volumes.get());
+        }
         if (browserName.isPresent()) {
             this.browserName = browserName.get();
         }

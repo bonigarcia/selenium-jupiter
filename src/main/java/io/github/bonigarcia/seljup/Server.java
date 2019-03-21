@@ -20,7 +20,6 @@ import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.BrowserType.valueOf;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -89,8 +88,7 @@ public class Server {
                         .equalsIgnoreCase("operablink") ? OPERA
                                 : valueOf(browserName.toUpperCase());
                 BrowserInstance browserInstance = new BrowserInstance(config,
-                        annotationsReader, browserType, NONE, empty(),
-                        emptyList());
+                        annotationsReader, browserType, NONE, empty(), empty());
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
                         browserInstance, version, preferences);
 

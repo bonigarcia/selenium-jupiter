@@ -22,7 +22,6 @@ import static java.lang.Runtime.getRuntime;
 import static java.lang.String.join;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.copyOfRange;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -89,7 +88,7 @@ public class SeleniumJupiter {
             BrowserInstance browserInstance = new BrowserInstance(config,
                     annotationsReader,
                     BrowserType.valueOf(browser.toUpperCase()), NONE, empty(),
-                    emptyList());
+                    empty());
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                     config, browserInstance, version, preferences);
 
