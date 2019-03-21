@@ -108,6 +108,7 @@ public class DockerService {
         if (privileged) {
             log.trace("Using privileged mode");
             hostConfigBuilder.privileged(true);
+            hostConfigBuilder.capAdd("NET_ADMIN", "NET_RAW");
         }
         Optional<String> network = dockerContainer.getNetwork();
         if (network.isPresent()) {

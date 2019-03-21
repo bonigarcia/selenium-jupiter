@@ -23,6 +23,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -96,7 +97,8 @@ public class ListDriverHandler extends DriverHandler {
         CountDownLatch latch = new CountDownLatch(numBrowsers);
         BrowserInstance browserInstance = new BrowserInstance(config,
                 annotationsReader, dockerBrowser.type(), dockerBrowser.cloud(),
-                Optional.ofNullable(dockerBrowser.browserName()));
+                Optional.ofNullable(dockerBrowser.browserName()),
+                Arrays.asList(dockerBrowser.volumes()));
         String version = dockerBrowser.version();
 
         String url = dockerBrowser.url();

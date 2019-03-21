@@ -21,6 +21,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -54,13 +55,15 @@ public class BrowserInstance {
     DriverHandler driverHandler;
     String optionsKey;
     DesiredCapabilities capabilities;
+    List<String> volumes;
 
     public BrowserInstance(Config config, AnnotationsReader annotationsReader,
             BrowserType browserType, CloudType cloudType,
-            Optional<String> browserName) {
+            Optional<String> browserName, List<String> volumes) {
         this.config = config;
         this.browserType = browserType;
         this.cloudType = cloudType;
+        this.volumes = volumes;
         if (browserName.isPresent()) {
             this.browserName = browserName.get();
         }
@@ -146,6 +149,10 @@ public class BrowserInstance {
 
     public String getBrowserName() {
         return browserName;
+    }
+
+    public List<String> getVolumes() {
+        return volumes;
     }
 
 }

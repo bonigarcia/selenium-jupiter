@@ -47,4 +47,6 @@ public @interface DockerBrowser {
 
     public String browserName() default "";
 
+    public String[] volumes() default {};
+
 }

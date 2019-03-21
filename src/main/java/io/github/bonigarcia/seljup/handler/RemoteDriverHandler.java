@@ -24,6 +24,7 @@ import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +78,8 @@ public class RemoteDriverHandler extends DriverHandler {
                 BrowserInstance browserInstance = new BrowserInstance(config,
                         annotationsReader, browser.toBrowserType(),
                         browser.toCloudType(),
-                        Optional.ofNullable(browser.getBrowserName()));
+                        Optional.ofNullable(browser.getBrowserName()),
+                        Arrays.asList(browser.getVolumes()));
                 dockerDriverHandler = new DockerDriverHandler(context,
                         parameter, testInstance, annotationsReader,
                         containerMap, dockerService, config, browserInstance,
@@ -92,8 +94,10 @@ public class RemoteDriverHandler extends DriverHandler {
                     BrowserInstance browserInstance = new BrowserInstance(
                             config, annotationsReader,
                             dockerBrowser.get().type(),
-                            dockerBrowser.get().cloud(), Optional.ofNullable(
-                                    dockerBrowser.get().browserName()));
+                            dockerBrowser.get().cloud(),
+                            Optional.ofNullable(
+                                    dockerBrowser.get().browserName()),
+                            Arrays.asList(dockerBrowser.get().volumes()));
                     dockerDriverHandler = new DockerDriverHandler(context,
                             parameter, testInstance, annotationsReader,
                             containerMap, dockerService, config,

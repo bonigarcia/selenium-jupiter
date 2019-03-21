@@ -114,7 +114,8 @@ public class DockerBrowserConfig {
             dockerImage = getConfig().getFirefoxUnstableImage();
             path = getConfig().getFirefoxUnstablePath();
         }
-        return new Browser(dockerImage, path, envs);
+        return new Browser(dockerImage, path, envs,
+                browserInstance.getVolumes());
     }
 
     private String getLatestVersion(BrowserInstance browserInstance) {
@@ -276,11 +277,14 @@ public class DockerBrowserConfig {
         String path;
         Tmpfs tmpfs = new Tmpfs();
         List<String> env = new ArrayList<>();
+        List<String> volumes = new ArrayList<>();
 
-        public Browser(String image, String path, List<String> envs) {
+        public Browser(String image, String path, List<String> envs,
+                List<String> volumes) {
             this.image = image;
             this.path = path;
             this.env = envs;
+            this.volumes = volumes;
         }
 
         public String getImage() {

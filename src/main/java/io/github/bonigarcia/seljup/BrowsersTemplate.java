@@ -44,15 +44,17 @@ public class BrowsersTemplate {
         String deviceName;
         String url;
         String cloud;
+        String[] volumes;
 
         public Browser(String type, String version, String browserName,
-                String deviceName, String url, String cloud) {
+                String deviceName, String url, String cloud, String[] volumes) {
             this.type = type;
             this.version = version;
             this.browserName = browserName;
             this.deviceName = deviceName;
             this.url = url;
             this.cloud = cloud;
+            this.volumes = volumes;
         }
 
         public Browser(String type, String version) {
@@ -113,6 +115,14 @@ public class BrowsersTemplate {
 
         public boolean isDockerBrowser() {
             return getType().contains(IN_DOCKER);
+        }
+
+        public String[] getVolumes() {
+            return volumes;
+        }
+
+        public void setVolumes(String[] volumes) {
+            this.volumes = volumes;
         }
 
         @Override

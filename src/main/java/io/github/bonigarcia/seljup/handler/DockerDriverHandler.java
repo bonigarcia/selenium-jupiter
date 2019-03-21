@@ -57,6 +57,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -162,7 +163,8 @@ public class DockerDriverHandler {
         CloudType cloudType = dockerBrowser.cloud();
         BrowserInstance browserInstance = new BrowserInstance(config,
                 annotationsReader, browserType, cloudType,
-                Optional.ofNullable(dockerBrowser.browserName()));
+                Optional.ofNullable(dockerBrowser.browserName()),
+                Arrays.asList(dockerBrowser.volumes()));
         String version = dockerBrowser.version();
         String deviceName = dockerBrowser.deviceName();
         String url = dockerBrowser.url();
