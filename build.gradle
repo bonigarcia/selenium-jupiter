@@ -11,8 +11,8 @@ ext {
 	slf4j = '1.7.25'
 	logback = '1.2.3'
 	retrofit = '2.5.0'
-	javalin = '2.6.0'
-	okhttp = '3.13.1'
+	javalin = '2.8.0'
+	okhttp = '3.14.0'
 	jnrffi = '2.1.9'
 
 	junitjupiter = '5.4.0'
