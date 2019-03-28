@@ -24,6 +24,6 @@ package io.github.bonigarcia.seljup;
  */
 public enum BrowserType {
 
-    CHROME, FIREFOX, OPERA, ANDROID;
+    CHROME, FIREFOX, OPERA, ANDROID, EDGE, IEXPLORER;
 
 }

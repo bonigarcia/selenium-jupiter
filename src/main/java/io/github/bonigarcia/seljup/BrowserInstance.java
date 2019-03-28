@@ -34,7 +34,9 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.ChromeDriverHandler;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
+import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
+import io.github.bonigarcia.seljup.handler.InternetExplorerDriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 
 /**
@@ -85,6 +87,21 @@ public class BrowserInstance {
             driverHandler = new OperaDriverHandler(config, annotationsReader);
             optionsKey = OperaOptions.CAPABILITY;
             capabilities = new DesiredCapabilities("operablink", "", ANY);
+            break;
+        case EDGE:
+            dockerImage = config.getEdgeImage();
+            path = config.getEdgePath();
+            driverHandler = new EdgeDriverHandler(config, annotationsReader);
+            optionsKey = "edgeOptions";
+            capabilities = new DesiredCapabilities("microsoftedge", "", ANY);
+            break;
+        case IEXPLORER:
+            dockerImage = config.getIExplorerImage();
+            path = config.getIExplorerPath();
+            driverHandler = new InternetExplorerDriverHandler(config,
+                    annotationsReader);
+            optionsKey = "se:ieOptions";
+            capabilities = new DesiredCapabilities("iexplorer", "", ANY);
             break;
         case CHROME:
         default:

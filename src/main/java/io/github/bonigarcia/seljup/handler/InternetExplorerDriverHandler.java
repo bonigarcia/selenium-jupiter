@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,28 +23,29 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
- * Handler for Edge.
+ * Handler for Internet Explorer.
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 2.0.0
+ * @since 3.2.0
  */
-public class EdgeDriverHandler extends DriverHandler {
+public class InternetExplorerDriverHandler extends DriverHandler {
 
-    public EdgeDriverHandler(Config config,
+    public InternetExplorerDriverHandler(Config config,
             AnnotationsReader annotationsReader) {
         super(config, annotationsReader);
     }
 
-    public EdgeDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, AnnotationsReader annotationsReader) {
+    public InternetExplorerDriverHandler(Parameter parameter,
+            ExtensionContext context, Config config,
+            AnnotationsReader annotationsReader) {
         super(parameter, context, config, annotationsReader);
     }
 
@@ -54,12 +55,12 @@ public class EdgeDriverHandler extends DriverHandler {
             Optional<Object> testInstance = context.getTestInstance();
             Optional<Capabilities> capabilities = annotationsReader
                     .getCapabilities(parameter, testInstance);
-            EdgeOptions edgeOptions = (EdgeOptions) getOptions(parameter,
-                    testInstance);
+            InternetExplorerOptions internetExplorerOptions = (InternetExplorerOptions) getOptions(
+                    parameter, testInstance);
             if (capabilities.isPresent()) {
-                edgeOptions.merge(capabilities.get());
+                internetExplorerOptions.merge(capabilities.get());
             }
-            object = new EdgeDriver(edgeOptions);
+            object = new InternetExplorerDriver(internetExplorerOptions);
         } catch (Exception e) {
             handleException(e);
         }
@@ -69,14 +70,14 @@ public class EdgeDriverHandler extends DriverHandler {
     public MutableCapabilities getOptions(Parameter parameter,
             Optional<Object> testInstance)
             throws IOException, IllegalAccessException {
-        EdgeOptions edgeOptions = new EdgeOptions();
-        EdgeOptions optionsFromAnnotatedField = annotationsReader
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        InternetExplorerOptions optionsFromAnnotatedField = annotationsReader
                 .getOptionsFromAnnotatedField(testInstance, Options.class,
-                        EdgeOptions.class);
+                        InternetExplorerOptions.class);
         if (optionsFromAnnotatedField != null) {
-            edgeOptions = optionsFromAnnotatedField;
+            internetExplorerOptions = optionsFromAnnotatedField;
         }
-        return edgeOptions;
+        return internetExplorerOptions;
     }
 
 }

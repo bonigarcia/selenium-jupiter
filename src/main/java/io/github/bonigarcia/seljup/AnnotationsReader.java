@@ -156,7 +156,7 @@ public class AnnotationsReader {
             Class<? extends Annotation> annotation, Class<T> annotatedType)
             throws IllegalAccessException {
         Optional<T> out = empty();
-        if (testInstance.isPresent()) {
+        if (testInstance != null && testInstance.isPresent()) {
             Object object = testInstance.get();
             Class<? extends Object> clazz = object.getClass();
             out = getField(annotation, annotatedType, clazz, object);

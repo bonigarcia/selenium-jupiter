@@ -18,6 +18,8 @@ package io.github.bonigarcia.seljup.handler;
 
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
+import static io.github.bonigarcia.seljup.BrowserType.EDGE;
+import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
@@ -660,7 +662,9 @@ public class DockerDriverHandler {
             browserImage = selenoidConfig.getImageFromVersion(browserType,
                     version);
         }
-        dockerService.pullImage(browserImage);
+        if (browserType != EDGE && browserType != IEXPLORER) {
+            dockerService.pullImage(browserImage);
+        }
 
         DockerContainer selenoidContainer = startSelenoidContainer();
         return selenoidContainer.getContainerUrl();
@@ -707,11 +711,15 @@ public class DockerDriverHandler {
             String browserTimeout = getConfig()
                     .getBrowserSessionTimeoutDuration();
             String network = getConfig().getDockerNetwork();
+            String dockerStartupTimeout = getConfig()
+                    .getDockerStartupTimeoutDuration();
 
             List<String> cmd = asList("sh", "-c",
                     "mkdir -p /etc/selenoid/; echo '" + browsersJson
                             + "' > /etc/selenoid/browsers.json; /usr/bin/selenoid"
                             + " -listen :" + internalBrowserPort
+                            + " -service-startup-timeout "
+                            + dockerStartupTimeout
                             + " -conf /etc/selenoid/browsers.json"
                             + " -video-output-dir /opt/selenoid/video/"
                             + " -timeout " + browserTimeout

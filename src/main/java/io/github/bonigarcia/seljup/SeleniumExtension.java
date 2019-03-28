@@ -73,6 +73,7 @@ import io.github.bonigarcia.seljup.handler.ChromeDriverHandler;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
+import io.github.bonigarcia.seljup.handler.InternetExplorerDriverHandler;
 import io.github.bonigarcia.seljup.handler.ListDriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.handler.OtherDriverHandler;
@@ -126,6 +127,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(handlerMap, "java.util.List", ListDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.phantomjs.PhantomJSDriver",
                 OtherDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.ie.InternetExplorerDriver",
+                InternetExplorerDriverHandler.class);
 
         addEntry(templateHandlerMap, "chrome", ChromeDriver.class);
         addEntry(templateHandlerMap, "firefox", FirefoxDriver.class);

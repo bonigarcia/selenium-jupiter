@@ -52,6 +52,10 @@ public class DockerBrowserConfig {
     BrowserConfig chrome;
     BrowserConfig firefox;
     BrowserConfig operablink;
+    @SerializedName("MicrosoftEdge")
+    BrowserConfig edge;
+    @SerializedName("internet explorer")
+    BrowserConfig iexplorer;
     transient Config config;
     transient String version;
     transient InternalPreferences preferences;
@@ -86,6 +90,14 @@ public class DockerBrowserConfig {
         case OPERA:
             operablink = new BrowserConfig(version);
             operablink.addBrowser(version, browser);
+            break;
+        case EDGE:
+            edge = new BrowserConfig(version);
+            edge.addBrowser(version, browser);
+            break;
+        case IEXPLORER:
+            iexplorer = new BrowserConfig(version);
+            iexplorer.addBrowser(version, browser);
             break;
         case CHROME:
         default:
@@ -192,6 +204,12 @@ public class DockerBrowserConfig {
                     .collect(toList());
             latestVersion = browserList.get(browserList.size() - 1);
             break;
+        case EDGE:
+            latestVersion = getConfig().getEdgeLatestVersion();
+            break;
+        case IEXPLORER:
+            latestVersion = getConfig().getIExplorerLatestVersion();
+            break;
         case CHROME:
         default:
             final String chromePreffix = "chrome_";
@@ -220,6 +238,12 @@ public class DockerBrowserConfig {
         case OPERA:
             latestVersion = getConfig().getOperaLatestVersion();
             break;
+        case EDGE:
+            latestVersion = getConfig().getEdgeLatestVersion();
+            break;
+        case IEXPLORER:
+            latestVersion = getConfig().getIExplorerLatestVersion();
+            break;
         case CHROME:
         default:
             latestVersion = getConfig().getChromeLatestVersion();
@@ -234,6 +258,10 @@ public class DockerBrowserConfig {
             return firefox;
         case OPERA:
             return operablink;
+        case EDGE:
+            return edge;
+        case IEXPLORER:
+            return iexplorer;
         case CHROME:
         default:
             return chrome;

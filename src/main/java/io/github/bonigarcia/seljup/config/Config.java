@@ -128,6 +128,18 @@ public class Config {
             "sel.jup.firefox.unstable.image", String.class);
     ConfigKey<String> firefoxUnstablePath = new ConfigKey<>(
             "sel.jup.firefox.unstable.path", String.class);
+    ConfigKey<String> edgeImage = new ConfigKey<>("sel.jup.edge.image",
+            String.class);
+    ConfigKey<String> edgePath = new ConfigKey<>("sel.jup.edge.path",
+            String.class);
+    ConfigKey<String> edgeLatestVersion = new ConfigKey<>(
+            "sel.jup.edge.latest.version", String.class);
+    ConfigKey<String> iExplorerImage = new ConfigKey<>(
+            "sel.jup.iexplorer.image", String.class);
+    ConfigKey<String> iExplorerPath = new ConfigKey<>("sel.jup.iexplorer.path",
+            String.class);
+    ConfigKey<String> iExplorerLatestVersion = new ConfigKey<>(
+            "sel.jup.iexplorer.latest.version", String.class);
     ConfigKey<String> operaImageFormat = new ConfigKey<>(
             "sel.jup.opera.image.format", String.class);
     ConfigKey<String> operaFirstVersion = new ConfigKey<>(
@@ -156,6 +168,8 @@ public class Config {
             "sel.jup.docker.timezone", String.class);
     ConfigKey<String> dockerLang = new ConfigKey<>("sel.jup.docker.lang",
             String.class);
+    ConfigKey<String> dockerStartupTimeoutDuration = new ConfigKey<>(
+            "sel.jup.docker.startup.timeout.duration", String.class);
 
     ConfigKey<String> androidDefaultVersion = new ConfigKey<>(
             "sel.jup.android.default.version", String.class);
@@ -651,6 +665,54 @@ public class Config {
         this.firefoxUnstablePath.setValue(value);
     }
 
+    public String getEdgeImage() {
+        return resolve(edgeImage);
+    }
+
+    public void setEdgeImage(String value) {
+        this.edgeImage.setValue(value);
+    }
+
+    public String getEdgePath() {
+        return resolve(edgePath);
+    }
+
+    public void setEdgePath(String value) {
+        this.edgePath.setValue(value);
+    }
+
+    public String getEdgeLatestVersion() {
+        return resolve(edgeLatestVersion);
+    }
+
+    public void setEdgeLatestVersion(String value) {
+        this.edgeLatestVersion.setValue(value);
+    }
+
+    public String getIExplorerImage() {
+        return resolve(iExplorerImage);
+    }
+
+    public void setIExplorerImage(String value) {
+        this.iExplorerImage.setValue(value);
+    }
+
+    public String getIExplorerPath() {
+        return resolve(iExplorerPath);
+    }
+
+    public void setIExplorerLatestVersion(String value) {
+        this.iExplorerLatestVersion.setValue(value);
+    }
+
+    public String getIExplorerLatestVersion() {
+        return resolve(iExplorerLatestVersion);
+    }
+
+    public void setIExplorerPath(String value) {
+        this.iExplorerPath.setValue(value);
+    }
+
     public String getOperaImageFormat() {
         return resolve(operaImageFormat);
     }
@@ -761,6 +823,14 @@ public class Config {
 
     public void setDockerLang(String value) {
         this.dockerLang.setValue(value);
+    }
+
+    public String getDockerStartupTimeoutDuration() {
+        return resolve(dockerStartupTimeoutDuration);
+    }
+
+    public void setDockerStartupTimeoutDuration(String value) {
+        this.dockerStartupTimeoutDuration.setValue(value);
     }
 
     public String getAndroidDefaultVersion() {
