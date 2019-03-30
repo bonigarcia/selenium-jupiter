@@ -41,9 +41,9 @@ public class AnnotationsReaderTest {
 
     @Test
     void testThrowsExceptionWithNullTestInstance() throws Exception {
-        assertThrows(NullPointerException.class, () -> {
-            annotationsReader.getOptionsFromAnnotatedField(null, Options.class);
-        });
+        Object optionsFromAnnotatedField = annotationsReader
+                .getOptionsFromAnnotatedField(null, Options.class);
+        assertThat(optionsFromAnnotatedField, nullValue());
     }
 
     @Test
