@@ -48,7 +48,7 @@ public class DockerEdgeJupiterTest {
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
-        Thread.sleep(30000);
+        // Thread.sleep(30000);
     }
 
 }
