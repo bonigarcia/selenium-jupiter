@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -36,6 +38,7 @@ public class ForcedOperaJupiterTest {
     @Test
     public void operaTest(OperaDriver driver) {
         // Even if Opera is not installed, test should reach this point
+        assertTrue(true);
     }
 
 }
