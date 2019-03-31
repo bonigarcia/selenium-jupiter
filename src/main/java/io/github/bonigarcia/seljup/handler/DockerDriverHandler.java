@@ -35,6 +35,7 @@ import static java.nio.file.Files.move;
 import static java.nio.file.Files.write;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Arrays.asList;
+import static java.util.Optional.empty;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.collections.CollectionUtils.disjunction;
@@ -141,6 +142,7 @@ public class DockerDriverHandler {
                 version);
         this.dockerService = new DockerService(config, preferences);
         this.containerMap = new LinkedHashMap<>();
+        this.testInstance = empty();
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
