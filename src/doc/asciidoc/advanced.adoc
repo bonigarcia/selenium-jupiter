@@ -76,7 +76,7 @@ Generally speaking, a browser within the JSON scenario is defined using the foll
    * `firefox-in-docker`: For Firefox browsers in Docker.
    * `opera-in-docker`: For Opera browsers in Docker.
    * `android`: For web browsers in Android devices in Docker containers.
-- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `57.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported (using the labels `beta` and `unstable` labels respectively).
+- `version`: Optional value for the version. Wildcard for latest versions (`latest`, `latest-1`, etc) are accepted. Concrete versions are also valid (e.g. `63.0`, `58.0`, etc., depending of the browser). **Beta** and **unstable** (i.e. development) versions for Chrome and Firefox are also supported (using the labels `beta` and `unstable` labels respectively).
 - `deviceName`: Also for `android` type, the device type can be specified (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).
 
 
@@ -220,7 +220,7 @@ INFO: Detected dialect: OSS
 ----
 $ java -jar selenium-jupiter-3.1.1-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
-[INFO] Using FIREFOX version 64.0 (latest)
+[INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for FIREFOX at http://172.17.0.1:32909/wd/hub

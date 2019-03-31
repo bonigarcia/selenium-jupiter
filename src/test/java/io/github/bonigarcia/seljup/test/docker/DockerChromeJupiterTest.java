@@ -41,7 +41,7 @@ public class DockerChromeJupiterTest {
 
     @Test
     public void testChromeWithVersion(
-            @DockerBrowser(type = CHROME, version = "71.0") RemoteWebDriver driver) {
+            @DockerBrowser(type = CHROME, version = "73.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
