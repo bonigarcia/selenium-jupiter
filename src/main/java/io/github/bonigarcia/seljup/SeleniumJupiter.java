@@ -49,7 +49,7 @@ public class SeleniumJupiter {
     static InternalPreferences preferences = new InternalPreferences(config);
 
     public static void main(String[] args) {
-        String validBrowsers = "chrome|firefox|opera|android";
+        String validBrowsers = "chrome|firefox|opera|edge|iexplorer|android";
         if (args.length <= 0) {
             logCliError(validBrowsers);
 
