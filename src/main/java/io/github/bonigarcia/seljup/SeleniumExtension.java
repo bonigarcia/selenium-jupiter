@@ -45,6 +45,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -88,7 +89,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * @since 1.0.0
  */
 public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
-        TestTemplateInvocationContextProvider {
+        AfterAllCallback, TestTemplateInvocationContextProvider {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -161,6 +162,21 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             ExtensionContext extensionContext) {
         String contextId = extensionContext.getUniqueId();
         Parameter parameter = parameterContext.getParameter();
+        int index = parameterContext.getIndex();
+
+        log.debug("Context id {}", contextId);
+        if (isSingleSession(extensionContext)
+                && driverHandlerMap.containsKey(contextId)) {
+            List<DriverHandler> list = driverHandlerMap.get(contextId);
+            if (index < list.size()) {
+                Object obj = list.get(index).getObject();
+                if (obj != null) {
+                    log.debug("Returning index {}: {}", index, obj);
+                    return obj;
+                }
+            }
+        }
+
         Class<?> type = parameter.getType();
         boolean isTemplate = isTestTemplate(extensionContext);
         boolean isGeneric = type.equals(RemoteWebDriver.class)
@@ -170,7 +186,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
         // Check template
         if (isGeneric && !browserListMap.isEmpty()) {
-            browser = getBrowser(contextId, parameterContext.getIndex());
+            browser = getBrowser(contextId, index);
         }
         Optional<String> urlFromAnnotation = getUrlFromAnnotation(parameter,
                 extensionContext);
@@ -361,6 +377,27 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @Override
     public void afterEach(ExtensionContext extensionContext) {
+        if (!isSingleSession(extensionContext)) {
+            teardown(extensionContext);
+        }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext extensionContext) throws Exception {
+        if (!driverHandlerMap.isEmpty()) {
+            teardown(extensionContext);
+        }
+    }
+
+    private boolean isSingleSession(ExtensionContext extensionContext) {
+        boolean singleSession = extensionContext.getTestClass().isPresent()
+                && extensionContext.getTestClass().get()
+                        .isAnnotationPresent(SingleSession.class);
+        log.trace("Single session {}", singleSession);
+        return singleSession;
+    }
+
+    private void teardown(ExtensionContext extensionContext) {
         // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig());
