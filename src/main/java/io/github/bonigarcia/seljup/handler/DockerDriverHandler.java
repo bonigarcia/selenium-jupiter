@@ -528,50 +528,57 @@ public class DockerDriverHandler {
             log.warn("Exception waiting for recording {}", e.getMessage());
         } finally {
             // Execute finalize command in docker container (if any)
-            if (finalizerCommandMap != null && !finalizerCommandMap.isEmpty()
-                    && dockerService != null) {
-                for (Map.Entry<String, String[]> entry : finalizerCommandMap
-                        .entrySet()) {
-                    String container = entry.getKey();
-                    String[] command = entry.getValue();
-                    try {
-                        log.trace("Executing {} in {}", command, container);
-                        dockerService.execCommandInContainer(container,
-                                command);
-                    } catch (Exception e) {
-                        log.warn("Exception executing {} in {}", command,
-                                container, e);
-                    }
-                }
-            }
+            finaliceContainers();
 
             // Stop containers
-            if (containerMap != null && !containerMap.isEmpty()
-                    && dockerService != null) {
-                int numContainers = containerMap.size();
-                log.trace("There are {} container(s): {}", numContainers,
-                        containerMap);
+            stopContainers();
+        }
+    }
 
-                if (numContainers > 0) {
-                    ExecutorService executorService = newFixedThreadPool(
-                            numContainers);
-                    CountDownLatch latch = new CountDownLatch(numContainers);
-                    for (Map.Entry<String, DockerContainer> entry : containerMap
-                            .entrySet()) {
-                        executorService.submit(() -> {
-                            dockerService.stopAndRemoveContainer(
-                                    entry.getValue().getContainerId(),
-                                    entry.getKey());
-                            latch.countDown();
-                        });
-                    }
-                    containerMap.clear();
-                    try {
-                        latch.await();
-                    } catch (InterruptedException e) {
-                        currentThread().interrupt();
-                    }
-                    executorService.shutdown();
+    private void stopContainers() {
+        if (containerMap != null && !containerMap.isEmpty()
+                && dockerService != null) {
+            int numContainers = containerMap.size();
+            log.trace("There are {} container(s): {}", numContainers,
+                    containerMap);
+
+            if (numContainers > 0) {
+                ExecutorService executorService = newFixedThreadPool(
+                        numContainers);
+                CountDownLatch latch = new CountDownLatch(numContainers);
+                for (Map.Entry<String, DockerContainer> entry : containerMap
+                        .entrySet()) {
+                    executorService.submit(() -> {
+                        dockerService.stopAndRemoveContainer(
+                                entry.getValue().getContainerId(),
+                                entry.getKey());
+                        latch.countDown();
+                    });
+                }
+                containerMap.clear();
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    currentThread().interrupt();
+                }
+                executorService.shutdown();
+            }
+        }
+    }
+
+    private void finaliceContainers() {
+        if (finalizerCommandMap != null && !finalizerCommandMap.isEmpty()
+                && dockerService != null) {
+            for (Map.Entry<String, String[]> entry : finalizerCommandMap
+                    .entrySet()) {
+                String container = entry.getKey();
+                String[] command = entry.getValue();
+                try {
+                    log.trace("Executing {} in {}", command, container);
+                    dockerService.execCommandInContainer(container, command);
+                } catch (Exception e) {
+                    log.warn("Exception executing {} in {}", command, container,
+                            e);
                 }
             }
         }
