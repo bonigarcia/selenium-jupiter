@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.spotify.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
@@ -119,6 +120,7 @@ public class DockerDriverHandler {
     DockerService dockerService;
     SelenoidConfig selenoidConfig;
     Map<String, DockerContainer> containerMap;
+    Map<String, String[]> finalizerCommandMap;
     File recordingFile;
     String name;
     File hostVideoFolder;
@@ -142,6 +144,7 @@ public class DockerDriverHandler {
                 version);
         this.dockerService = new DockerService(config, preferences);
         this.containerMap = new LinkedHashMap<>();
+        this.finalizerCommandMap = new LinkedHashMap<>();
         this.testInstance = empty();
     }
 
@@ -155,6 +158,7 @@ public class DockerDriverHandler {
         this.testInstance = testInstance;
         this.annotationsReader = annotationsReader;
         this.containerMap = containerMap;
+        this.finalizerCommandMap = new LinkedHashMap<>();
         this.dockerService = dockerService;
         this.config = config;
         this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
@@ -358,6 +362,7 @@ public class DockerDriverHandler {
 
         DesiredCapabilities capabilities = getCapabilitiesForAndroid(
                 browserInstance, deviceNameCapability);
+        capabilities.setBrowserName(browserName);
 
         log.info("Appium URL in Android device: {}", appiumUrl);
         log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
@@ -522,6 +527,24 @@ public class DockerDriverHandler {
         } catch (Exception e) {
             log.warn("Exception waiting for recording {}", e.getMessage());
         } finally {
+            // Execute finalize command in docker container (if any)
+            if (finalizerCommandMap != null && !finalizerCommandMap.isEmpty()
+                    && dockerService != null) {
+                for (Map.Entry<String, String[]> entry : finalizerCommandMap
+                        .entrySet()) {
+                    String container = entry.getKey();
+                    String[] command = entry.getValue();
+                    try {
+                        log.trace("Executing {} in {}", command, container);
+                        dockerService.execCommandInContainer(container,
+                                command);
+                    } catch (Exception e) {
+                        log.warn("Exception executing {} in {}", command,
+                                container, e);
+                    }
+                }
+            }
+
             // Stop containers
             if (containerMap != null && !containerMap.isEmpty()
                     && dockerService != null) {
@@ -801,22 +824,23 @@ public class DockerDriverHandler {
                     .dockerBuilder(androidImage).portBindings(portBindings)
                     .binds(binds).envs(envs).network(network).privileged();
 
-            if (cloudType == GENYMOTION_SAAS) {
-                Devices[] devices = new Devices[1];
-                devices[0] = new Devices(deviceName,
-                        getConfig().getAndroidGenymotionTemplate());
-                String deviceJson = new GsonBuilder().disableHtmlEscaping()
-                        .create().toJson(devices);
-
-                log.trace("Devices.json = {}", deviceJson);
-                List<String> cmd = asList("sh", "-c", "mkdir /root/tmp; echo '"
-                        + deviceJson
-                        + "' > /root/tmp/devices.json; ./geny_start.sh");
-                dockerBuilder.cmd(cmd);
+            String androidGenymotionDeviceName = getConfig()
+                    .getAndroidGenymotionDeviceName();
+            boolean useGenymotion = cloudType == GENYMOTION_SAAS
+                    && !isNullOrEmpty(androidGenymotionDeviceName);
+            if (useGenymotion) {
+                getGenymotionContainer(dockerBuilder,
+                        androidGenymotionDeviceName);
             }
 
             androidContainer = dockerBuilder.build();
             String containerId = dockerService.startContainer(androidContainer);
+
+            if (useGenymotion) {
+                String[] disposeDeviceCommand = { "gmtool", "--cloud", "admin",
+                        "stopdisposable", androidGenymotionDeviceName };
+                finalizerCommandMap.put(containerId, disposeDeviceCommand);
+            }
 
             String androidHost = dockerService.getHost(containerId, network);
             String androidPort = dockerService.getBindPort(containerId,
@@ -835,6 +859,95 @@ public class DockerDriverHandler {
             containerMap.put(androidImage, androidContainer);
         }
         return androidContainer;
+    }
+
+    private void getGenymotionContainer(DockerBuilder dockerBuilder,
+            String androidGenymotionDeviceName) {
+        Devices[] devices = new Devices[1];
+        String androidGenymotionTemplate = getConfig()
+                .getAndroidGenymotionTemplate();
+        String androidGenymotionAndroidVersion = getConfig()
+                .getAndroidGenymotionAndroidVersion();
+        if (!isNullOrEmpty(androidGenymotionAndroidVersion)) {
+            androidGenymotionTemplate += " - "
+                    + androidGenymotionAndroidVersion;
+        }
+        String androidGenymotionAndroidApi = getConfig()
+                .getAndroidGenymotionAndroidApi();
+        if (!isNullOrEmpty(androidGenymotionAndroidApi)) {
+            androidGenymotionTemplate += " - API "
+                    + androidGenymotionAndroidApi;
+        }
+        String androidGenymotionScreenSize = getConfig()
+                .getAndroidGenymotionScreenSize();
+        if (!isNullOrEmpty(androidGenymotionScreenSize)) {
+            androidGenymotionTemplate += " - " + androidGenymotionScreenSize;
+        }
+
+        log.debug("Using Genymotion device name: {}, template: {}",
+                androidGenymotionDeviceName, androidGenymotionTemplate);
+        devices[0] = new Devices(androidGenymotionDeviceName,
+                androidGenymotionTemplate);
+        String deviceJson = new GsonBuilder().disableHtmlEscaping().create()
+                .toJson(devices);
+
+        String chromedriverVersion = getConfig()
+                .getAndroidGenymotionChromedriver();
+        if (isNullOrEmpty(chromedriverVersion)
+                && !isNullOrEmpty(androidGenymotionAndroidVersion)) {
+            switch (androidGenymotionAndroidVersion) {
+            case "5.0.1":
+                chromedriverVersion = "2.21";
+                break;
+            case "5.1.1":
+                chromedriverVersion = "2.13";
+                break;
+            case "6.0":
+            case "6.0.0":
+                chromedriverVersion = "2.18";
+                break;
+            case "7.0":
+            case "7.0.0":
+                chromedriverVersion = "2.23";
+                break;
+            case "7.1.1":
+                chromedriverVersion = "2.28";
+                break;
+            case "8.0":
+            case "8.0.0":
+                chromedriverVersion = "2.31";
+                break;
+            case "8.1":
+            case "8.1.0":
+                chromedriverVersion = "2.33";
+                break;
+            case "9.0":
+            case "9.0.0":
+                chromedriverVersion = "2.40";
+                break;
+            default:
+                chromedriverVersion = "";
+                break;
+            }
+        }
+        String downloadChromeDriverScript = "";
+        if (!isNullOrEmpty(chromedriverVersion)) {
+            log.debug(
+                    "Chromedriver {} is downloaded inside Genymotion container",
+                    chromedriverVersion);
+            downloadChromeDriverScript = "wget https://chromedriver.storage.googleapis.com/"
+                    + chromedriverVersion + "/chromedriver_linux64.zip; "
+                    + "unzip chromedriver_linux64.zip; "
+                    + "cp chromedriver /usr/lib/node_modules/appium/node_modules/appium-chromedriver/chromedriver/linux/chromedriver_64; "
+                    + "rm chromedriver*; ";
+        }
+
+        log.trace("Devices.json = {}", deviceJson);
+        List<String> cmd = asList("sh", "-c",
+                "mkdir /root/tmp; echo '" + deviceJson
+                        + "' > /root/tmp/devices.json; "
+                        + downloadChromeDriverScript + "./geny_start.sh");
+        dockerBuilder.cmd(cmd);
     }
 
     private List<String> getAndroidEnvs(String deviceName, CloudType cloudType,

@@ -199,6 +199,16 @@ public class Config {
             "sel.jup.android.genymotion.license", String.class);
     ConfigKey<String> androidGenymotionTemplate = new ConfigKey<>(
             "sel.jup.android.genymotion.template", String.class);
+    ConfigKey<String> androidGenymotionDeviceName = new ConfigKey<>(
+            "sel.jup.android.genymotion.device.name", String.class);
+    ConfigKey<String> androidGenymotionAndroidVersion = new ConfigKey<>(
+            "sel.jup.android.genymotion.android.version", String.class);
+    ConfigKey<String> androidGenymotionAndroidApi = new ConfigKey<>(
+            "sel.jup.android.genymotion.android.api", String.class);
+    ConfigKey<String> androidGenymotionScreenSize = new ConfigKey<>(
+            "sel.jup.android.genymotion.screen.size", String.class);
+    ConfigKey<String> androidGenymotionChromedriver = new ConfigKey<>(
+            "sel.jup.android.genymotion.chromedriver", String.class);
     ConfigKey<String> androidNoVncPort = new ConfigKey<>(
             "sel.jup.android.novnc.port", String.class);
     ConfigKey<String> androidAppiumPort = new ConfigKey<>(
@@ -943,6 +953,46 @@ public class Config {
 
     public void setAndroidGenymotionTemplate(String value) {
         this.androidGenymotionTemplate.setValue(value);
+    }
+
+    public String getAndroidGenymotionDeviceName() {
+        return resolve(androidGenymotionDeviceName);
+    }
+
+    public void setAndroidGenymotionDeviceName(String value) {
+        this.androidGenymotionDeviceName.setValue(value);
+    }
+
+    public String getAndroidGenymotionAndroidVersion() {
+        return resolve(androidGenymotionAndroidVersion);
+    }
+
+    public void setAndroidGenymotionAndroidVersion(String value) {
+        this.androidGenymotionAndroidVersion.setValue(value);
+    }
+
+    public String getAndroidGenymotionAndroidApi() {
+        return resolve(androidGenymotionAndroidApi);
+    }
+
+    public void setAndroidGenymotionAndroidApi(String value) {
+        this.androidGenymotionAndroidApi.setValue(value);
+    }
+
+    public String getAndroidGenymotionScreenSize() {
+        return resolve(androidGenymotionScreenSize);
+    }
+
+    public void setAndroidGenymotionScreenSize(String value) {
+        this.androidGenymotionScreenSize.setValue(value);
+    }
+
+    public String getAndroidGenymotionChromedriver() {
+        return resolve(androidGenymotionChromedriver);
+    }
+
+    public void setAndroidGenymotionChromedriver(String value) {
+        this.androidGenymotionChromedriver.setValue(value);
     }
 
     public String getAndroidNoVncPort() {
