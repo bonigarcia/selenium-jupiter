@@ -199,7 +199,6 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
 
         // Handler
-        DriverHandler driverHandler = null;
         Class<?> constructorClass = handlerMap.containsKey(type.getName())
                 ? handlerMap.get(type.getName())
                 : OtherDriverHandler.class;
@@ -212,6 +211,18 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         // WebDriverManager
         runWebDriverManagerIfNeded(type, isRemote);
 
+        DriverHandler driverHandler = getDriverHandler(parameterContext,
+                extensionContext, contextId, parameter, type, isTemplate,
+                isGeneric, browser, constructorClass, isRemote);
+        return resolveHandler(parameter, driverHandler);
+    }
+
+    private DriverHandler getDriverHandler(ParameterContext parameterContext,
+            ExtensionContext extensionContext, String contextId,
+            Parameter parameter, Class<?> type, boolean isTemplate,
+            boolean isGeneric, Browser browser, Class<?> constructorClass,
+            boolean isRemote) {
+        DriverHandler driverHandler = null;
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
                     constructorClass, browser, isRemote);
@@ -234,8 +245,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         } catch (Exception e) {
             handleException(parameter, driverHandler, constructorClass, e);
         }
-
-        return resolveHandler(parameter, driverHandler);
+        return driverHandler;
     }
 
     private void runWebDriverManagerIfNeded(Class<?> type, boolean isRemote) {
