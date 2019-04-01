@@ -178,14 +178,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         }
 
         Class<?> type = parameter.getType();
-        boolean isTemplate = isTestTemplate(extensionContext);
-        boolean isGeneric = type.equals(RemoteWebDriver.class)
-                || type.equals(WebDriver.class);
         String url = null;
         Browser browser = null;
 
         // Check template
-        if (isGeneric && !browserListMap.isEmpty()) {
+        if (isGeneric(type) && !browserListMap.isEmpty()) {
             browser = getBrowser(contextId, index);
         }
         Optional<String> urlFromAnnotation = getUrlFromAnnotation(parameter,
@@ -212,28 +209,29 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         runWebDriverManagerIfNeded(type, isRemote);
 
         DriverHandler driverHandler = getDriverHandler(parameterContext,
-                extensionContext, contextId, parameter, type, isTemplate,
-                isGeneric, browser, constructorClass, isRemote);
+                extensionContext, parameter, type, browser, constructorClass,
+                isRemote);
         return resolveHandler(parameter, driverHandler);
     }
 
     private DriverHandler getDriverHandler(ParameterContext parameterContext,
-            ExtensionContext extensionContext, String contextId,
-            Parameter parameter, Class<?> type, boolean isTemplate,
-            boolean isGeneric, Browser browser, Class<?> constructorClass,
+            ExtensionContext extensionContext, Parameter parameter,
+            Class<?> type, Browser browser, Class<?> constructorClass,
             boolean isRemote) {
         DriverHandler driverHandler = null;
         try {
             driverHandler = getDriverHandler(extensionContext, parameter, type,
                     constructorClass, browser, isRemote);
 
+            String contextId = extensionContext.getUniqueId();
             if (type.equals(RemoteWebDriver.class)
                     || type.equals(WebDriver.class)
                     || type.equals(List.class)) {
                 initHandlerForDocker(contextId, driverHandler);
             }
 
-            if (!isTemplate && isGeneric && isRemote) {
+            boolean isTemplate = isTestTemplate(extensionContext);
+            if (!isTemplate && isGeneric(type) && isRemote) {
                 ((RemoteDriverHandler) driverHandler).setParent(this);
                 ((RemoteDriverHandler) driverHandler)
                         .setParameterContext(parameterContext);
@@ -397,6 +395,11 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (!driverHandlerMap.isEmpty()) {
             teardown(extensionContext);
         }
+    }
+
+    private boolean isGeneric(Class<?> type) {
+        return type.equals(RemoteWebDriver.class)
+                || type.equals(WebDriver.class);
     }
 
     private boolean isSingleSession(ExtensionContext extensionContext) {
