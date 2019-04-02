@@ -166,14 +166,41 @@ image::jenkins-attachements-template-mp4.png[scaledwidth=100%]
 
 === Using Genymotion
 
-The use of https://www.genymotion.com/[Genymotion] for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach.
+The use of https://www.genymotion.com/[Genymotion] for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach. In order to use this feature, we need to select `GENYMOTION_SAAS` in the `cloud` parameter of `@DockerBrowser` in a test. First, we need a valid Genymotion account. This account will be configured using the methods `setAndroidGenymotionUser()`, `setAndroidGenymotionPassword()` and `setAndroidGenymotionLicense()` for user, password, and license respectively. Moreover, we need to specify the following values:
 
-In order to use this feature, we need to select `GENYMOTION_SAAS` in the `cloud` parameter of `@DockerBrowser` in a test. First, we need a valid Genymotion account. This account will be configured using the methods `setAndroidGenymotionUser()`, `setAndroidGenymotionPassword()` and `setAndroidGenymotionLicense()` for user, password, and license respectively. Moreover, we need to specify the name of the Genymotion template to be used in our test using the configuration method `setAndroidGenymotionTemplate()`. The following test shows an example of this feature:
+- Genymotion template name (method `setAndroidGenymotionTemplate()`).
+- Android version (method `setAndroidGenymotionAndroidVersion()`).
+- Android API level (method `setAndroidGenymotionAndroidApi()`).
+- Android screen size (method `setAndroidGenymotionScreenSize()`).
+
+All this values will be internally managed using a label specified with `setAndroidGenymotionDeviceName()`. This label will be used later in the actual test in the `deviceName` value. The following test shows an example:
 
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/android/AndroidGenymotionJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+We can see the execution of the test in the https://cloud.geny.io/[Genymotion dashboard] while the test is being executed. For the example before, we see the following Android device:
+
+[.thumb]
+.Example of test execution in Genymotion
+image::genymotion.png[scaledwidth=50%]
+
+Notice that _Selenium_Jupiter_ downloads the _chromedriver_ binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the _chromedriver_ binary is related with the installed browser. The following table shows a summary of the _chromedriver_ versions managed by _Selenium_Jupiter_ depending on the Android API level. It other version of _chromedriver_ is required, it can specified using the method `setAndroidGenymotionChromedriver()`.
+
+.Versions of _chromedriver_ handled by _Selenium-Jupiter_ for Genymotion
+[width="100%",options="header"]
+|==========================
+| API level | _chromedriver_ version
+| 21 | 2.21
+| 22 | 2.13
+| 23 | 2.18
+| 24 | 2.23
+| 25 | 2.28
+| 26 | 2.31
+| 27 | 2.33
+| 28 | 2.40
+|==========================
 
 === Selenium-Jupiter CLI
 

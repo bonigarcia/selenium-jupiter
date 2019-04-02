@@ -46,7 +46,7 @@ public class AndroidGenymotionJupiterTest {
         config.setAndroidGenymotionScreenSize("1440x2560");
 
         // The following values need to be set (it can be overridden using Java
-        // properties or envs)
+        // properties or environment variables)
         config.setAndroidGenymotionUser("my-genymotion-user");
         config.setAndroidGenymotionPassword("my-genymotion-pass");
         config.setAndroidGenymotionLicense("my-genymotion-license");
@@ -54,7 +54,8 @@ public class AndroidGenymotionJupiterTest {
 
     @Test
     public void testAndroidInGenymotionSaas(
-            @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "SamsungS7V6", browserName = "browser") RemoteWebDriver driver) {
+            @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "SamsungS7V6", browserName = "browser")
+            RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
