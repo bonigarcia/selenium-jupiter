@@ -38,22 +38,28 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
 |`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`73.0`
 |`sel.jup.chrome.path` | Path for Hub when using Chrome in Docker as browser |`/`
-|`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta`
+|`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta-2.0.1`
 |`sel.jup.chrome.beta.path` | Path for Hub when using Chrome beta in Docker as browser |`/wd/hub`
-|`sel.jup.chrome.unstable.image` | Selenoid Docker image format for Chrome unstable |`elastestbrowsers/chrome:unstable`
+|`sel.jup.chrome.unstable.image` | Selenoid Docker image format for Chrome unstable |`elastestbrowsers/chrome:unstable-2.0.1`
 |`sel.jup.chrome.unstable.path` | Path for Hub when using Chrome unstable in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
 |`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
 |`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`66.0`
 |`sel.jup.firefox.path` | Path for Hub when using Firefox in Docker as browser |`/wd/hub`
-|`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta`
+|`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta-2.0.1`
 |`sel.jup.firefox.beta.path` | Path for Hub when using Firefox beta in Docker as browser |`/wd/hub`
-|`sel.jup.firefox.unstable.image` | Selenoid Docker image format for Firefox unstable |`elastestbrowsers/firefox:nightly`
+|`sel.jup.firefox.unstable.image` | Selenoid Docker image format for Firefox unstable |`elastestbrowsers/firefox:nightly-2.0.1`
 |`sel.jup.firefox.unstable.path` | Path for Hub when using Firefox beta in Docker as unstable |`/wd/hub`
 |`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
 |`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`58.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
+|`sel.jup.edge.image` | Docker image format for Edge |`windows/edge:%s`
+|`sel.jup.edge.latest.version` | Latest version of Docker Edge  |`18`
+|`sel.jup.edge.path` | Path for Hub when using Opera in Docker as browser |`/`
+|`sel.jup.iexplorer.image` | Docker image format for Edge |`windows/ie:%s`
+|`sel.jup.iexplorer.latest.version` | Latest version of Docker Edge  |`11`
+|`sel.jup.iexplorer.path` | Path for Hub when using Opera in Docker as browser |`/`
 |`sel.jup.android.default.version` | Default version of Android devices in Docker |`9.0`
 |`sel.jup.android.image.5.0.1` | Docker image for version 5.0.1 of Android devices |`butomo1989/docker-android-x86-5.0.1:1.5-p6`
 |`sel.jup.android.image.5.1.1` | Docker image for version 5.1.1 of Android devices |`butomo1989/docker-android-x86-5.1.1:1.5-p6`
@@ -63,11 +69,16 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.android.image.8.0` | Docker image for version 8.0 of Android devices |`butomo1989/docker-android-x86-8.0:1.5-p6`
 |`sel.jup.android.image.8.1` | Docker image for version 8.1 of Android devices |`butomo1989/docker-android-x86-8.1:1.5-p6`
 |`sel.jup.android.image.9.0` | Docker image for version 9.0 of Android devices |`butomo1989/docker-android-x86-9.0:1.5-p6`
-|`sel.jup.android.image.genymotion` | Docker image for Genymotion usage |`butomo1989/docker-android-genymotion:1.5-p6`
-|`sel.jup.android.genymotion.user`| Genymotion user for SaaS |
-|`sel.jup.android.genymotion.password`| Genymotion password for SaaS |
-|`sel.jup.android.genymotion.license`| Genymotion licence for SaaS |
-|`sel.jup.android.genymotion.template`| Genymotion template for SaaS |
+|`sel.jup.android.image.genymotion` | Docker image for Genymotion usage |`budtmo/docker-android-genymotion:1.7-p0`
+|`sel.jup.android.genymotion.user`| Genymotion SaaS user |
+|`sel.jup.android.genymotion.password`| Genymotion SaaS password |
+|`sel.jup.android.genymotion.license`| Genymotion SaaS license |
+|`sel.jup.android.genymotion.template`| Genymotion SaaS template |
+|`sel.jup.android.genymotion.device.name`| Genymotion SaaS device |
+|`sel.jup.android.genymotion.android.version`| Genymotion SaaS Android version |
+|`sel.jup.android.genymotion.android.api`| Genymotion SaaS Android API level |
+|`sel.jup.android.genymotion.screen.size`| Genymotion SaaS Android screen size |
+|`sel.jup.android.genymotion.chromedriver`| Genymotion SaaS chromedriver version  |
 |`sel.jup.android.novnc.port` | Internal port of noVNC in Docker containers for Android devices  |`6080`
 |`sel.jup.android.appium.port` | Internal port of Appium server in Docker containers for Android devices |`4723`
 |`sel.jup.android.device.name` | Default device name for Android in Docker |`Samsung Galaxy S6`
@@ -90,6 +101,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.network` | Docker network |`bridge`
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
 |`sel.jup.docker.lang` | Language for Docker containers |`en`
+|`sel.jup.docker.startup.timeout.duration` | Docker startup timeout in duration format |`2m`
 |`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
 |`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |
 |`sel.jup.server.port` | Selenium-Jupiter Server port |`4042`
