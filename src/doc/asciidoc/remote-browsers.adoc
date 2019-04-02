@@ -39,4 +39,19 @@ We can also specify a custom Appium Server URL changing the value of `@DriverUrl
 include::../../test/java/io/github/bonigarcia/seljup/test/appium/AppiumWithGlobalOptionsChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
+=== Using SauceLabs
 
+_Selenium-Jupiter_ can be used to control remote browsers in the https://saucelabs.com/[SauceLabs] cloud.
+
+In the following example, first the `@DriverUrl` is used to specify the SauceLabs URL. Then the annotation `@DriverCapabilities` is used to configure the SauceLabs credentials (_username_ and _accessKey_) together with the desired capabilities. In the example we use Chrome 59.0 in Windows 10:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/advance/SauceLabsJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+As usual, the execution of the test can be seen in the SauceLabs dashboard:
+
+[.thumb]
+.SauceLabs dashboard
+image::saucelabs.png[scaledwidth=100%]
