@@ -790,6 +790,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#generic-driver">Generic driver</a></li>
 <li><a href="#integration-with-jenkins">Integration with Jenkins</a></li>
 <li><a href="#using-genymotion">Using Genymotion</a></li>
+<li><a href="#single-session">Single session</a></li>
 <li><a href="#selenium-jupiter-cli">Selenium-Jupiter CLI</a></li>
 <li><a href="#selenium-jupiter-server">Selenium-Jupiter Server</a></li>
 </ul>
@@ -1077,7 +1078,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 </div>
 </li>
 <li>
-<p><code>version</code>: Optional value for the version. Wildcard for latest versions (<code>latest</code>, <code>latest-1</code>, etc) are accepted. Concrete versions are also valid (e.g. <code>63.0</code>, <code>57.0</code>, etc., depending of the browser). <strong>Beta</strong> and <strong>unstable</strong> (i.e. development) versions for Chrome and Firefox are also supported (using the labels <code>beta</code> and <code>unstable</code> labels respectively).</p>
+<p><code>version</code>: Optional value for the version. Wildcard for latest versions (<code>latest</code>, <code>latest-1</code>, etc) are accepted. Concrete versions are also valid (e.g. <code>63.0</code>, <code>58.0</code>, etc., depending of the browser). <strong>Beta</strong> and <strong>unstable</strong> (i.e. development) versions for Chrome and Firefox are also supported (using the labels <code>beta</code> and <code>unstable</code> labels respectively).</p>
 </li>
 <li>
 <p><code>deviceName</code>: Also for <code>android</code> type, the device type can be specified (Samsung Galaxy S6, Nexus 4, Nexus 5, etc.).</p>
@@ -1292,14 +1293,36 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="sect2">
 <h3 id="using-genymotion"><a class="anchor" href="#using-genymotion"></a>Using Genymotion</h3>
 <div class="paragraph">
-<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach.</p>
+<p>The use of <a href="https://www.genymotion.com/">Genymotion</a> for using Android devices in the cloud is possible as of Selenium-Jupiter 3.1.0. This feature is used using a Software as a Service (SaaS) approach. In order to use this feature, we need to select <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code> in a test. First, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreover, we need to specify the following values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Genymotion template name (method <code>setAndroidGenymotionTemplate()</code>).</p>
+</li>
+<li>
+<p>Android version (method <code>setAndroidGenymotionAndroidVersion()</code>).</p>
+</li>
+<li>
+<p>Android API level (method <code>setAndroidGenymotionAndroidApi()</code>).</p>
+</li>
+<li>
+<p>Android screen size (method <code>setAndroidGenymotionScreenSize()</code>).</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>In order to use this feature, we need to select <code>GENYMOTION_SAAS</code> in the <code>cloud</code> parameter of <code>@DockerBrowser</code> in a test. First, we need a valid Genymotion account. This account will be configured using the methods <code>setAndroidGenymotionUser()</code>, <code>setAndroidGenymotionPassword()</code> and <code>setAndroidGenymotionLicense()</code> for user, password, and license respectively. Moreover, we need to specify the name of the Genymotion template to be used in our test using the configuration method <code>setAndroidGenymotionTemplate()</code>. The following test shows an example of this feature:</p>
+<p>All this values will be internally managed using a label specified with <code>setAndroidGenymotionDeviceName()</code>. This label will be used later in the actual test in the <code>deviceName</code> value. The following test shows an example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.ANDROID</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
@@ -1315,19 +1338,149 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
         Config config = seleniumExtension.getConfig();
+        config.setAndroidGenymotionDeviceName(<span class="string"><span class="delimiter">&quot;</span><span class="content">SamsungS7V6</span><span class="delimiter">&quot;</span></span>);
+        config.setAndroidGenymotionTemplate(<span class="string"><span class="delimiter">&quot;</span><span class="content">Samsung Galaxy S7</span><span class="delimiter">&quot;</span></span>);
+        config.setAndroidGenymotionAndroidVersion(<span class="string"><span class="delimiter">&quot;</span><span class="content">6.0.0</span><span class="delimiter">&quot;</span></span>);
+        config.setAndroidGenymotionAndroidApi(<span class="string"><span class="delimiter">&quot;</span><span class="content">23</span><span class="delimiter">&quot;</span></span>);
+        config.setAndroidGenymotionScreenSize(<span class="string"><span class="delimiter">&quot;</span><span class="content">1440x2560</span><span class="delimiter">&quot;</span></span>);
+
+        <span class="comment">// The following values need to be set (it can be overridden using Java</span>
+        <span class="comment">// properties or environment variables)</span>
         config.setAndroidGenymotionUser(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-user</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionPassword(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-pass</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionLicense(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-license</span><span class="delimiter">&quot;</span></span>);
-        config.setAndroidGenymotionTemplate(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-template</span><span class="delimiter">&quot;</span></span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionSaas(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus6V8</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome</span><span class="delimiter">&quot;</span></span>)
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">SamsungS7V6</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">browser</span><span class="delimiter">&quot;</span></span>)
             RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can see the execution of the test in the <a href="https://cloud.geny.io/">Genymotion dashboard</a> while the test is being executed. For the example before, we see the following Android device:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/genymotion.png" alt="genymotion">
+</div>
+<div class="title">Figure 7. Example of test execution in Genymotion</div>
+</div>
+<div class="paragraph">
+<p>Notice that <em>Selenium_Jupiter</em> downloads the <em>chromedriver</em> binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the <em>chromedriver</em> binary is related with the installed browser. The following table shows a summary of the <em>chromedriver</em> versions managed by <em>Selenium_Jupiter</em> depending on the Android API level. It other version of <em>chromedriver</em> is required, it can specified using the method <code>setAndroidGenymotionChromedriver()</code>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Versions of <em>chromedriver</em> handled by <em>Selenium-Jupiter</em> for Genymotion</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Android API level</th>
+<th class="tableblock halign-left valign-top"><em>chromedriver</em> version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.13</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.18</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.23</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.28</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.31</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.33</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.40</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="single-session"><a class="anchor" href="#single-session"></a>Single session</h3>
+<div class="paragraph">
+<p>By default, the instances provided by <em>Selenium_Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc) are created <strong>before each</strong> test, and are disposed <strong>after each</strong> test. As of <em>Selenium_Jupiter</em> 3.2.0, this default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <strong>before all</strong> tests, and are disposed <strong>after all</strong> tests.</p>
+</div>
+<div class="paragraph">
+<p>The following test shows an example of this feature. As you can seen, this test uses the ordering capability provided as of JUnit 5.4. The browser (Chrome in this case) is available at the beginning for the tests. According to the given order, first <code>testStep1()</code> is executed. Then, the session (i.e. the same browser in the same state) is used by the second test, <code>testStep2()</code>. An the end of all tests, the browser is closed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.junit.jupiter.api.Assertions.assertTrue</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.MethodOrderer.OrderAnnotation</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Order</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.TestMethodOrder</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebElement</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SingleSession</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="annotation">@TestMethodOrder</span>(OrderAnnotation.class)
+<span class="annotation">@SingleSession</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">OrderedJupiterTest</span> {
+
+    <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+
+    RemoteWebDriver driver;
+
+    <span class="directive">public</span> OrderedJupiterTest(ChromeDriver driver) {
+        <span class="local-variable">this</span>.driver = driver;
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@Order</span>(<span class="integer">1</span>)
+    <span class="directive">public</span> <span class="type">void</span> testStep1() {
+        log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Step 1: {}</span><span class="delimiter">&quot;</span></span>, driver);
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@Order</span>(<span class="integer">2</span>)
+    <span class="directive">public</span> <span class="type">void</span> testStep2() {
+        log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Step 2: {}</span><span class="delimiter">&quot;</span></span>, driver);
+        WebElement about = driver.findElementByLinkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>);
+        assertTrue(about.isDisplayed());
+        about.click();
     }
 
 }</code></pre>
@@ -1352,7 +1505,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.1.1
+[INFO] Building selenium-jupiter 3.2.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1382,15 +1535,15 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.1.1-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.2.0-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
-[INFO] Using FIREFOX version 64.0 (latest)
+[INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for FIREFOX at http://172.17.0.1:32909/wd/hub
@@ -1437,7 +1590,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.1.1
+[INFO] Building Selenium-Jupiter 3.2.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1447,13 +1600,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.1.1/selenium-jupiter-3.1.1-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.1.1-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.2.0-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -1466,7 +1619,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 11:14:29 CET
+Last updated 2019-04-02 17:35:57 CEST
 </div>
 </div>
 </body>

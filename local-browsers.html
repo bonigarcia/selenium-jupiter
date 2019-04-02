@@ -787,8 +787,9 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#chrome">Chrome</a></li>
 <li><a href="#firefox">Firefox</a></li>
-<li><a href="#edge">Edge</a></li>
 <li><a href="#opera">Opera</a></li>
+<li><a href="#edge">Edge</a></li>
+<li><a href="#internet-explorer">Internet Explorer</a></li>
 <li><a href="#safari">Safari</a></li>
 <li><a href="#phamtomjs">PhamtomJS</a></li>
 <li><a href="#htmlunit">HtmlUnit</a></li>
@@ -946,6 +947,36 @@ WebDriverManager.iedriver().setup();;</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
+<div class="paragraph">
+<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>Selenium-Jupiter</em>, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
 <div class="paragraph">
 <p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java">example</a> uses one Edge browser. This test should be executed on a Windows machine with Edge.</p>
@@ -976,26 +1007,27 @@ WebDriverManager.iedriver().setup();;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="opera"><a class="anchor" href="#opera"></a>Opera</h3>
+<h3 id="internet-explorer"><a class="anchor" href="#internet-explorer"></a>Internet Explorer</h3>
 <div class="paragraph">
-<p>Are you one of the few using Opera? No problem, you can still make automated  <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java">tests</a> with JUnit 5, WebDriver, and <em>Selenium-Jupiter</em>, as follows:</p>
+<p>The following <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/IExplorerJupiterTest.java">example</a> uses one Internet Explorer browser. This test should be executed on a Windows machine with Internet Explorer.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.ie.InternetExplorerDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">IExplorerJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+    <span class="type">void</span> iExplorerTest(InternetExplorerDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1099,7 +1131,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 11:14:29 CET
+Last updated 2019-04-02 17:35:58 CEST
 </div>
 </div>
 </body>
