@@ -788,6 +788,8 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#chrome">Chrome</a></li>
 <li><a href="#firefox">Firefox</a></li>
 <li><a href="#opera">Opera</a></li>
+<li><a href="#edge">Edge</a></li>
+<li><a href="#internet-explorer">Internet Explorer</a></li>
 <li><a href="#android">Android</a></li>
 <li><a href="#remote-sessions-vnc">Remote sessions (VNC)</a></li>
 <li><a href="#recordings">Recordings</a></li>
@@ -851,7 +853,7 @@ table.CodeRay td.code>pre{padding:0}
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">71.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -965,7 +967,7 @@ The label <em>latest-*</em> is supported, where <em>*</em> is a number for a for
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Notice that the version of the second test is simply <code>60</code>. The actual version of the image is <code>60.0</code>, but <em>Selenium-Jupiter</em> supposes that version is <code>.0</code> if not specified.
+Notice that the version of the second test is simply <code>64</code>. The actual version of the image is <code>64.0</code>, but <em>Selenium-Jupiter</em> supposes that version is <code>.0</code> if not specified.
 </td>
 </tr>
 </table>
@@ -997,6 +999,90 @@ Notice that the version of the second test is simply <code>60</code>. The actual
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
+<div class="paragraph">
+<p><em>Selenium-Jupiter</em> can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a>. If that tutorial is followed step by step, a Docker image named <code>windows/edge:18</code> will be available in the local machine. Then, <em>Selenium_Jupiter</em> can be used to control the Edge browser as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.EDGE</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerEdgeJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testEdge(<span class="annotation">@DockerBrowser</span>(type = EDGE) WebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="internet-explorer"><a class="anchor" href="#internet-explorer"></a>Internet Explorer</h3>
+<div class="paragraph">
+<p>The same way than Edge, <em>Selenium-Jupiter</em> can also be used to control a Internet Explorer browser in a Docker container. This time, the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a> need to be used to build the <code>windows/ie:11</code> image. Then, <em>Selenium_Jupiter</em> uses that image, for example as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.IEXPLORER</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerIExplorerJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testIExplorer(
+            <span class="annotation">@DockerBrowser</span>(type = IEXPLORER) WebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+
     }
 
 }</code></pre>
@@ -1259,7 +1345,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testPerformance(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">71.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
         <span class="predefined-type">ExecutorService</span> executorService = newFixedThreadPool(NUM_BROWSERS);
@@ -1296,7 +1382,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 11:14:29 CET
+Last updated 2019-04-02 17:35:58 CEST
 </div>
 </div>
 </body>

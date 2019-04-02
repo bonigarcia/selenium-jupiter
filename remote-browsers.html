@@ -787,6 +787,7 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel2">
 <li><a href="#using-capabilities">Using capabilities</a></li>
 <li><a href="#mobile-testing-with-appium">Mobile testing with Appium</a></li>
+<li><a href="#using-saucelabs">Using SauceLabs</a></li>
 </ul>
 </li>
 </ul>
@@ -985,12 +986,73 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="using-saucelabs"><a class="anchor" href="#using-saucelabs"></a>Using SauceLabs</h3>
+<div class="paragraph">
+<p><em>Selenium-Jupiter</em> can be used to control remote browsers in the <a href="https://saucelabs.com/">SauceLabs</a> cloud.</p>
+</div>
+<div class="paragraph">
+<p>In the following example, first the <code>@DriverUrl</code> is used to specify the SauceLabs URL. Then the annotation <code>@DriverCapabilities</code> is used to configure the SauceLabs credentials (<em>username</em> and <em>accessKey</em>) together with the desired capabilities. In the example we use Chrome 59.0 in Windows 10:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@Disabled</span>
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SauceLabsJupiterTest</span> {
+
+    <span class="annotation">@DriverUrl</span>
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">https://ondemand.eu-central-1.saucelabs.com/wd/hub</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = <span class="keyword">new</span> DesiredCapabilities();
+    {
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">username</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;my-saucelabs-user&gt;</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">accessKey</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;my-saucelabs-key&gt;</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Chrome</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">platform</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Windows 10</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">59.0</span><span class="delimiter">&quot;</span></span>);
+        capabilities.setCapability(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">selenium-jupiter-and-saucelabs</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testWithSaucelabs(RemoteWebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As usual, the execution of the test can be seen in the SauceLabs dashboard:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="./img/saucelabs.png" alt="saucelabs">
+</div>
+<div class="title">Figure 1. SauceLabs dashboard</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 11:14:29 CET
+Last updated 2019-04-02 17:35:58 CEST
 </div>
 </div>
 </body>

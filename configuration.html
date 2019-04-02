@@ -967,7 +967,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>71.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>73.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
@@ -977,7 +977,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta-2.0.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.path</code></p></td>
@@ -987,7 +987,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable-2.0.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.path</code></p></td>
@@ -1007,7 +1007,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>64.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>66.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
@@ -1017,7 +1017,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta-2.0.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.path</code></p></td>
@@ -1027,7 +1027,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly-2.0.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.path</code></p></td>
@@ -1047,10 +1047,40 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>57.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>58.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Opera in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.edge.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image format for Edge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>windows/edge:%s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.edge.latest.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Edge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>18</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.edge.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Opera in Docker as browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.iexplorer.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker image format for Edge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>windows/ie:%s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.iexplorer.latest.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Edge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>11</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.iexplorer.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Opera in Docker as browser</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
 </tr>
@@ -1102,26 +1132,51 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.image.genymotion</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker image for Genymotion usage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>butomo1989/docker-android-genymotion:1.5-p6</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>budtmo/docker-android-genymotion:1.7-p0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.user</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion user for SaaS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS user</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion password for SaaS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS password</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.license</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion licence for SaaS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS license</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.template</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion template for SaaS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS template</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.device.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS device</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.android.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS Android version</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.android.api</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS Android API level</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.screen.size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS Android screen size</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.genymotion.chromedriver</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genymotion SaaS chromedriver version</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -1233,6 +1288,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.lang</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Language for Docker containers</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>en</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.startup.timeout.duration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker startup timeout in duration format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2m</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
@@ -1425,7 +1485,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-20 11:14:29 CET
+Last updated 2019-04-02 17:35:57 CEST
 </div>
 </div>
 </body>
