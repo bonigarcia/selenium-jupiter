@@ -48,6 +48,23 @@ Again, the use of Opera browsers in Docker is the same, simply changing the brow
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
+=== Edge
+
+_Selenium-Jupiter_ can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the https://github.com/aerokube/windows-images[tutorial provided by Aerokube]. If that tutorial is followed step by step, a Docker image named `windows/edge:18` will be available in the local machine. Then, _Selenium_Jupiter_ can be used to control the Edge browser as follows: 
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+=== Internet Explorer
+
+The same way than Edge, _Selenium-Jupiter_ can also be used to control a Internet Explorer browser in a Docker container. This time, the https://github.com/aerokube/windows-images[tutorial provided by Aerokube] need to be used to build the `windows/ie:11` image. Then, _Selenium_Jupiter_ uses that image, for example as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerIExplorerJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === Android
 
@@ -95,7 +112,6 @@ Android (`9.0`) with Chrome in `Samsung Galaxy S6` is the default setup for Andr
 include::../../test/java/io/github/bonigarcia/seljup/test/android/AndroidCustomJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-
 === Remote sessions (VNC)
 
 _Selenium-Jupiter_ allows to track the evolution of our browsers in Docker using Virtual Network Computing (VNC) sessions. This feature is disabled by default, but it can activated using the configuration key `sel.jup.vnc`  to `true` (more info on section link:#configuration[Configuration]).
@@ -119,8 +135,6 @@ image::vnc_chrome_in_android_docker.png[scaledwidth=100%]
 
 NOTE: In addition to log the VNC URL, as of _Selenium-Jupiter_ 2.1.0, the value of this URL is exported as Java property as `vnc.session.url` (i.e. `System.setProperty("vnc.session.url", vncUrl);`).
 
-
-
 === Recordings
 
 _Selenium-Jupiter_ allows to record the sessions of browsers in Docker. This capability is not activated by default, but it activated simply setting the configuration key `sel.jup.recording` to `true` (see section link:#configuration[Configuration] for further details about configuration).
@@ -130,7 +144,6 @@ This way, a recording in MP4 format will be stored at the end of the test which 
 [.thumb]
 .Example of recording played in VLC
 image::recording_chrome_in_docker.png[scaledwidth=100%]
-
 
 === Performance tests
 

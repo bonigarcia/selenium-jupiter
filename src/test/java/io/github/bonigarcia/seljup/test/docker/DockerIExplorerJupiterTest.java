@@ -16,12 +16,15 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
+//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+//end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
+//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +32,9 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-@Disabled
+//end::snippet-in-doc[]
+@Disabled("Internet Explorer in Docker not available in Travis, only needed for doc")
+//tag::snippet-in-doc[]
 public class DockerIExplorerJupiterTest {
 
     @RegisterExtension
@@ -42,13 +47,13 @@ public class DockerIExplorerJupiterTest {
     }
 
     @Test
-    public void testHtmlVnc(@DockerBrowser(type = IEXPLORER) WebDriver driver)
-            throws InterruptedException {
+    public void testIExplorer(
+            @DockerBrowser(type = IEXPLORER) WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
 
-        // Thread.sleep(30000);
     }
 
 }
+//end::snippet-in-doc[]

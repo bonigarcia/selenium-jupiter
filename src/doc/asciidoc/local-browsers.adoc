@@ -63,6 +63,15 @@ The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/tes
 include::../../test/java/io/github/bonigarcia/seljup/test/basic/FirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
+=== Opera
+
+Are you one of the few using Opera? No problem, you can still make automated  https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tests] with JUnit 5, WebDriver, and _Selenium-Jupiter_, as follows: 
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
 === Edge
 
 The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/EdgeJupiterTest.java[example] uses one Edge browser. This test should be executed on a Windows machine with Edge. 
@@ -79,15 +88,6 @@ The following https://github.com/bonigarcia/selenium-jupiter/blob/master/src/tes
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/basic/IExplorerJupiterTest.java[tags=snippet-in-doc,indent=0]
-----
-
-=== Opera
-
-Are you one of the few using Opera? No problem, you can still make automated  https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tests] with JUnit 5, WebDriver, and _Selenium-Jupiter_, as follows: 
-
-[source,java]
-----
-include::../../test/java/io/github/bonigarcia/seljup/test/basic/OperaJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Safari
