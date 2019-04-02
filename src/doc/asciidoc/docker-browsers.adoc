@@ -37,7 +37,7 @@ The use of Firefox is equivalent. With respect to the previous example, it simpl
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-NOTE: Notice that the version of the second test is simply `60`. The actual version of the image is `60.0`, but _Selenium-Jupiter_ supposes that version is `.0` if not specified.
+NOTE: Notice that the version of the second test is simply `64`. The actual version of the image is `64.0`, but _Selenium-Jupiter_ supposes that version is `.0` if not specified.
 
 === Opera
 
