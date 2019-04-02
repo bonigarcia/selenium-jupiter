@@ -191,7 +191,7 @@ Notice that _Selenium_Jupiter_ downloads the _chromedriver_ binary required by i
 .Versions of _chromedriver_ handled by _Selenium-Jupiter_ for Genymotion
 [width="100%",options="header"]
 |==========================
-| API level | _chromedriver_ version
+| Android API level | _chromedriver_ version
 | 21 | 2.21
 | 22 | 2.13
 | 23 | 2.18
@@ -201,6 +201,17 @@ Notice that _Selenium_Jupiter_ downloads the _chromedriver_ binary required by i
 | 27 | 2.33
 | 28 | 2.40
 |==========================
+
+=== Single session
+
+By default, the instances provided by _Selenium_Jupiter_ (e.g. `ChromeDriver`, `FirefoxDriver`, etc) are created **before each** test, and are disposed **after each** test. As of _Selenium_Jupiter_ 3.2.0, this default behavior can be changed using the class-level annotation `@SingleSession`. The instances provided in this case will be created **before all** tests, and are disposed **after all** tests.
+
+The following test shows an example of this feature. As you can seen, this test uses the ordering capability provided as of JUnit 5.4. The browser (Chrome in this case) is available at the beginning for the tests. According to the given order, first `testStep1()` is executed. Then, the session (i.e. the same browser in the same state) is used by the second test, `testStep2()`. An the end of all tests, the browser is closed.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/constructor/OrderedJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === Selenium-Jupiter CLI
 

@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.constructor;
 
+//tag::snippet-in-doc[]
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -62,8 +63,9 @@ public class OrderedJupiterTest {
     public void testStep2() {
         log.debug("Step 2: {}", driver);
         WebElement about = driver.findElementByLinkText("About");
-        about.click();
         assertTrue(about.isDisplayed());
+        about.click();
     }
 
 }
+//end::snippet-in-doc[]
