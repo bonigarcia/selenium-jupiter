@@ -39,7 +39,7 @@ The `WebDriver` subtypes supported by _Selenium-Jupiter_ are the following:
 - `SafariDriver`: Used to control Apple Safari browser (only possible in OSX El Capitan or greater).
 - `HtmlUnitDriver`: Used to control HtmlUnit (headless browser).
 - `PhantomJSDriver`: Used to control PhantomJS (headless browser).
-- `InternetExplorerDriver`: Used to control Microsoft Internet Explorer. Although this browser is supported, Internet Explorer is deprecated (in favor of Edge) and its use is highly discouraged.
+- `InternetExplorerDriver`: Used to control Microsoft Internet Explorer.
 - `RemoteWebDriver`: Used to control remote browsers (_Selenium Grid_).
 - `AppiumDriver`: Used to control mobile devices (Android, iOS).
 
