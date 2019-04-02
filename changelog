@@ -1,3 +1,14 @@
+selenium-jupiter (3.2.0)
+
+  + Support Microsoft Edge and Internet Explorer in Docker containers
+  + Improve Genymotion SAAS support
+  + Allow to configure volumes form @DockerBrowser annotation
+  + Fix remote Docker daemon usage
+  + Include class-level annotation @SingleSession to allow run tests in the same session (issue #52)
+
+ -- Boni Garcia <boni.gg@gmail.com>  Mon, 01 Apr 2019 21:03:00 +0200
+
+
 selenium-jupiter (3.1.1)
 
   + Fix #46 Bump several dependencies versions
