@@ -6,7 +6,7 @@ ext {
 	selenium = '3.141.59'
 	webdrivermanager = '3.4.0'
 	appium = '7.0.0'
-	dockerclient = '8.15.0'
+	dockerclient = '8.15.2'
 	phantomjsdriver = '1.4.4' 
 	slf4j = '1.7.25'
 	logback = '1.2.3'
