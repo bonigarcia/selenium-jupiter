@@ -98,6 +98,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.hub.url` | Docker Hub URL |`https://hub.docker.com/`
 |`sel.jup.docker.stop.timeout.sec` |  Timeout in seconds to stop Docker containers at the end of tests |`0`
 |`sel.jup.docker.api.version` | Docker API version |`1.35`
+|`sel.jup.docker.host` | Host to use when connecting to exposed docker port instead of dynamic lookup |
 |`sel.jup.docker.network` | Docker network |`bridge`
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
 |`sel.jup.docker.lang` | Language for Docker containers |`en`

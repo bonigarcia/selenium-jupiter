@@ -162,6 +162,8 @@ public class Config {
             "sel.jup.docker.stop.timeout.sec", Integer.class);
     ConfigKey<String> dockerApiVersion = new ConfigKey<>(
             "sel.jup.docker.api.version", String.class);
+    ConfigKey<String> dockerHost = new ConfigKey<>("sel.jup.docker.host",
+            String.class);
     ConfigKey<String> dockerNetwork = new ConfigKey<>("sel.jup.docker.network",
             String.class);
     ConfigKey<String> dockerTimeZone = new ConfigKey<>(
@@ -809,6 +811,14 @@ public class Config {
 
     public void setDockerApiVersion(String value) {
         this.dockerApiVersion.setValue(value);
+    }
+
+    public String getDockerHost() {
+        return resolve(dockerHost);
+    }
+
+    public void setDockerHost(String value) {
+        this.dockerHost.setValue(value);
     }
 
     public String getDockerNetwork() {

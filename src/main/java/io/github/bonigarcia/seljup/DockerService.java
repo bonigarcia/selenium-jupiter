@@ -89,6 +89,11 @@ public class DockerService {
 
     public String getHost(String containerId, String network)
             throws DockerException, InterruptedException {
+        String dockerHost = getConfig().getDockerHost();
+        if( !dockerHost.isEmpty() ) {
+            return dockerHost;
+        }
+
         return IS_OS_LINUX
                 ? dockerClient.inspectContainer(containerId).networkSettings()
                         .networks().get(network).gateway()
