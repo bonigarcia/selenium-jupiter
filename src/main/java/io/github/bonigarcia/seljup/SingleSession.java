@@ -29,6 +29,7 @@ import java.lang.annotation.Target;
  * @since 3.2.0
  */
 @Retention(RUNTIME)
+@Inherited
 @Target(TYPE)
 public @interface SingleSession {
 
