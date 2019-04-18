@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -29,6 +30,7 @@ import java.lang.annotation.Target;
  * @since 3.2.0
  */
 @Retention(RUNTIME)
+@Inherited
 @Target(TYPE)
 public @interface SingleSession {
 
