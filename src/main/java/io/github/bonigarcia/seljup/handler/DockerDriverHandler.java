@@ -998,8 +998,8 @@ public class DockerDriverHandler {
                     Parameter[] parameters = constructor.getParameters();
                     count += getDockerBrowsersInParams(parameters);
                 }
-                Method[] declaredMethods = testClass.get().getDeclaredMethods();
-                for (Method method : declaredMethods) {
+                Method[] methods = testClass.get().getMethods();
+                for (Method method : methods) {
                     Parameter[] parameters = method.getParameters();
                     count += getDockerBrowsersInParams(parameters);
                 }
