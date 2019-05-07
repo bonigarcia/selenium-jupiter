@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,12 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
+/**
+ * Test using custom Docker URL.
+ *
+ * @author Boni Garcia (boni.gg@gmail.com)
+ * @since 3.1.0
+ */
 public class TemplateRegisterDockerTest {
 
     @RegisterExtension
