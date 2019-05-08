@@ -385,15 +385,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @Override
     public void afterEach(ExtensionContext extensionContext) {
-        if (!isSingleSession(extensionContext)) {
-            teardown(extensionContext);
-        }
+        teardown(extensionContext, !isSingleSession(extensionContext));
     }
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
         if (!driverHandlerMap.isEmpty()) {
-            teardown(extensionContext);
+            teardown(extensionContext, true);
         }
     }
 
@@ -410,7 +408,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         return singleSession;
     }
 
-    private void teardown(ExtensionContext extensionContext) {
+    private void teardown(ExtensionContext extensionContext,
+            boolean quitDriver) {
         // Make screenshots if required and close browsers
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig());
@@ -429,7 +428,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             // Quit WebDriver object
             Object object = driverHandler.getObject();
             try {
-                quitWebDriver(object, driverHandler, screenshotManager);
+                quitWebDriver(object, driverHandler, screenshotManager,
+                        quitDriver);
             } catch (Exception e) {
                 log.warn("Exception closing webdriver object {}", object, e);
             }
@@ -448,14 +448,16 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
 
     @SuppressWarnings("unchecked")
     private void quitWebDriver(Object object, DriverHandler driverHandler,
-            ScreenshotManager screenshotManager) {
+            ScreenshotManager screenshotManager, boolean quitDriver) {
         if (object != null) {
             if (List.class.isAssignableFrom(object.getClass())) {
                 List<RemoteWebDriver> webDriverList = (List<RemoteWebDriver>) object;
                 for (int i = 0; i < webDriverList.size(); i++) {
                     screenshotManager.makeScreenshot(webDriverList.get(i),
                             driverHandler.getName() + "_" + i);
-                    webDriverList.get(i).quit();
+                    if (quitDriver) {
+                        webDriverList.get(i).quit();
+                    }
                 }
 
             } else {
@@ -464,7 +466,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     screenshotManager.makeScreenshot(webDriver,
                             driverHandler.getName());
                 }
-                webDriver.quit();
+                if (quitDriver) {
+                    webDriver.quit();
+                }
             }
         }
     }
