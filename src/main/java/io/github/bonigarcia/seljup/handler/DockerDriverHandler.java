@@ -70,6 +70,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
@@ -999,7 +1000,10 @@ public class DockerDriverHandler {
                     count += getDockerBrowsersInParams(parameters);
                 }
                 Method[] methods = testClass.get().getMethods();
-                for (Method method : methods) {
+                Method[] declaredMethods = testClass.get().getDeclaredMethods();
+                Method[] allMethods = (Method[]) ArrayUtils.addAll(methods,
+                        declaredMethods);
+                for (Method method : allMethods) {
                     Parameter[] parameters = method.getParameters();
                     count += getDockerBrowsersInParams(parameters);
                 }
