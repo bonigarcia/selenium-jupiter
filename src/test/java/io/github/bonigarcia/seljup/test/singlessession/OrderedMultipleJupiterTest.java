@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.constructor;
+package io.github.bonigarcia.seljup.test.singlessession;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.hamcrest.CoreMatchers.containsString;

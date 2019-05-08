@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.generic;
+package io.github.bonigarcia.seljup.test.singlessession;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
