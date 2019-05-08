@@ -164,14 +164,14 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         Parameter parameter = parameterContext.getParameter();
         int index = parameterContext.getIndex();
 
-        log.debug("Context id {}", contextId);
+        log.trace("Context id {}", contextId);
         if (isSingleSession(extensionContext)
                 && driverHandlerMap.containsKey(contextId)) {
             List<DriverHandler> list = driverHandlerMap.get(contextId);
             if (index < list.size()) {
                 Object obj = list.get(index).getObject();
                 if (obj != null) {
-                    log.debug("Returning index {}: {}", index, obj);
+                    log.trace("Returning index {}: {}", index, obj);
                     return obj;
                 }
             }
