@@ -17,12 +17,6 @@
             "type": "chrome-in-docker",
             "version": "beta"
          }
-      ],
-      [
-         {
-            "type": "chrome-in-docker",
-            "version": "unstable"
-         }
       ]
    ]
 }
