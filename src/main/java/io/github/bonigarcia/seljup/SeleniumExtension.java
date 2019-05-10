@@ -457,21 +457,21 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 for (int i = 0; i < webDriverList.size(); i++) {
                     screenshotManager.makeScreenshot(webDriverList.get(i),
                             driverHandler.getName() + "_" + i);
-                    if (quitDriver) {
-                        webDriverList.get(i).quit();
-                    }
+                    conditionalQuitWebDriver(webDriverList.get(i), quitDriver);
                 }
-
             } else {
                 WebDriver webDriver = (WebDriver) object;
-                if (driverHandler.getName() != null) {
-                    screenshotManager.makeScreenshot(webDriver,
-                            driverHandler.getName());
-                }
-                if (quitDriver) {
-                    webDriver.quit();
-                }
+                screenshotManager.makeScreenshot(webDriver,
+                        driverHandler.getName());
+                conditionalQuitWebDriver(webDriver, quitDriver);
             }
+        }
+    }
+
+    private void conditionalQuitWebDriver(WebDriver webDriver,
+            boolean quitDriver) {
+        if (quitDriver) {
+            webDriver.quit();
         }
     }
 

@@ -62,7 +62,7 @@ public class ScreenshotManager {
     }
 
     void makeScreenshot(WebDriver driver, String fileName) {
-        if (isScreenshotRequired() && driver != null) {
+        if (isScreenshotRequired() && driver != null && fileName != null) {
             String screenshotFormat = getConfig().getScreenshotFormat();
             switch (screenshotFormat) {
             case "png":
