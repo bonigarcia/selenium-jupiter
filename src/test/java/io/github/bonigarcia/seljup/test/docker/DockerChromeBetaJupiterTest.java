@@ -47,7 +47,6 @@ public class DockerChromeBetaJupiterTest {
         exercise(driver);
     }
 
-    @Disabled
     @Test
     public void testChromeUnstable(
             @DockerBrowser(type = CHROME, version = "unstable") RemoteWebDriver driver)
