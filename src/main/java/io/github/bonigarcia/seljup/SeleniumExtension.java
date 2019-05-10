@@ -435,10 +435,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             }
 
             // Clean handler
-            try {
-                driverHandler.cleanup();
-            } catch (Exception e) {
-                log.warn("Exception cleaning handler {}", driverHandler, e);
+            if (quitDriver) {
+                try {
+                    driverHandler.cleanup();
+                } catch (Exception e) {
+                    log.warn("Exception cleaning handler {}", driverHandler, e);
+                }
             }
         }
 
