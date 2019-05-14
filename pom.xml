@@ -3,7 +3,7 @@
 
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>3.2.1</version>
+    <version>3.2.2-SNAPSHOT</version>
 
     <properties>
         <!-- Dependencies -->
@@ -75,7 +75,7 @@
         <connection>scm:git:git://github.com/bonigarcia/selenium-jupiter.git</connection>
         <developerConnection>scm:git:git@github.com:bonigarcia/selenium-jupiter.git</developerConnection>
         <url>https://github.com/bonigarcia/selenium-jupiter</url>
-        <tag>selenium-jupiter-3.2.1</tag>
+        <tag>develop</tag>
     </scm>
 
     <issueManagement>
