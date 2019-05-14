@@ -1,3 +1,15 @@
+selenium-jupiter (3.2.1)
+
+  + Bump WebDriverManager to version 3.5.0 (fix Edge support)
+  + Quit WebDriver object depending on a boolean value (fix #55)
+  + Remove -2.0.1 suffix from elastestbrowsers tag
+  + Allow inherited methods to use docker browsers (PR #58)
+  + Add sel.jup.docker.host config parameter (PR #57)
+  + Bump spotify:docker-client version to 8.15.2 (issue #40)
+
+ -- Boni Garcia <boni.gg@gmail.com>  Tue, 14 May 2019 14:05:00 +0200
+
+
 selenium-jupiter (3.2.0)
 
   + Support Microsoft Edge and Internet Explorer in Docker containers
