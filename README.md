@@ -188,7 +188,6 @@ public class AppiumJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
 ```
 
 ### Examples
