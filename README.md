@@ -4,8 +4,8 @@
 [![codecov](https://codecov.io/gh/bonigarcia/selenium-jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/bonigarcia/selenium-jupiter)
 [![badge-jdk](https://img.shields.io/badge/jdk-8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Support badge]( https://img.shields.io/badge/support-sof-green.svg)](http://stackoverflow.com/questions/tagged/selenium-jupiter)
 [![Twitter](https://img.shields.io/badge/follow-@boni_gg-green.svg)](https://twitter.com/boni_gg)
+[![Support badge](https://img.shields.io/badge/stackoverflow-selenium_jupiter-green.svg)](https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest)
 
 # Selenium-Jupiter [![][Logo]][GitHub Repository]
 
