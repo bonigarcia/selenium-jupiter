@@ -228,7 +228,7 @@ public class Config {
     ConfigKey<String> androidLogsFolder = new ConfigKey<>(
             "sel.jup.android.logs.folder", String.class);
     ConfigKey<String> androidAppiumLogLevel  = new ConfigKey<>(
-            "sel.jup.android.appium.loglevel", String.class, "debug:debug");
+            "sel.jup.android.appium.loglevel", String.class, "debug");
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
     ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
