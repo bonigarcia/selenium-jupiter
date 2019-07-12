@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/bonigarcia/selenium-jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/bonigarcia/selenium-jupiter)
 [![badge-jdk](https://img.shields.io/badge/jdk-8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Backers on Open Collective](https://opencollective.com/selenium-jupiter/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/selenium-jupiter/sponsors/badge.svg)](#sponsors)
 [![Support badge](https://img.shields.io/badge/stackoverflow-selenium_jupiter-green.svg)](https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest)
 [![Twitter Follow](https://img.shields.io/twitter/follow/boni_gg.svg?style=social)](https://twitter.com/boni_gg)
 
@@ -284,6 +286,19 @@ When the Selenium-Jupiter server is up and running, it acts as a regular Seleniu
 ## Help
 
 If you have questions on how to use *Selenium-Jupiter* properly with a special configuration or suchlike, please consider asking a question on [Stack Overflow] and tag it with  *selenium-jupiter*.
+
+
+## Backers
+
+Thank you to all our backers! [[Become a backer](https://opencollective.com/selenium-jupiter#backer)]
+
+<a href="https://opencollective.com/selenium-jupiter#backers" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/selenium-jupiter#sponsor)]
+
+<a href="https://opencollective.com/selenium-jupiter/sponsor/0/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/0/avatar.svg"></a>
 
 
 ## About
