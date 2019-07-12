@@ -274,7 +274,7 @@ $ mvn exec:java -Dexec.args="server"
 * Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.1/selenium-jupiter-3.2.1-fat.jar). For instance:
 
 ```
-> java -jar webdrivermanager-3.2.1-fat.jar server
+> java -jar selenium-jupiter-3.2.1-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ```
 
