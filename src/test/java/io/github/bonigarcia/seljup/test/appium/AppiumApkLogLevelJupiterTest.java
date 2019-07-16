@@ -47,7 +47,7 @@ public class AppiumApkLogLevelJupiterTest {
     @BeforeEach
     void setupSelenium() {
         seleniumExtension.getConfig().setAndroidAppiumLogLevel("error:debug");
-        seleniumExtension.getConfig().setAndroidAppiumLogFile("appiumLog");
+        seleniumExtension.getConfig().setAndroidAppiumLogFile("appium.log");
     }
 
     @DriverCapabilities
