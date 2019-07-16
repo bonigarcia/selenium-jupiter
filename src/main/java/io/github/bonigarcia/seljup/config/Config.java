@@ -228,7 +228,9 @@ public class Config {
     ConfigKey<String> androidLogsFolder = new ConfigKey<>(
             "sel.jup.android.logs.folder", String.class);
     ConfigKey<String> androidAppiumLogLevel  = new ConfigKey<>(
-            "sel.jup.android.appium.loglevel", String.class, "debug");
+            "sel.jup.android.appium.loglevel", String.class);
+    ConfigKey<String> androidAppiumLogFile  = new ConfigKey<>(
+            "sel.jup.android.appium.logfile", String.class);
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
     ConfigKey<String> androidScreenHeigth = new ConfigKey<>(
@@ -1080,6 +1082,14 @@ public class Config {
         this.androidAppiumLogLevel.setValue(androidAppiumLogLevel);
     }
 
+    public String getAndroidAppiumLogFile() {
+        return resolve(androidAppiumLogFile);
+    }
+
+    public void setAndroidAppiumLogFile(String androidAppiumLogFile) {
+        this.androidAppiumLogFile.setValue(androidAppiumLogFile);
+    }
+
     public String getAndroidScreenWidth() {
         return resolve(androidScreenWidth);
     }
@@ -1207,5 +1217,4 @@ public class Config {
     public WebDriverManager phantomjs() {
         return WebDriverManager.phantomjs();
     }
-
 }
