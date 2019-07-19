@@ -18,10 +18,12 @@ package io.github.bonigarcia.seljup;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.apache.commons.io.FilenameUtils.getFullPathNoEndSeparator;
 import static org.openqa.selenium.Platform.ANY;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.util.Arrays;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +51,8 @@ public class BrowserInstance {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    static final String HOME = "~";
+
     Config config;
     BrowserType browserType;
     CloudType cloudType;
@@ -67,7 +71,15 @@ public class BrowserInstance {
         this.browserType = browserType;
         this.cloudType = cloudType;
         if (volumes.isPresent()) {
-            this.volumes = Arrays.asList(volumes.get());
+            this.volumes = new ArrayList<>();
+            String home = getFullPathNoEndSeparator(
+                    new File("·").getAbsolutePath());
+            for (String v : volumes.get()) {
+                if (v.contains(HOME)) {
+                    v = v.replace(HOME, home);
+                }
+                this.volumes.add(v);
+            }
         }
         if (browserName.isPresent()) {
             this.browserName = browserName.get();
