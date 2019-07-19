@@ -9,7 +9,7 @@
         <!-- Dependencies -->
         <selenium.version>3.141.59</selenium.version>
         <webdrivermanager.version>3.6.2</webdrivermanager.version>
-        <appium-java-client.version>7.0.0</appium-java-client.version>
+        <appium-java-client.version>7.1.0</appium-java-client.version>
         <docker-client.version>8.15.2</docker-client.version>
         <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
         <slf4j.version>1.7.25</slf4j.version>
