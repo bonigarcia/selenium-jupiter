@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.2.2] - 2019-07-19
+### Added
+- Improve Appium Logging Configuration (PR #64)
+
+### Changed
+- Bump WebDriverManager to version 3.6.2 (fix Edge support)
+- Bump spotify:docker-client version to 8.16.0
+- Change changelog format to Markdown
+
+
 ## [3.2.1] - 2019-05-14
 ### Added
 - Quit WebDriver object depending on a boolean value (fix #55)
