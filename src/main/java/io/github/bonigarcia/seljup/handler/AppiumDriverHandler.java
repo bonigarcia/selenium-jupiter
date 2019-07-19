@@ -16,6 +16,9 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
+import java.io.File;
 import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.util.Optional;
@@ -58,8 +61,19 @@ public class AppiumDriverHandler extends DriverHandler {
                 if (url.isPresent()) {
                     appiumServerUrl = url.get();
                 } else {
-                    appiumDriverLocalService = AppiumDriverLocalService
-                            .buildDefaultService();
+                    AppiumServiceBuilder builder = new AppiumServiceBuilder();
+
+                    String logLevel = config.getAndroidAppiumLogLevel();
+                    if(!logLevel.equals("")) {
+                        builder.withArgument(GeneralServerFlag.LOG_LEVEL, logLevel);
+                    }
+
+                    String appiumLogFile = config.getAndroidAppiumLogFile();
+                    if(!appiumLogFile.equals("")) {
+                        builder.withLogFile(new File(appiumLogFile));
+                    }
+
+                    appiumDriverLocalService = AppiumDriverLocalService.buildService(builder);
                     appiumDriverLocalService.start();
                     appiumServerUrl = appiumDriverLocalService.getUrl();
                 }

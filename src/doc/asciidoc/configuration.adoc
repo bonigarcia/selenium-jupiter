@@ -88,6 +88,8 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.android.appium.ping.period.sec` | Amount of time that should pass after failed attempt to initialize Appium before the next attempt |`10`
 |`sel.jup.android.logging` | If true Android and Appium log files will be written into `sel.jup.android.logs.folder` directory |`false`
 |`sel.jup.android.logs.folder` | Folder with Android logs relative to `sel.jup.output.folder`. It contains files such as _appium.log_ (Appium server log) or _docker-android.stdout.log_ (Android emulator log) |`androidLogs`
+|`sel.jup.android.appium.loglevel` | Log level for Appium console and logfile (`console[:file]`), either `debug`, `info`, `warn`, or `error`  |`debug`
+|`sel.jup.android.appium.logfile` | Log file for Appium output |
 |`sel.jup.android.screen.width` | Android device screen width (in pixels) |`1900`
 |`sel.jup.android.screen.height` | Android device screen height (in pixels) |`900`
 |`sel.jup.android.screen.depth` | Android device screen color depth |`24+32`
