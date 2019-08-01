@@ -27,7 +27,7 @@ apply plugin: 'idea'
 
 jar {
     baseName = 'selenium-jupiter'
-    version = '3.1.1-SNAPSHOT'
+    version = '3.2.3-SNAPSHOT'
 }
 
 test {
