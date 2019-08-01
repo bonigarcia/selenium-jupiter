@@ -16,7 +16,9 @@
  */
 package io.github.bonigarcia.seljup;
 
+
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -29,7 +31,9 @@ import java.lang.annotation.Target;
  * @since 3.2.0
  */
 @Retention(RUNTIME)
-@Target(FIELD)
+@Target({FIELD, PARAMETER})
 public @interface SelenideConfiguration {
+    
+    public String browser() default "";
 
 }

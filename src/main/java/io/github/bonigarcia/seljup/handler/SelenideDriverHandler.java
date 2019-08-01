@@ -65,6 +65,14 @@ public class SelenideDriverHandler extends DriverHandler {
 
         SelenideConfig config = new SelenideConfig();
         if (parameter != null) {
+            // @SelenideConfiguration as parameter
+            SelenideConfiguration selenideConfiguration = parameter
+                    .getAnnotation(SelenideConfiguration.class);
+            if (selenideConfiguration != null) {
+                config.browser(selenideConfiguration.browser());
+            }
+
+            // @SelenideConfiguration as field
             SelenideConfig globalConfig = annotationsReader
                     .getFromAnnotatedField(testInstance,
                             SelenideConfiguration.class, SelenideConfig.class);
