@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SelenideDefaultJupiterTest2 {
+public class SelenideGlobalConfigJupiterTest {
 
     @SelenideConfiguration
     SelenideConfig selenideConfig = new SelenideConfig().browser(FIREFOX);
