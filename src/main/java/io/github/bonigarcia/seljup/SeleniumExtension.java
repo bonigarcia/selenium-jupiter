@@ -64,6 +64,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
+import com.codeborne.selenide.SelenideDriver;
 import com.google.gson.Gson;
 
 import io.appium.java_client.AppiumDriver;
@@ -80,6 +81,7 @@ import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.handler.OtherDriverHandler;
 import io.github.bonigarcia.seljup.handler.RemoteDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
+import io.github.bonigarcia.seljup.handler.SelenideDriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
@@ -130,6 +132,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 OtherDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.ie.InternetExplorerDriver",
                 InternetExplorerDriverHandler.class);
+        addEntry(handlerMap, "com.codeborne.selenide.SelenideDriver",
+                SelenideDriverHandler.class);
 
         addEntry(templateHandlerMap, "chrome", ChromeDriver.class);
         addEntry(templateHandlerMap, "firefox", FirefoxDriver.class);
@@ -146,6 +150,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                 RemoteWebDriver.class);
         addEntry(templateHandlerMap, "opera-in-docker", RemoteWebDriver.class);
         addEntry(templateHandlerMap, "android", RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "selenide", SelenideDriverHandler.class);
     }
 
     @Override
@@ -153,7 +158,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             ExtensionContext extensionContext) {
         Class<?> type = parameterContext.getParameter().getType();
         return (WebDriver.class.isAssignableFrom(type)
-                || type.equals(List.class))
+                || type.equals(List.class) || type.equals(SelenideDriver.class))
                 && !isTestTemplate(extensionContext);
     }
 
@@ -460,7 +465,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                     conditionalQuitWebDriver(webDriverList.get(i), quitDriver);
                 }
             } else {
-                WebDriver webDriver = (WebDriver) object;
+                WebDriver webDriver;
+                if (SelenideDriver.class.isAssignableFrom(object.getClass())) {
+                    webDriver = ((SelenideDriver) object).getWebDriver();
+                } else {
+                    webDriver = (WebDriver) object;
+                }
                 screenshotManager.makeScreenshot(webDriver,
                         driverHandler.getName());
                 conditionalQuitWebDriver(webDriver, quitDriver);
