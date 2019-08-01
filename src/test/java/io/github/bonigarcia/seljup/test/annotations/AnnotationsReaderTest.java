@@ -49,7 +49,7 @@ public class AnnotationsReaderTest {
     @Test
     void testThrowsExceptionWithNullCapabilitiesClass() throws Exception {
         assertThrows(SeleniumJupiterException.class, () -> {
-            annotationsReader.getOptionsFromAnnotatedField(testInstance,
+            annotationsReader.getFromAnnotatedField(testInstance,
                     Options.class, null);
         }, "The parameter capabilitiesClass must not be null.");
     }
@@ -72,19 +72,19 @@ public class AnnotationsReaderTest {
     @Test
     void testGetsNullOptionsFromAnnotatedFieldIfSpeciedTypeNotFound()
             throws Exception {
-        Capabilities options = annotationsReader.getOptionsFromAnnotatedField(
+        Capabilities options = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, Capabilities.class);
         assertThat(options, nullValue());
     }
 
     @Test
     void testGetsOptionsFromAnnotatedFieldWithSpeciedType() throws Exception {
-        CapabilitiesA optionsA = annotationsReader.getOptionsFromAnnotatedField(
+        CapabilitiesA optionsA = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, CapabilitiesA.class);
         assertThat(optionsA, notNullValue());
         assertThat(optionsA.getId(), equalTo("A"));
 
-        CapabilitiesB optionsB = annotationsReader.getOptionsFromAnnotatedField(
+        CapabilitiesB optionsB = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, CapabilitiesB.class);
         assertThat(optionsB, notNullValue());
         assertThat(optionsB.getId(), equalTo("B"));

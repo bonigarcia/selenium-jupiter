@@ -72,7 +72,7 @@ public class InternetExplorerDriverHandler extends DriverHandler {
             throws IOException, IllegalAccessException {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         InternetExplorerOptions optionsFromAnnotatedField = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class,
+                .getFromAnnotatedField(testInstance, Options.class,
                         InternetExplorerOptions.class);
         if (optionsFromAnnotatedField != null) {
             internetExplorerOptions = optionsFromAnnotatedField;

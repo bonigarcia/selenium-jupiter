@@ -133,8 +133,8 @@ public class AnnotationsReader {
         return out;
     }
 
-    public <T extends Capabilities> T getOptionsFromAnnotatedField(
-            Optional<Object> testInstance, Class<Options> annotationClass,
+    public <T> T getFromAnnotatedField(Optional<Object> testInstance,
+            Class<? extends Annotation> annotationClass,
             Class<T> capabilitiesClass) throws IllegalAccessException {
         if (capabilitiesClass == null) {
             throw new SeleniumJupiterException(

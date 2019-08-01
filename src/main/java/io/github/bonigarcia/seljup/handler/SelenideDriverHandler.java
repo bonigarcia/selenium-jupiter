@@ -16,7 +16,9 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
+import java.io.IOException;
 import java.lang.reflect.Parameter;
+import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -24,6 +26,7 @@ import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -47,10 +50,30 @@ public class SelenideDriverHandler extends DriverHandler {
     @Override
     public void resolve() {
         try {
-            object = new SelenideDriver(new SelenideConfig());
+            Optional<Object> testInstance = context.getTestInstance();
+            SelenideConfig selenideConfig = getSelenideConfig(parameter,
+                    testInstance);
+            object = new SelenideDriver(selenideConfig);
         } catch (Exception e) {
             handleException(e);
         }
+    }
+
+    public SelenideConfig getSelenideConfig(Parameter parameter,
+            Optional<Object> testInstance)
+            throws IOException, IllegalAccessException {
+
+        SelenideConfig config = new SelenideConfig();
+        if (parameter != null) {
+            SelenideConfig globalConfig = annotationsReader
+                    .getFromAnnotatedField(testInstance,
+                            SelenideConfiguration.class, SelenideConfig.class);
+            if (globalConfig != null) {
+                config = globalConfig;
+            }
+        }
+
+        return config;
     }
 
 }
