@@ -228,10 +228,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             driverHandler = getDriverHandler(extensionContext, parameter, type,
                     constructorClass, browser, isRemote);
 
+            Optional<DockerBrowser> dockerBrowser = annotationsReader
+                    .getDocker(parameter);
             String contextId = extensionContext.getUniqueId();
             if (type.equals(RemoteWebDriver.class)
-                    || type.equals(WebDriver.class)
-                    || type.equals(List.class)) {
+                    || type.equals(WebDriver.class) || type.equals(List.class)
+                    || (dockerBrowser.isPresent()
+                            && type.equals(SelenideDriver.class))) {
                 initHandlerForDocker(contextId, driverHandler);
             }
 

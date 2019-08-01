@@ -20,11 +20,14 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.WebDriver;
 
 import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.BrowserInstance;
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.config.Config;
 
@@ -35,6 +38,8 @@ import io.github.bonigarcia.seljup.config.Config;
  * @since 3.2.0
  */
 public class SelenideDriverHandler extends DriverHandler {
+
+    private DockerDriverHandler dockerDriverHandler;
 
     public SelenideDriverHandler(Config config,
             AnnotationsReader annotationsReader) {
@@ -50,11 +55,38 @@ public class SelenideDriverHandler extends DriverHandler {
     public void resolve() {
         try {
             Optional<Object> testInstance = context.getTestInstance();
+            Optional<DockerBrowser> dockerBrowser = annotationsReader
+                    .getDocker(parameter);
+            if (dockerBrowser.isPresent()) {
+                BrowserInstance browserInstance = new BrowserInstance(config,
+                        annotationsReader, dockerBrowser.get().type(),
+                        dockerBrowser.get().cloud(),
+                        Optional.ofNullable(dockerBrowser.get().browserName()),
+                        Optional.ofNullable(dockerBrowser.get().volumes()));
+                dockerDriverHandler = new DockerDriverHandler(context,
+                        parameter, testInstance, annotationsReader,
+                        containerMap, dockerService, config, browserInstance,
+                        dockerBrowser.get().version());
+                object = dockerDriverHandler.resolve(dockerBrowser.get());
+            }
+
             SelenideConfig selenideConfig = getSelenideConfig(parameter,
                     testInstance);
-            object = new SelenideDriver(selenideConfig);
+            if (object != null) {
+                WebDriver webdriver = (WebDriver) object;
+                object = new SelenideDriver(selenideConfig, webdriver, null);
+            } else {
+                object = new SelenideDriver(selenideConfig);
+            }
         } catch (Exception e) {
             handleException(e);
+        }
+    }
+
+    @Override
+    public void cleanup() {
+        if (dockerDriverHandler != null) {
+            dockerDriverHandler.cleanup();
         }
     }
 

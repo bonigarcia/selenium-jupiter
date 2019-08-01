@@ -82,6 +82,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
+import com.codeborne.selenide.SelenideDriver;
 import com.google.gson.GsonBuilder;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.PortBinding;
@@ -1020,7 +1021,8 @@ public class DockerDriverHandler {
         int count = 0;
         for (Parameter param : parameters) {
             Class<?> type = param.getType();
-            if (WebDriver.class.isAssignableFrom(type)) {
+            if (WebDriver.class.isAssignableFrom(type)
+                    || SelenideDriver.class.isAssignableFrom(type)) {
                 count++;
             } else if (type.isAssignableFrom(List.class)) {
                 DockerBrowser dockerBrowser = param
