@@ -12,6 +12,7 @@
         <appium-java-client.version>7.0.0</appium-java-client.version>
         <docker-client.version>8.16.0</docker-client.version>
         <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
+        <selenide.version>5.2.6</selenide.version>
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <retrofit.version>2.5.0</retrofit.version>
@@ -109,6 +110,17 @@
             <groupId>com.codeborne</groupId>
             <artifactId>phantomjsdriver</artifactId>
             <version>${phantomjsdriver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
