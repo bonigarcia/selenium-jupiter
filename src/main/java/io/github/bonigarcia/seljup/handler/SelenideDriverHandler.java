@@ -17,10 +17,13 @@
 package io.github.bonigarcia.seljup.handler;
 
 import java.lang.reflect.Parameter;
+import java.net.URL;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
@@ -72,10 +75,25 @@ public class SelenideDriverHandler extends DriverHandler {
 
             SelenideConfig selenideConfig = getSelenideConfig(parameter,
                     testInstance);
+
             if (object != null) {
                 WebDriver webdriver = (WebDriver) object;
                 object = new SelenideDriver(selenideConfig, webdriver, null);
             } else {
+                Optional<Capabilities> capabilities = annotationsReader
+                        .getCapabilities(parameter, testInstance);
+                Optional<URL> url = annotationsReader.getUrl(parameter,
+                        testInstance, config.getSeleniumServerUrl());
+
+                if (capabilities.isPresent() && url.isPresent()) {
+                    selenideConfig.remote(url.get().toString());
+                    DesiredCapabilities browserCapabilities = (DesiredCapabilities) capabilities
+                            .get();
+                    selenideConfig.browserCapabilities(browserCapabilities);
+                    selenideConfig
+                            .browser(browserCapabilities.getBrowserName());
+                }
+
                 object = new SelenideDriver(selenideConfig);
             }
         } catch (Exception e) {
