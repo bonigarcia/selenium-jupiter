@@ -785,7 +785,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
 <span id="email" class="email"><a href="mailto:boni.garcia@urjc.es">boni.garcia@urjc.es</a></span><br>
-<span id="revdate">Version 3.2.0</span>
+<span id="revdate">Version 3.3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -801,6 +801,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#safari">Safari</a></li>
 <li><a href="#phamtomjs">PhamtomJS</a></li>
 <li><a href="#htmlunit">HtmlUnit</a></li>
+<li><a href="#selenide">Selenide</a></li>
 </ul>
 </li>
 <li><a href="#docker-browsers">Docker browsers</a>
@@ -814,6 +815,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#remote-sessions-vnc">Remote sessions (VNC)</a></li>
 <li><a href="#recordings">Recordings</a></li>
 <li><a href="#performance-tests">Performance tests</a></li>
+<li><a href="#selenide-2">Selenide</a></li>
 </ul>
 </li>
 <li><a href="#remote-browsers">Remote browsers</a>
@@ -821,6 +823,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#using-capabilities">Using capabilities</a></li>
 <li><a href="#mobile-testing-with-appium">Mobile testing with Appium</a></li>
 <li><a href="#using-saucelabs">Using SauceLabs</a></li>
+<li><a href="#using-selenide">Using Selenide</a></li>
 </ul>
 </li>
 <li><a href="#advanced-features">Advanced features</a>
@@ -874,7 +877,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>3.2.0<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>3.3.0<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -885,7 +888,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.2.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -896,7 +899,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 3.2.0 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.4.0</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, and <strong>spotify <em>docker-client</em> 8.15.1</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 3.3.0 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.6.2</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, and <strong>selenide 5.2.6</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
@@ -1361,6 +1364,139 @@ WebDriverManager.iedriver().setup();;</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="selenide"><a class="anchor" href="#selenide"></a>Selenide</h3>
+<div class="paragraph">
+<p>As of version 3.3.0 <em>Selenium-Jupiter</em> provides seamless integration with <strong>Selenide</strong>, which is a high-level testing framework which defines a fluent API on the top of Selenium WebDriver. For more information, take a look to <a href="https://selenide.org/">Selenide website</a>.</p>
+</div>
+<div class="paragraph">
+<p>In order to use a local browser with Selenide in <em>Selenium-Jupiter</em> we follow the same philosophy than in other browsers. Using the JUnit 5 dependency injection mechanism, we simply need to declare <code>SelenideDriver</code> parameters in our test (or constructor) parameters. <em>Selenium-Jupiter</em> will instantiate properly the objects, making them available for the test(s). Then, we simply need to invoke the Selenide API in our test body to assess some web under test.</p>
+</div>
+<div class="paragraph">
+<p>Take a look to the following example. By default, a <code>SelenideDriver</code> object use Chrome driver. Therefore, the following test use the local Chrome browser (installed in the machine running the test) with Selenide:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Condition.visible</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.By.linkText</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideDefaultJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testSelenide(SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
+        about.shouldBe(visible);
+        about.click();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Besides, <em>Selenium-Jupiter</em> provides the annotation <code>@SelenideConfiguration</code> to configure <code>SelenideDriver</code> objects. This annotation can be used at parameter-level (i.e. to configure a single object) or field-level (i.e. to configure all the objects within a test class). The following test shows a couple of example of parameter-level configuration. The first test use a Firefox browser in headless mode. On the other hand, the second test uses two different browsers in the same test: Chrome and Firefox.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Browsers.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Browsers.FIREFOX</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SelenideConfiguration</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideParameterConfigJupiterTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testHeadlessFirefoxSelenide(
+            <span class="annotation">@SelenideConfiguration</span>(browser = FIREFOX, headless = <span class="predefined-constant">true</span>) SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testChromeAndFirefoxSelenide(
+            <span class="annotation">@SelenideConfiguration</span>(browser = CHROME) SelenideDriver chrome,
+            <span class="annotation">@SelenideConfiguration</span>(browser = FIREFOX) SelenideDriver firefox) {
+        exercise(chrome, firefox);
+    }
+
+    <span class="directive">private</span> <span class="type">void</span> exercise(SelenideDriver... drivers) {
+        <span class="keyword">for</span> (SelenideDriver driver : drivers) {
+            driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+            assertThat(driver.title(),
+                    containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+        }
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The annotation <code>@SelenideConfiguration</code> can also be used to configure globally Selenide in a test class by annotating fields of the type <code>SelenideConfig</code>, for example as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Browsers.FIREFOX</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Condition.visible</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.By.linkText</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideConfig</span>;
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SelenideConfiguration</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideGlobalConfigJupiterTest</span> {
+
+    <span class="annotation">@SelenideConfiguration</span>
+    SelenideConfig selenideConfig = <span class="keyword">new</span> SelenideConfig().browser(FIREFOX)
+            .startMaximized(<span class="predefined-constant">true</span>);
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testSelenideConfig(SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
+        about.shouldBe(visible);
+        about.click();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Chrome options (arguments and preferences) and Firefox profiles can be configure in Selenide using JVM properties using the command line as <code>-Dchromeoptions.args=,&#8230;&#8203;</code>, <code>-Dchromeoptions.prefs=,&#8230;&#8203;</code>, and <code>-Dfirefoxprofile.=,</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1416,7 +1552,7 @@ WebDriverManager.iedriver().setup();;</code></pre>
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1478,6 +1614,18 @@ WebDriverManager.iedriver().setup();;</code></pre>
 </td>
 <td class="content">
 The label <em>latest-*</em> is supported, where <em>*</em> is a number for a former version to the current stable. For instance, <em>latest-2</em> means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, <em>latest-2</em> will mean version 61.0).
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volumes to be mounted in the Docker container using syntax <code>"\local\path:\container\path"</code>. The character <code>~</code> can be used to specify the home directory in the local host. For example: <code>@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver</code>.
 </td>
 </tr>
 </table>
@@ -1571,7 +1719,7 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <div class="sect2">
 <h3 id="edge-2"><a class="anchor" href="#edge-2"></a>Edge</h3>
 <div class="paragraph">
-<p><em>Selenium-Jupiter</em> can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a>. If that tutorial is followed step by step, a Docker image named <code>windows/edge:18</code> will be available in the local machine. Then, <em>Selenium_Jupiter</em> can be used to control the Edge browser as follows:</p>
+<p><em>Selenium-Jupiter</em> can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a>. If that tutorial is followed step by step, a Docker image named <code>windows/edge:18</code> will be available in the local machine. Then, <em>Selenium-Jupiter</em> can be used to control the Edge browser as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1612,7 +1760,7 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <div class="sect2">
 <h3 id="internet-explorer-2"><a class="anchor" href="#internet-explorer-2"></a>Internet Explorer</h3>
 <div class="paragraph">
-<p>The same way than Edge, <em>Selenium-Jupiter</em> can also be used to control a Internet Explorer browser in a Docker container. This time, the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a> need to be used to build the <code>windows/ie:11</code> image. Then, <em>Selenium_Jupiter</em> uses that image, for example as follows:</p>
+<p>The same way than Edge, <em>Selenium-Jupiter</em> can also be used to control a Internet Explorer browser in a Docker container. This time, the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a> need to be used to build the <code>windows/ie:11</code> image. Then, <em>Selenium-Jupiter</em> uses that image, for example as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1908,7 +2056,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testPerformance(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
         <span class="predefined-type">ExecutorService</span> executorService = newFixedThreadPool(NUM_BROWSERS);
@@ -1938,6 +2086,64 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div class="paragraph">
 <p>This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selenide-2"><a class="anchor" href="#selenide-2"></a>Selenide</h3>
+<div class="paragraph">
+<p>Browsers in Docker containers can be also controlled using Selenide very easily in <em>Selenium-Jupiter</em>. As usual, we need to declare <code>SelenideDriver</code> parameters in our test (or constructor), but this time annotated also with <code>@DockerBrowser</code>. For example, the following class implements two tests. The first one use the latest version of Chrome and the second test uses the beta version of Firefox. Both browsers are executed in Docker containers, and their versions (latest and beta) are figured out in test runtime in a transparent way for developers. Then, in the tests logic, we control the browsers in Docker containers using the fluent Selenide API.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Condition.visible</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.FIREFOX</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.By.linkText</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideDockerJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideChrome(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME) SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
+        about.shouldBe(visible);
+        about.click();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideFirefox(
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.title(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As usual, we can use the remote access with VNC or the recording capabilities provided by <em>Selenium-Jupiter</em> when using Docker. In the example before, we enable the remote access by VNC.</p>
 </div>
 </div>
 </div>
@@ -2193,6 +2399,60 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 <img src="./img/saucelabs.png" alt="saucelabs">
 </div>
 <div class="title">Figure 6. SauceLabs dashboard</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-selenide"><a class="anchor" href="#using-selenide"></a>Using Selenide</h3>
+<div class="paragraph">
+<p><em>Selenium_Jupiter</em> allows to control remote browsers also with Selenide. To do that, we simply need to declare <code>SelenideDriver</code> parameters in conjunction with the annotations <code>@DriverUrl</code> (to specify the Selenium Server URL) and <code>@DriverCapabilities</code> (to specify the desired capabilities). These annotations can be used both at parameter-level (applied to a single object) and field-level (applied globally in a test class).</p>
+</div>
+<div class="paragraph">
+<p>The following test shows an example of both usages. On the other hand, the first test uses a <code>SelenideDriver</code> object which is going to connect to the Selenium Server given in the field <code>url</code> and with desired capabilities given in <code>capabilities</code> (i.e. Firefox). On the other hand, the second declares another <code>SelenideDriver</code> parameter configured to use the same Selenium Server in the localhost, but requesting a Chrome browser for this test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideRemoteJupiterTest</span> {
+
+    <span class="annotation">@DriverUrl</span>
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideGlobalConfig(SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideParameterConfig(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>)
+            <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="directive">private</span> <span class="type">void</span> exercise(SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.title(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2771,7 +3031,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="title">Figure 13. Example of test execution in Genymotion</div>
 </div>
 <div class="paragraph">
-<p>Notice that <em>Selenium_Jupiter</em> downloads the <em>chromedriver</em> binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the <em>chromedriver</em> binary is related with the installed browser. The following table shows a summary of the <em>chromedriver</em> versions managed by <em>Selenium_Jupiter</em> depending on the Android API level. It other version of <em>chromedriver</em> is required, it can specified using the method <code>setAndroidGenymotionChromedriver()</code>.</p>
+<p>Notice that <em>Selenium-Jupiter</em> downloads the <em>chromedriver</em> binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the <em>chromedriver</em> binary is related with the installed browser. The following table shows a summary of the <em>chromedriver</em> versions managed by <em>Selenium-Jupiter</em> depending on the Android API level. It other version of <em>chromedriver</em> is required, it can specified using the method <code>setAndroidGenymotionChromedriver()</code>.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 3. Versions of <em>chromedriver</em> handled by <em>Selenium-Jupiter</em> for Genymotion</caption>
@@ -2824,7 +3084,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="sect2">
 <h3 id="single-session"><a class="anchor" href="#single-session"></a>Single session</h3>
 <div class="paragraph">
-<p>By default, the instances provided by <em>Selenium_Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc) are created <strong>before each</strong> test, and are disposed <strong>after each</strong> test. As of <em>Selenium_Jupiter</em> 3.2.0, this default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <strong>before all</strong> tests, and are disposed <strong>after all</strong> tests.</p>
+<p>By default, the instances provided by <em>Selenium-Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc) are created <strong>before each</strong> test, and are disposed <strong>after each</strong> test. As of <em>Selenium-Jupiter</em> 3.3.0, this default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <strong>before all</strong> tests, and are disposed <strong>after all</strong> tests.</p>
 </div>
 <div class="paragraph">
 <p>The following test shows an example of this feature. As you can seen, this test uses the ordering capability provided as of JUnit 5.4. The browser (Chrome in this case) is available at the beginning for the tests. According to the given order, first <code>testStep1()</code> is executed. Then, the session (i.e. the same browser in the same state) is used by the second test, <code>testStep2()</code>. An the end of all tests, the browser is closed.</p>
@@ -2903,7 +3163,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.2.0
+[INFO] Building selenium-jupiter 3.3.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -2933,13 +3193,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.2.0-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.0-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -2988,7 +3248,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.2.0
+[INFO] Building Selenium-Jupiter 3.3.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -2998,13 +3258,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.2.0-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.0-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -3137,8 +3397,8 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.ttl.sec</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The resolved Docker browsers versions has attached a time-to-live in secods, configurable using this key</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3600</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The resolved Docker browsers versions has attached a time-to-live in seconds, configurable using this key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>86400</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.list.from.docker.hub</code></p></td>
@@ -3153,7 +3413,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker image</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.9.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.port</code></p></td>
@@ -3188,7 +3448,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>73.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>76.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
@@ -3198,7 +3458,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.path</code></p></td>
@@ -3208,7 +3468,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.path</code></p></td>
@@ -3228,7 +3488,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>66.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>67.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
@@ -3238,7 +3498,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.path</code></p></td>
@@ -3248,7 +3508,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.path</code></p></td>
@@ -3268,7 +3528,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>58.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>60.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
@@ -3446,6 +3706,16 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>androidLogs</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.loglevel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log level for Appium console and logfile (<code>console[:file]</code>), either <code>debug</code>, <code>info</code>, <code>warn</code>, or <code>error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>debug</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.logfile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log file for Appium output</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.width</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen width (in pixels)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1900</code></p></td>
@@ -3496,6 +3766,11 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.35</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host to use when connecting to exposed docker port instead of dynamic lookup</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.network</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker network</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>bridge</code></p></td>
@@ -3516,16 +3791,6 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>2m</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server port</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>4042</code></p></td>
@@ -3534,6 +3799,16 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
@@ -3840,8 +4115,8 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 3.2.0<br>
-Last updated 2019-04-02 17:35:58 CEST
+Version 3.3.0<br>
+Last updated 2019-04-10 11:18:48 CEST
 </div>
 </div>
 </body>

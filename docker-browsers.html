@@ -794,6 +794,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#remote-sessions-vnc">Remote sessions (VNC)</a></li>
 <li><a href="#recordings">Recordings</a></li>
 <li><a href="#performance-tests">Performance tests</a></li>
+<li><a href="#selenide">Selenide</a></li>
 </ul>
 </li>
 </ul>
@@ -853,7 +854,7 @@ table.CodeRay td.code>pre{padding:0}
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -915,6 +916,18 @@ table.CodeRay td.code>pre{padding:0}
 </td>
 <td class="content">
 The label <em>latest-*</em> is supported, where <em>*</em> is a number for a former version to the current stable. For instance, <em>latest-2</em> means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, <em>latest-2</em> will mean version 61.0).
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volumes to be mounted in the Docker container using syntax <code>"\local\path:\container\path"</code>. The character <code>~</code> can be used to specify the home directory in the local host. For example: <code>@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver</code>.
 </td>
 </tr>
 </table>
@@ -1008,7 +1021,7 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <div class="sect2">
 <h3 id="edge"><a class="anchor" href="#edge"></a>Edge</h3>
 <div class="paragraph">
-<p><em>Selenium-Jupiter</em> can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a>. If that tutorial is followed step by step, a Docker image named <code>windows/edge:18</code> will be available in the local machine. Then, <em>Selenium_Jupiter</em> can be used to control the Edge browser as follows:</p>
+<p><em>Selenium-Jupiter</em> can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a>. If that tutorial is followed step by step, a Docker image named <code>windows/edge:18</code> will be available in the local machine. Then, <em>Selenium-Jupiter</em> can be used to control the Edge browser as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1049,7 +1062,7 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <div class="sect2">
 <h3 id="internet-explorer"><a class="anchor" href="#internet-explorer"></a>Internet Explorer</h3>
 <div class="paragraph">
-<p>The same way than Edge, <em>Selenium-Jupiter</em> can also be used to control a Internet Explorer browser in a Docker container. This time, the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a> need to be used to build the <code>windows/ie:11</code> image. Then, <em>Selenium_Jupiter</em> uses that image, for example as follows:</p>
+<p>The same way than Edge, <em>Selenium-Jupiter</em> can also be used to control a Internet Explorer browser in a Docker container. This time, the <a href="https://github.com/aerokube/windows-images">tutorial provided by Aerokube</a> need to be used to build the <code>windows/ie:11</code> image. Then, <em>Selenium-Jupiter</em> uses that image, for example as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1345,7 +1358,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testPerformance(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">73.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
         <span class="predefined-type">ExecutorService</span> executorService = newFixedThreadPool(NUM_BROWSERS);
@@ -1377,12 +1390,70 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 <p>This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="selenide"><a class="anchor" href="#selenide"></a>Selenide</h3>
+<div class="paragraph">
+<p>Browsers in Docker containers can be also controlled using Selenide very easily in <em>Selenium-Jupiter</em>. As usual, we need to declare <code>SelenideDriver</code> parameters in our test (or constructor), but this time annotated also with <code>@DockerBrowser</code>. For example, the following class implements two tests. The first one use the latest version of Chrome and the second test uses the beta version of Firefox. Both browsers are executed in Docker containers, and their versions (latest and beta) are figured out in test runtime in a transparent way for developers. Then, in the tests logic, we control the browsers in Docker containers using the fluent Selenide API.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">com.codeborne.selenide.Condition.visible</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.FIREFOX</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.By.linkText</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideDockerJupiterTest</span> {
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() {
+        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideChrome(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME) SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
+        about.shouldBe(visible);
+        about.click();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideFirefox(
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.title(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As usual, we can use the remote access with VNC or the recording capabilities provided by <em>Selenium-Jupiter</em> when using Docker. In the example before, we enable the remote access by VNC.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-02 17:35:58 CEST
+Last updated 2019-08-02 12:19:40 CEST
 </div>
 </div>
 </body>
