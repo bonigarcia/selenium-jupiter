@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -60,8 +59,7 @@ public class SelenideDriverHandler extends DriverHandler {
     }
 
     public SelenideConfig getSelenideConfig(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
+            Optional<Object> testInstance) throws IllegalAccessException {
 
         SelenideConfig config = new SelenideConfig();
         if (parameter != null) {
