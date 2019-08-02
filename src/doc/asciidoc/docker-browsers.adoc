@@ -50,7 +50,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaJupi
 
 === Edge
 
-_Selenium-Jupiter_ can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the https://github.com/aerokube/windows-images[tutorial provided by Aerokube]. If that tutorial is followed step by step, a Docker image named `windows/edge:18` will be available in the local machine. Then, _Selenium_Jupiter_ can be used to control the Edge browser as follows: 
+_Selenium-Jupiter_ can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the https://github.com/aerokube/windows-images[tutorial provided by Aerokube]. If that tutorial is followed step by step, a Docker image named `windows/edge:18` will be available in the local machine. Then, _Selenium-Jupiter_ can be used to control the Edge browser as follows: 
 
 [source,java]
 ----
@@ -59,7 +59,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeJupit
 
 === Internet Explorer
 
-The same way than Edge, _Selenium-Jupiter_ can also be used to control a Internet Explorer browser in a Docker container. This time, the https://github.com/aerokube/windows-images[tutorial provided by Aerokube] need to be used to build the `windows/ie:11` image. Then, _Selenium_Jupiter_ uses that image, for example as follows:
+The same way than Edge, _Selenium-Jupiter_ can also be used to control a Internet Explorer browser in a Docker container. This time, the https://github.com/aerokube/windows-images[tutorial provided by Aerokube] need to be used to build the `windows/ie:11` image. Then, _Selenium-Jupiter_ uses that image, for example as follows:
 
 [source,java]
 ----
