@@ -210,7 +210,7 @@ The following test shows an example of this feature. As you can seen, this test 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/seljup/test/constructor/OrderedJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/singlessession/OrderedJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Selenium-Jupiter CLI
