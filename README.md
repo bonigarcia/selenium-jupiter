@@ -213,7 +213,7 @@ As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Li
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[INFO] Using CHROME version 73.0 (latest)
+[INFO] Using CHROME version 76.0 (latest)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32782/wd/hub
 Jan 07, 2019 6:54:19 PM org.openqa.selenium.remote.ProtocolHandshake createSession
@@ -240,7 +240,7 @@ INFO: Detected dialect: OSS
 ```
 > java -jar selenium-jupiter-3.2.2-fat.jar chrome
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[INFO] Using CHROME version 73.0 (latest)
+[INFO] Using CHROME version 76.0 (latest)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32784/wd/hub
 Jan 07, 2019 6:55:17 PM org.openqa.selenium.remote.ProtocolHandshake createSession
