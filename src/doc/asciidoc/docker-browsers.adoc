@@ -155,3 +155,15 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/PerformenceDock
 ----
 
 This example requires a list of 3 Chrome browsers in Docker. Then, it executed in parallel a given logic. Notice that if the number of browsers is high, the CPU and memory consumption of the test running the machine will increase accordingly.
+
+
+=== Selenide
+
+Browsers in Docker containers can be also controlled using Selenide very easily in _Selenium-Jupiter_. As usual, we need to declare `SelenideDriver` parameters in our test (or constructor), but this time annotated also with `@DockerBrowser`. For example, the following class implements two tests. The first one use the latest version of Chrome and the second test uses the beta version of Firefox. Both browsers are executed in Docker containers, and their versions (latest and beta) are figured out in test runtime in a transparent way for developers. Then, in the tests logic, we control the browsers in Docker containers using the fluent Selenide API.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideDockerJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+As usual, we can use the remote access with VNC or the recording capabilities provided by _Selenium-Jupiter_ when using Docker. In the example before, we enable the remote access by VNC.
