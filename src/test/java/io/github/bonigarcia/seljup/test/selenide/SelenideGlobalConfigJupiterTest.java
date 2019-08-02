@@ -18,14 +18,15 @@ package io.github.bonigarcia.seljup.test.selenide;
 
 // tag::snippet-in-doc[]
 import static com.codeborne.selenide.Browsers.FIREFOX;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.codeborne.selenide.Condition.visible;
+import static org.openqa.selenium.By.linkText;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
+import com.codeborne.selenide.SelenideElement;
 
 import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.SeleniumExtension;
@@ -40,8 +41,9 @@ public class SelenideGlobalConfigJupiterTest {
     @Test
     public void testSelenideConfig(SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.title(),
-                containsString("JUnit 5 extension for Selenium"));
+        SelenideElement about = driver.$(linkText("About"));
+        about.shouldBe(visible);
+        about.click();
     }
 
 }
