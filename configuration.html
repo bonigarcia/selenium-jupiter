@@ -916,8 +916,8 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.ttl.sec</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The resolved Docker browsers versions has attached a time-to-live in secods, configurable using this key</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3600</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The resolved Docker browsers versions has attached a time-to-live in seconds, configurable using this key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>86400</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.list.from.docker.hub</code></p></td>
@@ -932,7 +932,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid (Golang Selenium Hub) Docker image</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aerokube/selenoid:1.9.1</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenoid.port</code></p></td>
@@ -967,7 +967,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>73.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>76.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
@@ -977,7 +977,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:beta</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.beta.path</code></p></td>
@@ -987,7 +987,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Chrome unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/chrome:unstable</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.unstable.path</code></p></td>
@@ -1007,7 +1007,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>66.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>67.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
@@ -1017,7 +1017,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox beta</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:beta</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.beta.path</code></p></td>
@@ -1027,7 +1027,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.image</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenoid Docker image format for Firefox unstable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly-2.0.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastestbrowsers/firefox:nightly</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.unstable.path</code></p></td>
@@ -1047,7 +1047,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>58.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>60.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
@@ -1225,6 +1225,16 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>androidLogs</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.loglevel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log level for Appium console and logfile (<code>console[:file]</code>), either <code>debug</code>, <code>info</code>, <code>warn</code>, or <code>error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>debug</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.appium.logfile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log file for Appium output</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.android.screen.width</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Android device screen width (in pixels)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1900</code></p></td>
@@ -1275,6 +1285,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.35</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host to use when connecting to exposed docker port instead of dynamic lookup</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.network</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker network</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>bridge</code></p></td>
@@ -1295,16 +1310,6 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>2m</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server port</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>4042</code></p></td>
@@ -1313,6 +1318,16 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location of the properties files (in the project classpath)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/selenium-jupiter.properties</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.selenium.server.url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium Server URL, to be used instead of <code>@DriverUrl</code> or for browsers in Docker</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
@@ -1485,7 +1500,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-02 17:35:57 CEST
+Last updated 2019-08-02 12:19:40 CEST
 </div>
 </div>
 </body>

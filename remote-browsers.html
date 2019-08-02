@@ -788,6 +788,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#using-capabilities">Using capabilities</a></li>
 <li><a href="#mobile-testing-with-appium">Mobile testing with Appium</a></li>
 <li><a href="#using-saucelabs">Using SauceLabs</a></li>
+<li><a href="#using-selenide">Using Selenide</a></li>
 </ul>
 </li>
 </ul>
@@ -1047,12 +1048,66 @@ table.CodeRay td.code>pre{padding:0}
 <div class="title">Figure 1. SauceLabs dashboard</div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="using-selenide"><a class="anchor" href="#using-selenide"></a>Using Selenide</h3>
+<div class="paragraph">
+<p><em>Selenium_Jupiter</em> allows to control remote browsers also with Selenide. To do that, we simply need to declare <code>SelenideDriver</code> parameters in conjunction with the annotations <code>@DriverUrl</code> (to specify the Selenium Server URL) and <code>@DriverCapabilities</code> (to specify the desired capabilities). These annotations can be used both at parameter-level (applied to a single object) and field-level (applied globally in a test class).</p>
+</div>
+<div class="paragraph">
+<p>The following test shows an example of both usages. On the other hand, the first test uses a <code>SelenideDriver</code> object which is going to connect to the Selenium Server given in the field <code>url</code> and with desired capabilities given in <code>capabilities</code> (i.e. Firefox). On the other hand, the second declares another <code>SelenideDriver</code> parameter configured to use the same Selenium Server in the localhost, but requesting a Chrome browser for this test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.CoreMatchers.containsString</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities</span>;
+
+<span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideRemoteJupiterTest</span> {
+
+    <span class="annotation">@DriverUrl</span>
+    <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@DriverCapabilities</span>
+    DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideGlobalConfig(SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideParameterConfig(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>)
+            <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    <span class="directive">private</span> <span class="type">void</span> exercise(SelenideDriver driver) {
+        driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.title(),
+                containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-02 17:35:58 CEST
+Last updated 2019-08-02 12:19:40 CEST
 </div>
 </div>
 </body>

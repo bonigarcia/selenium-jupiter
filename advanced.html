@@ -1373,7 +1373,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="title">Figure 7. Example of test execution in Genymotion</div>
 </div>
 <div class="paragraph">
-<p>Notice that <em>Selenium_Jupiter</em> downloads the <em>chromedriver</em> binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the <em>chromedriver</em> binary is related with the installed browser. The following table shows a summary of the <em>chromedriver</em> versions managed by <em>Selenium_Jupiter</em> depending on the Android API level. It other version of <em>chromedriver</em> is required, it can specified using the method <code>setAndroidGenymotionChromedriver()</code>.</p>
+<p>Notice that <em>Selenium-Jupiter</em> downloads the <em>chromedriver</em> binary required by internal Appium server contained in the internal Docker container which is used to connect with Genymotion SaaS. By default, the version of the <em>chromedriver</em> binary is related with the installed browser. The following table shows a summary of the <em>chromedriver</em> versions managed by <em>Selenium-Jupiter</em> depending on the Android API level. It other version of <em>chromedriver</em> is required, it can specified using the method <code>setAndroidGenymotionChromedriver()</code>.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 1. Versions of <em>chromedriver</em> handled by <em>Selenium-Jupiter</em> for Genymotion</caption>
@@ -1426,7 +1426,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="sect2">
 <h3 id="single-session"><a class="anchor" href="#single-session"></a>Single session</h3>
 <div class="paragraph">
-<p>By default, the instances provided by <em>Selenium_Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc) are created <strong>before each</strong> test, and are disposed <strong>after each</strong> test. As of <em>Selenium_Jupiter</em> 3.2.0, this default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <strong>before all</strong> tests, and are disposed <strong>after all</strong> tests.</p>
+<p>By default, the instances provided by <em>Selenium-Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc) are created <strong>before each</strong> test, and are disposed <strong>after each</strong> test. As of <em>Selenium-Jupiter</em> 3.3.0, this default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <strong>before all</strong> tests, and are disposed <strong>after all</strong> tests.</p>
 </div>
 <div class="paragraph">
 <p>The following test shows an example of this feature. As you can seen, this test uses the ordering capability provided as of JUnit 5.4. The browser (Chrome in this case) is available at the beginning for the tests. According to the given order, first <code>testStep1()</code> is executed. Then, the session (i.e. the same browser in the same state) is used by the second test, <code>testStep2()</code>. An the end of all tests, the browser is closed.</p>
@@ -1505,7 +1505,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.2.0
+[INFO] Building selenium-jupiter 3.3.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1535,13 +1535,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.2.0-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.0-fat.jar firefox
 [INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -1590,7 +1590,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.2.0
+[INFO] Building Selenium-Jupiter 3.3.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1600,13 +1600,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.2.0/selenium-jupiter-3.2.0-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.2.0-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.0-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -1619,7 +1619,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-02 17:35:57 CEST
+Last updated 2019-08-02 12:19:40 CEST
 </div>
 </div>
 </body>
