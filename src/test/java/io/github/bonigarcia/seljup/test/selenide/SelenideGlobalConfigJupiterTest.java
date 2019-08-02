@@ -34,7 +34,8 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class SelenideGlobalConfigJupiterTest {
 
     @SelenideConfiguration
-    SelenideConfig selenideConfig = new SelenideConfig().browser(FIREFOX);
+    SelenideConfig selenideConfig = new SelenideConfig().browser(FIREFOX)
+            .startMaximized(true);
 
     @Test
     public void testSelenideConfig(SelenideDriver driver) {
