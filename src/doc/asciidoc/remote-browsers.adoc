@@ -55,3 +55,15 @@ As usual, the execution of the test can be seen in the SauceLabs dashboard:
 [.thumb]
 .SauceLabs dashboard
 image::saucelabs.png[scaledwidth=100%]
+
+
+=== Using Selenide
+
+_Selenium_Jupiter_ allows to control remote browsers also with Selenide. To do that, we simply need to declare `SelenideDriver` parameters in conjunction with the annotations `@DriverUrl` (to specify the Selenium Server URL) and `@DriverCapabilities` (to specify the desired capabilities). These annotations can be used both at parameter-level (applied to a single object) and field-level (applied globally in a test class).
+
+The following test shows an example of both usages. On the other hand, the first test uses a `SelenideDriver` object which is going to connect to the Selenium Server given in the field `url` and with desired capabilities given in `capabilities` (i.e. Firefox). On the other hand, the second declares another `SelenideDriver` parameter configured to use the same Selenium Server in the localhost, but requesting a Chrome browser for this test.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideRemoteJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
