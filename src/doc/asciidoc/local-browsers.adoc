@@ -144,4 +144,4 @@ The annotation `@SelenideConfiguration` can also be used to configure globally S
 include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideGlobalConfigJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-NOTE: Chrome options (arguments only) and Firefox profiles can be configure in Selenide using JVM properties using the command line as `-Dchromeoptions.args=,...` and `-Dfirefoxprofile.=,`.
+NOTE: Chrome options (arguments and preferences) and Firefox profiles can be configure in Selenide using JVM properties using the command line as `-Dchromeoptions.args=,...`, `-Dchromeoptions.prefs=,...`, and `-Dfirefoxprofile.=,`.
