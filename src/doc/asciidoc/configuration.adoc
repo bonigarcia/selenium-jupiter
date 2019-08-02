@@ -26,33 +26,33 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.remote.webdriver.wait.timeout.sec` | Time in seconds to wait the creating of RemoteWebDriver objects | `20`
 |`sel.jup.remote.webdriver.poll.time.sec` | Poll time in seconds to wait while creating RemoteWebDriver objects | `2`
 |`sel.jup.wdm.use.preferences` | As of Selenium-Jupiter, the latest version of Docker browsers are stored persistently as Java preferences. Its use can be deactivated using this flag | `true`
-|`sel.jup.ttl.sec` | The resolved Docker browsers versions has attached a time-to-live in secods, configurable using this key | `3600`
+|`sel.jup.ttl.sec` | The resolved Docker browsers versions has attached a time-to-live in seconds, configurable using this key | `86400`
 |`sel.jup.browser.list.from.docker.hub` | Update Docker images list from Docker Hub |`true`
 |`sel.jup.browser.session.timeout.duration` | Session timeout for Docker browsers (in Golang duration format)|`1m0s`
-|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker image |`aerokube/selenoid:1.6.0`
+|`sel.jup.selenoid.image` | Selenoid (Golang Selenium Hub) Docker image |`aerokube/selenoid:1.9.1`
 |`sel.jup.selenoid.port` | Selenoid port |`4444`
 |`sel.jup.selenoid.vnc.password` | VNC password for Selenoid sessions |`selenoid`
 |`sel.jup.novnc.image` | noVNC Docker image |`psharkey/novnc:3.3-t6`
 |`sel.jup.novnc.port` | noVNC Docker port  |`8080`
 |`sel.jup.chrome.image.format` | Selenoid Docker images format for Chrome with VNC |`selenoid/vnc:chrome_%s`
 |`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
-|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`73.0`
+|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`76.0`
 |`sel.jup.chrome.path` | Path for Hub when using Chrome in Docker as browser |`/`
-|`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta-2.0.1`
+|`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta`
 |`sel.jup.chrome.beta.path` | Path for Hub when using Chrome beta in Docker as browser |`/wd/hub`
-|`sel.jup.chrome.unstable.image` | Selenoid Docker image format for Chrome unstable |`elastestbrowsers/chrome:unstable-2.0.1`
+|`sel.jup.chrome.unstable.image` | Selenoid Docker image format for Chrome unstable |`elastestbrowsers/chrome:unstable`
 |`sel.jup.chrome.unstable.path` | Path for Hub when using Chrome unstable in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
 |`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
-|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`66.0`
+|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`67.0`
 |`sel.jup.firefox.path` | Path for Hub when using Firefox in Docker as browser |`/wd/hub`
-|`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta-2.0.1`
+|`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta`
 |`sel.jup.firefox.beta.path` | Path for Hub when using Firefox beta in Docker as browser |`/wd/hub`
-|`sel.jup.firefox.unstable.image` | Selenoid Docker image format for Firefox unstable |`elastestbrowsers/firefox:nightly-2.0.1`
+|`sel.jup.firefox.unstable.image` | Selenoid Docker image format for Firefox unstable |`elastestbrowsers/firefox:nightly`
 |`sel.jup.firefox.unstable.path` | Path for Hub when using Firefox beta in Docker as unstable |`/wd/hub`
 |`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
-|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`58.0`
+|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`60.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
 |`sel.jup.edge.image` | Docker image format for Edge |`windows/edge:%s`
 |`sel.jup.edge.latest.version` | Latest version of Docker Edge  |`18`
@@ -105,10 +105,10 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
 |`sel.jup.docker.lang` | Language for Docker containers |`en`
 |`sel.jup.docker.startup.timeout.duration` | Docker startup timeout in duration format |`2m`
-|`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
-|`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |
 |`sel.jup.server.port` | Selenium-Jupiter Server port |`4042`
 |`sel.jup.server.path` | Selenium-Jupiter Server path |`/wd/hub`
+|`sel.jup.properties` | Location of the properties files (in the project classpath) |`/selenium-jupiter.properties`
+|`sel.jup.selenium.server.url` | Selenium Server URL, to be used instead of `@DriverUrl` or for browsers in Docker |
 |==========================
 
 These properties can be overwritten in different ways. As of version 2.1.0 of _Selenium-Jupiter_, the configuration manager can be used: 
