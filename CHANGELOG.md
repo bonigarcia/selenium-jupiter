@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.3.0] - 2019-08-02
+### Added
+- Integration with Selenide (https://selenide.org/) through SelenideDriver objects
+- Include @SelenideConfiguration annotation (field/parameter-level) for Selenide config
+- Allow @DockerBrowser for SelenideDriver objects
+- Allow @DriverUrl and @DriverCapabilities for SelenideDriver objects
+
+### Changed
+- Bump JUnit to version 5.5.1
+
+
 ## [3.2.2] - 2019-07-19
 ### Added
 - Improve Appium Logging Configuration (PR #64)
