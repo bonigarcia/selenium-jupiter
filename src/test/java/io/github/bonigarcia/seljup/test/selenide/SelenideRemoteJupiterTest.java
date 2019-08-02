@@ -42,10 +42,21 @@ public class SelenideRemoteJupiterTest {
     String url = "http://localhost:4444/wd/hub";
 
     @DriverCapabilities
-    DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+    DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
     @Test
-    public void testRemoteSelenide(SelenideDriver driver) {
+    public void testRemoteSelenideGlobalConfig(SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    @Test
+    public void testRemoteSelenideParameterConfig(
+            @DriverUrl("http://localhost:4444/wd/hub")
+            @DriverCapabilities("browserName=chrome") SelenideDriver driver) {
+        exercise(driver);
+    }
+
+    private void exercise(SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.title(),
                 containsString("JUnit 5 extension for Selenium"));
