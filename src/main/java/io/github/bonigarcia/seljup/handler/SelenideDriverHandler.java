@@ -69,6 +69,7 @@ public class SelenideDriverHandler extends DriverHandler {
             if (selenideConfiguration != null) {
                 config.browser(selenideConfiguration.browser());
                 config.headless(selenideConfiguration.headless());
+                config.browserBinary(selenideConfiguration.browserBinary());
             }
 
             // @SelenideConfiguration as field

@@ -37,4 +37,6 @@ public @interface SelenideConfiguration {
 
     public boolean headless() default false;
 
+    public String browserBinary() default "";
+
 }
