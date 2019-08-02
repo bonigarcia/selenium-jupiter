@@ -34,8 +34,8 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class SelenideParameterConfigJupiterTest {
 
     @Test
-    public void testFirefoxSelenide(
-            @SelenideConfiguration(browser = FIREFOX) SelenideDriver driver) {
+    public void testHeadlessFirefoxSelenide(
+            @SelenideConfiguration(browser = FIREFOX, headless = true) SelenideDriver driver) {
         exercise(driver);
     }
 

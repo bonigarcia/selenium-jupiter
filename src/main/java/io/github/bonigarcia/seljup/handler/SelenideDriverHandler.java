@@ -70,6 +70,7 @@ public class SelenideDriverHandler extends DriverHandler {
                     .getAnnotation(SelenideConfiguration.class);
             if (selenideConfiguration != null) {
                 config.browser(selenideConfiguration.browser());
+                config.headless(selenideConfiguration.headless());
             }
 
             // @SelenideConfiguration as field
