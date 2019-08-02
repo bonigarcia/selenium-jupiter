@@ -116,3 +116,32 @@ HtmlUnit is another headless browser that can be used easily in a Jupiter test, 
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/basic/HtmlUnitJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+=== Selenide
+
+As of version 3.3.0 _Selenium-Jupiter_ provides seamless integration with *Selenide*, which is a high-level testing framework which defines a fluent API on the top of Selenium WebDriver. For more information, take a look to https://selenide.org/[Selenide website].
+
+In order to use a local browser with Selenide in _Selenium-Jupiter_ we follow the same philosophy than in other browsers. Using the JUnit 5 dependency injection mechanism, we simply need to declare `SelenideDriver` parameters in our test (or constructor) parameters. _Selenium-Jupiter_ will instantiate properly the objects, making them available for the test(s). Then, we simply need to invoke the Selenide API in our test body to assess some web under test.
+
+Take a look to the following example. By default, a `SelenideDriver` object use Chrome driver. Therefore, the following test use the local Chrome browser (installed in the machine running the test) with Selenide:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideDefaultJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+Besides, _Selenium-Jupiter_ provides the annotation `@SelenideConfiguration` to configure `SelenideDriver` objects. This annotation can be used at parameter-level (i.e. to configure a single object) or field-level (i.e. to configure all the objects within a test class). The following test shows a couple of example of parameter-level configuration. The first test use a Firefox browser in headless mode. On the other hand, the second test uses two different browsers in the same test: Chrome and Firefox.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideParameterConfigJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The annotation `@SelenideConfiguration` can also be used to configure globally Selenide in a test class by annotating fields of the type `SelenideConfig`, for example as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/selenide/SelenideGlobalConfigJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+NOTE: Chrome options (arguments only) and Firefox profiles can be configure in Selenide using JVM properties using the command line as `-Dchromeoptions.args=,...` and `-Dfirefoxprofile.=,`.
