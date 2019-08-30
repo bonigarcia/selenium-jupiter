@@ -32,10 +32,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeJupiterTest {
+class ChromeJupiterTest {
 
     @Test
-    public void testWithOneChrome(ChromeDriver driver) {
+    void testWithOneChrome(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
@@ -45,7 +45,7 @@ public class ChromeJupiterTest {
     @Disabled("Redudant test for Travis CI suite")
     // tag::snippet-in-doc[]
     @Test
-    public void testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
+    void testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
         driver1.get("http://www.seleniumhq.org/");
         driver2.get("http://junit.org/junit5/");
         assertThat(driver1.getTitle(), startsWith("Selenium"));
