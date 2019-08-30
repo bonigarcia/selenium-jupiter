@@ -39,7 +39,6 @@ public class AndroidJupiterTest {
     static void setup() {
         seleniumExtension.getConfig().setVnc(true);
         seleniumExtension.getConfig().setRecording(true);
-        seleniumExtension.getConfig().setAndroidLogging(true);
     }
 
     // end::snippet-in-doc[]
@@ -47,7 +46,7 @@ public class AndroidJupiterTest {
     // tag::snippet-in-doc[]
     @Test
     public void testAndroid(
-            @DockerBrowser(type = ANDROID) RemoteWebDriver driver) {
+            @DockerBrowser(type = ANDROID, version = "8.1", deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
