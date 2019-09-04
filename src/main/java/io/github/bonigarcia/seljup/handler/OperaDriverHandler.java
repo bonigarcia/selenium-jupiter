@@ -17,7 +17,10 @@
 package io.github.bonigarcia.seljup.handler;
 
 import static java.util.Arrays.stream;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -25,6 +28,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
@@ -42,6 +46,10 @@ import io.github.bonigarcia.seljup.config.Config;
  * @since 1.2.0
  */
 public class OperaDriverHandler extends DriverHandler {
+
+    static final String OPERA_BINARY_PATH_WINDOWS_DEFAULT = "C:\\Program Files\\Opera\\launcher.exe";
+    static final String OPERA_BINARY_PATH_MAC_DEFAULT = "/Applications/Opera.app/Contents/MacOS/Opera";
+    static final String OPERA_BINARY_PATH_LINUX_DEFAULT = "/usr/bin/opera";
 
     public OperaDriverHandler(Config config,
             AnnotationsReader annotationsReader) {
@@ -64,6 +72,18 @@ public class OperaDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 operaOptions.merge(capabilities.get());
             }
+
+            String operaBinary = IS_OS_WINDOWS
+                    ? OPERA_BINARY_PATH_WINDOWS_DEFAULT
+                    : IS_OS_MAC ? OPERA_BINARY_PATH_MAC_DEFAULT
+                            : OPERA_BINARY_PATH_LINUX_DEFAULT;
+            File opera = new File(operaBinary);
+            if (opera.exists()) {
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.setBinary(opera);
+                operaOptions.merge(chromeOptions);
+            }
+
             object = new OperaDriver(operaOptions);
         } catch (Exception e) {
             handleException(e);
