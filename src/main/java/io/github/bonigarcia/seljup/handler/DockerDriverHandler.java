@@ -76,6 +76,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -114,6 +115,8 @@ public class DockerDriverHandler {
     static final String LATEST = "latest";
     static final String BROWSER = "browser";
     static final String CHROME = "chrome";
+    static final String OPERA_PATH = "/usr/bin/opera";
+    static final String OPERA_NAME = "operablink";
     static final int APPIUM_MIN_PING_SEC = 5;
 
     final Logger log = getLogger(lookup().lookupClass());
@@ -478,7 +481,14 @@ public class DockerDriverHandler {
 
         // Due to bug in operablink the binary path must be set
         if (browserInstance.getBrowserType() == OPERA) {
-            ((OperaOptions) options).setBinary("/usr/bin/opera");
+            ((OperaOptions) options).setBinary(OPERA_PATH);
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setBinary(OPERA_PATH);
+
+            OperaOptions operaOptions = new OperaOptions().merge(chromeOptions);
+            operaOptions.setCapability("browserName", OPERA_NAME);
+            options.merge(operaOptions);
+            log.trace("Opera options: {}", options);
         }
 
         if (optionalCapabilities.isPresent()) {
