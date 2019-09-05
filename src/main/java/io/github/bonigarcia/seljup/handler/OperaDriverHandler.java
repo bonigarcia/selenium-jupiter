@@ -73,11 +73,7 @@ public class OperaDriverHandler extends DriverHandler {
                 operaOptions.merge(capabilities.get());
             }
 
-            String operaBinary = IS_OS_WINDOWS
-                    ? OPERA_BINARY_PATH_WINDOWS_DEFAULT
-                    : IS_OS_MAC ? OPERA_BINARY_PATH_MAC_DEFAULT
-                            : OPERA_BINARY_PATH_LINUX_DEFAULT;
-            File opera = new File(operaBinary);
+            File opera = new File(getOperaPath());
             if (opera.exists()) {
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setBinary(opera);
@@ -127,6 +123,14 @@ public class OperaDriverHandler extends DriverHandler {
         }
 
         return operaOptions;
+    }
+
+    private String getOperaPath() {
+        if (IS_OS_WINDOWS) {
+            return OPERA_BINARY_PATH_WINDOWS_DEFAULT;
+        }
+        return IS_OS_MAC ? OPERA_BINARY_PATH_MAC_DEFAULT
+                : OPERA_BINARY_PATH_LINUX_DEFAULT;
     }
 
 }
