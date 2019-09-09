@@ -27,7 +27,6 @@
         <htmlunit.driver.version>2.33.3</htmlunit.driver.version>
 
         <!-- Plugins -->
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-asciidoctor-plugin.version>1.5.5</maven-asciidoctor-plugin.version>
@@ -242,7 +241,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
