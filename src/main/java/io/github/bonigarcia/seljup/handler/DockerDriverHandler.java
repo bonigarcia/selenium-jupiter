@@ -1098,8 +1098,8 @@ public class DockerDriverHandler {
         if (fileString.contains(":")) { // Windows
             fileString = toLowerCase(fileString.charAt(0))
                     + fileString.substring(1);
-            fileString = fileString.replaceAll("\\\\", "/");
-            fileString = fileString.replaceAll(":", "");
+            fileString = fileString.replace("\\\\", "/");
+            fileString = fileString.replace(":", "");
             fileString = "/" + fileString;
         }
         log.trace("The path of file {} in Docker format is {}", file,
