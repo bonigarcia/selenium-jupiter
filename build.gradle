@@ -4,7 +4,7 @@ repositories {
 
 ext {
 	selenium = '3.141.59'
-	webdrivermanager = '3.6.2'
+	webdrivermanager = '3.7.0'
 	appium = '7.0.0'
 	dockerclient = '8.16.0'
 	phantomjsdriver = '1.4.4'
@@ -16,7 +16,7 @@ ext {
 	okhttp = '3.14.0'
 	jnrffi = '2.1.9'
 
-	junitjupiter = '5.5.1'
+	junitjupiter = '5.5.2'
 	mockito = '2.24.0' 
 	hamcrest = '1.3' 
 	htmlunit = '2.33.3'
