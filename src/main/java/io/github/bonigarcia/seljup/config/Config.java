@@ -148,6 +148,12 @@ public class Config {
             "sel.jup.opera.latest.version", String.class);
     ConfigKey<String> operaPath = new ConfigKey<>("sel.jup.opera.path",
             String.class);
+    ConfigKey<String> operaBinaryPathLinux = new ConfigKey<>(
+            "sel.jup.opera.binary.path.linux", String.class);
+    ConfigKey<String> operaBinaryPathWin = new ConfigKey<>(
+            "sel.jup.opera.binary.path.win", String.class);
+    ConfigKey<String> operaBinaryPathMac = new ConfigKey<>(
+            "sel.jup.opera.binary.path.mac", String.class);
     ConfigKey<Integer> dockerWaitTimeoutSec = new ConfigKey<>(
             "sel.jup.docker.wait.timeout.sec", Integer.class);
     ConfigKey<Integer> dockerPollTimeMs = new ConfigKey<>(
@@ -227,9 +233,9 @@ public class Config {
             "sel.jup.android.logging", Boolean.class);
     ConfigKey<String> androidLogsFolder = new ConfigKey<>(
             "sel.jup.android.logs.folder", String.class);
-    ConfigKey<String> androidAppiumLogLevel  = new ConfigKey<>(
+    ConfigKey<String> androidAppiumLogLevel = new ConfigKey<>(
             "sel.jup.android.appium.loglevel", String.class);
-    ConfigKey<String> androidAppiumLogFile  = new ConfigKey<>(
+    ConfigKey<String> androidAppiumLogFile = new ConfigKey<>(
             "sel.jup.android.appium.logfile", String.class);
     ConfigKey<String> androidScreenWidth = new ConfigKey<>(
             "sel.jup.android.screen.width", String.class);
@@ -759,6 +765,30 @@ public class Config {
 
     public void setOperaPath(String value) {
         this.operaPath.setValue(value);
+    }
+
+    public String getOperaBinaryPathLinux() {
+        return resolve(operaBinaryPathLinux);
+    }
+
+    public void setOperaBinaryPathLinux(String value) {
+        this.operaBinaryPathLinux.setValue(value);
+    }
+
+    public String getOperaBinaryPathWin() {
+        return resolve(operaBinaryPathWin);
+    }
+
+    public void setOperaBinaryPathWin(String value) {
+        this.operaBinaryPathWin.setValue(value);
+    }
+
+    public String getOperaBinaryPathMac() {
+        return resolve(operaBinaryPathMac);
+    }
+
+    public void setOperaBinaryPathMac(String value) {
+        this.operaBinaryPathMac.setValue(value);
     }
 
     public int getDockerWaitTimeoutSec() {

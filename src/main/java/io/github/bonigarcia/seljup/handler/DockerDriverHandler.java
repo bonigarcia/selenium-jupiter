@@ -25,7 +25,6 @@ import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
-import static io.github.bonigarcia.seljup.handler.OperaDriverHandler.OPERA_BINARY_PATH_LINUX_DEFAULT;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
@@ -481,9 +480,10 @@ public class DockerDriverHandler {
 
         // Due to bug in operablink the binary path must be set
         if (browserInstance.getBrowserType() == OPERA) {
-            ((OperaOptions) options).setBinary(OPERA_BINARY_PATH_LINUX_DEFAULT);
+            String operaBinaryPathLinux = getConfig().getOperaBinaryPathLinux();
+            ((OperaOptions) options).setBinary(operaBinaryPathLinux);
             ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.setBinary(OPERA_BINARY_PATH_LINUX_DEFAULT);
+            chromeOptions.setBinary(operaBinaryPathLinux);
 
             OperaOptions operaOptions = new OperaOptions().merge(chromeOptions);
             operaOptions.setCapability("browserName", OPERA_NAME);
