@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.3.1] - 2019-08-02
+### Added
+- Automatic binary setup based on default values for Win, Linux, Mac in Opera
+- Include required setup for Opera (version 62+) in Docker
+
+### Changed
+- Increase default value of TTL to 86400 seconds (i.e. one day)
+- Bump WebDriverManager to version 3.7.0
+- Bump JUnit to version 5.5.2
+
+### Fixed
+- Fix issue #65 (make screenshots when SingleSession in enabled)
+
+
 ## [3.3.0] - 2019-08-02
 ### Added
 - Integration with Selenide (https://selenide.org/) through SelenideDriver objects
