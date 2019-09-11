@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup;
 
 import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
+import static java.lang.System.nanoTime;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.BASE64;
@@ -95,12 +96,18 @@ public class ScreenshotManager {
     }
 
     void logFileScreenshot(WebDriver driver, String fileName) {
+        log.trace("Creating screenshot for {} in {}", driver, fileName);
         try {
             File screenshotFile = ((TakesScreenshot) driver)
                     .getScreenshotAs(FILE);
             String outputFolder = getOutputFolder(context,
                     getConfig().getOutputFolder());
-            copyFile(screenshotFile, new File(outputFolder, fileName + ".png"));
+            File destFile = new File(outputFolder, fileName + ".png");
+            if (destFile.exists()) {
+                destFile = new File(outputFolder,
+                        fileName + "_" + nanoTime() + ".png");
+            }
+            copyFile(screenshotFile, destFile);
 
         } catch (Exception e) {
             log.trace("Exception getting screenshot as file", e);

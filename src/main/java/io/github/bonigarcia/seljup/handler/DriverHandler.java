@@ -80,10 +80,9 @@ public abstract class DriverHandler {
         String name = "";
         Optional<Method> testMethod = context.getTestMethod();
         if (testMethod.isPresent()) {
-            name = testMethod.get().getName();
+            name = testMethod.get().getName() + "_";
         }
-        name += "_" + parameter.getName() + "_"
-                + object.getClass().getSimpleName();
+        name += parameter.getName() + "_" + object.getClass().getSimpleName();
         if (RemoteWebDriver.class.isAssignableFrom(object.getClass())) {
             name += "_" + ((RemoteWebDriver) object).getSessionId();
         }

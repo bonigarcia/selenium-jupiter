@@ -62,4 +62,10 @@ public class FailureCreatesScreenshotTest {
                 containsString("Test should fail and create screenshot"));
     }
 
+    @Test
+    public void notFailAndNotCreateScreenshotTest() {
+        driver.get("https://bonigarcia.github.io/");
+        assertThat(driver.getTitle(), containsString("Boni"));
+    }
+
 }
