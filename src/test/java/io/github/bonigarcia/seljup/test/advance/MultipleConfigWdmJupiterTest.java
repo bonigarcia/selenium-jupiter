@@ -34,7 +34,7 @@ public class MultipleConfigWdmJupiterTest {
 
     @BeforeAll
     static void setup() {
-        WebDriverManager.chromedriver().version("2.43");
+        WebDriverManager.chromedriver().version("2.35");
         WebDriverManager.firefoxdriver().version("0.22.0");
     }
 
