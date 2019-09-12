@@ -163,7 +163,8 @@ public class DockerBrowserConfig {
         String previousVersion = getPreviousVersion(beforeVersion,
                 latestVersion);
         log.debug("Version {} for {} (latest version {}) = {}", label,
-                browserInstance, latestVersion, previousVersion);
+                browserInstance.getBrowserType(), latestVersion,
+                previousVersion);
         return previousVersion;
     }
 

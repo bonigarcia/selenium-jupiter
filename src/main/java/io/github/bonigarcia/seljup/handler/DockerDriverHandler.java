@@ -1128,8 +1128,7 @@ public class DockerDriverHandler {
             long timeoutMs = currentTimeMillis()
                     + SECONDS.toMillis(dockerWaitTimeoutSec);
 
-            log.debug("Waiting for recording {} to be available",
-                    recordingFile);
+            log.debug("Waiting for recording to be available");
             while (!recordingFile.exists()) {
                 if (currentTimeMillis() > timeoutMs) {
                     log.warn("Timeout of {} seconds waiting for file {}",
