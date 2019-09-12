@@ -8,7 +8,7 @@ services:
 
 addons:
     firefox: latest
-    chrome: stable
+    chrome: latest
     sonarcloud:
         organization: "bonigarcia-github"
         token:
