@@ -41,7 +41,7 @@ public class TemplateRegisterDockerTest {
 
     @BeforeAll
     static void setup() {
-        Browser chrome = chromeInDocker().url("http://localhost:2375").build();
+        Browser chrome = chromeInDocker().build();
         seleniumExtension.addBrowsers(chrome);
     }
 

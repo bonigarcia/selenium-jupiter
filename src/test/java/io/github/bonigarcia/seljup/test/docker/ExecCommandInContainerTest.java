@@ -24,7 +24,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -41,14 +40,8 @@ public class ExecCommandInContainerTest {
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
-    @BeforeAll
-    static void setup() {
-        seleniumExtension.getConfig()
-                .setDockerServerUrl("http://localhost:2375");
-    }
-
     @Test
-    void templateTest(WebDriver driver)
+    void execTest(WebDriver driver)
             throws DockerException, InterruptedException {
         String command = "ls";
         Optional<String> containerId = seleniumExtension.getContainerId(driver);
