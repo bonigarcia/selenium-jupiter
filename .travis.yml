@@ -1,14 +1,15 @@
 language: java
 sudo: false
-dist: trusty
+dist: bionic
 install: true
 
 services:
-  - docker
+    - xvfb
+    - docker
 
 addons:
+    chrome: stable
     firefox: latest
-    chrome: beta
     sonarcloud:
         organization: "bonigarcia-github"
         token:
@@ -16,8 +17,6 @@ addons:
 
 before_script:
     - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start &
-    - sleep 3
 
 script:
     - mvn test
