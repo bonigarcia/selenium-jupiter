@@ -1,6 +1,6 @@
 language: java
 sudo: false
-dist: bionic
+dist: xenial
 install: true
 
 services:
