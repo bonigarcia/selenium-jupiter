@@ -49,8 +49,7 @@ public class SurefireReports {
         Optional<Class<?>> testInstance = context.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {
             if (outputFolder.equalsIgnoreCase("surefire-reports")) {
-                outputFolder = getSurefireOutputFolder(testMethod.get(),
-                        testInstance.get());
+                outputFolder = getSurefireOutputFolder(testInstance.get());
             } else if (outputFolder.isEmpty()) {
                 outputFolder = ".";
             }
@@ -64,8 +63,7 @@ public class SurefireReports {
         return outputFolder;
     }
 
-    private static String getSurefireOutputFolder(Method testMethod,
-            Class<?> testInstance) {
+    private static String getSurefireOutputFolder(Class<?> testInstance) {
         StringBuilder stringBuilder = new StringBuilder(
                 "./target/surefire-reports/");
         stringBuilder.append(testInstance.getName());
