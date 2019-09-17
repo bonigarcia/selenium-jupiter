@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
@@ -59,6 +61,24 @@ public class EdgeDriverHandler extends DriverHandler {
             if (capabilities.isPresent()) {
                 edgeOptions.merge(capabilities.get());
             }
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+            String[] envs = { "PROGRAMFILES(X86)", "PROGRAMFILES",
+                    "LOCALAPPDATA" };
+            String edgeDevPath = "\\\\Microsoft\\\\Edge Dev\\\\Application\\\\msedge.exe";
+            for (String env : envs) {
+                String programFiles = System.getenv(env).replaceAll("\\\\",
+                        "\\\\\\\\");
+                File edgeBinary = new File(programFiles, edgeDevPath);
+                if (edgeBinary.exists()) {
+                    log.debug("Edge dev (Chromium-based version) found: {}",
+                            edgeBinary);
+                    chromeOptions.setBinary(edgeBinary.getAbsoluteFile());
+                    edgeOptions.merge(chromeOptions);
+                    break;
+                }
+            }
+
             object = new EdgeDriver(edgeOptions);
         } catch (Exception e) {
             handleException(e);
