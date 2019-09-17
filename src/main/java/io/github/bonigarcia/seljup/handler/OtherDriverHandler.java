@@ -59,7 +59,7 @@ public class OtherDriverHandler extends DriverHandler {
                 object = type.getDeclaredConstructor(Capabilities.class)
                         .newInstance(capabilities.get());
             } else {
-                object = type.newInstance();
+                object = type.getDeclaredConstructor().newInstance();
             }
         } catch (Exception e) {
             handleException(e);

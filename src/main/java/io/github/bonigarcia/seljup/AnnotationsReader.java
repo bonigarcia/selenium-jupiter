@@ -216,9 +216,9 @@ public class AnnotationsReader {
         String value = st.nextToken();
         Object returnedValue = value;
         if (isBoolean(value)) {
-            returnedValue = new Boolean(value);
+            returnedValue = Boolean.valueOf(value);
         } else if (isNumeric(value)) {
-            returnedValue = new Integer(value);
+            returnedValue = Integer.valueOf(value);
         }
         return of(asList(key, returnedValue));
     }
