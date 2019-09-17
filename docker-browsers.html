@@ -1125,12 +1125,11 @@ Notice that the version of the second test is simply <code>64</code>. The actual
     <span class="directive">static</span> <span class="type">void</span> setup() {
         seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
         seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
-        seleniumExtension.getConfig().setAndroidLogging(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testAndroid(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">8.1</span><span class="delimiter">&quot;</span></span>, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1453,7 +1452,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-02 12:19:40 CEST
+Last updated 2019-08-02 12:40:39 CEST
 </div>
 </div>
 </body>

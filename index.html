@@ -785,7 +785,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
 <span id="email" class="email"><a href="mailto:boni.garcia@urjc.es">boni.garcia@urjc.es</a></span><br>
-<span id="revdate">Version 3.3.0</span>
+<span id="revdate">Version 3.3.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -877,7 +877,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>3.3.0<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>3.3.1<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -888,7 +888,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -899,7 +899,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 3.3.0 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.6.2</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, and <strong>selenide 5.2.6</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 3.3.1 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.7.1</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, <strong><em>htmlunit</em> 2.36.0</strong>, and <strong>selenide 5.3.1</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
@@ -984,6 +984,9 @@ As of JUnit 5.1, extensions can be registered programmatically via <code>@Regist
 </li>
 <li>
 <p><code>AppiumDriver</code>: Used to control mobile devices (Android, iOS).</p>
+</li>
+<li>
+<p><code>SelenideDriver</code>: Used to control web browsers with Selenide (Chrome by default).</p>
 </li>
 </ul>
 </div>
@@ -1122,17 +1125,17 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
+<span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
+    <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
+    <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
         driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
         driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1823,12 +1826,11 @@ Notice that the version of the second test is simply <code>64</code>. The actual
     <span class="directive">static</span> <span class="type">void</span> setup() {
         seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
         seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
-        seleniumExtension.getConfig().setAndroidLogging(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testAndroid(
-            <span class="annotation">@DockerBrowser</span>(type = ANDROID) RemoteWebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">8.1</span><span class="delimiter">&quot;</span></span>, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -3163,11 +3165,11 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.3.0
+[INFO] Building selenium-jupiter 3.3.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
-[INFO] Using SeleniumJupiter to execute chrome beta in Docker
+[INFO] Using Selenium-Jupiter to execute chrome beta in Docker
 [INFO] Using CHROME version beta
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32911/wd/hub
@@ -3193,14 +3195,14 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.1/selenium-jupiter-3.3.1-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.0-fat.jar firefox
-[INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.1-fat.jar firefox
+[INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
@@ -3248,7 +3250,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.0
+[INFO] Building Selenium-Jupiter 3.3.1
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -3258,13 +3260,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.0/selenium-jupiter-3.3.0-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.1/selenium-jupiter-3.3.1-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.0-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.1-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -3359,6 +3361,11 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.template.json.file</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Browsers scenario (JSON) path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>classpath:browsers.json</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.template.json.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Browsers scenario (JSON) content</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.browser</code></p></td>
@@ -3758,7 +3765,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.stop.timeout.sec</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timeout in seconds to stop Docker containers at the end of tests</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.api.version</code></p></td>
@@ -3788,7 +3795,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.startup.timeout.duration</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker startup timeout in duration format</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2m</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3m</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.port</code></p></td>
@@ -3799,6 +3806,11 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server timeout (in seconds)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>180</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
@@ -4115,8 +4127,8 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 3.3.0<br>
-Last updated 2019-04-10 11:18:48 CEST
+Version 3.3.1<br>
+Last updated 2019-08-02 12:40:39 CEST
 </div>
 </div>
 </body>

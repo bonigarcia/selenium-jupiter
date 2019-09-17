@@ -885,17 +885,17 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
 
 <span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
+<span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
+    <span class="type">void</span> testWithOneChrome(ChromeDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
+    <span class="type">void</span> testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
         driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
         driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver1.getTitle(), startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1265,7 +1265,7 @@ Chrome options (arguments and preferences) and Firefox profiles can be configure
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-02 12:21:40 CEST
+Last updated 2019-08-02 12:40:39 CEST
 </div>
 </div>
 </body>
