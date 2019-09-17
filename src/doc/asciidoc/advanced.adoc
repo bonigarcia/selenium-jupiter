@@ -229,7 +229,7 @@ $ mvn exec:java -Dexec.args="chrome beta"
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
-[INFO] Using SeleniumJupiter to execute chrome beta in Docker
+[INFO] Using Selenium-Jupiter to execute chrome beta in Docker
 [INFO] Using CHROME version beta
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
 [DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32911/wd/hub
@@ -257,7 +257,7 @@ INFO: Detected dialect: OSS
 [source]
 ----
 $ java -jar selenium-jupiter-3.3.0-fat.jar firefox
-[INFO] Using SeleniumJupiter to execute firefox (latest) in Docker
+[INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
 [INFO] Starting Docker container aerokube/selenoid:1.8.4

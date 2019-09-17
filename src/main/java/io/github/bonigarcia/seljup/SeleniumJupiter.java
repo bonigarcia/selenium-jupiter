@@ -78,7 +78,7 @@ public class SeleniumJupiter {
             deviceName = join(" ", copyOfRange(args, 2, args.length));
         }
 
-        log.info("Using SeleniumJupiter to execute {} {} in Docker", browser,
+        log.info("Using Selenium-Jupiter to execute {} {} in Docker", browser,
                 versionMessage);
 
         try {
