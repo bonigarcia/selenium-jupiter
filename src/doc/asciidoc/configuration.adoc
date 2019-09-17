@@ -19,6 +19,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.screenshot.format` | Format for screenshots |`base64`
 |`sel.jup.exception.when.no.driver` | Throw exception in case of exception or not |`true`
 |`sel.jup.browser.template.json.file` | Browsers scenario (JSON) path |`classpath:browsers.json`
+|`sel.jup.browser.template.json.content` | Browsers scenario (JSON) content |
 |`sel.jup.default.browser` | Browser for generic driver |`chrome-in-docker`
 |`sel.jup.default.version` | Version for generic driver |`latest`
 |`sel.jup.default.browser.fallback` | Fallback browser list for generic driver |`chrome,firefox,safari,edge,phantomjs`
