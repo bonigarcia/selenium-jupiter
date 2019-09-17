@@ -17,15 +17,12 @@
 package io.github.bonigarcia.seljup;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.util.Arrays.stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 
@@ -69,31 +66,9 @@ public class SurefireReports {
 
     private static String getSurefireOutputFolder(Method testMethod,
             Class<?> testInstance) {
-        Annotation[] annotations = testMethod.getAnnotations();
         StringBuilder stringBuilder = new StringBuilder(
                 "./target/surefire-reports/");
-
-        boolean isTestTemplate = stream(annotations)
-                .map(Annotation::annotationType)
-                .anyMatch(a -> a == TestTemplate.class);
-        log.trace("Is test template? {}", isTestTemplate);
-
-        if (isTestTemplate) {
-            stringBuilder.append(testMethod.getName());
-            stringBuilder.append("(");
-
-            Class<?>[] parameterTypes = testMethod.getParameterTypes();
-            for (int i = 0; i < parameterTypes.length; i++) {
-                if (i != 0) {
-                    stringBuilder.append(", ");
-                }
-                stringBuilder.append(parameterTypes[i].getSimpleName());
-            }
-            stringBuilder.append(")/");
-
-        } else {
-            stringBuilder.append(testInstance.getName());
-        }
+        stringBuilder.append(testInstance.getName());
         return stringBuilder.toString();
     }
 
