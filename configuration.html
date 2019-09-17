@@ -880,6 +880,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>classpath:browsers.json</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.browser.template.json.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Browsers scenario (JSON) content</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.default.browser</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Browser for generic driver</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>chrome-in-docker</code></p></td>
@@ -1277,7 +1282,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.stop.timeout.sec</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timeout in seconds to stop Docker containers at the end of tests</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.api.version</code></p></td>
@@ -1307,7 +1312,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.docker.startup.timeout.duration</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Docker startup timeout in duration format</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2m</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3m</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.port</code></p></td>
@@ -1318,6 +1323,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server path</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/wd/hub</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.server.timeout.sec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selenium-Jupiter Server timeout (in seconds)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>180</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.properties</code></p></td>
@@ -1500,7 +1510,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-02 12:19:40 CEST
+Last updated 2019-09-17 19:12:43 CEST
 </div>
 </div>
 </body>
