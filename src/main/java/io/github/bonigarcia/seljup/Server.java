@@ -31,8 +31,8 @@ import com.google.gson.Gson;
 
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
-import io.javalin.Handler;
 import io.javalin.Javalin;
+import io.javalin.Handler;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
