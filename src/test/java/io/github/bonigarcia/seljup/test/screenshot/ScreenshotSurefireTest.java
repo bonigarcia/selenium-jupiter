@@ -43,7 +43,7 @@ public class ScreenshotSurefireTest {
     @BeforeAll
     void setup() {
         seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
-        seleniumExtension.getConfig().takeScreenshotAsBase64AndPng();
+        seleniumExtension.getConfig().takeScreenshotAsPng();
         seleniumExtension.getConfig().useSurefireOutputFolder();
     }
 
