@@ -21,6 +21,7 @@ import static io.github.bonigarcia.seljup.BrowserType.valueOf;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Optional.empty;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -69,6 +70,7 @@ public class Server {
         final String serverPath = path.endsWith("/")
                 ? path.substring(0, path.length() - 1)
                 : path;
+        final int timeoutSec = config.getServerTimeoutSec();
 
         Handler handler = ctx -> {
             String requestMethod = ctx.method();
@@ -101,7 +103,7 @@ public class Server {
             // exchange request-response
             String response = exchange(
                     hubUrl[0] + requestPath.replace(serverPath, ""),
-                    requestMethod, requestBody);
+                    requestMethod, requestBody, timeoutSec);
             log.info("Server response: {}", response);
             ctx.result(response);
 
@@ -122,9 +124,14 @@ public class Server {
         log.info("Selenium-Jupiter server listening on {}", serverUrl);
     }
 
-    public static String exchange(String url, String method, String json)
-            throws IOException {
-        OkHttpClient client = new OkHttpClient();
+    public static String exchange(String url, String method, String json,
+            int timeoutSec) throws IOException {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(timeoutSec, SECONDS);
+        builder.readTimeout(timeoutSec, SECONDS);
+        builder.writeTimeout(timeoutSec, SECONDS);
+        OkHttpClient client = builder.build();
+
         Builder requestBuilder = new Request.Builder().url(url);
         switch (method) {
         case GET:

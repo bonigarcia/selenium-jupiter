@@ -248,6 +248,8 @@ public class Config {
             Integer.class);
     ConfigKey<String> serverPath = new ConfigKey<>("sel.jup.server.path",
             String.class);
+    ConfigKey<Integer> serverTimeoutSec = new ConfigKey<>(
+            "sel.jup.server.timeout.sec", Integer.class);
 
     ConfigKey<Integer> remoteWebdriverWaitTimeoutSec = new ConfigKey<>(
             "sel.jup.remote.webdriver.wait.timeout.sec", Integer.class);
@@ -1159,6 +1161,15 @@ public class Config {
 
     public Config setServerPath(String value) {
         this.serverPath.setValue(value);
+        return this;
+    }
+
+    public int getServerTimeoutSec() {
+        return resolve(serverTimeoutSec);
+    }
+
+    public Config setServerTimeoutSec(int value) {
+        this.serverTimeoutSec.setValue(value);
         return this;
     }
 
