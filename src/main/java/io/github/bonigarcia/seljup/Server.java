@@ -17,6 +17,8 @@
 package io.github.bonigarcia.seljup;
 
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
+import static io.github.bonigarcia.seljup.BrowserType.EDGE;
+import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.valueOf;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -32,8 +34,8 @@ import com.google.gson.Gson;
 
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
-import io.javalin.Javalin;
 import io.javalin.Handler;
+import io.javalin.Javalin;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -86,9 +88,7 @@ public class Server {
                 String browserName = session.getDesiredCapabilities()
                         .getBrowserName();
                 String version = session.getDesiredCapabilities().getVersion();
-                BrowserType browserType = browserName
-                        .equalsIgnoreCase("operablink") ? OPERA
-                                : valueOf(browserName.toUpperCase());
+                BrowserType browserType = getBrowserType(browserName);
                 BrowserInstance browserInstance = new BrowserInstance(config,
                         annotationsReader, browserType, NONE, empty(), empty());
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
@@ -122,6 +122,25 @@ public class Server {
         String serverUrl = String.format("http://localhost:%d%s", port,
                 serverPath);
         log.info("Selenium-Jupiter server listening on {}", serverUrl);
+    }
+
+    public BrowserType getBrowserType(String browserName) {
+        BrowserType browserType;
+        switch (browserName) {
+        case "operablink":
+            browserType = OPERA;
+            break;
+        case "MicrosoftEdge":
+            browserType = EDGE;
+            break;
+        case "internet explorer":
+            browserType = IEXPLORER;
+            break;
+        default:
+            browserType = valueOf(browserName.toUpperCase());
+            break;
+        }
+        return browserType;
     }
 
     public static String exchange(String url, String method, String json,
