@@ -82,6 +82,14 @@ public class BrowserBuilder {
         return new BrowserBuilder("opera-in-docker");
     }
 
+    public static BrowserBuilder edgeInDocker() {
+        return new BrowserBuilder("edge-in-docker");
+    }
+
+    public static BrowserBuilder iexplorerInDocker() {
+        return new BrowserBuilder("iexplorer-in-docker");
+    }
+
     public static BrowserBuilder android() {
         return new BrowserBuilder("android");
     }

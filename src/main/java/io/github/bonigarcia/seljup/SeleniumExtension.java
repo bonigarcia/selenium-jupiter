@@ -149,6 +149,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         addEntry(templateHandlerMap, "firefox-in-docker",
                 RemoteWebDriver.class);
         addEntry(templateHandlerMap, "opera-in-docker", RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "edge-in-docker", RemoteWebDriver.class);
+        addEntry(templateHandlerMap, "iexplorer-in-docker",
+                RemoteWebDriver.class);
         addEntry(templateHandlerMap, "android", RemoteWebDriver.class);
         addEntry(templateHandlerMap, "selenide", SelenideDriverHandler.class);
     }
