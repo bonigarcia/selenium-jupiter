@@ -1,17 +1,25 @@
 # Changelog
 
-## [3.3.1] - 2019-08-02
+## [3.3.1] - 2019-09-18
 ### Added
-- Automatic binary setup based on default values for Win, Linux, Mac in Opera
-- Include required setup for Opera (version 62+) in Docker
+- Automatic binary setup for Edge dev (Chromium-based version)
+- Automatic binary setup for Opera based on default values for Win, Linux, and Mac
+- Include required setup for Opera (version 62) in Docker
 
 ### Changed
+- Change stop timeout for Docker containers to 5 seconds
+- Change startup timeout for Docker containers to 3 minutes
 - Increase default value of TTL to 86400 seconds (i.e. one day)
-- Bump WebDriverManager to version 3.7.0
+- Bump WebDriverManager to version 3.7.1
 - Bump JUnit to version 5.5.2
+- Bump Selenide to version 5.3.1
+- Bump javalin to 2.8.0 and okhttp to 3.14.2
+- Bump htmlunit-driver to 2.36.0 and include it as compile dependency
 
 ### Fixed
 - Fix issue #65 (make screenshots when SingleSession in enabled)
+- Fix attachments Jenkins support for template tests
+- Fix edge and iexplorer in Docker support
 
 
 ## [3.3.0] - 2019-08-02
