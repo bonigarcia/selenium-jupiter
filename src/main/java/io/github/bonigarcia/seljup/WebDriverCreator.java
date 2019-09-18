@@ -68,9 +68,8 @@ public class WebDriverCreator {
                 webdriver = new RemoteWebDriver(hubUrl, capabilities);
             } catch (Exception e1) {
                 try {
-                    log.warn(
-                            "Exception creating WebDriver object {} ... retrying in {} second(s)",
-                            e1.getClass().getSimpleName(), pollTimeSec);
+                    log.warn("{} creating WebDriver object ({})",
+                            e1.getClass().getSimpleName(), e1.getMessage());
                     sleep(SECONDS.toMillis(pollTimeSec));
                 } catch (InterruptedException e2) {
                     log.warn("Interrupted exception creating WebDriver object",
