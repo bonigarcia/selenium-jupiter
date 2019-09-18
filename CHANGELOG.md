@@ -5,6 +5,7 @@
 - Automatic binary setup for Edge dev (Chromium-based version)
 - Automatic binary setup for Opera based on default values for Win, Linux, and Mac
 - Include required setup for Opera (version 62) in Docker
+- Include timeout for Selenium-Jupiter server (default 180 seconds)
 
 ### Changed
 - Change stop timeout for Docker containers to 5 seconds
