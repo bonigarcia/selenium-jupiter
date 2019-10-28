@@ -17,10 +17,7 @@
 package io.github.bonigarcia.seljup.handler;
 
 import static java.util.Arrays.stream;
-import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
-import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -28,7 +25,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
@@ -67,15 +63,6 @@ public class OperaDriverHandler extends DriverHandler {
                     testInstance);
             if (capabilities.isPresent()) {
                 operaOptions.merge(capabilities.get());
-            }
-
-            if (parameter.getAnnotation(Binary.class) == null) {
-                File opera = new File(getOperaPath());
-                if (opera.exists()) {
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.setBinary(opera);
-                    operaOptions.merge(chromeOptions);
-                }
             }
 
             object = new OperaDriver(operaOptions);
@@ -121,14 +108,6 @@ public class OperaDriverHandler extends DriverHandler {
         }
 
         return operaOptions;
-    }
-
-    private String getOperaPath() {
-        if (IS_OS_WINDOWS) {
-            return getConfig().getOperaBinaryPathWin();
-        }
-        return IS_OS_MAC ? getConfig().getOperaBinaryPathMac()
-                : getConfig().getOperaBinaryPathLinux();
     }
 
 }
