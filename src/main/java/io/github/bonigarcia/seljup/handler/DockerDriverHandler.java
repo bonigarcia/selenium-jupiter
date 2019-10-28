@@ -140,6 +140,7 @@ public class DockerDriverHandler {
     URL hubUrl;
     File hostAndroidLogsFolder;
     URL remoteUrl;
+    String browserVersion;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
             String version, InternalPreferences preferences) {
@@ -150,6 +151,7 @@ public class DockerDriverHandler {
         this.containerMap = new LinkedHashMap<>();
         this.finalizerCommandMap = new LinkedHashMap<>();
         this.testInstance = empty();
+        this.browserVersion = version;
     }
 
     public DockerDriverHandler(ExtensionContext context, Parameter parameter,
@@ -167,6 +169,7 @@ public class DockerDriverHandler {
         this.config = config;
         this.selenoidConfig = new SelenoidConfig(getConfig(), browserInstance,
                 version);
+        this.browserVersion = version;
     }
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
@@ -479,7 +482,8 @@ public class DockerDriverHandler {
                 .getOptions(parameter, testInstance);
 
         // Due to bug in operablink the binary path must be set
-        if (browserInstance.getBrowserType() == OPERA) {
+        if (browserInstance.getBrowserType() == OPERA
+                && browserVersion.equals("62.0")) {
             String operaBinaryPathLinux = getConfig().getOperaBinaryPathLinux();
             ((OperaOptions) options).setBinary(operaBinaryPathLinux);
             ChromeOptions chromeOptions = new ChromeOptions();
@@ -611,7 +615,7 @@ public class DockerDriverHandler {
         String androidImage;
 
         if (cloudType == NONE) {
-            String browserVersion;
+            String versionTag;
             String apiLevel;
 
             switch (version) {
@@ -620,63 +624,63 @@ public class DockerDriverHandler {
                 androidImage = getConfig().getAndroidImage501();
                 apiLevel = "21";
                 browserName = BROWSER;
-                browserVersion = "37.0";
+                versionTag = "37.0";
                 break;
             case "5.1.1":
             case LATEST + "-6":
                 androidImage = getConfig().getAndroidImage511();
                 apiLevel = "22";
                 browserName = BROWSER;
-                browserVersion = "39.0";
+                versionTag = "39.0";
                 break;
             case "6.0":
             case LATEST + "-5":
                 androidImage = getConfig().getAndroidImage60();
                 apiLevel = "23";
                 browserName = BROWSER;
-                browserVersion = "44.0";
+                versionTag = "44.0";
                 break;
             case "7.0":
             case LATEST + "-4":
                 androidImage = getConfig().getAndroidImage701();
                 apiLevel = "24";
                 browserName = CHROME;
-                browserVersion = "51.0";
+                versionTag = "51.0";
                 break;
             case "7.1.1":
             case LATEST + "-3":
                 androidImage = getConfig().getAndroidImage711();
                 apiLevel = "25";
                 browserName = CHROME;
-                browserVersion = "55.0";
+                versionTag = "55.0";
                 break;
             case "8.0":
             case LATEST + "-2":
                 androidImage = getConfig().getAndroidImage80();
                 apiLevel = "26";
                 browserName = CHROME;
-                browserVersion = "58.0";
+                versionTag = "58.0";
                 break;
             case "8.1":
             case LATEST + "-1":
                 androidImage = getConfig().getAndroidImage81();
                 apiLevel = "27";
                 browserName = CHROME;
-                browserVersion = "61.0";
+                versionTag = "61.0";
                 break;
             case "9.0":
             case LATEST:
                 androidImage = getConfig().getAndroidImage90();
                 apiLevel = "28";
                 browserName = CHROME;
-                browserVersion = "66.0";
+                versionTag = "66.0";
                 break;
             default:
                 throw new SeleniumJupiterException("Version " + version
                         + " not valid for Android devices");
             }
             log.info("Starting {} {} in Android {} (API level {})", browserName,
-                    browserVersion, version, apiLevel);
+                    versionTag, version, apiLevel);
 
         } else {
             androidImage = getConfig().getAndroidImageGenymotion();
