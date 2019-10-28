@@ -16,6 +16,7 @@ ext {
 	javalin = '2.8.0'
 	okhttp = '3.14.2'
 	jnrffi = '2.1.9'
+	guava = '28.1-jre'
 
 	junitjupiter = '5.5.2'
 	mockito = '2.24.0' 
@@ -64,6 +65,7 @@ dependencies {
     compile("io.javalin:javalin:${javalin}")
     compile("com.squareup.okhttp3:okhttp:${okhttp}")
     compile("com.github.jnr:jnr-ffi:${jnrffi}")
+    compile("com.google.guava:guava:${guava}")
     
     testCompile("org.junit.jupiter:junit-jupiter-engine:${junitjupiter}")
     testCompile("org.junit.jupiter:junit-jupiter-params:${junitjupiter}")
