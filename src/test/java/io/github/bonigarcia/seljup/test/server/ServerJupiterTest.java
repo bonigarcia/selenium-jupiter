@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
+import static org.openqa.selenium.remote.DesiredCapabilities.operaBlink;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -37,8 +38,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -81,11 +80,7 @@ class ServerJupiterTest {
     }
 
     static Stream<Capabilities> capabilitesProvider() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setBinary("/usr/bin/opera");
-        OperaOptions opera = new OperaOptions().merge(chromeOptions);
-        opera.setCapability("browserName", "operablink");
-        return Stream.of(chrome(), firefox(), opera);
+        return Stream.of(chrome(), firefox(), operaBlink());
     }
 
     String getFreePort() throws IOException {
