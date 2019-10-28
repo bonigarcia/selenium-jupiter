@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.3.2] - 2019-10-28
+### Added
+- Use latest version of guava (28.1-jre)
+
+### Changed
+- Bump aerokube/selenoid to version 1.9.3
+- Use binary setup for Opera in Docker only in version 62.0
+- Change example extension for CRX3 compatible (required as of Chrome 78)
+
+### Fixed
+- PR #65: Add class name to screenshot filename if method name unavailable
+
+### Removed
+- Remove binary setup for Opera (not working anymore as of 64.0 in Windows)
+
+
 ## [3.3.1] - 2019-09-18
 ### Added
 - Automatic binary setup for Edge dev (Chromium-based version)
