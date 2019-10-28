@@ -11,7 +11,7 @@
 
 # Selenium-Jupiter [![][Logo]][GitHub Repository]
 
-*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of Selenium (WebDriver and Grid) and Appium in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
+*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of Selenium in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
 
 ## Table of contents
 
@@ -29,7 +29,7 @@
 
 ## Motivation
 
-*Selenium-Jupiter* allows to execute Selenium (WebDriver, Grid) from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
+*Selenium-Jupiter* allows to execute Selenium from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
 
 
 ## Selenium-Jupiter as Java dependency
@@ -86,7 +86,7 @@ Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver b
 
 ### Remote browsers
 
-*Selenium-Jupiter* can also be used to control remote browsers programmatically using [Selenium Grid]. To do that, a couple of custom annotations can be used (parameter-level or field-level): `DriverUrl` (to identify the Selenium Server URL) and `DriverCapabilities` (to configure the desired capabilities). For instance:
+*Selenium-Jupiter* can also be used to control remote browsers programmatically. To do that, a couple of custom annotations can be used (parameter-level or field-level): `DriverUrl` (to identify the Selenium Server URL) and `DriverCapabilities` (to configure the desired capabilities). For instance:
 
 ```java
 import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
@@ -306,6 +306,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
+[Appium]: http://appium.io/
 [Boni Garcia]: http://bonigarcia.github.io/
 [dependency injection for constructors and methods]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection
 [Docker]: https://www.docker.com/
@@ -313,8 +314,7 @@ Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] lice
 [GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Logo]: http://bonigarcia.github.io/img/selenium-jupiter.png
-[Selenium Grid]: https://www.seleniumhq.org/docs/07_selenium_grid.jsp
-[Selenium WebDriver]: http://docs.seleniumhq.org/projects/webdriver/
+[Selenium WebDriver]: https://seleniumhq.github.io/docs/site/en/webdriver/
 [Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
 [Selenium-Jupiter issues]: https://github.com/bonigarcia/selenium-jupiter/issues
 [Stack Overflow]: https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest
