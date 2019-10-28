@@ -1,6 +1,6 @@
 == Remote browsers
 
-_Selenium-Jupiter_ also supports remote browsers, using a http://www.seleniumhq.org/projects/grid/[Selenium Grid] server. To that aim, a couple of custom annotations can be used:
+_Selenium-Jupiter_ also supports remote browsers, using a https://seleniumhq.github.io/docs/site/en/grid/[Selenium Grid] server. To that aim, a couple of custom annotations can be used:
 
 * `DriverUrl` (_parameter-level_ or _field-level_): Annotation used to identify the URL value needed to instantiate a `RemoteWebDriver` object. This URL can be setup using the configuration key `sel.jup.selenium.server.url`. This value can be used to use browsers from cloud providers, such as https://saucelabs.com/[Saucelabs] or https://www.browserstack.com/[BrowserStack].
 * `DriverCapabilities` (_parameter-level_ or _field-level_): Annotation to configure the desired _capabilities_ (WebDriver's object `DesiredCapabilities`).
