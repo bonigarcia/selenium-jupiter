@@ -55,7 +55,7 @@ public class SelenideDockerJupiterTest {
 
     @Test
     public void testDockerSelenideFirefox(
-            @DockerBrowser(type = FIREFOX, version = "beta") SelenideDriver driver) {
+            @DockerBrowser(type = FIREFOX) SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.title(),
                 containsString("JUnit 5 extension for Selenium"));

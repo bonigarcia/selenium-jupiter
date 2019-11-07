@@ -54,6 +54,7 @@ public class DockerChromeBetaJupiterTest {
         exercise(driver);
     }
 
+    @Disabled
     @Test
     public void testFirefoxBeta(
             @DockerBrowser(type = FIREFOX, version = "beta") RemoteWebDriver driver)
