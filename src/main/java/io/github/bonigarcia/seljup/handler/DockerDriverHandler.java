@@ -113,6 +113,7 @@ public class DockerDriverHandler {
 
     static final String ALL_IPV4_ADDRESSES = "0.0.0.0";
     static final String LATEST = "latest";
+    static final String BETA = "beta";
     static final String BROWSER = "browser";
     static final String CHROME = "chrome";
     static final String OPERA_NAME = "operablink";
@@ -260,7 +261,9 @@ public class DockerDriverHandler {
             }
             imageVersion = selenoidConfig.getImageVersion(browserType,
                     versionFromLabel);
-            capabilities.setCapability("version", imageVersion);
+            if (!imageVersion.equalsIgnoreCase(BETA)) {
+                capabilities.setCapability("version", imageVersion);
+            }
         } else {
             imageVersion = selenoidConfig.getDefaultBrowser(browserType);
         }
