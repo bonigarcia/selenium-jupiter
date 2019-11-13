@@ -50,13 +50,13 @@ public abstract class DriverHandler {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
-    Config config;
-    AnnotationsReader annotationsReader;
-    Parameter parameter;
-    ExtensionContext context;
-    Map<String, DockerContainer> containerMap;
-    DockerService dockerService;
-    Object object;
+    protected Config config;
+    protected AnnotationsReader annotationsReader;
+    protected Parameter parameter;
+    protected ExtensionContext context;
+    protected Map<String, DockerContainer> containerMap;
+    protected DockerService dockerService;
+    protected Object object;
 
     public abstract void resolve();
 
@@ -98,7 +98,7 @@ public abstract class DriverHandler {
         return getConfig().isExceptionWhenNoDriver();
     }
 
-    void handleException(Exception e) {
+    public void handleException(Exception e) {
         if (throwExceptionWhenNoDriver()) {
             log.trace("Internal error in selenium-jupiter", e);
             throw new SeleniumJupiterException(e);
@@ -106,7 +106,7 @@ public abstract class DriverHandler {
         log.warn("Error creating WebDriver object", e);
     }
 
-    File getExtension(String fileName) {
+    public File getExtension(String fileName) {
         File file = new File(fileName);
         try {
             if (!file.exists()) {

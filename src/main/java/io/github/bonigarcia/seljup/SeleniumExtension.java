@@ -103,8 +103,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             getConfig());
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
     private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
-    private Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
-    private Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
+    protected Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
+    protected Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, DockerContainer>> containersMap = new ConcurrentHashMap<>();
     private DockerService dockerService;
     private Map<String, List<Browser>> browserListMap = new ConcurrentHashMap<>();
@@ -616,7 +616,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         };
     }
 
-    private void addEntry(Map<String, Class<?>> map, String key,
+    public void addEntry(Map<String, Class<?>> map, String key,
             Class<?> value) {
         try {
             map.put(key, value);
