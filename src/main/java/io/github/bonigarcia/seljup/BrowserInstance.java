@@ -51,7 +51,8 @@ public class BrowserInstance {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    static final String HOME = "~";
+    static final String HOME_FOLDER = "~";
+    static final String CURRENT_FOLDER = ".";
 
     Config config;
     BrowserType browserType;
@@ -72,11 +73,15 @@ public class BrowserInstance {
         this.cloudType = cloudType;
         if (volumes.isPresent()) {
             this.volumes = new ArrayList<>();
-            String home = getFullPathNoEndSeparator(
+            String currentFolder = getFullPathNoEndSeparator(
                     new File("·").getAbsolutePath());
+            String homeFolder = System.getProperty("user.home");
             for (String v : volumes.get()) {
-                if (v.contains(HOME)) {
-                    v = v.replace(HOME, home);
+                if (v.contains(CURRENT_FOLDER)) {
+                    v = v.replace(CURRENT_FOLDER, currentFolder);
+                }
+                if (v.contains(HOME_FOLDER)) {
+                    v = v.replace(HOME_FOLDER, homeFolder);
                 }
                 this.volumes.add(v);
             }
