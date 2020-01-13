@@ -195,7 +195,8 @@ public class DockerDriverHandler {
                 remoteUrl = new URL(url);
                 dockerService.updateDockerClient(url);
             }
-            if (getConfig().isRecording()) {
+            if (getConfig().isRecording()
+                    || getConfig().isRecordingWhenFailure()) {
                 hostVideoFolder = new File(getOutputFolder(context,
                         getConfig().getOutputFolder()));
             }
@@ -315,7 +316,7 @@ public class DockerDriverHandler {
             }
         }
 
-        if (getConfig().isRecording()) {
+        if (getConfig().isRecording() || getConfig().isRecordingWhenFailure()) {
             recordingFile = new File(hostVideoFolder, sessionId + ".mp4");
         }
         return webdriver;
@@ -357,7 +358,7 @@ public class DockerDriverHandler {
     private WebDriver getDriverForAndroid(BrowserInstance browserInstance,
             String version, String deviceName) throws DockerException,
             InterruptedException, IOException, IllegalAccessException {
-        if (getConfig().isRecording()) {
+        if (getConfig().isRecording() || getConfig().isRecordingWhenFailure()) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
         if (version == null || version.isEmpty()) {
@@ -470,7 +471,7 @@ public class DockerDriverHandler {
                     getConfig().getVncScreenResolution());
         }
 
-        if (getConfig().isRecording()) {
+        if (getConfig().isRecording() || getConfig().isRecordingWhenFailure()) {
             capabilities.setCapability("enableVideo", true);
             capabilities.setCapability("videoScreenSize",
                     getConfig().getRecordingVideoScreenSize());
@@ -533,9 +534,18 @@ public class DockerDriverHandler {
 
     public void cleanup() {
         try {
+            boolean recordingWhenFailure = getConfig().isRecordingWhenFailure();
+            boolean recording = getConfig().isRecording();
+
             // Wait for recordings
-            if (getConfig().isRecording()) {
+            if (recording || recordingWhenFailure) {
                 waitForRecording();
+                boolean isFailed = context.getExecutionException().isPresent();
+                if (recordingWhenFailure && !isFailed) {
+                    boolean deleteResult = recordingFile.delete();
+                    log.trace("Deleting {} (result {})", recordingFile,
+                            deleteResult);
+                }
             }
             // Clear VNC URL
             String vncExport = getConfig().getVncExport();
@@ -726,7 +736,8 @@ public class DockerDriverHandler {
 
         DockerContainer selenoidContainer;
         String selenoidImage = getConfig().getSelenoidImage();
-        boolean recording = getConfig().isRecording();
+        boolean recording = getConfig().isRecording()
+                || getConfig().isRecordingWhenFailure();
 
         if (containerMap.containsKey(selenoidImage)) {
             log.trace("Selenoid container already available");
@@ -830,7 +841,8 @@ public class DockerDriverHandler {
                     asList(randomPort(ALL_IPV4_ADDRESSES)));
 
             // binds
-            boolean recording = getConfig().isRecording();
+            boolean recording = getConfig().isRecording()
+                    || getConfig().isRecordingWhenFailure();
             List<String> binds = new ArrayList<>();
             if (recording) {
                 binds.add(getDockerPath(hostVideoFolder) + ":/tmp/video");
@@ -1154,10 +1166,12 @@ public class DockerDriverHandler {
                 }
             }
 
-            log.trace("Renaming {} to {}.mp4", recordingFile, name);
+            String newRecordingName = name + ".mp4";
+            log.trace("Renaming {} to {}", recordingFile, newRecordingName);
             move(recordingFile.toPath(),
-                    recordingFile.toPath().resolveSibling(name + ".mp4"),
+                    recordingFile.toPath().resolveSibling(newRecordingName),
                     REPLACE_EXISTING);
+            recordingFile = new File(newRecordingName);
         }
     }
 

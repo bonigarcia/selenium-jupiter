@@ -52,6 +52,8 @@ public class Config {
             String.class);
     ConfigKey<Boolean> recording = new ConfigKey<>("sel.jup.recording",
             Boolean.class);
+    ConfigKey<Boolean> recordingWhenFailure = new ConfigKey<>(
+            "sel.jup.recording.when.failure", Boolean.class);
     ConfigKey<String> recordingVideoScreenSize = new ConfigKey<>(
             "sel.jup.recording.video.screen.size", String.class);
     ConfigKey<Integer> recordingVideoFrameRate = new ConfigKey<>(
@@ -383,6 +385,14 @@ public class Config {
 
     public void setRecording(boolean value) {
         this.recording.setValue(value);
+    }
+
+    public boolean isRecordingWhenFailure() {
+        return resolve(recordingWhenFailure);
+    }
+
+    public void setRecordingWhenFailure(boolean value) {
+        this.recordingWhenFailure.setValue(value);
     }
 
     public String getRecordingVideoScreenSize() {
