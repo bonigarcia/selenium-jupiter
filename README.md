@@ -303,7 +303,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ## About
 
-Selenium-Jupiter (Copyright &copy; 2017-2019) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
+Selenium-Jupiter (Copyright &copy; 2017-2020) is a project by [Boni Garcia] licensed under [Apache 2.0 License]. Comments, questions and suggestions are always very [welcome][Selenium-Jupiter issues]!
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [Appium]: http://appium.io/
