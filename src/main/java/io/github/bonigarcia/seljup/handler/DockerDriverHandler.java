@@ -1073,9 +1073,9 @@ public class DockerDriverHandler {
         DockerContainer novncContainer = startNoVncContainer();
         String novncUrl = novncContainer.getContainerUrl();
 
-        return format(novncUrl
-                + "vnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
-                selenoidHost, selenoidPort, sessionId, novncPassword);
+        return format(
+                "%svnc.html?host=%s&port=%d&path=vnc/%s&resize=scale&autoconnect=true&password=%s",
+                novncUrl, selenoidHost, selenoidPort, sessionId, novncPassword);
     }
 
     public DockerContainer startNoVncContainer()
