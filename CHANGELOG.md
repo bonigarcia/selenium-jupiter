@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.3.3] - 2020-01-14
+### Added
+- Add support for additional specific drivers (issue #67, PR #68)
+
+### Changed
+- Bump dependencies (selenide 5.6.0, WebDriverManager 3.8.0)
+
+### Fixed
+- Fix parsing of wildcards in volumes for Docker containers
+
+
 ## [3.3.2] - 2019-10-28
 ### Added
 - Use latest version of guava (28.1-jre)
