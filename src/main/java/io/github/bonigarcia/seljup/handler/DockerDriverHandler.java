@@ -32,6 +32,7 @@ import static java.lang.System.getenv;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.nio.file.Files.delete;
 import static java.nio.file.Files.move;
 import static java.nio.file.Files.write;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -542,9 +543,9 @@ public class DockerDriverHandler {
                 waitForRecording();
                 boolean isFailed = context.getExecutionException().isPresent();
                 if (recordingWhenFailure && !isFailed) {
-                    boolean deleteResult = recordingFile.delete();
-                    log.trace("Deleting {} (result {})", recordingFile,
-                            deleteResult);
+                    log.trace("Deleting {} (recordingWhenFailure={})",
+                            recordingFile, recordingWhenFailure);
+                    delete(recordingFile.toPath());
                 }
             }
             // Clear VNC URL
