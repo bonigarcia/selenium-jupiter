@@ -213,6 +213,84 @@ The following test shows an example of this feature. As you can seen, this test 
 include::../../test/java/io/github/bonigarcia/seljup/test/singlessession/OrderedJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
+=== Custom drivers
+
+As of version 3.3.3, Selenium-Jupiter also supports _custom drivers_. Custom drivers support was added in order to: i) Support unknown driver classes (e.g delegations or any type of class which implements WebDriver); ii) Seamlessly support new types of browsers.
+
+The following example shows how a delegate WebDriver class can be added to and supported by Selenium-Jupiter. Consider the following new `WebDriver` implementation:
+
+[source,java]
+----
+public class DelegateWebDriver implements WebDriver{
+
+    public DelegateWebDriver(WebDriver driver) {
+		super(driver);
+    }
+ 
+    // Some delegation code and initializtion
+
+}
+----
+
+We will need to define a new handler which will create an instance of `DelegateWebDriver` within Selenium-Jupiter:
+
+[source,java]
+----
+public class DelegateWebDriverHandler extends DriverHandler {
+
+    public DelegateWebDriverHandler(Config config, AnnotationsReader annotationsReader) {
+        super(config, annotationsReader);
+    }
+
+    public DelegateWebDriverHandler(Parameter parameter, ExtensionContext context, Config config, AnnotationsReader annotationsReader) {
+        super(parameter, context, config, annotationsReader);
+    }
+
+    public void resolve() {
+        try {
+            Optional<Object> testInstance = this.context.getTestInstance();
+
+           // initialization code goes here
+            this.object = new DelegateWebDriver(...);
+
+        } catch (Exception var4) {
+            this.handleException(var4);
+        }
+    }
+
+}
+----
+
+Once we have our driver and our handler, we need to register the new `DelegateWebDriver` and its handler as an additional driver in a custom made extension:
+
+[source,java]
+----
+public class MySeleniumExtension extends SeleniumExtension {
+
+    public MySeleniumExtension() {
+        super();
+        this.addEntry(this.handlerMap, "package.of.class.DelegateWebDriver", DelegateWebDriverHandler.class);
+        this.addEntry(this.templateHandlerMap, "DelegateWebDriver", DelegateWebDriver.class);
+    }
+
+}
+----
+
+Then, we can use `DelegateWebDriver` in tests:
+
+[source,java]
+----
+@ExtendWith(MySeleniumExtension.class)
+public class JunitExampleTest {
+
+    @Test
+    public void test1(DelegateWebDriver driver) {
+        driver.get("http://www.google.com");
+    }
+
+}
+----
+
 === Selenium-Jupiter CLI
 
 As of version 2.1.0, _Selenium-Jupiter_ can used interactively from the shell as a regular command line interface (CLI) tool. In this mode, _Selenium-Jupiter_ allows to get the VNC session of Docker browser. There are two ways of using this feature:
@@ -225,7 +303,7 @@ $ mvn exec:java -Dexec.args="chrome beta"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.3.2
+[INFO] Building selenium-jupiter 3.3.3
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -252,11 +330,11 @@ INFO: Detected dialect: OSS
 [INFO] ------------------------------------------------------------------------
 ----
 
-* Using _Selenium-Jupiter_ as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.2/selenium-jupiter-3.3.2-fat.jar[fat-jar]. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
+* Using _Selenium-Jupiter_ as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar[fat-jar]. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
 
 [source]
 ----
-$ java -jar selenium-jupiter-3.3.2-fat.jar firefox
+$ java -jar selenium-jupiter-3.3.3-fat.jar firefox
 [INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -288,18 +366,18 @@ $ mvn exec:java -Dexec.args="server"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.2
+[INFO] Building Selenium-Jupiter 3.3.3
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ----
 
-* Using Selenium-Jupiter as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.2/selenium-jupiter-3.3.2-fat.jar[fat-jar]. For instance:
+* Using Selenium-Jupiter as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar[fat-jar]. For instance:
 
 [source]
 ----
-> java -jar webdrivermanager-3.3.2-fat.jar server
+> java -jar webdrivermanager-3.3.3-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ----
 

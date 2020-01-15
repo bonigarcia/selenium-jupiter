@@ -29,7 +29,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeLat
 NOTE: The label _latest-*_ is supported, where _*_ is a number for a former version to the current stable. For instance, _latest-2_ means the two previous version to the stable (for instance, if at the time of running a test the latest version is 63.0, _latest-2_ will mean version 61.0).
 
 
-NOTE: As of version 3.2.2, _Selenium-Jupiter_ allows to define an array of volumes to be mounted in the Docker container using syntax `"\local\path:\container\path"`. The character `~` can be used to specify the home directory in the local host. For example: `@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver`. 
+NOTE: As of version 3.2.2, _Selenium-Jupiter_ allows to define an array of volumes to be mounted in the Docker container using syntax `"\local\path:\container\path"`. The character `~` can be used to specify the home user directory in the local host, and the the character `.` is used to specify the current folder in the local host. For example: `@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver`. 
 
 === Firefox
 

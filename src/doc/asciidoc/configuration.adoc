@@ -11,6 +11,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.vnc.create.redirect.html.page` | Redirect VNC URL to HTML page |`false`
 |`sel.jup.vnc.export` | Java property name in which the VNC URL will be exported |`vnc.session.url`
 |`sel.jup.recording` | Record Docker browser session (in MP4 format) |`false`
+|`sel.jup.recording.when.failure` | Record Docker browser session (in MP4 format) only if the test fails |`false`
 |`sel.jup.recording.video.screen.size` | Video screen size for recordings (width and height) |`1024x768`
 |`sel.jup.recording.video.frame.rate` | Video frame rate for recordings |`12`
 |`sel.jup.recording.image` | Docker image for recordings |`selenoid/video-recorder:latest`
@@ -37,7 +38,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.novnc.port` | noVNC Docker port  |`8080`
 |`sel.jup.chrome.image.format` | Selenoid Docker images format for Chrome with VNC |`selenoid/vnc:chrome_%s`
 |`sel.jup.chrome.first.version` | First version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`)|`48.0`
-|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`78.0`
+|`sel.jup.chrome.latest.version` | Latest version of Docker Chrome (used when `sel.jup.browser.list.from.docker.hub =false`) |`79.0`
 |`sel.jup.chrome.path` | Path for Hub when using Chrome in Docker as browser |`/`
 |`sel.jup.chrome.beta.image` | Selenoid Docker image format for Chrome beta |`elastestbrowsers/chrome:beta`
 |`sel.jup.chrome.beta.path` | Path for Hub when using Chrome beta in Docker as browser |`/wd/hub`
@@ -45,7 +46,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.chrome.unstable.path` | Path for Hub when using Chrome unstable in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.image.format` | Selenoid Docker images format for Firefox with VNC |`selenoid/vnc:firefox_%s`
 |`sel.jup.firefox.first.version` | First version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`3.6`
-|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`70.0`
+|`sel.jup.firefox.latest.version` | Latest version of Docker Firefox (used when `sel.jup.browser.list.from.docker.hub =false`) |`71.0`
 |`sel.jup.firefox.path` | Path for Hub when using Firefox in Docker as browser |`/wd/hub`
 |`sel.jup.firefox.beta.image` | Selenoid Docker image format for Firefox beta |`elastestbrowsers/firefox:beta`
 |`sel.jup.firefox.beta.path` | Path for Hub when using Firefox beta in Docker as browser |`/wd/hub`
@@ -53,8 +54,11 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.firefox.unstable.path` | Path for Hub when using Firefox beta in Docker as unstable |`/wd/hub`
 |`sel.jup.opera.image.format` | Selenoid Docker images format for Opera with VNC |`selenoid/vnc:opera_%s`
 |`sel.jup.opera.first.version` | First version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`33.0`
-|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`64.0`
+|`sel.jup.opera.latest.version` | Latest version of Docker Opera (used when `sel.jup.browser.list.from.docker.hub =false`) |`65.0`
 |`sel.jup.opera.path` | Path for Hub when using Opera in Docker as browser |`/`
+|`sel.jup.opera.binary.path.linux` | Default path of Opera in Linux |`/usr/bin/opera`
+|`sel.jup.opera.binary.path.win` | Default path of Opera in Windows |`C:\\Program Files\\Opera\\launcher.exe`
+|`sel.jup.opera.binary.path.mac` | Default path of Opera in Mac OS |`/Applications/Opera.app/Contents/MacOS/Opera`
 |`sel.jup.edge.image` | Docker image format for Edge |`windows/edge:%s`
 |`sel.jup.edge.latest.version` | Latest version of Docker Edge  |`18`
 |`sel.jup.edge.path` | Path for Hub when using Opera in Docker as browser |`/`
