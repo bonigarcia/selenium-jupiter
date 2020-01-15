@@ -927,7 +927,7 @@ The label <em>latest-*</em> is supported, where <em>*</em> is a number for a for
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volumes to be mounted in the Docker container using syntax <code>"\local\path:\container\path"</code>. The character <code>~</code> can be used to specify the home directory in the local host. For example: <code>@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver</code>.
+As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volumes to be mounted in the Docker container using syntax <code>"\local\path:\container\path"</code>. The character <code>~</code> can be used to specify the home user directory in the local host, and the the character <code>.</code> is used to specify the current folder in the local host. For example: <code>@DockerBrowser(type = CHROME, volumes = {"~:/home/selenium" }) WebDriver driver</code>.
 </td>
 </tr>
 </table>
@@ -1434,7 +1434,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 
     <span class="annotation">@Test</span>
     <span class="directive">public</span> <span class="type">void</span> testDockerSelenideFirefox(
-            <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = FIREFOX) SelenideDriver driver) {
         driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.title(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1452,7 +1452,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-10-29 00:38:36 CET
+Last updated 2020-01-15 12:25:21 CET
 </div>
 </div>
 </body>

@@ -840,6 +840,11 @@ table.CodeRay td.code>pre{padding:0}
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.recording.when.failure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Record Docker browser session (in MP4 format) only if the test fails</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.recording.video.screen.size</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Video screen size for recordings (width and height)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1024x768</code></p></td>
@@ -972,7 +977,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Chrome (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>78.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>79.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.chrome.path</code></p></td>
@@ -1012,7 +1017,7 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Firefox (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>70.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>71.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.firefox.path</code></p></td>
@@ -1052,12 +1057,27 @@ table.CodeRay td.code>pre{padding:0}
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.latest.version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Latest version of Docker Opera (used when <code>sel.jup.browser.list.from.docker.hub =false</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>64.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>65.0</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Path for Hub when using Opera in Docker as browser</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.binary.path.linux</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default path of Opera in Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/usr/bin/opera</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.binary.path.win</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default path of Opera in Windows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>C:\\Program Files\\Opera\\launcher.exe</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.opera.binary.path.mac</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default path of Opera in Mac OS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/Applications/Opera.app/Contents/MacOS/Opera</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.edge.image</code></p></td>
@@ -1510,7 +1530,7 @@ testWithOneChrome(ChromeDriver)  Time elapsed: 6.594 sec  &lt;&lt;&lt; FAILURE!<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-10-29 00:38:36 CET
+Last updated 2020-01-15 12:05:24 CET
 </div>
 </div>
 </body>
