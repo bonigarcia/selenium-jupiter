@@ -1,6 +1,6 @@
 == About
 
-*_Selenium-Jupiter_* (Copyright © 2017-2019) is a project created by http://bonigarcia.github.io/[Boni Garcia] (https://twitter.com/boni_gg[@boni_gg]) licensed under http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation is released under the terms of https://creativecommons.org/licenses/by/3.0/[CC BY 3.0] (also available in link:selenium-jupiter.pdf[PDF]). There are several ways to get in touch with _Selenium-Jupiter_:
+*_Selenium-Jupiter_* (Copyright © 2017-2020) is a project created by http://bonigarcia.github.io/[Boni Garcia] (https://twitter.com/boni_gg[@boni_gg]) licensed under http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation is released under the terms of https://creativecommons.org/licenses/by/3.0/[CC BY 3.0] (also available in link:selenium-jupiter.pdf[PDF]). There are several ways to get in touch with _Selenium-Jupiter_:
 
 * Questions about _Selenium-Jupiter_ are supposed to be discussed in https://stackoverflow.com/questions/tagged/selenium-jupiter[StackOverflow], using the tag _selenium-jupiter_.
 * Comments, suggestions and bug-reporting should be done using the https://github.com/bonigarcia/selenium-jupiter/issues[GitHub issues].
