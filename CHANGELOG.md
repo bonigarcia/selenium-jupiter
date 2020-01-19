@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.3.4] - 2020-01-19
+### Added
+- Include support for Chromium (checking binary from Chrome options)
+
+### Changed
+- Bump dependencies (WebDriverManager 3.8.1)
+
+### Fixed
+- Fix Edge support for Chromium-based version (recently stable)
+- Include default value for property sel.jup.recording.when.failure
+
+
 ## [3.3.3] - 2020-01-14
 ### Added
 - Add support for additional specific drivers (issue #67, PR #68)
