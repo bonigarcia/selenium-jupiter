@@ -785,7 +785,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
 <span id="email" class="email"><a href="mailto:boni.garcia@urjc.es">boni.garcia@urjc.es</a></span><br>
-<span id="revdate">Version 3.3.3</span>
+<span id="revdate">Version 3.3.4</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -878,7 +878,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>3.3.3<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>3.3.4<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -889,7 +889,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.3</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.4</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -900,7 +900,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 3.3.3 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.8.0</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, <strong><em>htmlunit</em> 2.36.0</strong>, and <strong>selenide 5.6.0</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 3.3.4 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.8.1</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, <strong><em>htmlunit</em> 2.36.0</strong>, and <strong>selenide 5.6.0</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
@@ -3250,7 +3250,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.3.3
+[INFO] Building selenium-jupiter 3.3.4
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -3280,13 +3280,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.3-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.4-fat.jar firefox
 [INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -3335,7 +3335,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.3
+[INFO] Building Selenium-Jupiter 3.3.4
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -3345,13 +3345,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.3-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.4-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -4232,8 +4232,8 @@ Caused by: java.lang.NoClassDefFoundError: org/openqa/selenium/MutableCapabiliti
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 3.3.3<br>
-Last updated 2020-01-15 10:57:20 CET
+Version 3.3.4<br>
+Last updated 2020-01-20 09:58:06 CET
 </div>
 </div>
 </body>
