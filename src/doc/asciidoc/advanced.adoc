@@ -303,7 +303,7 @@ $ mvn exec:java -Dexec.args="chrome beta"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.3.3
+[INFO] Building selenium-jupiter 3.3.4
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -330,11 +330,11 @@ INFO: Detected dialect: OSS
 [INFO] ------------------------------------------------------------------------
 ----
 
-* Using _Selenium-Jupiter_ as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar[fat-jar]. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
+* Using _Selenium-Jupiter_ as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar[fat-jar]. This jar can be created using the command `mvn compile assembly:single` from the source code, and then `java -jar selenium-jupiter.jar browserName <version>`. For instance:
 
 [source]
 ----
-$ java -jar selenium-jupiter-3.3.3-fat.jar firefox
+$ java -jar selenium-jupiter-3.3.4-fat.jar firefox
 [INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -366,18 +366,18 @@ $ mvn exec:java -Dexec.args="server"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.3
+[INFO] Building Selenium-Jupiter 3.3.4
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ----
 
-* Using Selenium-Jupiter as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.3/selenium-jupiter-3.3.3-fat.jar[fat-jar]. For instance:
+* Using Selenium-Jupiter as a https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar[fat-jar]. For instance:
 
 [source]
 ----
-> java -jar webdrivermanager-3.3.3-fat.jar server
+> java -jar webdrivermanager-3.3.4-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ----
 
