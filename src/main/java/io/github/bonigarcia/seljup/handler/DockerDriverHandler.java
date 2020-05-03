@@ -72,6 +72,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
@@ -1024,19 +1025,18 @@ public class DockerDriverHandler {
         if (context != null) {
             Optional<Class<?>> testClass = context.getTestClass();
             if (testClass.isPresent()) {
-                Constructor<?>[] declaredConstructors = testClass.get()
-                        .getDeclaredConstructors();
-                for (Constructor<?> constructor : declaredConstructors) {
-                    Parameter[] parameters = constructor.getParameters();
-                    count += getDockerBrowsersInParams(parameters);
-                }
-                Method[] methods = testClass.get().getMethods();
-                Method[] declaredMethods = testClass.get().getDeclaredMethods();
-                Method[] allMethods = (Method[]) ArrayUtils.addAll(methods,
-                        declaredMethods);
-                for (Method method : allMethods) {
-                    Parameter[] parameters = method.getParameters();
-                    count += getDockerBrowsersInParams(parameters);
+                Class<?> tClass = testClass.get();
+                count = getCountForClass(count, tClass);
+                while (tClass.isAnnotationPresent(Nested.class)) {
+                    try {
+                        String tClassName = tClass.getName();
+                        String parentClass = tClassName.substring(0, tClassName.lastIndexOf('$'));
+                        log.trace("{} is Nested, adding count from parent class {}", tClassName, parentClass);
+                        tClass = tClass.getClassLoader().loadClass(parentClass);
+                        count += getCountForClass(count, tClass);
+                    } catch (ClassNotFoundException e) {
+                        log.trace("Error while loading parent class", e);
+                    }
                 }
             }
         } else {
@@ -1044,6 +1044,23 @@ public class DockerDriverHandler {
             count = 1;
         }
         log.trace("Number of required Docker browser(s): {}", count);
+        return count;
+    }
+
+    private int getCountForClass(int count, Class testClass) {
+        Constructor<?>[] declaredConstructors = testClass.getDeclaredConstructors();
+        for (Constructor<?> constructor : declaredConstructors) {
+            Parameter[] parameters = constructor.getParameters();
+            count += getDockerBrowsersInParams(parameters);
+        }
+        Method[] methods = testClass.getMethods();
+        Method[] declaredMethods = testClass.getDeclaredMethods();
+        Method[] allMethods = (Method[]) ArrayUtils.addAll(methods,
+                declaredMethods);
+        for (Method method : allMethods) {
+            Parameter[] parameters = method.getParameters();
+            count += getDockerBrowsersInParams(parameters);
+        }
         return count;
     }
 
