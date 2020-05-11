@@ -1189,7 +1189,7 @@ public class DockerDriverHandler {
             move(recordingFile.toPath(),
                     recordingFile.toPath().resolveSibling(newRecordingName),
                     REPLACE_EXISTING);
-            recordingFile = new File(newRecordingName);
+            recordingFile = hostVideoFolder.toPath().resolve(newRecordingName).toFile();
         }
     }
 
