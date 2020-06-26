@@ -1136,6 +1136,7 @@ public class DockerDriverHandler {
             fileString = toLowerCase(fileString.charAt(0))
                     + fileString.substring(1);
             fileString = fileString.replace("\\\\", "/");
+            fileString = fileString.replace("\\", "/");
             fileString = fileString.replace(":", "");
             fileString = "/" + fileString;
         }
