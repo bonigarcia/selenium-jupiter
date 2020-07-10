@@ -27,6 +27,9 @@
 5. [Help](#help)
 6. [About](#about)
 
+**Selenium-Jupiter** is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial:<br>
+<a href="https://tracking.gitads.io/?repo=selenium-jupiter"><img src="https://images.gitads.io/selenium-jupiter" alt="GitAds"/></a>
+
 ## Motivation
 
 *Selenium-Jupiter* allows to execute Selenium from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
