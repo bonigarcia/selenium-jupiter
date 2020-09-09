@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -52,6 +53,7 @@ public class AndroidGenymotionJupiterTest {
         config.setAndroidGenymotionLicense("my-genymotion-license");
     }
 
+    @Disabled
     @Test
     public void testAndroidInGenymotionSaas(
             @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "SamsungS7V6", browserName = "browser")
