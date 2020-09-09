@@ -186,7 +186,6 @@ public class AnnotationsReader {
         for (Field field : declaredFields) {
             if (field.isAnnotationPresent(annotation) && (annotatedType == null
                     || annotatedType == field.getType())) {
-                field.setAccessible(true);
                 if (annotatedType != null) {
                     return of(annotatedType.cast(field.get(object)));
                 }
