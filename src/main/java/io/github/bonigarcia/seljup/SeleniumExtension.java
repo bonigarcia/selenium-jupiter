@@ -83,6 +83,7 @@ import io.github.bonigarcia.seljup.handler.RemoteDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
 import io.github.bonigarcia.seljup.handler.SelenideDriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * Selenium extension for Jupiter (JUnit 5) tests.
@@ -412,9 +413,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     private boolean isSingleSession(ExtensionContext extensionContext) {
-        boolean singleSession = extensionContext.getTestClass().isPresent()
-                && extensionContext.getTestClass().get()
-                        .isAnnotationPresent(SingleSession.class);
+        boolean singleSession = extensionContext.getTestClass()
+                .map(clazz -> AnnotationUtils.findAnnotation(clazz, SingleSession.class) != null)
+                .orElse(false);
         log.trace("Single session {}", singleSession);
         return singleSession;
     }
