@@ -1030,8 +1030,11 @@ public class DockerDriverHandler {
                 while (tClass.isAnnotationPresent(Nested.class)) {
                     try {
                         String tClassName = tClass.getName();
-                        String parentClass = tClassName.substring(0, tClassName.lastIndexOf('$'));
-                        log.trace("{} is Nested, adding count from parent class {}", tClassName, parentClass);
+                        String parentClass = tClassName.substring(0,
+                                tClassName.lastIndexOf('$'));
+                        log.trace(
+                                "{} is Nested, adding count from parent class {}",
+                                tClassName, parentClass);
                         tClass = tClass.getClassLoader().loadClass(parentClass);
                         count += getCountForClass(count, tClass);
                     } catch (ClassNotFoundException e) {
@@ -1047,8 +1050,9 @@ public class DockerDriverHandler {
         return count;
     }
 
-    private int getCountForClass(int count, Class testClass) {
-        Constructor<?>[] declaredConstructors = testClass.getDeclaredConstructors();
+    private int getCountForClass(int count, Class<?> testClass) {
+        Constructor<?>[] declaredConstructors = testClass
+                .getDeclaredConstructors();
         for (Constructor<?> constructor : declaredConstructors) {
             Parameter[] parameters = constructor.getParameters();
             count += getDockerBrowsersInParams(parameters);
@@ -1189,7 +1193,8 @@ public class DockerDriverHandler {
             move(recordingFile.toPath(),
                     recordingFile.toPath().resolveSibling(newRecordingName),
                     REPLACE_EXISTING);
-            recordingFile = hostVideoFolder.toPath().resolve(newRecordingName).toFile();
+            recordingFile = hostVideoFolder.toPath().resolve(newRecordingName)
+                    .toFile();
         }
     }
 

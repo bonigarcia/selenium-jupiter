@@ -38,7 +38,7 @@ public class EdgeWithGlobalOptionsJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().edgedriver().version("3.14393");
+        seleniumExtension.getConfig().edgedriver().driverVersion("3.14393");
     }
 
     @Options

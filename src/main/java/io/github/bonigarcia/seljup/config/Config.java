@@ -26,7 +26,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
-import io.github.bonigarcia.wdm.ConfigKey;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
