@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.glassfish.jersey.client.RequestEntityProcessing;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
@@ -84,13 +85,24 @@ public class DockerService {
             dockerClientBuilder = DefaultDockerClient.builder()
                     .uri(dockerServerUrl);
         }
+
+        RequestEntityProcessing requestEntityProcessing = RequestEntityProcessing.CHUNKED;
+        String dockerRequestEntityProcessing = config
+                .getDockerRequestEntityProcessing();
+        if (dockerRequestEntityProcessing.equalsIgnoreCase("BUFFERED")) {
+            requestEntityProcessing = RequestEntityProcessing.BUFFERED;
+        }
+        log.debug("Using RequestEntityProcessing {}", requestEntityProcessing,
+                dockerRequestEntityProcessing);
+        dockerClientBuilder.useRequestEntityProcessing(requestEntityProcessing);
+
         dockerClient = dockerClientBuilder.build();
     }
 
     public String getHost(String containerId, String network)
             throws DockerException, InterruptedException {
         String dockerHost = getConfig().getDockerHost();
-        if( !dockerHost.isEmpty() ) {
+        if (!dockerHost.isEmpty()) {
             return dockerHost;
         }
 

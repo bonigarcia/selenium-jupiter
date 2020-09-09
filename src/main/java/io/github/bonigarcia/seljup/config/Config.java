@@ -179,6 +179,8 @@ public class Config {
             String.class);
     ConfigKey<String> dockerStartupTimeoutDuration = new ConfigKey<>(
             "sel.jup.docker.startup.timeout.duration", String.class);
+    ConfigKey<String> dockerRequestEntityProcessing = new ConfigKey<>(
+            "sel.jup.docker.request.entity.processing", String.class);
 
     ConfigKey<String> androidDefaultVersion = new ConfigKey<>(
             "sel.jup.android.default.version", String.class);
@@ -896,6 +898,14 @@ public class Config {
 
     public void setDockerStartupTimeoutDuration(String value) {
         this.dockerStartupTimeoutDuration.setValue(value);
+    }
+
+    public String getDockerRequestEntityProcessing() {
+        return resolve(dockerRequestEntityProcessing);
+    }
+
+    public void setDockerRequestEntityProcessing(String value) {
+        this.dockerRequestEntityProcessing.setValue(value);
     }
 
     public String getAndroidDefaultVersion() {
