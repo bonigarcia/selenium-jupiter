@@ -69,8 +69,8 @@ public class DockerHubService {
                     : dockerHubApi.listTags(PAGE_SIZE).execute();
 
             if (!listTagsResponse.isSuccessful()) {
-                throw new SeleniumJupiterException(
-                        listTagsResponse.errorBody().string());
+                String errorBody = listTagsResponse.errorBody().string();
+                throw new SeleniumJupiterException(errorBody);
             }
             results.addAll(listTagsResponse.body().getResults());
 
