@@ -92,7 +92,7 @@ public class DockerService {
         if (dockerRequestEntityProcessing.equalsIgnoreCase("BUFFERED")) {
             requestEntityProcessing = RequestEntityProcessing.BUFFERED;
         }
-        log.debug("Using RequestEntityProcessing {}", requestEntityProcessing,
+        log.trace("Using RequestEntityProcessing {}", requestEntityProcessing,
                 dockerRequestEntityProcessing);
         dockerClientBuilder.useRequestEntityProcessing(requestEntityProcessing);
 
