@@ -23,13 +23,11 @@ import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-// end::snippet-in-doc[]
 import org.openqa.grid.selenium.GridLauncherV3;
-// tag::snippet-in-doc[]
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -37,8 +35,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
-// end::snippet-in-doc[]
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+// end::snippet-in-doc[]
 
 @Disabled
 // tag::snippet-in-doc[]
@@ -51,7 +50,6 @@ class RemoteWebDriverJupiterTest {
     @DriverCapabilities
     Capabilities capabilities = firefox();
 
-    // end::snippet-in-doc[]
     @BeforeAll
     static void setup() throws Exception {
         // Start hub
@@ -70,9 +68,9 @@ class RemoteWebDriverJupiterTest {
                 "browserName=firefox", "-port", "5556" });
     }
 
-    // tag::snippet-in-doc[]
     @Test
-    void testWithRemoteChrome(@DriverUrl("http://localhost:4444/wd/hub")
+    void testWithRemoteChrome(
+            @DriverUrl("http://localhost:4444/wd/hub")
             @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
         exercise(driver);
     }
