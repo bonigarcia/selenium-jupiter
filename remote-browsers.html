@@ -825,17 +825,21 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.openqa.selenium.remote.DesiredCapabilities.firefox</span>;
 
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.grid.selenium.GridLauncherV3</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.Capabilities</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">RemoteWebDriverJupiterTest</span> {
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.wdm.WebDriverManager</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">RemoteWebDriverJupiterTest</span> {
 
     <span class="annotation">@DriverUrl</span>
     <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>;
@@ -843,8 +847,27 @@ table.CodeRay td.code>pre{padding:0}
     <span class="annotation">@DriverCapabilities</span>
     Capabilities capabilities = firefox();
 
+    <span class="annotation">@BeforeAll</span>
+    <span class="directive">static</span> <span class="type">void</span> setup() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        <span class="comment">// Start hub</span>
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">hub</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">4444</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Chrome in hub</span>
+        WebDriverManager.chromedriver().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5555</span><span class="delimiter">&quot;</span></span> });
+
+        <span class="comment">// Register Firefox in hub</span>
+        WebDriverManager.firefoxdriver().setup();
+        GridLauncherV3.main(<span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { <span class="string"><span class="delimiter">&quot;</span><span class="content">-role</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">node</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-hub</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/grid/register</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-browser</span><span class="delimiter">&quot;</span></span>,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=firefox</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">-port</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">5556</span><span class="delimiter">&quot;</span></span> });
+    }
+
     <span class="annotation">@Test</span>
-    <span class="type">void</span> testWithRemoteChrome(<span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>)
+    <span class="type">void</span> testWithRemoteChrome(
+            <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>)
             <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         exercise(driver);
     }
@@ -880,10 +903,10 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Options</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithGlobalCapabilitiesJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">ChromeWithGlobalCapabilitiesJupiterTest</span> {
 
     <span class="annotation">@Options</span>
     ChromeOptions options = <span class="keyword">new</span> ChromeOptions();
@@ -920,10 +943,10 @@ table.CodeRay td.code>pre{padding:0}
 
 <span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumChromeJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">AppiumChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> testWithAndroid(
@@ -961,10 +984,10 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AppiumWithGlobalOptionsChromeJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">AppiumWithGlobalOptionsChromeJupiterTest</span> {
 
     <span class="annotation">@DriverUrl</span>
     <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4723/wd/hub</span><span class="delimiter">&quot;</span></span>;
@@ -1008,11 +1031,11 @@ table.CodeRay td.code>pre{padding:0}
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
 <span class="annotation">@Disabled</span>
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SauceLabsJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SauceLabsJupiterTest</span> {
 
     <span class="annotation">@DriverUrl</span>
     <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">https://ondemand.eu-central-1.saucelabs.com/wd/hub</span><span class="delimiter">&quot;</span></span>;
@@ -1069,10 +1092,10 @@ table.CodeRay td.code>pre{padding:0}
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverUrl</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideRemoteJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SelenideRemoteJupiterTest</span> {
 
     <span class="annotation">@DriverUrl</span>
     <span class="predefined-type">String</span> url = <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>;
@@ -1081,12 +1104,12 @@ table.CodeRay td.code>pre{padding:0}
     DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideGlobalConfig(SelenideDriver driver) {
+    <span class="type">void</span> testRemoteSelenideGlobalConfig(SelenideDriver driver) {
         exercise(driver);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testRemoteSelenideParameterConfig(
+    <span class="type">void</span> testRemoteSelenideParameterConfig(
             <span class="annotation">@DriverUrl</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/wd/hub</span><span class="delimiter">&quot;</span></span>)
             <span class="annotation">@DriverCapabilities</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">browserName=chrome</span><span class="delimiter">&quot;</span></span>) SelenideDriver driver) {
         exercise(driver);
@@ -1107,7 +1130,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-20 09:58:06 CET
+Last updated 2020-02-25 10:38:21 CET
 </div>
 </div>
 </body>

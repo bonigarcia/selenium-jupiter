@@ -802,7 +802,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>3.3.4<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>3.3.5<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -813,7 +813,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.4</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">C</span><span class="error">o</span><span class="error">m</span><span class="error">p</span><span class="error">i</span><span class="error">l</span><span class="error">e</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:3.3.5</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -824,13 +824,13 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>Selenium-Jupiter</em> 3.3.4 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 3.8.1</strong>, <strong>appium <em>java-client</em> 7.0.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, <strong><em>htmlunit</em> 2.36.0</strong>, and <strong>selenide 5.6.0</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
+<em>Selenium-Jupiter</em> 3.3.5 depends on <strong><em>selenium-java</em> 3.141.59</strong>, <strong><em>webdrivermanager</em> 4.2.0</strong>, <strong>appium <em>java-client</em> 7.3.0</strong>, <strong>spotify <em>docker-client</em> 8.16.0</strong>, <strong><em>htmlunit</em> 2.36.0</strong>, and <strong>selenide 5.14.2</strong>. Therefore, by using the <em>Selenium-Jupiter</em> dependency, these libraries will be added as transitive dependencies to your project.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Then, you need to declare <em>Selenium-Jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumExtension.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods (or constructor) whose types implements the <code>WebDriver</code> interface (e.g. <code>ChromeDriver</code> to use Chrome, <code>FirefoxDriver</code> for Firefox, and so for). That&#8217;s it. <em>Selenium-Jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test to drive the browser(s) you want. For example:</p>
+<p>Then, you need to declare <em>Selenium-Jupiter</em> extension in your JUnit 5 test, simply annotating your test with <code>@ExtendWith(SeleniumJupiter.class)</code>. Finally, you need to include one or more parameters in your <code>@Test</code> methods (or constructor) whose types implements the <code>WebDriver</code> interface (e.g. <code>ChromeDriver</code> to use Chrome, <code>FirefoxDriver</code> for Firefox, and so for). That&#8217;s it. <em>Selenium-Jupiter</em> control the lifecycle of the <code>WebDriver</code> object internally, and you just need to use the <code>WebDriver</code> object in your test to drive the browser(s) you want. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -839,23 +839,23 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">ChromeAndFirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneChrome(ChromeDriver chromeDriver) {
+    <span class="type">void</span> testWithOneChrome(ChromeDriver chromeDriver) {
         <span class="comment">// Use Chrome in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithFirefox(FirefoxDriver firefoxDriver) {
+    <span class="type">void</span> testWithFirefox(FirefoxDriver firefoxDriver) {
         <span class="comment">// Use Firefox in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chromeDriver,
+    <span class="type">void</span> testWithChromeAndFirefox(ChromeDriver chromeDriver,
             FirefoxDriver firefoxDriver) {
         <span class="comment">// Use Chrome and Firefox in this test</span>
     }
@@ -939,19 +939,19 @@ The browser to be used must be installed in the machine running the test beforeh
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeInConstructorJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">ChromeInConstructorJupiterTest</span> {
 
     ChromeDriver driver;
 
-    <span class="directive">public</span> ChromeInConstructorJupiterTest(ChromeDriver driver) {
+    ChromeInConstructorJupiterTest(ChromeDriver driver) {
         <span class="local-variable">this</span>.driver = driver;
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testGlobalChrome() {
+    <span class="type">void</span> testGlobalChrome() {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -968,7 +968,7 @@ The browser to be used must be installed in the machine running the test beforeh
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-20 09:58:06 CET
+Last updated 2020-09-10 20:53:21 CEST
 </div>
 </div>
 </body>
