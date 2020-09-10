@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled
-public class TemplateRegisterRemoteTest {
+class TemplateRegisterRemoteTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

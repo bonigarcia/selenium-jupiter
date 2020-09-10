@@ -32,7 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 // end::snippet-in-doc[]
 @Disabled("Edge not available on Travis CI")
 // tag::snippet-in-doc[]
-public class EdgeSettingVersionJupiterTest {
+class EdgeSettingVersionJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

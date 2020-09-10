@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class MixedDockerChromeJupiterTest {
+class MixedDockerChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 
@@ -53,7 +53,7 @@ public class MixedDockerChromeJupiterTest {
     }
 
     @Test
-    public void testMixed(@DockerBrowser(type = CHROME) RemoteWebDriver chrome,
+    void testMixed(@DockerBrowser(type = CHROME) RemoteWebDriver chrome,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList,
             @DockerBrowser(type = FIREFOX) RemoteWebDriver firefox)
             throws InterruptedException {

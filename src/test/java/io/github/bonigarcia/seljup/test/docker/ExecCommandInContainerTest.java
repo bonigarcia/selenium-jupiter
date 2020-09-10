@@ -33,7 +33,7 @@ import com.spotify.docker.client.exceptions.DockerException;
 
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ExecCommandInContainerTest {
+class ExecCommandInContainerTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 

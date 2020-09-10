@@ -28,7 +28,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class GenericMixedTest {
+class GenericMixedTest {
 
     @Test
     void genericMixedTest(ChromeDriver local, RemoteWebDriver remote) {

@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class SelenideRemoteJupiterTest {
+class SelenideRemoteJupiterTest {
 
     @DriverUrl
     String url = "http://localhost:4444/wd/hub";
@@ -46,12 +46,12 @@ public class SelenideRemoteJupiterTest {
     DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
     @Test
-    public void testRemoteSelenideGlobalConfig(SelenideDriver driver) {
+    void testRemoteSelenideGlobalConfig(SelenideDriver driver) {
         exercise(driver);
     }
 
     @Test
-    public void testRemoteSelenideParameterConfig(
+    void testRemoteSelenideParameterConfig(
             @DriverUrl("http://localhost:4444/wd/hub")
             @DriverCapabilities("browserName=chrome") SelenideDriver driver) {
         exercise(driver);

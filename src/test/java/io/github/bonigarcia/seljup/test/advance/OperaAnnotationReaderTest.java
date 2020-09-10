@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.annotations;
+package io.github.bonigarcia.seljup.test.advance;
 
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -32,10 +32,8 @@ import org.openqa.selenium.opera.OperaOptions;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
-import io.github.bonigarcia.seljup.test.advance.OperaWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.seljup.test.advance.OperaWithOptionsJupiterTest;
 
-public class OperaAnnotationReaderTest {
+class OperaAnnotationReaderTest {
 
     DriverHandler annotationsReader = new OperaDriverHandler(null, null, null,
             new AnnotationsReader());

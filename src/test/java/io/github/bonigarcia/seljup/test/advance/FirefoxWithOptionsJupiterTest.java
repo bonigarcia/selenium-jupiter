@@ -32,10 +32,10 @@ import io.github.bonigarcia.seljup.Preferences;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class FirefoxWithOptionsJupiterTest {
+class FirefoxWithOptionsJupiterTest {
 
     @Test
-    public void webrtcTest(@Arguments("-private") @Preferences({
+    void webrtcTest(@Arguments("-private") @Preferences({
             "media.navigator.permission.disabled=true",
             "media.navigator.streams.fake=true" }) FirefoxDriver driver) {
         driver.get(

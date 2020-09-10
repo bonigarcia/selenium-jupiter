@@ -28,10 +28,10 @@ import org.junit.jupiter.api.Test;
 import io.github.bonigarcia.seljup.DockerHubService;
 import io.github.bonigarcia.seljup.config.Config;
 
-public class BrowserListFromDockerHubJupiterTest {
+class BrowserListFromDockerHubJupiterTest {
 
     @Test
-    public void listImagesTest() throws IOException {
+    void listImagesTest() throws IOException {
         DockerHubService service = new DockerHubService(new Config());
         List<?> list = service.listTags();
         assertThat(list, notNullValue());

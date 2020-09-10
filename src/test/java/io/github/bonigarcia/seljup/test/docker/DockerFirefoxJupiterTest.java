@@ -29,10 +29,10 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerFirefoxJupiterTest {
+class DockerFirefoxJupiterTest {
 
     @Test
-    public void testLatest(
+    void testLatest(
             @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
@@ -40,7 +40,7 @@ public class DockerFirefoxJupiterTest {
     }
 
     @Test
-    public void testVersion(
+    void testVersion(
             @DockerBrowser(type = FIREFOX, version = "64") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeWithGlobalOptionsJupiterTest {
+class ChromeWithGlobalOptionsJupiterTest {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();

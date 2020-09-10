@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled("Edge not available on Travis CI")
-public class EdgeWithGlobalOptionsJupiterTest {
+class EdgeWithGlobalOptionsJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -48,7 +48,7 @@ public class EdgeWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    public void edgeTest(EdgeDriver driver) {
+    void edgeTest(EdgeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 //end::snippet-in-doc[]
 @Disabled("Edge in Docker not available in Travis, only needed for doc")
 //tag::snippet-in-doc[]
-public class DockerEdgeJupiterTest {
+class DockerEdgeJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -47,7 +47,7 @@ public class DockerEdgeJupiterTest {
     }
 
     @Test
-    public void testEdge(@DockerBrowser(type = EDGE) WebDriver driver) {
+    void testEdge(@DockerBrowser(type = EDGE) WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

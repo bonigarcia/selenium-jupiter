@@ -30,7 +30,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class AndroidJupiterTest {
+class AndroidJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -45,7 +45,7 @@ public class AndroidJupiterTest {
     @Disabled
     // tag::snippet-in-doc[]
     @Test
-    public void testAndroid(
+    void testAndroid(
             @DockerBrowser(type = ANDROID, version = "8.1", deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

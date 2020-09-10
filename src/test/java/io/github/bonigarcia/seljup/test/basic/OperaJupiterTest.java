@@ -33,10 +33,10 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Opera not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class OperaJupiterTest {
+class OperaJupiterTest {
 
     @Test
-    public void test(OperaDriver driver) {
+    void test(OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

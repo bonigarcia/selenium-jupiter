@@ -27,10 +27,10 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class PhantomjsJupiterTest {
+class PhantomjsJupiterTest {
 
     @Test
-    public void test(PhantomJSDriver driver) {
+    void test(PhantomJSDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getPageSource(), notNullValue());
     }

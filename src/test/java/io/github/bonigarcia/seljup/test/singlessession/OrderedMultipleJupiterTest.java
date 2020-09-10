@@ -38,13 +38,13 @@ import io.github.bonigarcia.seljup.SingleSession;
 @ExtendWith(SeleniumExtension.class)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-public class OrderedMultipleJupiterTest {
+class OrderedMultipleJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     RemoteWebDriver driver1, driver2;
 
-    public OrderedMultipleJupiterTest(ChromeDriver driver1,
+    OrderedMultipleJupiterTest(ChromeDriver driver1,
             RemoteWebDriver driver2) {
         this.driver1 = driver1;
         this.driver2 = driver2;
@@ -52,7 +52,7 @@ public class OrderedMultipleJupiterTest {
 
     @Test
     @Order(1)
-    public void testStep1() {
+    void testStep1() {
         log.debug("Step 1: {} {}", driver1, driver2);
         step1(driver1);
         step1(driver2);
@@ -60,7 +60,7 @@ public class OrderedMultipleJupiterTest {
 
     @Test
     @Order(2)
-    public void testStep2() {
+    void testStep2() {
         log.debug("Step 2: {} {}", driver1, driver2);
         step2(driver1);
         step2(driver2);

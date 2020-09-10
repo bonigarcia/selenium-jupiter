@@ -40,7 +40,7 @@ import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
 
 @TestInstance(PER_CLASS)
-public class AndroidForcedTimeoutJupiterTest {
+class AndroidForcedTimeoutJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 

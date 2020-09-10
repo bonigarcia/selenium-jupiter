@@ -28,11 +28,11 @@ import io.github.bonigarcia.seljup.SingleSession;
 
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
-public class GenericInConstructorTest {
+class GenericInConstructorTest {
 
     WebDriver driver;
 
-    public GenericInConstructorTest(WebDriver driver) {
+    GenericInConstructorTest(WebDriver driver) {
         this.driver = driver;
     }
 

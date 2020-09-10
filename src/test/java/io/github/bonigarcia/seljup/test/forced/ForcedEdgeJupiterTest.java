@@ -30,7 +30,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class ForcedEdgeJupiterTest {
+class ForcedEdgeJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -42,7 +42,7 @@ public class ForcedEdgeJupiterTest {
     }
 
     @Test
-    public void edgeTest(EdgeDriver driver) {
+    void edgeTest(EdgeDriver driver) {
         assumeFalse(IS_OS_WINDOWS);
         assertThat(driver, nullValue());
     }

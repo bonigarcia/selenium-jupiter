@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class SauceLabsJupiterTest {
+class SauceLabsJupiterTest {
 
     @DriverUrl
     String url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";

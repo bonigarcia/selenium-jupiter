@@ -30,19 +30,19 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeListInConstructorJupiterTest {
+class DockerChromeListInConstructorJupiterTest {
 
     static final int NUM_BROWSERS = 2;
 
     List<WebDriver> driverList1;
 
-    public DockerChromeListInConstructorJupiterTest(
+    DockerChromeListInConstructorJupiterTest(
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
         this.driverList1 = driverList1;
     }
 
     @Test
-    public void test() {
+    void test() {
         driverList1.forEach(this::exercise);
     }
 

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SingleSession
 @Disabled
-public class ScreenshotNamedWithClassTest {
+class ScreenshotNamedWithClassTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

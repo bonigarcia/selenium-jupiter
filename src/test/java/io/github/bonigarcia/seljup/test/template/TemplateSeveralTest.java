@@ -29,7 +29,7 @@ import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
-public class TemplateSeveralTest {
+class TemplateSeveralTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

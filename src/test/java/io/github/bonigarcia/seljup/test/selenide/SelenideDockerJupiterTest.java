@@ -34,7 +34,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class SelenideDockerJupiterTest {
+class SelenideDockerJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -45,7 +45,7 @@ public class SelenideDockerJupiterTest {
     }
 
     @Test
-    public void testDockerSelenideChrome(
+    void testDockerSelenideChrome(
             @DockerBrowser(type = CHROME) SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         SelenideElement about = driver.$(linkText("About"));
@@ -54,7 +54,7 @@ public class SelenideDockerJupiterTest {
     }
 
     @Test
-    public void testDockerSelenideFirefox(
+    void testDockerSelenideFirefox(
             @DockerBrowser(type = FIREFOX) SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.title(),

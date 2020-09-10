@@ -30,10 +30,10 @@ import io.github.bonigarcia.seljup.Preferences;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerFirefoxWithOptionsJupiterTest {
+class DockerFirefoxWithOptionsJupiterTest {
 
     @Test
-    public void webrtcTest(@Preferences({
+    void webrtcTest(@Preferences({
             "media.navigator.permission.disabled=true",
             "media.navigator.streams.fake=true" }) @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
         driver.get(

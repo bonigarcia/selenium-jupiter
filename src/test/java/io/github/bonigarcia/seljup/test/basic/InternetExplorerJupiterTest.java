@@ -29,7 +29,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled("Internet Explorer is deprecated and thus it should be avoided if possible")
 @ExtendWith(SeleniumExtension.class)
-public class InternetExplorerJupiterTest {
+class InternetExplorerJupiterTest {
 
     @Test
     void webrtcTest(InternetExplorerDriver driver) {

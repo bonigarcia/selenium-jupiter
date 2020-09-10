@@ -25,7 +25,7 @@ import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedOperaJupiterTest {
+class ForcedOperaJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -36,7 +36,7 @@ public class ForcedOperaJupiterTest {
     }
 
     @Test
-    public void operaTest(OperaDriver driver) {
+    void operaTest(OperaDriver driver) {
         // Even if Opera is not installed, test should reach this point
         assertTrue(true);
     }

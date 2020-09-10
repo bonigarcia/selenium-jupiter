@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @TestInstance(PER_CLASS)
-public class DockerHtmlVncJupiterTest {
+class DockerHtmlVncJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -56,7 +56,7 @@ public class DockerHtmlVncJupiterTest {
     }
 
     @Test
-    public void testHtmlVnc(
+    void testHtmlVnc(
             @DockerBrowser(type = CHROME, version = "76.0") RemoteWebDriver arg0) {
         arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(arg0.getTitle(),

@@ -39,19 +39,19 @@ import io.github.bonigarcia.seljup.SingleSession;
 @ExtendWith(SeleniumExtension.class)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-public class OrderedJupiterTest {
+class OrderedJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     RemoteWebDriver driver;
 
-    public OrderedJupiterTest(ChromeDriver driver) {
+    OrderedJupiterTest(ChromeDriver driver) {
         this.driver = driver;
     }
 
     @Test
     @Order(1)
-    public void testStep1() {
+    void testStep1() {
         log.debug("Step 1: {}", driver);
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
@@ -60,7 +60,7 @@ public class OrderedJupiterTest {
 
     @Test
     @Order(2)
-    public void testStep2() {
+    void testStep2() {
         log.debug("Step 2: {}", driver);
         WebElement about = driver.findElementByLinkText("About");
         assertTrue(about.isDisplayed());

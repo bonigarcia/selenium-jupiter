@@ -17,10 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeJupiterWithNestedTest {
+class DockerChromeJupiterWithNestedTest {
 
   @BeforeEach
-  public void openSite(@DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+  void openSite(@DockerBrowser(type = CHROME) RemoteWebDriver driver) {
     WebDriverRunner.setWebDriver(driver);
     Selenide.open("https://bonigarcia.github.io/selenium-jupiter/");
   }
@@ -29,7 +29,7 @@ public class DockerChromeJupiterWithNestedTest {
   class MyNestedTest {
 
     @BeforeEach
-    public void checkTitle() {
+    void checkTitle() {
       assertThat(Selenide.title(),
           containsString("JUnit 5 extension for Selenium"));
     }
@@ -38,12 +38,12 @@ public class DockerChromeJupiterWithNestedTest {
     class MoreNested {
 
       @BeforeEach
-      public void checkToc() {
+      void checkToc() {
         $("#toc").should(Condition.exist);
       }
 
       @Test
-      public void quickReference() {
+      void quickReference() {
         $("a[href=\"#quick-reference\"]").should(Condition.exist);
       }
     }

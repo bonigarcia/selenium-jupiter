@@ -31,14 +31,15 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class AndroidCustomJupiterTest {
+class AndroidCustomJupiterTest {
 
     // end::snippet-in-doc[]
     @Disabled
     // tag::snippet-in-doc[]
     @Test
-    public void testAndroid(@DockerBrowser(type = ANDROID, version = "9.0",
-            deviceName = "Nexus S") RemoteWebDriver driver) {
+    void testAndroid(
+            @DockerBrowser(type = ANDROID, version = "9.0", deviceName = "Nexus S")
+            RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

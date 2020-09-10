@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class FirefoxWithGlobalOptionsJupiterTest {
+class FirefoxWithGlobalOptionsJupiterTest {
 
     @Options
     FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -44,7 +44,7 @@ public class FirefoxWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    public void webrtcTest(FirefoxDriver driver) {
+    void webrtcTest(FirefoxDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),

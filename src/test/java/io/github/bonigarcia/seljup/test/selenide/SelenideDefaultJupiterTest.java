@@ -29,10 +29,10 @@ import com.codeborne.selenide.SelenideElement;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SelenideDefaultJupiterTest {
+class SelenideDefaultJupiterTest {
 
     @Test
-    public void testSelenide(SelenideDriver driver) {
+    void testSelenide(SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         SelenideElement about = driver.$(linkText("About"));
         about.shouldBe(visible);

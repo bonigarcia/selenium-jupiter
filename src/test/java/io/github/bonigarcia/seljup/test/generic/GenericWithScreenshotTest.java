@@ -34,7 +34,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @TestInstance(PER_CLASS)
-public class GenericWithScreenshotTest {
+class GenericWithScreenshotTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

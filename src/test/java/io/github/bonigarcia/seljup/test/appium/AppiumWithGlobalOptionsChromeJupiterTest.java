@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class AppiumWithGlobalOptionsChromeJupiterTest {
+class AppiumWithGlobalOptionsChromeJupiterTest {
 
     @DriverUrl
     String url = "http://localhost:4723/wd/hub";

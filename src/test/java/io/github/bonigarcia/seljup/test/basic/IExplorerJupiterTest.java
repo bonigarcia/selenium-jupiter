@@ -32,7 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Internet Explorer is not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class IExplorerJupiterTest {
+class IExplorerJupiterTest {
 
     @Test
     void iExplorerTest(InternetExplorerDriver driver) {

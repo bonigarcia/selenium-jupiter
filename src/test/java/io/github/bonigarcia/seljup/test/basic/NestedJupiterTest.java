@@ -27,10 +27,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class NestedJupiterTest {
+class NestedJupiterTest {
 
     @Test
-    public void testWithOneChrome(ChromeDriver driver) {
+    void testWithOneChrome(ChromeDriver driver) {
         exercise(driver);
     }
 
@@ -44,7 +44,7 @@ public class NestedJupiterTest {
     class MyNestedClass {
 
         @Test
-        public void testWithOtherChrome(ChromeDriver driver) {
+        void testWithOtherChrome(ChromeDriver driver) {
             exercise(driver);
         }
 

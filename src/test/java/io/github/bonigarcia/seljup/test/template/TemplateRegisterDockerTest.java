@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 3.1.0
  */
-public class TemplateRegisterDockerTest {
+class TemplateRegisterDockerTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

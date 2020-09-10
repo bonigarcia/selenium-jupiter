@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class MixedInConstructorJupiterTest {
+class MixedInConstructorJupiterTest {
 
     static final int NUM_BROWSERS = 2;
 
@@ -39,7 +39,7 @@ public class MixedInConstructorJupiterTest {
     RemoteWebDriver driver2;
     List<WebDriver> driverList1;
 
-    public MixedInConstructorJupiterTest(WebDriver driver1,
+    MixedInConstructorJupiterTest(WebDriver driver1,
             RemoteWebDriver driver2,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
         this.driver1 = driver1;
@@ -48,7 +48,7 @@ public class MixedInConstructorJupiterTest {
     }
 
     @Test
-    public void testGlobalChrome(WebDriver driver3, RemoteWebDriver driver4,
+    void testGlobalChrome(WebDriver driver3, RemoteWebDriver driver4,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList2) {
         exercise(driver1);
         exercise(driver2);

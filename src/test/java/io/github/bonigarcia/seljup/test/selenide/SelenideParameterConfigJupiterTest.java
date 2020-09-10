@@ -31,16 +31,16 @@ import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SelenideParameterConfigJupiterTest {
+class SelenideParameterConfigJupiterTest {
 
     @Test
-    public void testHeadlessFirefoxSelenide(
+    void testHeadlessFirefoxSelenide(
             @SelenideConfiguration(browser = FIREFOX, headless = true) SelenideDriver driver) {
         exercise(driver);
     }
 
     @Test
-    public void testChromeAndFirefoxSelenide(
+    void testChromeAndFirefoxSelenide(
             @SelenideConfiguration(browser = CHROME) SelenideDriver chrome,
             @SelenideConfiguration(browser = FIREFOX) SelenideDriver firefox) {
         exercise(chrome, firefox);

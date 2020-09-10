@@ -20,7 +20,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.seljup.Options;
 
-public class ChromeOptionsTestParent {
+class ChromeOptionsTestParent {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();

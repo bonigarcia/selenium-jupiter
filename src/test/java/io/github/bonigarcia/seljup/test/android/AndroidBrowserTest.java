@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
 
-public class AndroidBrowserTest {
+class AndroidBrowserTest {
 
     Config config = new Config();
     AnnotationsReader annotationsReader = new AnnotationsReader();

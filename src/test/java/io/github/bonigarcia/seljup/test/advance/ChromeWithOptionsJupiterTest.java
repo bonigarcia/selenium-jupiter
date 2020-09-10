@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeWithOptionsJupiterTest {
+class ChromeWithOptionsJupiterTest {
 
     @Test
     void headlessTest(@Arguments("--headless") ChromeDriver driver) {

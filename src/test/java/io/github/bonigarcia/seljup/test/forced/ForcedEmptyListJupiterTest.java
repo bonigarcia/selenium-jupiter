@@ -27,10 +27,10 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ForcedEmptyListJupiterTest {
+class ForcedEmptyListJupiterTest {
 
     @Test
-    public void test(List<WebDriver> drivers) {
+    void test(List<WebDriver> drivers) {
         assertThrows(NullPointerException.class, () -> drivers.get(0));
     }
 

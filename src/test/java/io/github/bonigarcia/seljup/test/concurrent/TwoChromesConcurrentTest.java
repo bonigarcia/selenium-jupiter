@@ -32,18 +32,18 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @Execution(CONCURRENT)
-public class TwoChromesConcurrentTest {
+class TwoChromesConcurrentTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @Test
-    public void testWithOneChrome(ChromeDriver driver) {
+    void testWithOneChrome(ChromeDriver driver) {
         log.debug("Chrome #1 {}", driver);
         assertThat(driver, notNullValue());
     }
 
     @Test
-    public void testWithOtherChrome(ChromeDriver driver) {
+    void testWithOtherChrome(ChromeDriver driver) {
         log.debug("Chrome #2 {}", driver);
         assertThat(driver, notNullValue());
     }

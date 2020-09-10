@@ -28,7 +28,7 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedSafariJupiterTest {
+class ForcedSafariJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,7 +39,7 @@ public class ForcedSafariJupiterTest {
     }
 
     @Test
-    public void safariTest(SafariDriver driver) {
+    void safariTest(SafariDriver driver) {
         assumeFalse(IS_OS_MAC);
         assertThat(driver, nullValue());
     }

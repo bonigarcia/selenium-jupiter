@@ -33,7 +33,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Edge is not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class EdgeJupiterTest {
+class EdgeJupiterTest {
 
     @Test
     void edgeTest(EdgeDriver driver) {

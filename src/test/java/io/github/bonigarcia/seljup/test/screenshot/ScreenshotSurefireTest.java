@@ -33,7 +33,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @TestInstance(PER_CLASS)
-public class ScreenshotSurefireTest {
+class ScreenshotSurefireTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

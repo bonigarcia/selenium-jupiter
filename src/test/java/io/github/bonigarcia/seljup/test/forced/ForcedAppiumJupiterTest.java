@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.appium;
+package io.github.bonigarcia.seljup.test.forced;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +28,7 @@ import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedAppiumJupiterTest {
+class ForcedAppiumJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,12 +39,12 @@ public class ForcedAppiumJupiterTest {
     }
 
     @Test
-    public void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
+    void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());
     }
 
     @Test
-    public void appiumWithCapabilitiesTest(
+    void appiumWithCapabilitiesTest(
             @DriverCapabilities({ "browserName=chrome",
                     "deviceName=Android" }) AppiumDriver<WebElement> driver) {
         assertThat(driver, nullValue());

@@ -27,16 +27,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeInConstructorJupiterTest {
+class ChromeInConstructorJupiterTest {
 
     ChromeDriver driver;
 
-    public ChromeInConstructorJupiterTest(ChromeDriver driver) {
+    ChromeInConstructorJupiterTest(ChromeDriver driver) {
         this.driver = driver;
     }
 
     @Test
-    public void testGlobalChrome() {
+    void testGlobalChrome() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

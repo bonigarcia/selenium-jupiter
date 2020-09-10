@@ -30,10 +30,10 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeWithArgumentsJupiterTest {
+class DockerChromeWithArgumentsJupiterTest {
 
     @Test
-    public void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
+    void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
             "--use-fake-ui-for-media-stream" }) @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");

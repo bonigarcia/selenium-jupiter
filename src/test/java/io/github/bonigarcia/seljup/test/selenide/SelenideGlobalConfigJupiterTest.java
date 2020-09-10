@@ -32,14 +32,14 @@ import io.github.bonigarcia.seljup.SelenideConfiguration;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class SelenideGlobalConfigJupiterTest {
+class SelenideGlobalConfigJupiterTest {
 
     @SelenideConfiguration
     SelenideConfig selenideConfig = new SelenideConfig().browser(FIREFOX)
             .startMaximized(true);
 
     @Test
-    public void testSelenideConfig(SelenideDriver driver) {
+    void testSelenideConfig(SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
         SelenideElement about = driver.$(linkText("About"));
         about.shouldBe(visible);

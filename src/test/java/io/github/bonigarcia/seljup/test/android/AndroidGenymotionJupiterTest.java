@@ -32,7 +32,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.config.Config;
 
-public class AndroidGenymotionJupiterTest {
+class AndroidGenymotionJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -55,7 +55,7 @@ public class AndroidGenymotionJupiterTest {
 
     @Disabled
     @Test
-    public void testAndroidInGenymotionSaas(
+    void testAndroidInGenymotionSaas(
             @DockerBrowser(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = "SamsungS7V6", browserName = "browser")
             RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");

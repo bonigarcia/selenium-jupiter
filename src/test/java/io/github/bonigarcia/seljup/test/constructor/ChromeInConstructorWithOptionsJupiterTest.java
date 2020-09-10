@@ -28,18 +28,18 @@ import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeInConstructorWithOptionsJupiterTest {
+class ChromeInConstructorWithOptionsJupiterTest {
 
     ChromeDriver driver;
 
-    public ChromeInConstructorWithOptionsJupiterTest(
+    ChromeInConstructorWithOptionsJupiterTest(
             @Arguments({ "--use-fake-device-for-media-stream",
                     "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
         this.driver = driver;
     }
 
     @Test
-    public void testGlobalChrome() {
+    void testGlobalChrome() {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName(),

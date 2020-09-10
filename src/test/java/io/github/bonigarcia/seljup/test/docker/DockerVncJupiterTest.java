@@ -28,7 +28,7 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class DockerVncJupiterTest {
+class DockerVncJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,7 +39,7 @@ public class DockerVncJupiterTest {
     }
 
     @Test
-    public void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver)
+    void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

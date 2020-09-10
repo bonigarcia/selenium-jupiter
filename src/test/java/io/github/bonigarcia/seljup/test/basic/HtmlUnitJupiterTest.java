@@ -27,10 +27,10 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class HtmlUnitJupiterTest {
+class HtmlUnitJupiterTest {
 
     @Test
-    public void test(HtmlUnitDriver driver) {
+    void test(HtmlUnitDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

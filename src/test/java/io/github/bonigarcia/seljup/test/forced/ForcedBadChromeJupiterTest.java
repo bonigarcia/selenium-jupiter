@@ -27,7 +27,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedBadChromeJupiterTest {
+class ForcedBadChromeJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -38,7 +38,7 @@ public class ForcedBadChromeJupiterTest {
     }
 
     @Test
-    public void chromeTest(@Binary("/bad/path/to/chrome") ChromeDriver driver) {
+    void chromeTest(@Binary("/bad/path/to/chrome") ChromeDriver driver) {
         assertThat(driver, nullValue());
     }
 

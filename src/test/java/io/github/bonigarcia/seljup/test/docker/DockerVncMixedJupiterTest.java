@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @TestInstance(PER_CLASS)
-public class DockerVncMixedJupiterTest {
+class DockerVncMixedJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -48,7 +48,7 @@ public class DockerVncMixedJupiterTest {
     }
 
     @Test
-    public void testHtmlVnc(
+    void testHtmlVnc(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver1,
             @DockerBrowser(type = FIREFOX) RemoteWebDriver driver2)
             throws InterruptedException {

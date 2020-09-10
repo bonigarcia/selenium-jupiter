@@ -31,10 +31,10 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
-public class OperaWithOptionsJupiterTest {
+class OperaWithOptionsJupiterTest {
 
     @Test
-    public void operaTest(
+    void operaTest(
             @Binary("/usr/bin/opera") @Arguments("private") OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

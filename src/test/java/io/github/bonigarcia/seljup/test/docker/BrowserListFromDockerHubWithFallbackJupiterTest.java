@@ -28,7 +28,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class BrowserListFromDockerHubWithFallbackJupiterTest {
+class BrowserListFromDockerHubWithFallbackJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,7 +39,7 @@ public class BrowserListFromDockerHubWithFallbackJupiterTest {
     }
 
     @Test
-    public void chromeTest(
+    void chromeTest(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         assertThat(driver, notNullValue());
     }

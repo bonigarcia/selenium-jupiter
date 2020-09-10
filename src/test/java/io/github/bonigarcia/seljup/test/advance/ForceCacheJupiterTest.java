@@ -32,7 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 // end::snippet-in-doc[]
 @Disabled("Redudant test for Travis CI suite")
 // tag::snippet-in-doc[]
-public class ForceCacheJupiterTest {
+class ForceCacheJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -43,7 +43,7 @@ public class ForceCacheJupiterTest {
     }
 
     @Test
-    public void test(ChromeDriver driver) {
+    void test(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

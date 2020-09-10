@@ -29,10 +29,10 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeJupiterTest {
+class DockerChromeJupiterTest {
 
     @Test
-    public void testChrome(
+    void testChrome(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
@@ -40,7 +40,7 @@ public class DockerChromeJupiterTest {
     }
 
     @Test
-    public void testChromeWithVersion(
+    void testChromeWithVersion(
             @DockerBrowser(type = CHROME, version = "76.0") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

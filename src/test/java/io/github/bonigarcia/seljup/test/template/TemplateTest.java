@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class TemplateTest {
+class TemplateTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

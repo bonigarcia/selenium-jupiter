@@ -14,11 +14,11 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.annotations;
+package io.github.bonigarcia.seljup.test.advance;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -27,42 +27,41 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.safari.SafariOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
-import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
-import io.github.bonigarcia.seljup.test.advance.SafariWithGlobalOptionsJupiterTest;
+import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 
-public class SafariAnnotationReaderTest {
+class EdgeAnnotationReaderTest {
 
-    DriverHandler annotationsReader = new SafariDriverHandler(null, null, null,
+    DriverHandler annotationsReader = new EdgeDriverHandler(null, null, null,
             new AnnotationsReader());
 
     static Stream<Class<?>> testClassProvider() {
-        return Stream.of(SafariWithGlobalOptionsJupiterTest.class);
+        return Stream.of(EdgeWithGlobalOptionsJupiterTest.class);
     }
 
     @ParameterizedTest
     @MethodSource("testClassProvider")
-    void testSafariOptions(Class<?> testClass) throws Exception {
-        Parameter parameter = testClass
-                .getMethod("safariTest", SafariDriver.class).getParameters()[0];
+    void testEdgeOptions(Class<?> testClass) throws Exception {
+        Parameter parameter = testClass.getMethod("edgeTest", EdgeDriver.class)
+                .getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
-        SafariOptions safariOptions = (SafariOptions) annotationsReader
+        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);
-
-        assertFalse(safariOptions.getUseTechnologyPreview());
+        assertThat(edgeOptions.getCapability("pageLoadStrategy"),
+                equalTo("eager"));
     }
 
     @Test
-    void testAnnotatedSafariOptionsIsSelectedOverOtherAnnotatedOptions()
+    void testAnnotatedEdgeOptionsIsSelectedOverOtherAnnotatedOptions()
             throws Exception {
         Optional<Object> testInstance = Optional
                 .of(new ClassWithMultipleOptions());
-        SafariOptions safariOptions = (SafariOptions) annotationsReader
+        EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(null, testInstance);
-        assertThat(safariOptions, notNullValue());
+        assertThat(edgeOptions, notNullValue());
     }
 }

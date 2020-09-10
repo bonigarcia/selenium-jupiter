@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class AppiumChromeJupiterTest {
+class AppiumChromeJupiterTest {
 
     @Test
     void testWithAndroid(

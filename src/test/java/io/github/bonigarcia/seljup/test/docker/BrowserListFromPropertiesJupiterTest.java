@@ -28,7 +28,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class BrowserListFromPropertiesJupiterTest {
+class BrowserListFromPropertiesJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,7 +39,7 @@ public class BrowserListFromPropertiesJupiterTest {
     }
 
     @Test
-    public void chromeTest(@DockerBrowser(type = CHROME) ChromeDriver driver) {
+    void chromeTest(@DockerBrowser(type = CHROME) ChromeDriver driver) {
         assertThat(driver, notNullValue());
     }
 

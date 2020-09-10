@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 
-public class AnnotationsReaderTest {
+class AnnotationsReaderTest {
 
     AnnotationsReader annotationsReader = new AnnotationsReader();
     Optional<Object> testInstance = Optional.of(new ClassWithOptions());
@@ -110,14 +110,14 @@ public class AnnotationsReaderTest {
 
     private static class CapabilitiesA extends AbstractCapabilities {
 
-        public CapabilitiesA(String id) {
+        CapabilitiesA(String id) {
             super(id);
         }
     }
 
     private static class CapabilitiesB extends AbstractCapabilities {
 
-        public CapabilitiesB(String id) {
+        CapabilitiesB(String id) {
             super(id);
         }
     }
@@ -128,11 +128,11 @@ public class AnnotationsReaderTest {
 
         private final String id;
 
-        public AbstractCapabilities(String id) {
+        AbstractCapabilities(String id) {
             this.id = id;
         }
 
-        public String getId() {
+        String getId() {
             return id;
         }
 

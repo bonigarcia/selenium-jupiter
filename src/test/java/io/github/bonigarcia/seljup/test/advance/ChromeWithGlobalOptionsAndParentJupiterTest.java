@@ -27,7 +27,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class ChromeWithGlobalOptionsAndParentJupiterTest
+class ChromeWithGlobalOptionsAndParentJupiterTest
         extends ChromeOptionsTestParent {
 
     @Test

@@ -32,10 +32,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class FirefoxJupiterTest {
+class FirefoxJupiterTest {
 
     @Test
-    public void testWithOneFirefox(FirefoxDriver driver) {
+    void testWithOneFirefox(FirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
@@ -45,7 +45,7 @@ public class FirefoxJupiterTest {
     @Disabled("Redudant test for Travis CI suite")
     // tag::snippet-in-doc[]
     @Test
-    public void testWithTwoFirefoxs(FirefoxDriver driver1,
+    void testWithTwoFirefoxs(FirefoxDriver driver1,
             FirefoxDriver driver2) {
         driver1.get("http://www.seleniumhq.org/");
         driver2.get("http://junit.org/junit5/");

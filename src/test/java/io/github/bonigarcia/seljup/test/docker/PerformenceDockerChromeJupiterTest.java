@@ -38,14 +38,14 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class PerformenceDockerChromeJupiterTest {
+class PerformenceDockerChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @Test
-    public void testPerformance(
+    void testPerformance(
             @DockerBrowser(type = CHROME, version = "76.0", size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
             throws InterruptedException {
 

@@ -43,7 +43,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @Disabled
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class RemoteWebDriverJupiterTest {
+class RemoteWebDriverJupiterTest {
 
     @DriverUrl
     String url = "http://localhost:4444/wd/hub";

@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeWithOptionsJupiterTest {
+class DockerChromeWithOptionsJupiterTest {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();
@@ -41,7 +41,7 @@ public class DockerChromeWithOptionsJupiterTest {
     }
 
     @Test
-    public void webrtcTest(
+    void webrtcTest(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");

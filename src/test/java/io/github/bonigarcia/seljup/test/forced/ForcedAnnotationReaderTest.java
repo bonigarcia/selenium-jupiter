@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.annotations;
+package io.github.bonigarcia.seljup.test.forced;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -42,14 +42,8 @@ import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
 import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
-import io.github.bonigarcia.seljup.test.appium.ForcedAppiumJupiterTest;
-import io.github.bonigarcia.seljup.test.forced.ForcedBadChromeJupiterTest;
-import io.github.bonigarcia.seljup.test.forced.ForcedBadFirefoxJupiterTest;
-import io.github.bonigarcia.seljup.test.forced.ForcedEdgeJupiterTest;
-import io.github.bonigarcia.seljup.test.forced.ForcedOperaJupiterTest;
-import io.github.bonigarcia.seljup.test.forced.ForcedSafariJupiterTest;
 
-public class ForcedAnnotationReaderTest {
+class ForcedAnnotationReaderTest {
 
     static Stream<Arguments> forcedTestProvider() {
         return Stream.of(

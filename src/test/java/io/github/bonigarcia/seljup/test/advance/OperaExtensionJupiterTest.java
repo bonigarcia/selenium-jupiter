@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled("Opera not available on Travis CI")
 @ExtendWith(SeleniumExtension.class)
-public class OperaExtensionJupiterTest {
+class OperaExtensionJupiterTest {
 
     @Test
     void operaExtensionTest(

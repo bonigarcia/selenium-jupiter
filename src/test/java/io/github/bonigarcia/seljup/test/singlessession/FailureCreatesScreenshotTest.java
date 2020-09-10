@@ -37,14 +37,14 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
 @Disabled
-public class FailureCreatesScreenshotTest {
+class FailureCreatesScreenshotTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
 
     RemoteWebDriver driver;
 
-    public FailureCreatesScreenshotTest(ChromeDriver driver) {
+    FailureCreatesScreenshotTest(ChromeDriver driver) {
         this.driver = driver;
     }
 
@@ -56,14 +56,14 @@ public class FailureCreatesScreenshotTest {
     }
 
     @Test
-    public void shouldFailAndCreateScreenshotTest() {
+    void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("Test should fail and create screenshot"));
     }
 
     @Test
-    public void notFailAndNotCreateScreenshotTest() {
+    void notFailAndNotCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/");
         assertThat(driver.getTitle(), containsString("Boni"));
     }

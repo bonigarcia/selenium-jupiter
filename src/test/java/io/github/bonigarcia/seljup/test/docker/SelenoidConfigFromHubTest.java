@@ -39,7 +39,7 @@ import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.config.Config;
 
 @ExtendWith(MockitoExtension.class)
-public class SelenoidConfigFromHubTest {
+class SelenoidConfigFromHubTest {
 
     Config config = new Config();
     AnnotationsReader annotationsReader = new AnnotationsReader();

@@ -36,7 +36,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 // end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
 // tag::snippet-in-doc[]
-public class AppiumApkLogLevelJupiterTest {
+class AppiumApkLogLevelJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

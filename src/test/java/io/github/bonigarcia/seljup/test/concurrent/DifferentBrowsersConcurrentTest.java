@@ -36,7 +36,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
 @Execution(CONCURRENT)
-public class DifferentBrowsersConcurrentTest {
+class DifferentBrowsersConcurrentTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -47,28 +47,28 @@ public class DifferentBrowsersConcurrentTest {
     }
 
     @Test
-    public void testWithChrome1(ChromeDriver driver) {
+    void testWithChrome1(ChromeDriver driver) {
         log.debug("#1 Chrome {}", driver);
         assertThat(driver, notNullValue());
         exercise(driver);
     }
 
     @Test
-    public void testWithFirefox1(FirefoxDriver driver) {
+    void testWithFirefox1(FirefoxDriver driver) {
         log.debug("#1 Firefox {}", driver);
         assertThat(driver, notNullValue());
         exercise(driver);
     }
 
     @Test
-    public void testWithChrome2(ChromeDriver driver) {
+    void testWithChrome2(ChromeDriver driver) {
         log.debug("#2 Chrome {}", driver);
         assertThat(driver, notNullValue());
         exercise(driver);
     }
 
     @Test
-    public void testWithFirefox2(FirefoxDriver driver) {
+    void testWithFirefox2(FirefoxDriver driver) {
         log.debug("#2 Firefox {}", driver);
         assertThat(driver, notNullValue());
         exercise(driver);

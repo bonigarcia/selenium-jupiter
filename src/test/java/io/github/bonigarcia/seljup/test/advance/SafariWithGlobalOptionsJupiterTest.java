@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
 @ExtendWith(SeleniumExtension.class)
-public class SafariWithGlobalOptionsJupiterTest {
+class SafariWithGlobalOptionsJupiterTest {
 
     @Options
     SafariOptions safariOptions = new SafariOptions();
@@ -40,7 +40,7 @@ public class SafariWithGlobalOptionsJupiterTest {
     }
 
     @Test
-    public void safariTest(SafariDriver driver) {
+    void safariTest(SafariDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

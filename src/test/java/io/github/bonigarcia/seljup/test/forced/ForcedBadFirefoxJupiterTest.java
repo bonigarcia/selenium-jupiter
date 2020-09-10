@@ -27,7 +27,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedBadFirefoxJupiterTest {
+class ForcedBadFirefoxJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -38,7 +38,7 @@ public class ForcedBadFirefoxJupiterTest {
     }
 
     @Test
-    public void firefoxTest(
+    void firefoxTest(
             @Binary("/bad/path/to/firefox") FirefoxDriver driver) {
         assertThat(driver, nullValue());
     }

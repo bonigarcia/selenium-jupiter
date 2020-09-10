@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @ExtendWith(SeleniumExtension.class)
-public class MultipleConfigWdmJupiterTest {
+class MultipleConfigWdmJupiterTest {
 
     @BeforeAll
     static void setup() {

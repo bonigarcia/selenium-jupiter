@@ -29,10 +29,10 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class DockerOperaJupiterTest {
+class DockerOperaJupiterTest {
 
     @Test
-    public void testOpera(@DockerBrowser(type = OPERA) RemoteWebDriver driver) {
+    void testOpera(@DockerBrowser(type = OPERA) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class TemplateRemoteTest {
+class TemplateRemoteTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

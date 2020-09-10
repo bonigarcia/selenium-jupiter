@@ -33,10 +33,10 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class SafariJupiterTest {
+class SafariJupiterTest {
 
     @Test
-    public void test(SafariDriver driver) {
+    void test(SafariDriver driver) {
         driver.get("http://www.seleniumhq.org/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));

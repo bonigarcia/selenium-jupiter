@@ -28,7 +28,7 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.config.Config;
 
-public class ForcedEmptyConfigJupiterTest {
+class ForcedEmptyConfigJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();

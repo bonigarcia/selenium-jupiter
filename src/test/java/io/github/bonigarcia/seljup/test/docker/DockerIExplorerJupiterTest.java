@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 //end::snippet-in-doc[]
 @Disabled("Internet Explorer in Docker not available in Travis, only needed for doc")
 //tag::snippet-in-doc[]
-public class DockerIExplorerJupiterTest {
+class DockerIExplorerJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -47,7 +47,7 @@ public class DockerIExplorerJupiterTest {
     }
 
     @Test
-    public void testIExplorer(
+    void testIExplorer(
             @DockerBrowser(type = IEXPLORER) WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),

@@ -39,7 +39,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
-public class BrowserBuilderTest {
+class BrowserBuilderTest {
 
     static Stream<BrowserBuilder> browserBuilderProvider() {
         return Stream.of(chrome(), firefox(), opera(), android(), appium(),

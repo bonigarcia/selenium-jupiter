@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
 @ExtendWith(SeleniumExtension.class)
-public class GenericTest {
+class GenericTest {
 
     @Test
     void genericTest(WebDriver driver) {

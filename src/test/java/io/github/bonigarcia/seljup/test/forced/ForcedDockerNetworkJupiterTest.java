@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class ForcedDockerNetworkJupiterTest {
+class ForcedDockerNetworkJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -39,7 +39,7 @@ public class ForcedDockerNetworkJupiterTest {
     }
 
     @Test
-    public void test(@DockerBrowser(type = CHROME) WebDriver driver) {
+    void test(@DockerBrowser(type = CHROME) WebDriver driver) {
         assertThrows(NullPointerException.class, () -> driver
                 .get("https://bonigarcia.github.io/selenium-jupiter/"));
     }

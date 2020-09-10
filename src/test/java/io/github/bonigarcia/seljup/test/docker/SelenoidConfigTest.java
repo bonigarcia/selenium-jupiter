@@ -46,7 +46,7 @@ import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.config.Config;
 
-public class SelenoidConfigTest {
+class SelenoidConfigTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 

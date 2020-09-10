@@ -32,28 +32,28 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Redudant test, only needed for doc")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class DockerChromeLatestJupiterTest {
+class DockerChromeLatestJupiterTest {
 
     @Test
-    public void testLatestChrome(
+    void testLatestChrome(
             @DockerBrowser(type = CHROME, version = "latest") WebDriver driver) {
         // Use stable version of Chrome in this test
     }
 
     @Test
-    public void testFormerChrome(
+    void testFormerChrome(
             @DockerBrowser(type = CHROME, version = "latest-1") WebDriver driver) {
         // Use previous to stable version of Chrome in this test
     }
 
     @Test
-    public void testBetaChrome(
+    void testBetaChrome(
             @DockerBrowser(type = CHROME, version = "beta") WebDriver driver) {
         // Use beta version of Chrome in this test
     }
 
     @Test
-    public void testUnstableChrome(
+    void testUnstableChrome(
             @DockerBrowser(type = CHROME, version = "unstable") WebDriver driver) {
         // Use development version of Chrome in this test
     }

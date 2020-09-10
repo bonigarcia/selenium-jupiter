@@ -29,20 +29,20 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @Disabled("Redudant test, only needed for doc")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumExtension.class)
-public class ChromeAndFirefoxJupiterTest {
+class ChromeAndFirefoxJupiterTest {
 
     @Test
-    public void testWithOneChrome(ChromeDriver chromeDriver) {
+    void testWithOneChrome(ChromeDriver chromeDriver) {
         // Use Chrome in this test
     }
 
     @Test
-    public void testWithFirefox(FirefoxDriver firefoxDriver) {
+    void testWithFirefox(FirefoxDriver firefoxDriver) {
         // Use Firefox in this test
     }
 
     @Test
-    public void testWithChromeAndFirefox(ChromeDriver chromeDriver,
+    void testWithChromeAndFirefox(ChromeDriver chromeDriver,
             FirefoxDriver firefoxDriver) {
         // Use Chrome and Firefox in this test
     }

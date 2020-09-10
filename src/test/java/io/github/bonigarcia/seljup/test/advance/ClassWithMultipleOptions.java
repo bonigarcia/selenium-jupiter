@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.annotations;
+package io.github.bonigarcia.seljup.test.advance;
 
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -23,7 +23,7 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.seljup.Options;
 
-public class ClassWithMultipleOptions {
+class ClassWithMultipleOptions {
 
     @Options
     Object options = new Object();

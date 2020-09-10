@@ -30,7 +30,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 
-public class DockerChromeBetaJupiterTest {
+class DockerChromeBetaJupiterTest {
 
     @RegisterExtension
     static SeleniumExtension seleniumExtension = new SeleniumExtension();
@@ -41,21 +41,21 @@ public class DockerChromeBetaJupiterTest {
     }
 
     @Test
-    public void testChromeBeta(
+    void testChromeBeta(
             @DockerBrowser(type = CHROME, version = "beta") RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);
     }
 
     @Test
-    public void testChromeUnstable(
+    void testChromeUnstable(
             @DockerBrowser(type = CHROME, version = "unstable") RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);
     }
 
     @Test
-    public void testFirefoxBeta(
+    void testFirefoxBeta(
             @DockerBrowser(type = FIREFOX, version = "beta") RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);
@@ -63,7 +63,7 @@ public class DockerChromeBetaJupiterTest {
 
     @Disabled
     @Test
-    public void testFirefoxUnstable(
+    void testFirefoxUnstable(
             @DockerBrowser(type = FIREFOX, version = "unstable") RemoteWebDriver driver)
             throws InterruptedException {
         exercise(driver);

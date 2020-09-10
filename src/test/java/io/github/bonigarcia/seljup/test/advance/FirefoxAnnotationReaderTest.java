@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.annotations;
+package io.github.bonigarcia.seljup.test.advance;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,10 +35,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
-import io.github.bonigarcia.seljup.test.advance.FirefoxWithGlobalOptionsJupiterTest;
-import io.github.bonigarcia.seljup.test.advance.FirefoxWithOptionsJupiterTest;
 
-public class FirefoxAnnotationReaderTest {
+class FirefoxAnnotationReaderTest {
 
     DriverHandler annotationsReader = new FirefoxDriverHandler(null, null, null,
             new AnnotationsReader());
