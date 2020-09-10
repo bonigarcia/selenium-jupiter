@@ -78,13 +78,13 @@ class ForcedAnnotationReaderTest {
         Method method = testClass.getDeclaredMethod(testName, driverClass);
         method.setAccessible(true);
         Parameter parameter = method.getParameters()[0];
+        DriverHandler driverHandler = handler
+                .getDeclaredConstructor(Parameter.class, ExtensionContext.class,
+                        Config.class, AnnotationsReader.class)
+                .newInstance(parameter, null, new Config(),
+                        new AnnotationsReader());
         assertThrows(SeleniumJupiterException.class, () -> {
-            handler.getDeclaredConstructor(Parameter.class,
-                    ExtensionContext.class, Config.class,
-                    AnnotationsReader.class)
-                    .newInstance(parameter, null, new Config(),
-                            new AnnotationsReader())
-                    .resolve();
+            driverHandler.resolve();
         });
     }
 

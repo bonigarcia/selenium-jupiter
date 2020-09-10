@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
@@ -67,14 +66,13 @@ class AndroidForcedTimeoutJupiterTest {
     @ParameterizedTest
     @ValueSource(strings = { "9.0" })
     void androidTimeoutTest(String version) {
+        BrowserInstance android = new BrowserInstance(config, annotationsReader,
+                ANDROID, NONE, empty(), empty());
+        dockerDriverHandler = new DockerDriverHandler(config, android, version,
+                preferences);
         assertThrows(SeleniumJupiterException.class, () -> {
-            BrowserInstance android = new BrowserInstance(config,
-                    annotationsReader, ANDROID, NONE, empty(), empty());
-            dockerDriverHandler = new DockerDriverHandler(config, android,
-                    version, preferences);
-            WebDriver driver = dockerDriverHandler.resolve(android, version,
-                    "Samsung Galaxy S6", "", true);
-            log.debug("WebDriver object: {}", driver);
+            dockerDriverHandler.resolve(android, version, "Samsung Galaxy S6",
+                    "", true);
         });
     }
 
