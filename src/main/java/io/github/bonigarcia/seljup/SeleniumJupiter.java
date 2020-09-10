@@ -42,7 +42,7 @@ import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
  */
 public class SeleniumJupiter extends SeleniumExtension {
 
-    static final Logger log = getLogger(lookup().lookupClass());
+    static final Logger logger = getLogger(lookup().lookupClass());
 
     static Config config = new Config();
     static AnnotationsReader annotationsReader = new AnnotationsReader();
@@ -78,8 +78,8 @@ public class SeleniumJupiter extends SeleniumExtension {
             deviceName = join(" ", copyOfRange(args, 2, args.length));
         }
 
-        log.info("Using Selenium-Jupiter to execute {} {} in Docker", browser,
-                versionMessage);
+        logger.info("Using Selenium-Jupiter to execute {} {} in Docker",
+                browser, versionMessage);
 
         try {
             config.setVnc(true);
@@ -102,7 +102,7 @@ public class SeleniumJupiter extends SeleniumExtension {
                 }
             });
 
-            log.info("Press ENTER to exit");
+            logger.info("Press ENTER to exit");
             Scanner scanner = new Scanner(System.in);
             scanner.nextLine();
             scanner.close();
@@ -110,7 +110,7 @@ public class SeleniumJupiter extends SeleniumExtension {
             cleanContainers(dockerDriverHandler, webdriver);
 
         } catch (Exception e) {
-            log.error("Exception trying to execute {} {} in Docker", browser,
+            logger.error("Exception trying to execute {} {} in Docker", browser,
                     versionMessage, e);
         }
     }
@@ -135,22 +135,23 @@ public class SeleniumJupiter extends SeleniumExtension {
     }
 
     private static void logCliError(String validBrowsers) {
-        log.error("There are 3 options to run Selenium-Jupiter CLI");
-        log.error("1. Selenium-Jupiter used to get VNC sessions of browsers:");
-        log.error("\tSeleniumJupiter browserName <version> <deviceName>");
-        log.error("\t...where:");
-        log.error("\tbrowserName = {}", validBrowsers);
-        log.error("\tversion = optional version (latest by default)");
-        log.error("\tdeviceName = Device name (only for Android)");
-        log.error("\t(where browserName={})", validBrowsers);
+        logger.error("There are 3 options to run Selenium-Jupiter CLI");
+        logger.error(
+                "1. Selenium-Jupiter used to get VNC sessions of browsers:");
+        logger.error("\tSeleniumJupiter browserName <version> <deviceName>");
+        logger.error("\t...where:");
+        logger.error("\tbrowserName = {}", validBrowsers);
+        logger.error("\tversion = optional version (latest by default)");
+        logger.error("\tdeviceName = Device name (only for Android)");
+        logger.error("\t(where browserName={})", validBrowsers);
 
-        log.error("2. Selenium-Jupiter as a server:");
-        log.error("\tSelenium-Jupiter server <port>");
-        log.error("\t(where default port is 4042)");
+        logger.error("2. Selenium-Jupiter as a server:");
+        logger.error("\tSelenium-Jupiter server <port>");
+        logger.error("\t(where default port is 4042)");
 
-        log.error(
+        logger.error(
                 "3. To clear previously Docker image versions (as Java preferences):");
-        log.error("\tSelenium-Jupiter clear-preferences");
+        logger.error("\tSelenium-Jupiter clear-preferences");
     }
 
 }
