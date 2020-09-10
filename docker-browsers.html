@@ -839,13 +839,13 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerChromeJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">DockerChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testChrome(
+    <span class="type">void</span> testChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -853,7 +853,7 @@ table.CodeRay td.code>pre{padding:0}
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testChromeWithVersion(
+    <span class="type">void</span> testChromeWithVersion(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -876,31 +876,31 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerChromeLatestJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">DockerChromeLatestJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testLatestChrome(
+    <span class="type">void</span> testLatestChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">latest</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         <span class="comment">// Use stable version of Chrome in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testFormerChrome(
+    <span class="type">void</span> testFormerChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">latest-1</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         <span class="comment">// Use previous to stable version of Chrome in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testBetaChrome(
+    <span class="type">void</span> testBetaChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         <span class="comment">// Use beta version of Chrome in this test</span>
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testUnstableChrome(
+    <span class="type">void</span> testUnstableChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">unstable</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         <span class="comment">// Use development version of Chrome in this test</span>
     }
@@ -949,13 +949,13 @@ As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volu
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerFirefoxJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">DockerFirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testLatest(
+    <span class="type">void</span> testLatest(
             <span class="annotation">@DockerBrowser</span>(type = FIREFOX) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -963,7 +963,7 @@ As of version 3.2.2, <em>Selenium-Jupiter</em> allows to define an array of volu
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testVersion(
+    <span class="type">void</span> testVersion(
             <span class="annotation">@DockerBrowser</span>(type = FIREFOX, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">64</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -1002,13 +1002,13 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerOperaJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">DockerOperaJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testOpera(<span class="annotation">@DockerBrowser</span>(type = OPERA) RemoteWebDriver driver) {
+    <span class="type">void</span> testOpera(<span class="annotation">@DockerBrowser</span>(type = OPERA) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1035,21 +1035,21 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerEdgeJupiterTest</span> {
+<span class="type">class</span> <span class="class">DockerEdgeJupiterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
-        seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setRecording(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testEdge(<span class="annotation">@DockerBrowser</span>(type = EDGE) WebDriver driver) {
+    <span class="type">void</span> testEdge(<span class="annotation">@DockerBrowser</span>(type = EDGE) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1076,21 +1076,21 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">DockerIExplorerJupiterTest</span> {
+<span class="type">class</span> <span class="class">DockerIExplorerJupiterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
-        seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setRecording(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testIExplorer(
+    <span class="type">void</span> testIExplorer(
             <span class="annotation">@DockerBrowser</span>(type = IEXPLORER) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -1114,21 +1114,21 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AndroidJupiterTest</span> {
+<span class="type">class</span> <span class="class">AndroidJupiterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
-        seleniumExtension.getConfig().setRecording(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setRecording(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroid(
+    <span class="type">void</span> testAndroid(
             <span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">8.1</span><span class="delimiter">&quot;</span></span>, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -1250,14 +1250,15 @@ Notice that the version of the second test is simply <code>64</code>. The actual
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AndroidCustomJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">AndroidCustomJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroid(<span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">9.0</span><span class="delimiter">&quot;</span></span>,
-            deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>) RemoteWebDriver driver) {
+    <span class="type">void</span> testAndroid(
+            <span class="annotation">@DockerBrowser</span>(type = ANDROID, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">9.0</span><span class="delimiter">&quot;</span></span>, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus S</span><span class="delimiter">&quot;</span></span>)
+            RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1346,17 +1347,17 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 <span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">PerformenceDockerChromeJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">PerformenceDockerChromeJupiterTest</span> {
 
     <span class="directive">static</span> <span class="directive">final</span> <span class="type">int</span> NUM_BROWSERS = <span class="integer">3</span>;
 
     <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testPerformance(
+    <span class="type">void</span> testPerformance(
             <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">76.0</span><span class="delimiter">&quot;</span></span>, size = NUM_BROWSERS) <span class="predefined-type">List</span>&lt;RemoteWebDriver&gt; driverList)
             <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
 
@@ -1411,20 +1412,20 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 <span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideDockerJupiterTest</span> {
+<span class="type">class</span> <span class="class">SelenideDockerJupiterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        seleniumExtension.getConfig().setVnc(<span class="predefined-constant">true</span>);
+        seleniumJupiter.getConfig().setVnc(<span class="predefined-constant">true</span>);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideChrome(
+    <span class="type">void</span> testDockerSelenideChrome(
             <span class="annotation">@DockerBrowser</span>(type = CHROME) SelenideDriver driver) {
         driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
@@ -1433,7 +1434,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testDockerSelenideFirefox(
+    <span class="type">void</span> testDockerSelenideFirefox(
             <span class="annotation">@DockerBrowser</span>(type = FIREFOX) SelenideDriver driver) {
         driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.title(),
@@ -1452,7 +1453,7 @@ In addition to log the VNC URL, as of <em>Selenium-Jupiter</em> 2.1.0, the value
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-20 09:58:06 CET
+Last updated 2020-02-25 10:38:21 CET
 </div>
 </div>
 </body>

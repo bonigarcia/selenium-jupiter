@@ -882,9 +882,9 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
 <span class="type">class</span> <span class="class">ChromeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
@@ -922,20 +922,20 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">FirefoxJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithOneFirefox(FirefoxDriver driver) {
+    <span class="type">void</span> testWithOneFirefox(FirefoxDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver driver1,
+    <span class="type">void</span> testWithTwoFirefoxs(FirefoxDriver driver1,
             FirefoxDriver driver2) {
         driver1.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
         driver2.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://junit.org/junit5/</span><span class="delimiter">&quot;</span></span>);
@@ -961,13 +961,13 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.opera.OperaDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">OperaJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">OperaJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(OperaDriver driver) {
+    <span class="type">void</span> test(OperaDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -991,10 +991,10 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">EdgeJupiterTest</span> {
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> edgeTest(EdgeDriver driver) {
@@ -1022,10 +1022,10 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.ie.InternetExplorerDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">IExplorerJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">IExplorerJupiterTest</span> {
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> iExplorerTest(InternetExplorerDriver driver) {
@@ -1052,13 +1052,13 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.safari.SafariDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SafariJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SafariJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(SafariDriver driver) {
+    <span class="type">void</span> test(SafariDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.seleniumhq.org/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1082,13 +1082,13 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.phantomjs.PhantomJSDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">PhantomjsJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(PhantomJSDriver driver) {
+    <span class="type">void</span> test(PhantomJSDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getPageSource(), notNullValue());
     }
@@ -1111,13 +1111,13 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.htmlunit.HtmlUnitDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">HtmlUnitJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> test(HtmlUnitDriver driver) {
+    <span class="type">void</span> test(HtmlUnitDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
                 containsString(<span class="string"><span class="delimiter">&quot;</span><span class="content">JUnit 5 extension for Selenium</span><span class="delimiter">&quot;</span></span>));
@@ -1149,13 +1149,13 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
 <span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideDefaultJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SelenideDefaultJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testSelenide(SelenideDriver driver) {
+    <span class="type">void</span> testSelenide(SelenideDriver driver) {
         driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
         about.shouldBe(visible);
@@ -1181,19 +1181,19 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SelenideConfiguration</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideParameterConfigJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SelenideParameterConfigJupiterTest</span> {
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testHeadlessFirefoxSelenide(
+    <span class="type">void</span> testHeadlessFirefoxSelenide(
             <span class="annotation">@SelenideConfiguration</span>(browser = FIREFOX, headless = <span class="predefined-constant">true</span>) SelenideDriver driver) {
         exercise(driver);
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testChromeAndFirefoxSelenide(
+    <span class="type">void</span> testChromeAndFirefoxSelenide(
             <span class="annotation">@SelenideConfiguration</span>(browser = CHROME) SelenideDriver chrome,
             <span class="annotation">@SelenideConfiguration</span>(browser = FIREFOX) SelenideDriver firefox) {
         exercise(chrome, firefox);
@@ -1227,17 +1227,17 @@ WebDriverManager.iedriver().setup();;</code></pre>
 <span class="keyword">import</span> <span class="include">com.codeborne.selenide.SelenideElement</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SelenideConfiguration</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">SelenideGlobalConfigJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">SelenideGlobalConfigJupiterTest</span> {
 
     <span class="annotation">@SelenideConfiguration</span>
     SelenideConfig selenideConfig = <span class="keyword">new</span> SelenideConfig().browser(FIREFOX)
             .startMaximized(<span class="predefined-constant">true</span>);
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testSelenideConfig(SelenideDriver driver) {
+    <span class="type">void</span> testSelenideConfig(SelenideDriver driver) {
         driver.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         SelenideElement about = driver.<span class="error">$</span>(linkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>));
         about.shouldBe(visible);
@@ -1265,7 +1265,7 @@ Chrome options (arguments and preferences) and Firefox profiles can be configure
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-20 09:58:06 CET
+Last updated 2020-02-25 10:38:21 CET
 </div>
 </div>
 </body>

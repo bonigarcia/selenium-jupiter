@@ -859,10 +859,10 @@ table.CodeRay td.code>pre{padding:0}
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Arguments</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Extensions</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ChromeWithOptionsJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">ChromeWithOptionsJupiterTest</span> {
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> headlessTest(<span class="annotation">@Arguments</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">--headless</span><span class="delimiter">&quot;</span></span>) ChromeDriver driver) {
@@ -905,10 +905,10 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxOptions</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Options</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">FirefoxWithGlobalOptionsJupiterTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">FirefoxWithGlobalOptionsJupiterTest</span> {
 
     <span class="annotation">@Options</span>
     FirefoxOptions firefoxOptions = <span class="keyword">new</span> FirefoxOptions();
@@ -922,7 +922,7 @@ table.CodeRay td.code>pre{padding:0}
     }
 
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> webrtcTest(FirefoxDriver driver) {
+    <span class="type">void</span> webrtcTest(FirefoxDriver driver) {
         driver.get(
                 <span class="string"><span class="delimiter">&quot;</span><span class="content">https://webrtc.github.io/samples/src/content/devices/input-output/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.findElement(By.id(<span class="string"><span class="delimiter">&quot;</span><span class="content">video</span><span class="delimiter">&quot;</span></span>)).getTagName(),
@@ -951,12 +951,12 @@ table.CodeRay td.code>pre{padding:0}
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateTest</span> {
+<span class="type">class</span> <span class="class">TemplateTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@TestTemplate</span>
     <span class="type">void</span> templateTest(WebDriver driver) {
@@ -1099,12 +1099,12 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateTwoBrowsersTest</span> {
+<span class="type">class</span> <span class="class">TemplateTwoBrowsersTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@TestTemplate</span>
     <span class="type">void</span> templateTest(WebDriver driver1, WebDriver driver2) {
@@ -1156,7 +1156,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <div class="title">Figure 2. Example of test template execution (with two parameters) in Eclipse</div>
 </div>
 <div class="paragraph">
-<p>As of version 2.2.0, <em>Selenium-Jupiter</em> allows to configure the browser scenario programmatically using the JUnit 5 <code>@RegisterExtension</code> annotation. To that aim, the method <code>addBrowsers</code> of the <code>SeleniumExtension</code> instance is used to add different browser(s) to the scenario. In the following example the test is executed twice, one using Chrome and the second using Firefox.</p>
+<p>As of version 2.2.0, <em>Selenium-Jupiter</em> allows to configure the browser scenario programmatically using the JUnit 5 <code>@RegisterExtension</code> annotation. To that aim, the method <code>addBrowsers</code> of the <code>SeleniumJupiter</code> instance is used to add different browser(s) to the scenario. In the following example the test is executed twice, one using Chrome and the second using Firefox.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1170,19 +1170,19 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.BrowserBuilder</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.BrowsersTemplate.Browser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">TemplateRegisterTest</span> {
+<span class="type">class</span> <span class="class">TemplateRegisterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
         Browser chrome = BrowserBuilder.chrome().build();
         Browser firefox = BrowserBuilder.firefox().build();
-        seleniumExtension.addBrowsers(chrome);
-        seleniumExtension.addBrowsers(firefox);
+        seleniumJupiter.addBrowsers(chrome);
+        seleniumJupiter.addBrowsers(firefox);
     }
 
     <span class="annotation">@TestTemplate</span>
@@ -1213,10 +1213,10 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">GenericTest</span> {
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">GenericTest</span> {
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> genericTest(WebDriver driver) {
@@ -1323,22 +1323,23 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.hamcrest.MatcherAssert.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Disabled</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.config.Config</span>;
 
-<span class="directive">public</span> <span class="type">class</span> <span class="class">AndroidGenymotionJupiterTest</span> {
+<span class="type">class</span> <span class="class">AndroidGenymotionJupiterTest</span> {
 
     <span class="annotation">@RegisterExtension</span>
-    <span class="directive">static</span> SeleniumExtension seleniumExtension = <span class="keyword">new</span> SeleniumExtension();
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
-        Config config = seleniumExtension.getConfig();
+        Config config = seleniumJupiter.getConfig();
         config.setAndroidGenymotionDeviceName(<span class="string"><span class="delimiter">&quot;</span><span class="content">SamsungS7V6</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionTemplate(<span class="string"><span class="delimiter">&quot;</span><span class="content">Samsung Galaxy S7</span><span class="delimiter">&quot;</span></span>);
         config.setAndroidGenymotionAndroidVersion(<span class="string"><span class="delimiter">&quot;</span><span class="content">6.0.0</span><span class="delimiter">&quot;</span></span>);
@@ -1352,8 +1353,9 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
         config.setAndroidGenymotionLicense(<span class="string"><span class="delimiter">&quot;</span><span class="content">my-genymotion-license</span><span class="delimiter">&quot;</span></span>);
     }
 
+    <span class="annotation">@Disabled</span>
     <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> testAndroidInGenymotionSaas(
+    <span class="type">void</span> testAndroidInGenymotionSaas(
             <span class="annotation">@DockerBrowser</span>(type = ANDROID, cloud = GENYMOTION_SAAS, deviceName = <span class="string"><span class="delimiter">&quot;</span><span class="content">SamsungS7V6</span><span class="delimiter">&quot;</span></span>, browserName = <span class="string"><span class="delimiter">&quot;</span><span class="content">browser</span><span class="delimiter">&quot;</span></span>)
             RemoteWebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
@@ -1450,25 +1452,25 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
 <span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
 
-<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumExtension</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SingleSession</span>;
 
-<span class="annotation">@ExtendWith</span>(SeleniumExtension.class)
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
 <span class="annotation">@TestMethodOrder</span>(OrderAnnotation.class)
 <span class="annotation">@SingleSession</span>
-<span class="directive">public</span> <span class="type">class</span> <span class="class">OrderedJupiterTest</span> {
+<span class="type">class</span> <span class="class">OrderedJupiterTest</span> {
 
     <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
 
     RemoteWebDriver driver;
 
-    <span class="directive">public</span> OrderedJupiterTest(ChromeDriver driver) {
+    OrderedJupiterTest(ChromeDriver driver) {
         <span class="local-variable">this</span>.driver = driver;
     }
 
     <span class="annotation">@Test</span>
     <span class="annotation">@Order</span>(<span class="integer">1</span>)
-    <span class="directive">public</span> <span class="type">void</span> testStep1() {
+    <span class="type">void</span> testStep1() {
         log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Step 1: {}</span><span class="delimiter">&quot;</span></span>, driver);
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.github.io/selenium-jupiter/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle(),
@@ -1477,7 +1479,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 
     <span class="annotation">@Test</span>
     <span class="annotation">@Order</span>(<span class="integer">2</span>)
-    <span class="directive">public</span> <span class="type">void</span> testStep2() {
+    <span class="type">void</span> testStep2() {
         log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Step 2: {}</span><span class="delimiter">&quot;</span></span>, driver);
         WebElement about = driver.findElementByLinkText(<span class="string"><span class="delimiter">&quot;</span><span class="content">About</span><span class="delimiter">&quot;</span></span>);
         assertTrue(about.isDisplayed());
@@ -1590,7 +1592,7 @@ If the configuration key <code>sel.jup.browser.template.json.file</code> do not 
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building selenium-jupiter 3.3.4
+[INFO] Building selenium-jupiter 3.3.5
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1620,13 +1622,13 @@ INFO: Detected dialect: OSS
 <div class="ulist">
 <ul>
 <li>
-<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
+<p>Using <em>Selenium-Jupiter</em> as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.5/selenium-jupiter-3.3.5-fat.jar">fat-jar</a>. This jar can be created using the command <code>mvn compile assembly:single</code> from the source code, and then <code>java -jar selenium-jupiter.jar browserName &lt;version&gt;</code>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.4-fat.jar firefox
+<pre class="CodeRay highlight"><code>$ java -jar selenium-jupiter-3.3.5-fat.jar firefox
 [INFO] Using Selenium-Jupiter to execute firefox (latest) in Docker
 [INFO] Using FIREFOX version 66.0 (latest)
 [INFO] Pulling Docker image aerokube/selenoid:1.8.4
@@ -1675,7 +1677,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.4
+[INFO] Building Selenium-Jupiter 3.3.5
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -1685,13 +1687,13 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 <div class="ulist">
 <ul>
 <li>
-<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar">fat-jar</a>. For instance:</p>
+<p>Using Selenium-Jupiter as a <a href="https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.5/selenium-jupiter-3.3.5-fat.jar">fat-jar</a>. For instance:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.4-fat.jar server
+<pre class="CodeRay highlight"><code>&gt; java -jar webdrivermanager-3.3.5-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub</code></pre>
 </div>
 </div>
@@ -1704,7 +1706,7 @@ As of version 2.2.0, the parameter <code>browserName</code> can be used to selec
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-20 09:58:06 CET
+Last updated 2020-09-10 20:53:21 CEST
 </div>
 </div>
 </body>
