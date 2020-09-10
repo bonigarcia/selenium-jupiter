@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
 /**
@@ -37,12 +37,12 @@ import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 class TemplateRegisterDockerTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
         Browser chrome = chromeInDocker().build();
-        seleniumExtension.addBrowsers(chrome);
+        seleniumJupiter.addBrowsers(chrome);
     }
 
     @TestTemplate

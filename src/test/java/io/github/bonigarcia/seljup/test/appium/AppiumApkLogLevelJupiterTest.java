@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import java.io.File;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,15 +39,15 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 class AppiumApkLogLevelJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     /**
      * Configure Selenium to use a custom log level
      */
     @BeforeEach
     void setupSelenium() {
-        seleniumExtension.getConfig().setAndroidAppiumLogLevel("error:debug");
-        seleniumExtension.getConfig().setAndroidAppiumLogFile("appium.log");
+        seleniumJupiter.getConfig().setAndroidAppiumLogLevel("error:debug");
+        seleniumJupiter.getConfig().setAndroidAppiumLogFile("appium.log");
     }
 
     @DriverCapabilities

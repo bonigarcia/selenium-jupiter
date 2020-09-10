@@ -26,20 +26,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.BrowserBuilder;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
 class TemplateSeveralTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
         Browser chrome = BrowserBuilder.chrome().build();
         Browser firefox = BrowserBuilder.firefox().build();
-        seleniumExtension.addBrowsers(chrome);
-        seleniumExtension.addBrowsers(firefox);
+        seleniumJupiter.addBrowsers(chrome);
+        seleniumJupiter.addBrowsers(firefox);
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,
                 "/dev/null");
     }

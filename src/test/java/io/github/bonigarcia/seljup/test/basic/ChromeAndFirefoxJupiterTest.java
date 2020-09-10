@@ -23,12 +23,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Redudant test, only needed for doc")
 // tag::snippet-in-doc[]
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class ChromeAndFirefoxJupiterTest {
 
     @Test

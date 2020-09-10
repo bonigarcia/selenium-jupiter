@@ -31,21 +31,21 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
 class GenericWithScreenshotTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     File imageFile;
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
-        seleniumExtension.getConfig().takeScreenshotAsPng();
-        seleniumExtension.getConfig().setDefaultVersion("76.0");
+        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().takeScreenshotAsPng();
+        seleniumJupiter.getConfig().setDefaultVersion("76.0");
     }
 
     @AfterAll

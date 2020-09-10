@@ -29,9 +29,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.Preferences;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class FirefoxWithOptionsJupiterTest {
 
     @Test

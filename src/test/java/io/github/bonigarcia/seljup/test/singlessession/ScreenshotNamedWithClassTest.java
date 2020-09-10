@@ -1,6 +1,6 @@
 package io.github.bonigarcia.seljup.test.singlessession;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -18,15 +18,15 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 class ScreenshotNamedWithClassTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     RemoteWebDriver driver;
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig()
+        seleniumJupiter.getConfig()
                 .setScreenshotAtTheEndOfTests("whenfailure");
-        seleniumExtension.getConfig().takeScreenshotAsPng();
+        seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 
     @BeforeAll

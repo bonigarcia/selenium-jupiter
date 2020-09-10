@@ -26,14 +26,14 @@ import org.openqa.grid.selenium.GridLauncherV3;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.BrowserBuilder;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 class TemplateRemoteTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
@@ -57,8 +57,8 @@ class TemplateRemoteTest {
                 .url("http://localhost:4444/wd/hub").build();
         Browser firefox = BrowserBuilder.firefox()
                 .url("http://localhost:4444/wd/hub").build();
-        seleniumExtension.addBrowsers(chrome);
-        seleniumExtension.addBrowsers(firefox);
+        seleniumJupiter.addBrowsers(chrome);
+        seleniumJupiter.addBrowsers(firefox);
     }
 
     @TestTemplate

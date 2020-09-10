@@ -28,9 +28,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.codeborne.selenide.SelenideDriver;
 
 import io.github.bonigarcia.seljup.SelenideConfiguration;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class SelenideParameterConfigJupiterTest {
 
     @Test

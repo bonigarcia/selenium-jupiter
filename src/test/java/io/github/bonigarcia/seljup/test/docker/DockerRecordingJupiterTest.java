@@ -35,13 +35,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
 class DockerRecordingJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -49,7 +49,7 @@ class DockerRecordingJupiterTest {
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setRecording(true);
+        seleniumJupiter.getConfig().setRecording(true);
     }
 
     @AfterAll

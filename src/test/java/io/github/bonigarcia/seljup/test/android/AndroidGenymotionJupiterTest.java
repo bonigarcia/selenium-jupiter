@@ -29,17 +29,17 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.config.Config;
 
 class AndroidGenymotionJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
-        Config config = seleniumExtension.getConfig();
+        Config config = seleniumJupiter.getConfig();
         config.setAndroidGenymotionDeviceName("SamsungS7V6");
         config.setAndroidGenymotionTemplate("Samsung Galaxy S7");
         config.setAndroidGenymotionAndroidVersion("6.0.0");

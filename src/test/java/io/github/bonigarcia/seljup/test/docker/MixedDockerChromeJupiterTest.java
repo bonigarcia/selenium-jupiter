@@ -36,20 +36,20 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class MixedDockerChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setVnc(true);
+        seleniumJupiter.getConfig().setVnc(true);
     }
 
     @Test

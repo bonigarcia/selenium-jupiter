@@ -29,9 +29,9 @@ import com.codeborne.selenide.SelenideDriver;
 import com.codeborne.selenide.SelenideElement;
 
 import io.github.bonigarcia.seljup.SelenideConfiguration;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class SelenideGlobalConfigJupiterTest {
 
     @SelenideConfiguration

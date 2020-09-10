@@ -25,16 +25,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.Binary;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class ForcedBadFirefoxJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
+        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
     }
 
     @Test

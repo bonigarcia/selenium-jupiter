@@ -26,16 +26,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class BrowserListFromPropertiesJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setBrowserListFromDockerHub(false);
+        seleniumJupiter.getConfig().setBrowserListFromDockerHub(false);
     }
 
     @Test

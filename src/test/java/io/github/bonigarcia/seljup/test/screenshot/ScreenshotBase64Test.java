@@ -30,20 +30,20 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
 class ScreenshotBase64Test {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     File imageFile;
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
-        seleniumExtension.getConfig().takeScreenshotAsBase64();
+        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().takeScreenshotAsBase64();
     }
 
     @AfterAll

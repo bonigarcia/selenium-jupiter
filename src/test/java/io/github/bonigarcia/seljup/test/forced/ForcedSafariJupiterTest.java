@@ -26,16 +26,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class ForcedSafariJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
+        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
     }
 
     @Test

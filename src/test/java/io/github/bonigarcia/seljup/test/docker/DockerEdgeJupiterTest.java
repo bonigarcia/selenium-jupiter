@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 //end::snippet-in-doc[]
 @Disabled("Edge in Docker not available in Travis, only needed for doc")
@@ -38,12 +38,12 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 class DockerEdgeJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().setVnc(true);
-        seleniumExtension.getConfig().setRecording(true);
+        seleniumJupiter.getConfig().setVnc(true);
+        seleniumJupiter.getConfig().setRecording(true);
     }
 
     @Test

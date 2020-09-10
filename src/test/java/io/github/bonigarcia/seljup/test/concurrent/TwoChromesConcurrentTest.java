@@ -28,9 +28,9 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 @Execution(CONCURRENT)
 class TwoChromesConcurrentTest {
 

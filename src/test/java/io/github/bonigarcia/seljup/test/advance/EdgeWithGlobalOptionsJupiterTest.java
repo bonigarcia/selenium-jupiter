@@ -28,17 +28,17 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.seljup.Options;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @Disabled("Edge not available on Travis CI")
 class EdgeWithGlobalOptionsJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().edgedriver().driverVersion("3.14393");
+        seleniumJupiter.getConfig().edgedriver().driverVersion("3.14393");
     }
 
     @Options

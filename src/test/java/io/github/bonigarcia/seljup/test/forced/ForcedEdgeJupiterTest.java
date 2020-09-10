@@ -27,17 +27,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 class ForcedEdgeJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setExceptionWhenNoDriver(false);
+        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
         WebDriverManager.edgedriver().operatingSystem(WIN);
     }
 

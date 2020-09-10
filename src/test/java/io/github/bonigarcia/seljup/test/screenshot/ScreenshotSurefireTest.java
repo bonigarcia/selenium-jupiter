@@ -30,21 +30,21 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
 class ScreenshotSurefireTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     File imageName;
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig().enableScreenshotAtTheEndOfTests();
-        seleniumExtension.getConfig().takeScreenshotAsPng();
-        seleniumExtension.getConfig().useSurefireOutputFolder();
+        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().takeScreenshotAsPng();
+        seleniumJupiter.getConfig().useSurefireOutputFolder();
     }
 
     @AfterAll

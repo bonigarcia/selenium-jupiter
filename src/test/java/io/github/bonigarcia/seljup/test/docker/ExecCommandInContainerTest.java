@@ -31,22 +31,22 @@ import org.slf4j.Logger;
 
 import com.spotify.docker.client.exceptions.DockerException;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class ExecCommandInContainerTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @Test
     void execTest(WebDriver driver)
             throws DockerException, InterruptedException {
         String command = "ls";
-        Optional<String> containerId = seleniumExtension.getContainerId(driver);
+        Optional<String> containerId = seleniumJupiter.getContainerId(driver);
         assertTrue(containerId.isPresent());
-        String result = seleniumExtension.getDockerService()
+        String result = seleniumJupiter.getDockerService()
                 .execCommandInContainer(containerId.get(), command);
         log.debug("Result of executing command {} in Docker container: {}",
                 command, result);

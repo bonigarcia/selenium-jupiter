@@ -26,12 +26,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Redudant test, only needed for doc")
 // tag::snippet-in-doc[]
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class DockerChromeLatestJupiterTest {
 
     @Test

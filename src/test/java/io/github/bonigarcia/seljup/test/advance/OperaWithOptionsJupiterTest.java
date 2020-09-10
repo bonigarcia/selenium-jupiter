@@ -27,10 +27,10 @@ import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @Disabled("Opera not available on Travis CI")
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 class OperaWithOptionsJupiterTest {
 
     @Test

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Edge not available on Travis CI")
@@ -35,11 +35,11 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 class EdgeSettingVersionJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().edgedriver().driverVersion("3.14393");
+        seleniumJupiter.getConfig().edgedriver().driverVersion("3.14393");
     }
 
     @Test

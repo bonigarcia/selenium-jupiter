@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.SingleSession;
 
 @TestInstance(PER_CLASS)
@@ -40,7 +40,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 class FailureCreatesScreenshotTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     RemoteWebDriver driver;
 
@@ -50,9 +50,9 @@ class FailureCreatesScreenshotTest {
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig()
+        seleniumJupiter.getConfig()
                 .setScreenshotAtTheEndOfTests("whenfailure");
-        seleniumExtension.getConfig().takeScreenshotAsPng();
+        seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 
     @Test

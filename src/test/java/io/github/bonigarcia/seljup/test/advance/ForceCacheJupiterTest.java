@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Redudant test for Travis CI suite")
@@ -35,11 +35,11 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 class ForceCacheJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().chromedriver().config();
+        seleniumJupiter.getConfig().chromedriver().config();
     }
 
     @Test

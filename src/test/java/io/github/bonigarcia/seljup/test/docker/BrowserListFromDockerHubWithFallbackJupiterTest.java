@@ -26,16 +26,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class BrowserListFromDockerHubWithFallbackJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeEach
     void setup() {
-        seleniumExtension.getConfig().setDockerHubUrl("");
+        seleniumJupiter.getConfig().setDockerHubUrl("");
     }
 
     @Test

@@ -26,17 +26,17 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class TemplateTwoBrowsersTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     // end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
-        seleniumExtension.getConfig().setBrowserTemplateJsonFile(
+        seleniumJupiter.getConfig().setBrowserTemplateJsonFile(
                 "./src/test/resources/browsers-two.json");
     }
 

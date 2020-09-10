@@ -40,7 +40,7 @@ import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-public class SeleniumJupiter {
+public class SeleniumJupiter extends SeleniumExtension {
 
     static final Logger log = getLogger(lookup().lookupClass());
 

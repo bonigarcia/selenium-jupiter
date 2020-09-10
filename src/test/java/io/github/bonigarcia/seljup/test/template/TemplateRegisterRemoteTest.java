@@ -28,13 +28,13 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.DriverUrl;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @Disabled
 class TemplateRegisterRemoteTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @DriverUrl
     String url = "http://localhost:4444/wd/hub";
@@ -42,7 +42,7 @@ class TemplateRegisterRemoteTest {
     @BeforeAll
     static void setup() {
         Browser chrome = BrowserBuilder.chrome().build();
-        seleniumExtension.addBrowsers(chrome);
+        seleniumJupiter.addBrowsers(chrome);
     }
 
     @TestTemplate

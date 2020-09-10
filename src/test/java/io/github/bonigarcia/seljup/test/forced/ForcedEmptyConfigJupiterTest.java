@@ -25,17 +25,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.config.Config;
 
 class ForcedEmptyConfigJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @BeforeAll
     static void setup() throws Exception {
-        Config config = seleniumExtension.getConfig();
+        Config config = seleniumJupiter.getConfig();
         config.setExceptionWhenNoDriver(false);
         for (Method method : config.getClass().getMethods()) {
             if (method.getName().startsWith("set")) {

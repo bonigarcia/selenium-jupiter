@@ -31,20 +31,20 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
 class DockerVncMixedJupiterTest {
 
     @RegisterExtension
-    static SeleniumExtension seleniumExtension = new SeleniumExtension();
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     File htmlFile;
 
     @BeforeAll
     void setup() {
-        seleniumExtension.getConfig().setVnc(true);
-        seleniumExtension.getConfig().setUsePreferences(false);
+        seleniumJupiter.getConfig().setVnc(true);
+        seleniumJupiter.getConfig().setUsePreferences(false);
     }
 
     @Test
