@@ -40,7 +40,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 <dependency>
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>3.3.4</version>
+    <version>3.3.5</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -49,7 +49,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 
 ```
 dependencies {
-    testCompile("io.github.bonigarcia:selenium-jupiter:3.3.4")
+    testCompile("io.github.bonigarcia:selenium-jupiter:3.3.5")
 }
 ```
 
@@ -64,9 +64,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 public class SeleniumJupiterLocalTest {
 
     @Test
@@ -99,9 +99,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 public class SeleniumJupiterRemoteTest {
 
     @DriverUrl
@@ -139,9 +139,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 public class SeleniumJupiterDockerTest {
 
     @Test
@@ -177,9 +177,9 @@ import org.openqa.selenium.WebElement;
 import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 public class AppiumJupiterTest {
 
     @Test
@@ -208,7 +208,7 @@ As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Li
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.4
+[INFO] Building Selenium-Jupiter 3.3.5
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
@@ -235,10 +235,10 @@ INFO: Detected dialect: OSS
 [INFO] ------------------------------------------------------------------------
 ```
 
-* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.3.4-fat.jar browserName``, for instance:
+* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.5/selenium-jupiter-3.3.5-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.3.5-fat.jar browserName``, for instance:
 
 ```
-> java -jar selenium-jupiter-3.3.4-fat.jar chrome
+> java -jar selenium-jupiter-3.3.5-fat.jar chrome
 [INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
 [INFO] Using CHROME version 76.0 (latest)
 [INFO] Starting Docker container aerokube/selenoid:1.8.4
@@ -266,17 +266,17 @@ $ mvn exec:java -Dexec.args="server"
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.3.4
+[INFO] Building Selenium-Jupiter 3.3.5
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ```
 
-* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.4/selenium-jupiter-3.3.4-fat.jar). For instance:
+* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.3.5/selenium-jupiter-3.3.5-fat.jar). For instance:
 
 ```
-> java -jar selenium-jupiter-3.3.4-fat.jar server
+> java -jar selenium-jupiter-3.3.5-fat.jar server
 [INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
 ```
 
