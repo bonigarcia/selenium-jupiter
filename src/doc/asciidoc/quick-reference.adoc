@@ -8,7 +8,7 @@ Using _Selenium-Jupiter_ is very easy. First, you need to import the dependency 
 <dependency>
 	<groupId>io.github.bonigarcia</groupId>
 	<artifactId>selenium-jupiter</artifactId>
-	<version>3.3.4</version>
+	<version>3.3.5</version>
 	<scope>test</scope>
 </dependency>
 
@@ -16,12 +16,12 @@ The dependency (typically _test_) to be declared in a Gradle project is as follo
 
 [source,json]
 dependencies {
-    testCompile("io.github.bonigarcia:selenium-jupiter:3.3.4")
+    testCompile("io.github.bonigarcia:selenium-jupiter:3.3.5")
 }
 
-NOTE: _Selenium-Jupiter_ 3.3.4 depends on *_selenium-java_ 3.141.59*, *_webdrivermanager_ 3.8.1*, *appium _java-client_ 7.0.0*, *spotify _docker-client_ 8.16.0*, *_htmlunit_ 2.36.0*, and *selenide 5.6.0*. Therefore, by using the _Selenium-Jupiter_ dependency, these libraries will be added as transitive dependencies to your project.
+NOTE: _Selenium-Jupiter_ 3.3.5 depends on *_selenium-java_ 3.141.59*, *_webdrivermanager_ 4.2.0*, *appium _java-client_ 7.3.0*, *spotify _docker-client_ 8.16.0*, *_htmlunit_ 2.36.0*, and *selenide 5.14.2*. Therefore, by using the _Selenium-Jupiter_ dependency, these libraries will be added as transitive dependencies to your project.
 
-Then, you need to declare _Selenium-Jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumExtension.class)`. Finally, you need to include one or more parameters in your `@Test` methods (or constructor) whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _Selenium-Jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
+Then, you need to declare _Selenium-Jupiter_ extension in your JUnit 5 test, simply annotating your test with `@ExtendWith(SeleniumJupiter.class)`. Finally, you need to include one or more parameters in your `@Test` methods (or constructor) whose types implements the `WebDriver` interface (e.g. `ChromeDriver` to use Chrome, `FirefoxDriver` for Firefox, and so for). That's it. _Selenium-Jupiter_ control the lifecycle of the `WebDriver` object internally, and you just need to use the `WebDriver` object in your test to drive the browser(s) you want. For example:
 
 [source,java]
 ----

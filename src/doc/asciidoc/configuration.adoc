@@ -110,6 +110,7 @@ Default configuration parameters for _Selenium-Jupiter_ are set in the https://g
 |`sel.jup.docker.timezone` | Timezone for browsers in Docker containers |`Europe/Madrid`
 |`sel.jup.docker.lang` | Language for Docker containers |`en`
 |`sel.jup.docker.startup.timeout.duration` | Docker startup timeout in duration format |`3m`
+|`sel.jup.docker.request.entity.processing` | Request entity processing in Docker client. Valid values: `CHUNKED` (by default) and `BUFFERED` |`CHUNKED`
 |`sel.jup.server.port` | Selenium-Jupiter Server port |`4042`
 |`sel.jup.server.path` | Selenium-Jupiter Server path |`/wd/hub`
 |`sel.jup.server.timeout.sec` | Selenium-Jupiter Server timeout (in seconds) |`180`
@@ -121,14 +122,14 @@ These properties can be overwritten in different ways. As of version 2.1.0 of _S
 
 [source,java]
 ----
-SeleniumExtension seleniumExtension = new SeleniumExtension();
+SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-seleniumExtension.getConfig().setVnc(true);
-seleniumExtension.getConfig().setRecording(true);
-seleniumExtension.getConfig().useSurefireOutputFolder();
-seleniumExtension.getConfig().setBrowserListFromDockerHub(false);
-seleniumExtension.getConfig().chromedriver().setForceCache(true);
-seleniumExtension.getConfig().chromedriver().setOverride(true);
+seleniumJupiter.getConfig().setVnc(true);
+seleniumJupiter.getConfig().setRecording(true);
+seleniumJupiter.getConfig().useSurefireOutputFolder();
+seleniumJupiter.getConfig().setBrowserListFromDockerHub(false);
+seleniumJupiter.getConfig().chromedriver().setForceCache(true);
+seleniumJupiter.getConfig().chromedriver().setOverride(true);
 ----
 
 We can also use Java system properties, for example:
@@ -187,7 +188,7 @@ Take into account that a big `base64` string will be added to your logs if this 
 -------------------------------------------------------
 Running io.github.bonigarcia.test.basic.ChromeJupiterTest
 ...
-2017-12-13 02:41:53 [main] DEBUG i.g.bonigarcia.SeleniumExtension - Screenshot (in Base64) at the end of session 5712cce700bb76d8f5f5d65a00e2c7bc (copy&paste this string as URL in browser to watch it)
+2017-12-13 02:41:53 [main] DEBUG i.g.bonigarcia.SeleniumJupiter - Screenshot (in Base64) at the end of session 5712cce700bb76d8f5f5d65a00e2c7bc (copy&paste this string as URL in browser to watch it)
 data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAykAAANaCAIAAAACvpRSAAAgAElEQVR4nOy9e3xV1Zn//1lr384t5+RyCDmBhJBwSRACBAqhXFQsYlGLZeygrWVGbalTtVU72gv9fgfnK3Yq36mdqTqOLTL1R8fyq2Wk3kCGSqEMlxKQiyQICZAAJySHnJyT5Nz2ZX3/ODGEk71DDuSCuN4vXrySnXX2WWfvtc767Od51vMQxhg4HA6Hw+FwOOkTDofTfQkdiH5wOBwOh8PhcEzh2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOZ/Dg2ovD4XA4HA5n8ODai8PhcDgcDmfw4NqLw+FwOBwOp5/5wx/+YPUnrr04HA6Hw+Fw+pOk8LKSX1x7cTgcDofD4fQb3SWXqfzi2o
 ...
 nr2SgWY2TMdyRZMNENknWYTIo75WxuUWNCij9k178gCKO3BHLtkeQjiMYEgXy66/8f5nl+x57/98mYAvFysJUmckrGBLMv/dC0SlJSUjrXpwn3Ba6MgAlILbL+//8/5fAruDfRSl08WQBr2oDm4uNtmZOPKRm7GSgptWXBFJPrAAAAl0lEQVS4/biJEm74sxVmrvz///+U468MXDMRZc7zY5Aj1uDndWEG2gCWk+R5ARMgl5aZrga3N7XBT9vCbxrBWPjx/3/96tsQz8LL4foDPzSVlH4crofHwrFXxyDZx1xHaWN7EjwAiT/f69Gf/8G1O5SUDCBnj2EW8huvfnTLaFNSMsD043+89QUmwCz/yUhp9AFYT/DCDwBA0OZPpbBVqwAAAABJRU5ErkJggg==
