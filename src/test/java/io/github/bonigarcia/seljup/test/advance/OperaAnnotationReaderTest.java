@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -45,8 +46,10 @@ class OperaAnnotationReaderTest {
 
     @Test
     void testOperaOptions() throws Exception {
-        Parameter parameter = OperaWithOptionsJupiterTest.class
-                .getMethod("operaTest", OperaDriver.class).getParameters()[0];
+        Method method = OperaWithOptionsJupiterTest.class
+                .getDeclaredMethod("operaTest", OperaDriver.class);
+        method.setAccessible(true);
+        Parameter parameter = method.getParameters()[0];
         OperaOptions operaOptions = (OperaOptions) annotationsReader
                 .getOptions(parameter, empty());
 

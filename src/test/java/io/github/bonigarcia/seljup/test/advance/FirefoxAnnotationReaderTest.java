@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.Optional;
@@ -50,9 +51,10 @@ class FirefoxAnnotationReaderTest {
     @MethodSource("testClassProvider")
     @SuppressWarnings("unchecked")
     void testFirefoxOptions(Class<?> testClass) throws Exception {
-        Parameter parameter = testClass
-                .getMethod("webrtcTest", FirefoxDriver.class)
-                .getParameters()[0];
+        Method method = testClass.getDeclaredMethod("webrtcTest",
+                FirefoxDriver.class);
+        method.setAccessible(true);
+        Parameter parameter = method.getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
 
         FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader

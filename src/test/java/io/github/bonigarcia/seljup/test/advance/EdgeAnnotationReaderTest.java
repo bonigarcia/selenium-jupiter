@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -46,8 +47,10 @@ class EdgeAnnotationReaderTest {
     @ParameterizedTest
     @MethodSource("testClassProvider")
     void testEdgeOptions(Class<?> testClass) throws Exception {
-        Parameter parameter = testClass.getMethod("edgeTest", EdgeDriver.class)
-                .getParameters()[0];
+        Method method = testClass.getDeclaredMethod("edgeTest",
+                EdgeDriver.class);
+        method.setAccessible(true);
+        Parameter parameter = method.getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);

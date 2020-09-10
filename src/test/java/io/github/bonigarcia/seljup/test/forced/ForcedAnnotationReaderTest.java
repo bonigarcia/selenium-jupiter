@@ -18,6 +18,7 @@ package io.github.bonigarcia.seljup.test.forced;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.stream.Stream;
 
@@ -74,8 +75,9 @@ class ForcedAnnotationReaderTest {
     @MethodSource("forcedTestProvider")
     void forcedTest(Class<? extends DriverHandler> handler, Class<?> testClass,
             Class<?> driverClass, String testName) throws Exception {
-        Parameter parameter = testClass.getMethod(testName, driverClass)
-                .getParameters()[0];
+        Method method = testClass.getDeclaredMethod(testName, driverClass);
+        method.setAccessible(true);
+        Parameter parameter = method.getParameters()[0];
         assertThrows(SeleniumJupiterException.class, () -> {
             handler.getDeclaredConstructor(Parameter.class,
                     ExtensionContext.class, Config.class,

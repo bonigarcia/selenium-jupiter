@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -46,8 +47,10 @@ class SafariAnnotationReaderTest {
     @ParameterizedTest
     @MethodSource("testClassProvider")
     void testSafariOptions(Class<?> testClass) throws Exception {
-        Parameter parameter = testClass
-                .getMethod("safariTest", SafariDriver.class).getParameters()[0];
+        Method method = testClass.getDeclaredMethod("safariTest",
+                SafariDriver.class);
+        method.setAccessible(true);
+        Parameter parameter = method.getParameters()[0];
         Optional<Object> testInstance = Optional.of(testClass.newInstance());
         SafariOptions safariOptions = (SafariOptions) annotationsReader
                 .getOptions(parameter, testInstance);
