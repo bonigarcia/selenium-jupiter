@@ -18,7 +18,7 @@ ext {
 	jnrffi = '2.1.9'
 	guava = '28.1-jre'
 
-	junitjupiter = '5.5.2'
+	junitjupiter = '5.6.2'
 	mockito = '2.24.0' 
 	hamcrest = '1.3' 
 }
