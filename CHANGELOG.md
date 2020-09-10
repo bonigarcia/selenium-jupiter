@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.3.5] - 2020-09-11
+### Added
+- Include config key sel.jup.docker.request.entity.processing (issue #82)
+- Let @SingleSession supports meta-present (issue #81)
+
+### Changed
+- Use SeleniumJupiter class as JUnit 5 extension point
+- Bump dependencies (WebDriverManager 4.2.0, Selenide 5.14.2 ,Appium java-client 7.3.0)
+
+### Fixed
+- Fix recording not deleted when using different outputFolder (issue #76)
+- Fix creating WebDriver hanging when using @Nested JUnit5 annotation (issue #74)
+
+
 ## [3.3.4] - 2020-01-19
 ### Added
 - Include support for Chromium (checking binary from Chrome options)
