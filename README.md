@@ -67,15 +67,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-public class SeleniumJupiterLocalTest {
+class SeleniumJupiterLocalTest {
 
     @Test
-    public void testLocalChrome(ChromeDriver driver) {
+    void testLocalChrome(ChromeDriver driver) {
         // use local Chrome in this test
     }
 
     @Test
-    public void testLocalFirefox(FirefoxDriver driver) {
+    void testLocalFirefox(FirefoxDriver driver) {
         // use local Firefox in this test
     }
 
@@ -102,7 +102,7 @@ import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-public class SeleniumJupiterRemoteTest {
+class SeleniumJupiterRemoteTest {
 
     @DriverUrl
     String url = "http://localhost:4445/wd/hub";
@@ -142,22 +142,22 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-public class SeleniumJupiterDockerTest {
+class SeleniumJupiterDockerTest {
 
     @Test
-    public void testChrome(
+    void testChrome(
             @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
         // use Chrome (latest version) in a Docker container in this test
     }
 
     @Test
-    public void testFirefox(
+    void testFirefox(
             @DockerBrowser(type = FIREFOX, version = "66.0") RemoteWebDriver driver) {
         // use Firefox (version 66.0) in a Docker container in this test
     }
 
     @Test
-    public void testAndroid(
+    void testAndroid(
             @DockerBrowser(type = ANDROID, version = "9.0") RemoteWebDriver driver) {
         // use Android (version 9.0) in a Docker container in this test
     }
@@ -180,7 +180,7 @@ import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-public class AppiumJupiterTest {
+class AppiumJupiterTest {
 
     @Test
     void testAppium(@DriverUrl("http://localhost:4723/wd/hub")
