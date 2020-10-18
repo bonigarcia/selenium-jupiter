@@ -567,8 +567,13 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
                         .map(b -> invocationContext(b, this));
             }
             if (browserListMap != null) {
-                return Stream.of(
-                        invocationContext(browserListMap.get(contextId), this));
+                List<Browser> browsers = browserListMap.get(contextId);
+                if (browsers != null) {
+                    return Stream.of(
+                            invocationContext(browsers, this));
+                } else {
+                    return Stream.empty();
+                }
             }
 
         } catch (IOException e) {

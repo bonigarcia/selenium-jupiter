@@ -20,6 +20,7 @@ package io.github.bonigarcia.seljup.test.generic;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import io.github.artsok.RepeatedIfExceptionsTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -31,6 +32,13 @@ class GenericTest {
 
     @Test
     void genericTest(WebDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle(),
+                containsString("JUnit 5 extension for Selenium"));
+    }
+
+    @RepeatedIfExceptionsTest(repeats = 3)
+    void genericRepeatedTest(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
