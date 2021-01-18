@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.spotify.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.PortBinding;
 
 /**
  * Docker Container.

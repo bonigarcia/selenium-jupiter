@@ -30,10 +30,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.mandas.docker.client.exceptions.DockerException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import com.spotify.docker.client.exceptions.DockerException;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;

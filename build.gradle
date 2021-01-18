@@ -6,7 +6,7 @@ ext {
 	selenium = '3.141.59'
 	webdrivermanager = '4.3.1'
 	appium = '7.3.0'
-	dockerclient = '8.16.0'
+	dockerclient = '5.0.0'
 	phantomjsdriver = '1.4.4'
 	selenide = '5.14.2'
 	htmlunit = '2.36.0'
@@ -17,6 +17,8 @@ ext {
 	okhttp = '3.14.2'
 	jnrffi = '2.1.9'
 	guava = '28.1-jre'
+	resteasy = '4.6.0.Final'
+	jackson = '2.12.1'
 
 	junitjupiter = '5.6.2'
 	mockito = '2.24.0' 
@@ -50,7 +52,7 @@ dependencies {
     compile("org.seleniumhq.selenium:selenium-java:${selenium}")
     compile("io.github.bonigarcia:webdrivermanager:${webdrivermanager}")
     compile("io.appium:java-client:${appium}")
-    compile("com.spotify:docker-client:${dockerclient}")
+    compile("org.mandas:docker-client:${dockerclient}")
     compile("com.codeborne:phantomjsdriver:${phantomjsdriver}")
     compile("com.codeborne:selenide:${selenide}") {
         exclude("io.github.bonigarcia:webdrivermanager")
@@ -66,6 +68,9 @@ dependencies {
     compile("com.squareup.okhttp3:okhttp:${okhttp}")
     compile("com.github.jnr:jnr-ffi:${jnrffi}")
     compile("com.google.guava:guava:${guava}")
+    compile("org.jboss.resteasy:resteasy-client:${resteasy}")
+    compile("org.jboss.resteasy:resteasy-core:${resteasy}")
+    compile("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jackson}")  
     
     testCompile("org.junit.jupiter:junit-jupiter-engine:${junitjupiter}")
     testCompile("org.junit.jupiter:junit-jupiter-params:${junitjupiter}")

@@ -17,7 +17,7 @@
 package io.github.bonigarcia.seljup.handler;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.spotify.docker.client.messages.PortBinding.randomPort;
+import static org.mandas.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
@@ -41,7 +41,7 @@ import static java.util.Optional.empty;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.collections.CollectionUtils.disjunction;
-import static org.apache.commons.lang.exception.ExceptionUtils.getRootCause;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
@@ -71,9 +71,11 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.mandas.docker.client.exceptions.DockerException;
+import org.mandas.docker.client.messages.PortBinding;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -87,8 +89,6 @@ import org.slf4j.Logger;
 
 import com.codeborne.selenide.SelenideDriver;
 import com.google.gson.GsonBuilder;
-import com.spotify.docker.client.exceptions.DockerException;
-import com.spotify.docker.client.messages.PortBinding;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.seljup.AnnotationsReader;

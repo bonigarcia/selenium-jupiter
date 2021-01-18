@@ -26,10 +26,9 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mandas.docker.client.exceptions.DockerException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
-
-import com.spotify.docker.client.exceptions.DockerException;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 

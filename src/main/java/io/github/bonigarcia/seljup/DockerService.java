@@ -16,11 +16,11 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static com.spotify.docker.client.DockerClient.RemoveContainerParam.forceKill;
-import static com.spotify.docker.client.DockerClient.Signal.SIGKILL;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
+import static org.mandas.docker.client.DockerClient.RemoveContainerParam.forceKill;
+import static org.mandas.docker.client.DockerClient.Signal.SIGKILL;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Arrays;
@@ -28,21 +28,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.glassfish.jersey.client.RequestEntityProcessing;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.LogStream;
+import org.mandas.docker.client.ProgressHandler;
+import org.mandas.docker.client.builder.DockerClientBuilder.EntityProcessing;
+import org.mandas.docker.client.builder.resteasy.ResteasyDockerClientBuilder;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerException;
+import org.mandas.docker.client.messages.ContainerConfig;
+import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.ProgressMessage;
 import org.slf4j.Logger;
-
-import com.google.common.collect.ImmutableMap;
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DefaultDockerClient.Builder;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.LogStream;
-import com.spotify.docker.client.ProgressHandler;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
-import com.spotify.docker.client.exceptions.DockerException;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.PortBinding;
-import com.spotify.docker.client.messages.ProgressMessage;
 
 import io.github.bonigarcia.seljup.config.Config;
 
@@ -73,27 +70,26 @@ public class DockerService {
         dockerPollTimeMs = getConfig().getDockerPollTimeMs();
 
         String dockerServerUrl = getConfig().getDockerServerUrl();
-        Builder dockerClientBuilder = null;
+        ResteasyDockerClientBuilder dockerClientBuilder = new ResteasyDockerClientBuilder();
         if (dockerServerUrl.isEmpty()) {
             try {
-                dockerClientBuilder = DefaultDockerClient.fromEnv();
+                dockerClientBuilder = dockerClientBuilder.fromEnv();
             } catch (DockerCertificateException e) {
                 throw new SeleniumJupiterException(e);
             }
         } else {
             log.debug("Using Docker server URL {}", dockerServerUrl);
-            dockerClientBuilder = DefaultDockerClient.builder()
-                    .uri(dockerServerUrl);
+            dockerClientBuilder = dockerClientBuilder.uri(dockerServerUrl);
         }
 
-        RequestEntityProcessing requestEntityProcessing = RequestEntityProcessing.CHUNKED;
+        EntityProcessing requestEntityProcessing = EntityProcessing.CHUNKED;
         String dockerRequestEntityProcessing = config
                 .getDockerRequestEntityProcessing();
         if (dockerRequestEntityProcessing.equalsIgnoreCase("BUFFERED")) {
-            requestEntityProcessing = RequestEntityProcessing.BUFFERED;
+            requestEntityProcessing = EntityProcessing.BUFFERED;
         }
         log.trace("Using RequestEntityProcessing {}", requestEntityProcessing);
-        dockerClientBuilder.useRequestEntityProcessing(requestEntityProcessing);
+        dockerClientBuilder.entityProcessing(requestEntityProcessing);
 
         dockerClient = dockerClientBuilder.build();
     }
@@ -115,9 +111,9 @@ public class DockerService {
             throws DockerException, InterruptedException {
         String imageId = dockerContainer.getImageId();
         log.info("Starting Docker container {}", imageId);
-        com.spotify.docker.client.messages.HostConfig.Builder hostConfigBuilder = HostConfig
+        org.mandas.docker.client.messages.HostConfig.Builder hostConfigBuilder = HostConfig
                 .builder();
-        com.spotify.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
+        org.mandas.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
                 .builder();
 
         boolean privileged = dockerContainer.isPrivileged();
@@ -190,7 +186,7 @@ public class DockerService {
 
     public String getBindPort(String containerId, String exposed)
             throws DockerException, InterruptedException {
-        ImmutableMap<String, List<PortBinding>> ports = dockerClient
+        Map<String, List<PortBinding>> ports = dockerClient
                 .inspectContainer(containerId).networkSettings().ports();
         List<PortBinding> exposedPort = ports.get(exposed);
         log.trace("Port list {} -- Exposed port {} = {}", ports, exposed,
@@ -295,7 +291,7 @@ public class DockerService {
     public void updateDockerClient(String url) {
         if (localDaemon) {
             log.debug("Updating Docker client using URL {}", url);
-            dockerClient = DefaultDockerClient.builder().uri(url).build();
+            dockerClient = new ResteasyDockerClientBuilder().uri(url).build();
             localDaemon = false;
         }
     }
