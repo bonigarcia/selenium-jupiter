@@ -4,7 +4,7 @@ repositories {
 
 ext {
 	selenium = '3.141.59'
-	webdrivermanager = '4.2.0'
+	webdrivermanager = '4.3.1'
 	appium = '7.3.0'
 	dockerclient = '8.16.0'
 	phantomjsdriver = '1.4.4'
