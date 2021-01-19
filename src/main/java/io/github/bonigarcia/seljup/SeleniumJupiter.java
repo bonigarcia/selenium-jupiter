@@ -26,6 +26,7 @@ import static java.util.Optional.empty;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import org.openqa.selenium.WebDriver;
@@ -98,7 +99,11 @@ public class SeleniumJupiter extends SeleniumExtension {
             getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
-                    cleanContainers(dockerDriverHandler, webdriver);
+                    try {
+                        cleanContainers(dockerDriverHandler, webdriver);
+                    } catch (IOException e) {
+                        logger.error("Exception in container cleanup", e);
+                    }
                 }
             });
 
@@ -116,7 +121,7 @@ public class SeleniumJupiter extends SeleniumExtension {
     }
 
     private static void cleanContainers(DockerDriverHandler dockerDriverHandler,
-            WebDriver webdriver) {
+            WebDriver webdriver) throws IOException {
         if (webdriver != null) {
             webdriver.quit();
         }
