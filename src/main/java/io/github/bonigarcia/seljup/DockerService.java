@@ -19,26 +19,31 @@ package io.github.bonigarcia.seljup;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
-import static org.mandas.docker.client.DockerClient.RemoveContainerParam.forceKill;
-import static org.mandas.docker.client.DockerClient.Signal.SIGKILL;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.async.ResultCallback.Adapter;
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.exception.DockerException;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.Capability;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.Frame;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.Ports;
+import com.github.dockerjava.api.model.Ports.Binding;
+import com.github.dockerjava.api.model.PullResponseItem;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient.Builder;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.mandas.docker.client.DockerClient;
-import org.mandas.docker.client.LogStream;
-import org.mandas.docker.client.ProgressHandler;
-import org.mandas.docker.client.builder.DockerClientBuilder.EntityProcessing;
-import org.mandas.docker.client.builder.resteasy.ResteasyDockerClientBuilder;
-import org.mandas.docker.client.exceptions.DockerCertificateException;
-import org.mandas.docker.client.exceptions.DockerException;
-import org.mandas.docker.client.messages.ContainerConfig;
-import org.mandas.docker.client.messages.HostConfig;
-import org.mandas.docker.client.messages.PortBinding;
-import org.mandas.docker.client.messages.ProgressMessage;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.config.Config;
@@ -69,168 +74,138 @@ public class DockerService {
         dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
         dockerPollTimeMs = getConfig().getDockerPollTimeMs();
 
-        String dockerServerUrl = getConfig().getDockerServerUrl();
-        ResteasyDockerClientBuilder dockerClientBuilder = new ResteasyDockerClientBuilder();
-        if (dockerServerUrl.isEmpty()) {
-            try {
-                dockerClientBuilder = dockerClientBuilder.fromEnv();
-            } catch (DockerCertificateException e) {
-                throw new SeleniumJupiterException(e);
-            }
-        } else {
-            log.debug("Using Docker server URL {}", dockerServerUrl);
-            dockerClientBuilder = dockerClientBuilder.uri(dockerServerUrl);
-        }
+        dockerClient = getDockerClient(null);
+    }
 
-        EntityProcessing requestEntityProcessing = EntityProcessing.CHUNKED;
-        String dockerRequestEntityProcessing = config
-                .getDockerRequestEntityProcessing();
-        if (dockerRequestEntityProcessing.equalsIgnoreCase("BUFFERED")) {
-            requestEntityProcessing = EntityProcessing.BUFFERED;
+    private DockerClient getDockerClient(String dockerHost) {
+        DefaultDockerClientConfig.Builder dockerClientConfigBuilder = DefaultDockerClientConfig.createDefaultConfigBuilder();
+        ApacheDockerHttpClient.Builder dockerHttpClientBuilder = new Builder();
+        if (dockerHost != null && !dockerHost.equals("") ) {
+            dockerClientConfigBuilder.withDockerHost(dockerHost);
         }
-        log.trace("Using RequestEntityProcessing {}", requestEntityProcessing);
-        dockerClientBuilder.entityProcessing(requestEntityProcessing);
+        DockerClientConfig dockerClientConfig= dockerClientConfigBuilder.build();
 
-        dockerClient = dockerClientBuilder.build();
+        return DockerClientBuilder.getInstance(dockerClientConfig)
+            .withDockerHttpClient(dockerHttpClientBuilder.dockerHost(dockerClientConfig.getDockerHost()).build())
+            .build();
     }
 
     public String getHost(String containerId, String network)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         String dockerHost = getConfig().getDockerHost();
         if (!dockerHost.isEmpty()) {
             return dockerHost;
         }
 
         return IS_OS_LINUX
-                ? dockerClient.inspectContainer(containerId).networkSettings()
-                        .networks().get(network).gateway()
-                : dockerClient.getHost();
+                ? dockerClient.inspectContainerCmd(containerId).exec().getNetworkSettings()
+                        .getNetworks().get(network).getGateway()
+                : "localhost";
     }
 
     public synchronized String startContainer(DockerContainer dockerContainer)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         String imageId = dockerContainer.getImageId();
         log.info("Starting Docker container {}", imageId);
-        org.mandas.docker.client.messages.HostConfig.Builder hostConfigBuilder = HostConfig
-                .builder();
-        org.mandas.docker.client.messages.ContainerConfig.Builder containerConfigBuilder = ContainerConfig
-                .builder();
+        HostConfig hostConfigBuilder = new HostConfig();
+        CreateContainerCmd containerConfigBuilder = dockerClient.createContainerCmd(imageId);
 
         boolean privileged = dockerContainer.isPrivileged();
         if (privileged) {
             log.trace("Using privileged mode");
-            hostConfigBuilder.privileged(true);
-            hostConfigBuilder.capAdd("NET_ADMIN", "NET_RAW");
+            hostConfigBuilder.withPrivileged(true);
+            hostConfigBuilder.withCapAdd(Capability.NET_ADMIN, Capability.NET_RAW);
         }
         Optional<String> network = dockerContainer.getNetwork();
         if (network.isPresent()) {
             log.trace("Using network: {}", network.get());
-            hostConfigBuilder.networkMode(network.get());
+            hostConfigBuilder.withNetworkMode(network.get());
         }
-        Optional<Map<String, List<PortBinding>>> portBindings = dockerContainer
-                .getPortBindings();
-        if (portBindings.isPresent()) {
-            log.trace("Using port bindings: {}", portBindings.get());
-            hostConfigBuilder.portBindings(portBindings.get());
-            containerConfigBuilder.exposedPorts(portBindings.get().keySet());
+        List<String> exposedPorts = dockerContainer.getExposedPorts();
+        if (!exposedPorts.isEmpty()) {
+            log.trace("Using exposed ports: {}", exposedPorts);
+            containerConfigBuilder.withExposedPorts(exposedPorts.stream().map(ExposedPort::parse).collect(
+                Collectors.toList()));
+            hostConfigBuilder.withPublishAllPorts(true);
         }
-        Optional<List<String>> binds = dockerContainer.getBinds();
+        Optional<List<Bind>> binds = dockerContainer.getBinds();
         if (binds.isPresent()) {
             log.trace("Using binds: {}", binds.get());
-            hostConfigBuilder.binds(binds.get());
+            hostConfigBuilder.withBinds(binds.get());
         }
         Optional<List<String>> envs = dockerContainer.getEnvs();
         if (envs.isPresent()) {
             log.trace("Using envs: {}", envs.get());
-            containerConfigBuilder.env(envs.get());
+            containerConfigBuilder.withEnv(envs.get().toArray(new String[]{}));
         }
         Optional<List<String>> cmd = dockerContainer.getCmd();
         if (cmd.isPresent()) {
             log.trace("Using cmd: {}", cmd.get());
-            containerConfigBuilder.cmd(cmd.get());
+            containerConfigBuilder.withCmd(cmd.get().toArray(new String[]{}));
         }
         Optional<List<String>> entryPoint = dockerContainer.getEntryPoint();
         if (entryPoint.isPresent()) {
             log.trace("Using entryPoint: {}", entryPoint.get());
-            containerConfigBuilder.entrypoint(entryPoint.get());
+            containerConfigBuilder.withEntrypoint(entryPoint.get().toArray(new String[]{}));
         }
 
-        ContainerConfig createContainer = containerConfigBuilder.image(imageId)
-                .hostConfig(hostConfigBuilder.build()).build();
-        String containerId = dockerClient.createContainer(createContainer).id();
-        dockerClient.startContainer(containerId);
+        String containerId = containerConfigBuilder.withHostConfig(hostConfigBuilder)
+            .exec().getId();
+        dockerClient.startContainerCmd(containerId).exec();
 
         return containerId;
     }
 
     public String execCommandInContainer(String containerId, String... command)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         String commandStr = Arrays.toString(command);
         log.trace("Running command {} in container {}", commandStr,
                 containerId);
-        String execId = dockerClient.execCreate(containerId, command,
-                DockerClient.ExecCreateParam.attachStdout(),
-                DockerClient.ExecCreateParam.attachStderr()).id();
-        String output = null;
-        try (LogStream stream = dockerClient.execStart(execId)) {
-            if (stream.hasNext()) {
-                output = UTF_8.decode(stream.next().content()).toString();
+        String execId = dockerClient.execCreateCmd(containerId)
+            .withCmd(command)
+            .withAttachStdout(true)
+            .withAttachStderr(true)
+            .exec().getId();
+        final StringBuilder output = new StringBuilder();
+        dockerClient.execStartCmd(execId).exec(new Adapter<Frame>() {
+            @Override
+            public void onNext(Frame object) {
+                output.append(new String(object.getPayload(), UTF_8 ));
+                super.onNext(object);
             }
-        } catch (Exception e) {
-            log.trace("Exception executing command in container", e);
-        }
+        });
         log.trace("Result of command {} in container {}: {}", commandStr,
                 containerId, output);
-        return output;
+        return output.toString();
     }
 
     public String getBindPort(String containerId, String exposed)
-            throws DockerException, InterruptedException {
-        Map<String, List<PortBinding>> ports = dockerClient
-                .inspectContainer(containerId).networkSettings().ports();
-        List<PortBinding> exposedPort = ports.get(exposed);
+            throws DockerException {
+        Ports ports = dockerClient
+                .inspectContainerCmd(containerId).exec().getNetworkSettings().getPorts();
+        Binding[] exposedPort = ports.getBindings().get(ExposedPort.parse(exposed));
         log.trace("Port list {} -- Exposed port {} = {}", ports, exposed,
                 exposedPort);
-        if (ports.isEmpty() || exposedPort.isEmpty()) {
-            String dockerImage = dockerClient.inspectContainer(containerId)
-                    .config().image();
+        if (ports.getBindings().isEmpty() || exposedPort.length == 0) {
+            String dockerImage = dockerClient.inspectContainerCmd(containerId)
+                .exec().getConfig().getImage();
             throw new SeleniumJupiterException("Port " + exposed
                     + " is not bindable in container " + dockerImage);
         }
-        return exposedPort.get(0).hostPort();
+        return exposedPort[0].getHostPortSpec();
     }
 
     public void pullImage(String imageId)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         if (!preferences.checkKeyInPreferences(imageId)
                 || !getConfig().isUsePreferences() || !localDaemon) {
             log.info("Pulling Docker image {}", imageId);
-            dockerClient.pull(imageId, new ProgressHandler() {
-                @Override
-                public void progress(ProgressMessage message)
-                        throws DockerException {
-                    log.trace("Pulling Docker image {} ... {}", imageId,
-                            message);
-                }
-            });
+            dockerClient.pullImageCmd(imageId).exec(new Adapter<PullResponseItem>() {});
             log.trace("Docker image {} downloaded", imageId);
             if (getConfig().isUsePreferences() && localDaemon) {
                 preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
             }
         }
-    }
-
-    public boolean existsImage(String imageId) {
-        boolean exists = true;
-        try {
-            dockerClient.inspectImage(imageId);
-            log.trace("Docker image {} already exists", imageId);
-
-        } catch (Exception e) {
-            log.trace("Image {} does not exist", imageId);
-            exists = false;
-        }
-        return exists;
     }
 
     public synchronized void stopAndRemoveContainer(String containerId,
@@ -249,11 +224,11 @@ public class DockerService {
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {
             log.trace("Killing container {}", containerId);
-            dockerClient.killContainer(containerId, SIGKILL);
+            dockerClient.killContainerCmd(containerId).exec();
         } else {
             log.trace("Stopping container {} (timeout {} seconds)", containerId,
                     stopTimeoutSec);
-            dockerClient.stopContainer(containerId, stopTimeoutSec);
+            dockerClient.stopContainerCmd(containerId).withTimeout(stopTimeoutSec).exec();
         }
     }
 
@@ -262,9 +237,9 @@ public class DockerService {
         log.trace("Removing container {}", containerId);
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {
-            dockerClient.removeContainer(containerId, forceKill());
+            dockerClient.removeContainerCmd(containerId).withForce(true).exec();
         } else {
-            dockerClient.removeContainer(containerId);
+            dockerClient.removeContainerCmd(containerId).exec();
         }
     }
 
@@ -280,18 +255,14 @@ public class DockerService {
         return dockerPollTimeMs;
     }
 
-    public DockerClient getDockerClient() {
-        return dockerClient;
-    }
-
-    public void close() {
+    public void close() throws IOException {
         dockerClient.close();
     }
 
     public void updateDockerClient(String url) {
         if (localDaemon) {
             log.debug("Updating Docker client using URL {}", url);
-            dockerClient = new ResteasyDockerClientBuilder().uri(url).build();
+            dockerClient = getDockerClient(url);
             localDaemon = false;
         }
     }

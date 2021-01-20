@@ -24,6 +24,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -43,6 +45,7 @@ class AndroidBrowserTest {
             ANDROID, NONE, empty(), empty());
 
     @ParameterizedTest
+    @EnabledOnOs(OS.LINUX)
     @ValueSource(strings = { "9.0" })
     void testAndroidVersions(String version) throws Exception {
         config.setAndroidLogging(true);

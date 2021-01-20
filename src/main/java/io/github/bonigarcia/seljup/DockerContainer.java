@@ -19,11 +19,14 @@ package io.github.bonigarcia.seljup;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.PortBinding;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.mandas.docker.client.messages.PortBinding;
 
 /**
  * Docker Container.
@@ -32,9 +35,10 @@ import org.mandas.docker.client.messages.PortBinding;
  * @since 1.1.2
  */
 public class DockerContainer {
+
+    private List<String> exposedPorts;
     private String imageId;
-    private Optional<Map<String, List<PortBinding>>> portBindings;
-    private Optional<List<String>> binds;
+    private Optional<List<Bind>> binds;
     private Optional<List<String>> envs;
     private Optional<String> network;
     private Optional<List<String>> cmd;
@@ -45,9 +49,7 @@ public class DockerContainer {
 
     private DockerContainer(DockerBuilder builder) {
         this.imageId = builder.imageId;
-        this.portBindings = builder.portBindings != null
-                ? of(builder.portBindings)
-                : empty();
+        this.exposedPorts = builder.exposedPorts != null ? builder.exposedPorts : new ArrayList<>();
         this.binds = builder.binds != null ? of(builder.binds) : empty();
         this.envs = builder.envs != null ? of(builder.envs) : empty();
         this.network = builder.network != null ? of(builder.network) : empty();
@@ -65,16 +67,16 @@ public class DockerContainer {
         return imageId;
     }
 
-    public Optional<Map<String, List<PortBinding>>> getPortBindings() {
-        return portBindings;
-    }
-
-    public Optional<List<String>> getBinds() {
+    public Optional<List<Bind>> getBinds() {
         return binds;
     }
 
     public Optional<List<String>> getEnvs() {
         return envs;
+    }
+
+    public List<String> getExposedPorts() {
+        return exposedPorts;
     }
 
     public Optional<String> getNetwork() {
@@ -115,26 +117,26 @@ public class DockerContainer {
 
     public static class DockerBuilder {
         private String imageId;
-        private Map<String, List<PortBinding>> portBindings;
-        private List<String> binds;
+        private List<Bind> binds;
         private List<String> envs;
         private List<String> cmd;
         private String network;
         private List<String> entryPoint;
         private boolean privileged = false;
+        private List<String> exposedPorts;
 
         public DockerBuilder(String imageId) {
             this.imageId = imageId;
         }
 
-        public DockerBuilder portBindings(
-                Map<String, List<PortBinding>> portBindings) {
-            this.portBindings = portBindings;
+
+        public DockerBuilder exposedPorts(List<String> ports) {
+            this.exposedPorts = ports;
             return this;
         }
 
         public DockerBuilder binds(List<String> binds) {
-            this.binds = binds;
+            this.binds = binds.stream().map(Bind::parse).collect(Collectors.toList());
             return this;
         }
 

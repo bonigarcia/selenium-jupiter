@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.handler;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static org.mandas.docker.client.messages.PortBinding.randomPort;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
@@ -47,6 +46,7 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import com.github.dockerjava.api.exception.DockerException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -62,7 +62,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -74,8 +73,6 @@ import java.util.concurrent.ExecutorService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.mandas.docker.client.exceptions.DockerException;
-import org.mandas.docker.client.messages.PortBinding;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -615,7 +612,7 @@ public class DockerDriverHandler {
         }
     }
 
-    public void close() {
+    public void close() throws IOException {
         dockerService.close();
     }
 
@@ -752,12 +749,11 @@ public class DockerDriverHandler {
                 dockerService.pullImage(recordingImage);
             }
 
-            // portBindings
-            Map<String, List<PortBinding>> portBindings = new HashMap<>();
+            // exposed ports
+            List<String> exposedPorts = new ArrayList<>();
             String defaultSelenoidPort = getConfig().getSelenoidPort();
             String internalSelenoidPort = defaultSelenoidPort;
-            portBindings.put(internalSelenoidPort,
-                    asList(randomPort(ALL_IPV4_ADDRESSES)));
+            exposedPorts.add(internalSelenoidPort);
 
             // binds
             String defaultSocket = dockerService.getDockerDefaultSocket();
@@ -800,7 +796,7 @@ public class DockerDriverHandler {
 
             // Build container
             DockerBuilder dockerBuilder = DockerContainer
-                    .dockerBuilder(selenoidImage).portBindings(portBindings)
+                    .dockerBuilder(selenoidImage).exposedPorts(exposedPorts)
                     .binds(binds).cmd(cmd).entryPoint(entryPoint).envs(envs)
                     .network(network);
             selenoidContainer = dockerBuilder.build();
@@ -834,13 +830,11 @@ public class DockerDriverHandler {
             dockerService.pullImage(androidImage);
 
             // portBindings
-            Map<String, List<PortBinding>> portBindings = new HashMap<>();
+            List<String> exposedPorts = new ArrayList<>();
             String internalAppiumPort = getConfig().getAndroidAppiumPort();
-            portBindings.put(internalAppiumPort,
-                    asList(randomPort(ALL_IPV4_ADDRESSES)));
+            exposedPorts.add(internalAppiumPort);
             String internalNoVncPort = getConfig().getAndroidNoVncPort();
-            portBindings.put(internalNoVncPort,
-                    asList(randomPort(ALL_IPV4_ADDRESSES)));
+            exposedPorts.add(internalNoVncPort);
 
             // binds
             boolean recording = getConfig().isRecording()
@@ -861,7 +855,7 @@ public class DockerDriverHandler {
 
             // Build container
             DockerBuilder dockerBuilder = DockerContainer
-                    .dockerBuilder(androidImage).portBindings(portBindings)
+                    .dockerBuilder(androidImage).exposedPorts(exposedPorts)
                     .binds(binds).envs(envs).network(network).privileged();
 
             String androidGenymotionDeviceName = getConfig()
@@ -1112,14 +1106,13 @@ public class DockerDriverHandler {
         } else {
             dockerService.pullImage(novncImage);
 
-            Map<String, List<PortBinding>> portBindings = new HashMap<>();
+            List<String> exposedPorts = new ArrayList<>();
             String defaultNovncPort = getConfig().getNovncPort();
-            portBindings.put(defaultNovncPort,
-                    asList(randomPort(ALL_IPV4_ADDRESSES)));
+            exposedPorts.add(defaultNovncPort);
 
             String network = getConfig().getDockerNetwork();
             novncContainer = DockerContainer.dockerBuilder(novncImage)
-                    .portBindings(portBindings).network(network).build();
+                    .exposedPorts(exposedPorts).network(network).build();
             String containerId = dockerService.startContainer(novncContainer);
             String novncHost = dockerService.getHost(containerId, network);
             String novncPort = dockerService.getBindPort(containerId,

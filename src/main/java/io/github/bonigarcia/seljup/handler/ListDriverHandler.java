@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.handler;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.github.dockerjava.api.exception.DockerException;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -30,7 +31,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.mandas.docker.client.exceptions.DockerException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
