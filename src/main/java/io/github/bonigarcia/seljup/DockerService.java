@@ -16,12 +16,14 @@
  */
 package io.github.bonigarcia.seljup;
 
+import static com.google.common.base.Optional.fromNullable;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +68,7 @@ public class DockerService {
     private DockerClient dockerClient;
     private InternalPreferences preferences;
     private boolean localDaemon = true;
+    private URI dockerHostUri;
 
     public DockerService(Config config, InternalPreferences preferences) {
         this.config = config;
@@ -87,6 +90,7 @@ public class DockerService {
         }
         DockerClientConfig dockerClientConfig = dockerClientConfigBuilder
                 .build();
+        dockerHostUri = dockerClientConfig.getDockerHost();
 
         return DockerClientBuilder.getInstance(dockerClientConfig)
                 .withDockerHttpClient(dockerHttpClientBuilder
@@ -105,7 +109,7 @@ public class DockerService {
                 ? dockerClient.inspectContainerCmd(containerId).exec()
                         .getNetworkSettings().getNetworks().get(network)
                         .getGateway()
-                : "localhost";
+                : fromNullable(dockerHostUri.getHost()).or("localhost");
     }
 
     public synchronized String startContainer(DockerContainer dockerContainer)
