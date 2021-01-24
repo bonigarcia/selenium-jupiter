@@ -32,8 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerChromeJupiterTest {
 
     @Test
-    void testChrome(
-            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+    void testChrome(@DockerBrowser(type = CHROME) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
