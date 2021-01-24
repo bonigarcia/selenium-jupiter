@@ -233,7 +233,7 @@ public class DockerService {
     }
 
     public synchronized void stopContainer(String containerId)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {
             log.trace("Killing container {}", containerId);
@@ -247,7 +247,7 @@ public class DockerService {
     }
 
     public synchronized void removeContainer(String containerId)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         log.trace("Removing container {}", containerId);
         int stopTimeoutSec = getConfig().getDockerStopTimeoutSec();
         if (stopTimeoutSec == 0) {

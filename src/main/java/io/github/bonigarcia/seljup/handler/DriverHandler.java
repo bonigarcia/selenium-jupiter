@@ -60,12 +60,13 @@ public abstract class DriverHandler {
 
     public abstract void resolve();
 
-    public DriverHandler(Config config, AnnotationsReader annotationsReader) {
+    protected DriverHandler(Config config,
+            AnnotationsReader annotationsReader) {
         this.config = config;
         this.annotationsReader = annotationsReader;
     }
 
-    public DriverHandler(Parameter parameter, ExtensionContext context,
+    protected DriverHandler(Parameter parameter, ExtensionContext context,
             Config config, AnnotationsReader annotationsReader) {
         this(config, annotationsReader);
         this.parameter = parameter;

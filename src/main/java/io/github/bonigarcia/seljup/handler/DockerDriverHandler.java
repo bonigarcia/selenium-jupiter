@@ -40,13 +40,12 @@ import static java.util.Optional.empty;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.collections.CollectionUtils.disjunction;
-import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import com.github.dockerjava.api.exception.DockerException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -85,6 +84,7 @@ import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
 import com.codeborne.selenide.SelenideDriver;
+import com.github.dockerjava.api.exception.DockerException;
 import com.google.gson.GsonBuilder;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -1053,8 +1053,7 @@ public class DockerDriverHandler {
         }
         Method[] methods = testClass.getMethods();
         Method[] declaredMethods = testClass.getDeclaredMethods();
-        Method[] allMethods = (Method[]) ArrayUtils.addAll(methods,
-                declaredMethods);
+        Method[] allMethods = ArrayUtils.addAll(methods, declaredMethods);
         for (Method method : allMethods) {
             Parameter[] parameters = method.getParameters();
             count += getDockerBrowsersInParams(parameters);
