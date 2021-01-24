@@ -75,7 +75,7 @@ public class DockerService {
         dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
         dockerPollTimeMs = getConfig().getDockerPollTimeMs();
 
-        dockerClient = getDockerClient(null);
+        dockerClient = getDockerClient(DockerHost.endpointFromEnv());
     }
 
     private DockerClient getDockerClient(String dockerHost) {
