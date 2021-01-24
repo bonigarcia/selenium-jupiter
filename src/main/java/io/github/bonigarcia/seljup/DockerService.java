@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup;
 
 import static com.google.common.base.Optional.fromNullable;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
@@ -84,18 +85,17 @@ public class DockerService {
     private DockerClient getDockerClient(String dockerHost) {
         DefaultDockerClientConfig.Builder dockerClientConfigBuilder = DefaultDockerClientConfig
                 .createDefaultConfigBuilder();
-        ApacheDockerHttpClient.Builder dockerHttpClientBuilder = new Builder();
-        if (dockerHost != null && !dockerHost.equals("")) {
+        if (!isNullOrEmpty(dockerHost)) {
             dockerClientConfigBuilder.withDockerHost(dockerHost);
         }
         DockerClientConfig dockerClientConfig = dockerClientConfigBuilder
                 .build();
         dockerHostUri = dockerClientConfig.getDockerHost();
+        ApacheDockerHttpClient dockerHttpClient = new Builder()
+                .dockerHost(dockerHostUri).build();
 
         return DockerClientBuilder.getInstance(dockerClientConfig)
-                .withDockerHttpClient(dockerHttpClientBuilder
-                        .dockerHost(dockerClientConfig.getDockerHost()).build())
-                .build();
+                .withDockerHttpClient(dockerHttpClient).build();
     }
 
     public String getHost(String containerId, String network)
