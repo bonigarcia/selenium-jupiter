@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -110,7 +109,8 @@ public class DockerService {
                 ? dockerClient.inspectContainerCmd(containerId).exec()
                         .getNetworkSettings().getNetworks().get(network)
                         .getGateway()
-                : fromNullable(dockerHostUri.getHost()).or("localhost");
+                : Optional.ofNullable(dockerHostUri.getHost())
+                        .orElse("localhost");
     }
 
     public synchronized String startContainer(DockerContainer dockerContainer)
