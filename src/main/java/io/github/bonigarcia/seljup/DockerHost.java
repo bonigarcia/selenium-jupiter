@@ -23,43 +23,16 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.MoreObjects;
 import com.google.common.net.HostAndPort;
 
 /**
- * Represents a dockerd endpoint. A codified DOCKER_HOST. Original source from
- * spotify/docker-client.
+ * It represents a dockerd endpoint (a codified DOCKER_HOST).
  *
  * @author Boni Garcia (boni.gg@gmail.com)
- * @since 3.3.6
+ * @since 3.4.0
  */
 
 public class DockerHost {
-
-    /**
-     * An interface to be mocked during testing.
-     */
-    @VisibleForTesting
-    interface SystemDelegate {
-
-        String getProperty(String key);
-
-        String getenv(String name);
-    }
-
-    private static final SystemDelegate defaultSystemDelegate = new SystemDelegate() {
-        @Override
-        public String getProperty(final String key) {
-            return System.getProperty(key);
-        }
-
-        @Override
-        public String getenv(final String name) {
-            return System.getenv(name);
-        }
-    };
-    private static SystemDelegate systemDelegate = defaultSystemDelegate;
 
     private static final String DEFAULT_UNIX_ENDPOINT = "unix:///var/run/docker.sock";
     private static final String DEFAULT_WINDOWS_ENDPOINT = "npipe:////./pipe/docker_engine";
@@ -92,7 +65,6 @@ public class DockerHost {
             this.host = address + ":" + port;
             this.uri = URI.create(scheme + "://" + address + ":" + port);
             this.bindUri = URI.create("tcp://" + address + ":" + port);
-
         }
 
         this.endpoint = endpoint;
@@ -103,111 +75,56 @@ public class DockerHost {
         return endpoint;
     }
 
-    /**
-     * Get a Docker endpoint usable for instantiating a new DockerHost with
-     * DockerHost.from(endpoint).
-     *
-     * @return A unix socket path or, in the case of a TCP socket, the hostname
-     *         and port which represents a Docker endpoint.
-     */
     public String host() {
         return host;
     }
 
-    /**
-     * Get the Docker rest uri.
-     *
-     * @return The uri of the Docker endpoint.
-     */
     public URI uri() {
         return uri;
     }
 
-    /**
-     * Get the Docker rest bind uri.
-     *
-     * @return The uri of the host for binding ports (or setting $DOCKER_HOST).
-     */
     public URI bindUri() {
         return bindUri;
     }
 
-    /**
-     * Get the Docker endpoint port.
-     *
-     * @return The port.
-     */
     public int port() {
         return port;
     }
 
-    /**
-     * Get the Docker ip address or hostname.
-     *
-     * @return The ip address or hostname.
-     */
     public String address() {
         return address;
     }
 
-    /**
-     * Get the path to certificate and key for connecting to Docker via HTTPS.
-     *
-     * @return The path to the certificate.
-     */
     public String dockerCertPath() {
         return certPath;
     }
 
-    @VisibleForTesting
-    static void setSystemDelegate(final SystemDelegate delegate) {
-        systemDelegate = delegate;
-    }
-
-    @VisibleForTesting
-    static void restoreSystemDelegate() {
-        systemDelegate = defaultSystemDelegate;
-    }
-
-    /**
-     * Create a {@link DockerHost} from DOCKER_HOST and DOCKER_PORT env vars.
-     *
-     * @return The DockerHost object.
-     */
     public static DockerHost fromEnv() {
         final String host = endpointFromEnv();
         final String certPath = certPathFromEnv();
         return new DockerHost(host, certPath);
     }
 
-    /**
-     * Create a {@link DockerHost} from an explicit address or uri.
-     *
-     * @param endpoint The Docker endpoint.
-     * @param certPath The certificate path.
-     * @return The DockerHost object.
-     */
     public static DockerHost from(final String endpoint,
             final String certPath) {
         return new DockerHost(endpoint, certPath);
     }
 
-    static String defaultDockerEndpoint() {
-        final String osName = systemDelegate.getProperty("os.name");
+    public static String defaultDockerEndpoint() {
+        final String osName = System.getProperty("os.name");
         final String os = osName.toLowerCase(Locale.ENGLISH);
         if (os.equalsIgnoreCase("linux") || os.contains("mac")) {
-            return DEFAULT_UNIX_ENDPOINT;
+            return defaultUnixEndpoint();
         } else if (System.getProperty("os.name")
                 .equalsIgnoreCase("Windows 10")) {
-            // from Docker doc: Windows 10 64bit: Pro, Enterprise or Education
-            return DEFAULT_WINDOWS_ENDPOINT;
+            return defaultWindowsEndpoint();
         } else {
-            return DEFAULT_ADDRESS + ":" + defaultPort();
+            return defaultAddress() + ":" + defaultPort();
         }
     }
 
-    static String endpointFromEnv() {
-        return firstNonNull(systemDelegate.getenv("DOCKER_HOST"),
+    public static String endpointFromEnv() {
+        return firstNonNull(System.getenv("DOCKER_HOST"),
                 defaultDockerEndpoint());
     }
 
@@ -227,8 +144,8 @@ public class DockerHost {
         return DEFAULT_PORT;
     }
 
-    static int portFromEnv() {
-        final String port = systemDelegate.getenv("DOCKER_PORT");
+    public static int portFromEnv() {
+        final String port = System.getenv("DOCKER_PORT");
         if (port == null) {
             return defaultPort();
         }
@@ -239,67 +156,17 @@ public class DockerHost {
         }
     }
 
-    static String defaultCertPath() {
-        final String userHome = systemDelegate.getProperty("user.home");
+    public static String defaultCertPath() {
+        final String userHome = System.getProperty("user.home");
         return Paths.get(userHome, ".docker").toString();
     }
 
-    static String certPathFromEnv() {
-        return systemDelegate.getenv("DOCKER_CERT_PATH");
+    public static String certPathFromEnv() {
+        return System.getenv("DOCKER_CERT_PATH");
     }
 
-    static String configPathFromEnv() {
-        return systemDelegate.getenv("DOCKER_CONFIG");
+    public static String configPathFromEnv() {
+        return System.getenv("DOCKER_CONFIG");
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("host", host)
-                .add("uri", uri).add("bindUri", bindUri).add("address", address)
-                .add("port", port).add("certPath", certPath).toString();
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        final DockerHost that = (DockerHost) obj;
-
-        if (port != that.port) {
-            return false;
-        }
-        if (host != null ? !host.equals(that.host) : that.host != null) {
-            return false;
-        }
-        if (uri != null ? !uri.equals(that.uri) : that.uri != null) {
-            return false;
-        }
-        if (bindUri != null ? !bindUri.equals(that.bindUri)
-                : that.bindUri != null) {
-            return false;
-        }
-        if (address != null ? !address.equals(that.address)
-                : that.address != null) {
-            return false;
-        }
-        return certPath != null ? certPath.equals(that.certPath)
-                : that.certPath == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = host != null ? host.hashCode() : 0;
-        result = 31 * result + (uri != null ? uri.hashCode() : 0);
-        result = 31 * result + (bindUri != null ? bindUri.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + port;
-        result = 31 * result + (certPath != null ? certPath.hashCode() : 0);
-        return result;
-    }
 }
