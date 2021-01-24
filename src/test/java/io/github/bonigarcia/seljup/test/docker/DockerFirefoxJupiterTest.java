@@ -32,8 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerFirefoxJupiterTest {
 
     @Test
-    void testLatest(
-            @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
+    void testLatest(@DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
@@ -41,7 +40,7 @@ class DockerFirefoxJupiterTest {
 
     @Test
     void testVersion(
-            @DockerBrowser(type = FIREFOX, version = "64") RemoteWebDriver driver) {
+            @DockerBrowser(type = FIREFOX, version = "84") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle(),
                 containsString("JUnit 5 extension for Selenium"));
