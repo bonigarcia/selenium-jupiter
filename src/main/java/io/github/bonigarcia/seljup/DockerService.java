@@ -196,11 +196,13 @@ public class DockerService {
     }
 
     public void pullImage(String imageId)
-            throws DockerException {
+            throws DockerException, InterruptedException {
         if (!preferences.checkKeyInPreferences(imageId)
                 || !getConfig().isUsePreferences() || !localDaemon) {
             log.info("Pulling Docker image {}", imageId);
-            dockerClient.pullImageCmd(imageId).exec(new Adapter<PullResponseItem>() {});
+            dockerClient.pullImageCmd(imageId)
+                    .exec(new Adapter<PullResponseItem>() {
+                    }).awaitCompletion();
             log.trace("Docker image {} downloaded", imageId);
             if (getConfig().isUsePreferences() && localDaemon) {
                 preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
