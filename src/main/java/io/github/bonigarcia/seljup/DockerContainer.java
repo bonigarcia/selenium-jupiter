@@ -19,14 +19,12 @@ package io.github.bonigarcia.seljup;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-import com.github.dockerjava.api.model.Bind;
-import com.github.dockerjava.api.model.PortBinding;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.github.dockerjava.api.model.Bind;
 
 /**
  * Docker Container.
@@ -49,7 +47,8 @@ public class DockerContainer {
 
     private DockerContainer(DockerBuilder builder) {
         this.imageId = builder.imageId;
-        this.exposedPorts = builder.exposedPorts != null ? builder.exposedPorts : new ArrayList<>();
+        this.exposedPorts = builder.exposedPorts != null ? builder.exposedPorts
+                : new ArrayList<>();
         this.binds = builder.binds != null ? of(builder.binds) : empty();
         this.envs = builder.envs != null ? of(builder.envs) : empty();
         this.network = builder.network != null ? of(builder.network) : empty();
@@ -129,14 +128,14 @@ public class DockerContainer {
             this.imageId = imageId;
         }
 
-
         public DockerBuilder exposedPorts(List<String> ports) {
             this.exposedPorts = ports;
             return this;
         }
 
         public DockerBuilder binds(List<String> binds) {
-            this.binds = binds.stream().map(Bind::parse).collect(Collectors.toList());
+            this.binds = binds.stream().map(Bind::parse)
+                    .collect(Collectors.toList());
             return this;
         }
 
