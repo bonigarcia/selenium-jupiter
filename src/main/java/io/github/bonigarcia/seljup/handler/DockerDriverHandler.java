@@ -773,6 +773,7 @@ public class DockerDriverHandler {
             String network = getConfig().getDockerNetwork();
             String dockerStartupTimeout = getConfig()
                     .getDockerStartupTimeoutDuration();
+            String videoRecorderImage = getConfig().getRecordingImage();
 
             List<String> cmd = asList("sh", "-c",
                     "mkdir -p /etc/selenoid/; echo '" + browsersJson
@@ -784,7 +785,8 @@ public class DockerDriverHandler {
                             + " -video-output-dir /opt/selenoid/video/"
                             + " -timeout " + browserTimeout
                             + " -container-network " + network + " -limit "
-                            + getDockerBrowserCount());
+                            + getDockerBrowserCount()
+                            + " -video-recorder-image " + videoRecorderImage);
 
             // envs
             List<String> envs = selenoidConfig.getDockerEnvs();
