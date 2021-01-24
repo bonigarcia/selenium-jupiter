@@ -113,53 +113,58 @@ public class DockerService {
         String imageId = dockerContainer.getImageId();
         log.info("Starting Docker container {}", imageId);
         HostConfig hostConfigBuilder = new HostConfig();
-        CreateContainerCmd containerConfigBuilder = dockerClient
-                .createContainerCmd(imageId);
+        String containerId = null;
 
-        boolean privileged = dockerContainer.isPrivileged();
-        if (privileged) {
-            log.trace("Using privileged mode");
-            hostConfigBuilder.withPrivileged(true);
-            hostConfigBuilder.withCapAdd(Capability.NET_ADMIN,
-                    Capability.NET_RAW);
-        }
-        Optional<String> network = dockerContainer.getNetwork();
-        if (network.isPresent()) {
-            log.trace("Using network: {}", network.get());
-            hostConfigBuilder.withNetworkMode(network.get());
-        }
-        List<String> exposedPorts = dockerContainer.getExposedPorts();
-        if (!exposedPorts.isEmpty()) {
-            log.trace("Using exposed ports: {}", exposedPorts);
-            containerConfigBuilder.withExposedPorts(exposedPorts.stream()
-                    .map(ExposedPort::parse).collect(Collectors.toList()));
-            hostConfigBuilder.withPublishAllPorts(true);
-        }
-        Optional<List<Bind>> binds = dockerContainer.getBinds();
-        if (binds.isPresent()) {
-            log.trace("Using binds: {}", binds.get());
-            hostConfigBuilder.withBinds(binds.get());
-        }
-        Optional<List<String>> envs = dockerContainer.getEnvs();
-        if (envs.isPresent()) {
-            log.trace("Using envs: {}", envs.get());
-            containerConfigBuilder.withEnv(envs.get().toArray(new String[] {}));
-        }
-        Optional<List<String>> cmd = dockerContainer.getCmd();
-        if (cmd.isPresent()) {
-            log.trace("Using cmd: {}", cmd.get());
-            containerConfigBuilder.withCmd(cmd.get().toArray(new String[] {}));
-        }
-        Optional<List<String>> entryPoint = dockerContainer.getEntryPoint();
-        if (entryPoint.isPresent()) {
-            log.trace("Using entryPoint: {}", entryPoint.get());
-            containerConfigBuilder
-                    .withEntrypoint(entryPoint.get().toArray(new String[] {}));
-        }
+        try (CreateContainerCmd containerConfigBuilder = dockerClient
+                .createContainerCmd(imageId)) {
 
-        String containerId = containerConfigBuilder
-                .withHostConfig(hostConfigBuilder).exec().getId();
-        dockerClient.startContainerCmd(containerId).exec();
+            boolean privileged = dockerContainer.isPrivileged();
+            if (privileged) {
+                log.trace("Using privileged mode");
+                hostConfigBuilder.withPrivileged(true);
+                hostConfigBuilder.withCapAdd(Capability.NET_ADMIN,
+                        Capability.NET_RAW);
+            }
+            Optional<String> network = dockerContainer.getNetwork();
+            if (network.isPresent()) {
+                log.trace("Using network: {}", network.get());
+                hostConfigBuilder.withNetworkMode(network.get());
+            }
+            List<String> exposedPorts = dockerContainer.getExposedPorts();
+            if (!exposedPorts.isEmpty()) {
+                log.trace("Using exposed ports: {}", exposedPorts);
+                containerConfigBuilder.withExposedPorts(exposedPorts.stream()
+                        .map(ExposedPort::parse).collect(Collectors.toList()));
+                hostConfigBuilder.withPublishAllPorts(true);
+            }
+            Optional<List<Bind>> binds = dockerContainer.getBinds();
+            if (binds.isPresent()) {
+                log.trace("Using binds: {}", binds.get());
+                hostConfigBuilder.withBinds(binds.get());
+            }
+            Optional<List<String>> envs = dockerContainer.getEnvs();
+            if (envs.isPresent()) {
+                log.trace("Using envs: {}", envs.get());
+                containerConfigBuilder
+                        .withEnv(envs.get().toArray(new String[] {}));
+            }
+            Optional<List<String>> cmd = dockerContainer.getCmd();
+            if (cmd.isPresent()) {
+                log.trace("Using cmd: {}", cmd.get());
+                containerConfigBuilder
+                        .withCmd(cmd.get().toArray(new String[] {}));
+            }
+            Optional<List<String>> entryPoint = dockerContainer.getEntryPoint();
+            if (entryPoint.isPresent()) {
+                log.trace("Using entryPoint: {}", entryPoint.get());
+                containerConfigBuilder.withEntrypoint(
+                        entryPoint.get().toArray(new String[] {}));
+            }
+
+            containerId = containerConfigBuilder
+                    .withHostConfig(hostConfigBuilder).exec().getId();
+            dockerClient.startContainerCmd(containerId).exec();
+        }
 
         return containerId;
     }
