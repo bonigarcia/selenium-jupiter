@@ -19,13 +19,13 @@ package io.github.bonigarcia.seljup;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.MoreObjects;
-import com.google.common.net.HostAndPort;
-
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Locale;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
+import com.google.common.net.HostAndPort;
 
 /**
  * Represents a dockerd endpoint. A codified DOCKER_HOST. Original source from
@@ -72,6 +72,7 @@ public class DockerHost {
     private final String address;
     private final int port;
     private final String certPath;
+    private final String endpoint;
 
     private DockerHost(final String endpoint, final String certPath) {
         if (endpoint.startsWith("unix://")) {
@@ -91,9 +92,15 @@ public class DockerHost {
             this.host = address + ":" + port;
             this.uri = URI.create(scheme + "://" + address + ":" + port);
             this.bindUri = URI.create("tcp://" + address + ":" + port);
+
         }
 
+        this.endpoint = endpoint;
         this.certPath = certPath;
+    }
+
+    public String endpoint() {
+        return endpoint;
     }
 
     /**
