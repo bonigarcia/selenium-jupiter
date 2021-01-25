@@ -39,7 +39,7 @@ import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.apache.commons.collections.CollectionUtils.disjunction;
+import static org.apache.commons.collections4.CollectionUtils.disjunction;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;

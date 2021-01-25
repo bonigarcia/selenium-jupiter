@@ -53,6 +53,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.platform.commons.util.AnnotationUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -83,7 +84,6 @@ import io.github.bonigarcia.seljup.handler.RemoteDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
 import io.github.bonigarcia.seljup.handler.SelenideDriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * Selenium extension for Jupiter (JUnit 5) tests.
