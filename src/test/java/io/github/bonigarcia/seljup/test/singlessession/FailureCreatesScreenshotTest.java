@@ -27,8 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.SingleSession;
@@ -42,16 +41,15 @@ class FailureCreatesScreenshotTest {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    RemoteWebDriver driver;
+    WebDriver driver;
 
-    FailureCreatesScreenshotTest(ChromeDriver driver) {
+    FailureCreatesScreenshotTest(WebDriver driver) {
         this.driver = driver;
     }
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig()
-                .setScreenshotAtTheEndOfTests("whenfailure");
+        seleniumJupiter.getConfig().setScreenshotAtTheEndOfTests("whenfailure");
         seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 

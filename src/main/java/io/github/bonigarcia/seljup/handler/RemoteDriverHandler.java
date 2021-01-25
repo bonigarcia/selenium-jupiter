@@ -103,7 +103,7 @@ public class RemoteDriverHandler extends DriverHandler {
                             browserInstance, dockerBrowser.get().version());
                     object = dockerDriverHandler.resolve(dockerBrowser.get());
                 } else {
-                    resolveOtherThanDocker(testInstance);
+                    resolveOtherThanDocker(this, parent, testInstance);
                 }
             }
         } catch (Exception e) {
@@ -111,7 +111,8 @@ public class RemoteDriverHandler extends DriverHandler {
         }
     }
 
-    private void resolveOtherThanDocker(Optional<Object> testInstance)
+    private void resolveOtherThanDocker(DriverHandler driverHandler,
+            SeleniumExtension parent, Optional<Object> testInstance)
             throws IllegalAccessException, MalformedURLException {
         Optional<Capabilities> capabilities = annotationsReader
                 .getCapabilities(parameter, testInstance);
@@ -130,7 +131,7 @@ public class RemoteDriverHandler extends DriverHandler {
         if (url.isPresent() && capabilities.isPresent()) {
             object = resolveRemote(url.get(), capabilities.get());
         } else {
-            object = resolveGeneric();
+            object = resolveGeneric(driverHandler, parent);
         }
     }
 
@@ -150,7 +151,8 @@ public class RemoteDriverHandler extends DriverHandler {
         return webDriverCreator.createRemoteWebDriver(url, capabilities);
     }
 
-    private WebDriver resolveGeneric() {
+    private WebDriver resolveGeneric(DriverHandler driverHandler,
+            SeleniumExtension parent) {
         String defaultBrowser = getConfig().getDefaultBrowser();
         String defaultVersion = getConfig().getDefaultVersion();
         String defaultBrowserFallback = getConfig().getDefaultBrowserFallback();
@@ -192,6 +194,9 @@ public class RemoteDriverHandler extends DriverHandler {
                     singletonList(candidate));
             try {
                 object = parent.resolveParameter(parameterContext, context);
+                parent.removeDriverHandlerInMap(context.getUniqueId(),
+                        driverHandler);
+
             } catch (Exception e) {
                 log.debug("There was an error with {} {}", browserCandidate,
                         e.getMessage());

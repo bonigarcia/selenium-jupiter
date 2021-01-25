@@ -172,6 +172,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         String contextId = extensionContext.getUniqueId();
         Parameter parameter = parameterContext.getParameter();
         int index = parameterContext.getIndex();
+        log.trace("Resolving parameter {} (contextId {}, index {})", parameter,
+                contextId, index);
 
         log.trace("Context id {}", contextId);
         if (isSingleSession(extensionContext)
@@ -220,6 +222,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         DriverHandler driverHandler = getDriverHandler(parameterContext,
                 extensionContext, parameter, type, browser, constructorClass,
                 isRemote);
+
+        log.trace("Created driverHandler {}", driverHandler);
         return resolveHandler(parameter, driverHandler);
     }
 
@@ -262,6 +266,15 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
         if (!typeList.contains(type) && !isRemote) {
             WebDriverManager.getInstance(type).setup();
             typeList.add(type);
+        }
+    }
+
+    public void removeDriverHandlerInMap(String contextId,
+            DriverHandler driverHandler) {
+        if (driverHandlerMap.containsKey(contextId)) {
+            driverHandlerMap.get(contextId).remove(driverHandler);
+            log.trace("Removing {} from handler map (id {})", driverHandler,
+                    contextId);
         }
     }
 
@@ -413,8 +426,9 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     private boolean isSingleSession(ExtensionContext extensionContext) {
-        boolean singleSession = extensionContext.getTestClass()
-                .map(clazz -> AnnotationUtils.findAnnotation(clazz, SingleSession.class) != null)
+        boolean singleSession = extensionContext
+                .getTestClass().map(clazz -> AnnotationUtils
+                        .findAnnotation(clazz, SingleSession.class) != null)
                 .orElse(false);
         log.trace("Single session {}", singleSession);
         return singleSession;
@@ -569,8 +583,7 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
             if (browserListMap != null) {
                 List<Browser> browsers = browserListMap.get(contextId);
                 if (browsers != null) {
-                    return Stream.of(
-                            invocationContext(browsers, this));
+                    return Stream.of(invocationContext(browsers, this));
                 } else {
                     return Stream.empty();
                 }
