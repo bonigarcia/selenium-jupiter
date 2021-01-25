@@ -122,7 +122,7 @@ public class RemoteDriverHandler extends DriverHandler {
                 && !browser.getUrl().isEmpty()) {
             url = Optional.of(new URL(browser.getUrl()));
             capabilities = Optional.of(new DesiredCapabilities(
-                    browser.getType(), browser.getVersion(), ANY));
+                    browser.getType(), browser.getVersionForRemote(), ANY));
         } else {
             url = annotationsReader.getUrl(parameter, testInstance,
                     config.getSeleniumServerUrl());

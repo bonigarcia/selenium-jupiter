@@ -74,6 +74,13 @@ public class BrowsersTemplate {
             return version;
         }
 
+        public String getVersionForRemote() {
+            if (version.equalsIgnoreCase("latest")) {
+                return "";
+            }
+            return version;
+        }
+
         public String getBrowserName() {
             return browserName;
         }
