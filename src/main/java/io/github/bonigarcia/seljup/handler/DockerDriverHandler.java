@@ -18,7 +18,6 @@ package io.github.bonigarcia.seljup.handler;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
-import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
@@ -722,7 +721,7 @@ public class DockerDriverHandler {
             browserImage = selenoidConfig.getImageFromVersion(browserType,
                     version);
         }
-        if (browserType != EDGE && browserType != IEXPLORER) {
+        if (browserType != IEXPLORER) {
             dockerService.pullImage(browserImage);
         }
 

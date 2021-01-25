@@ -16,15 +16,11 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-//end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -32,8 +28,6 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-//end::snippet-in-doc[]
-@Disabled("Edge in Docker not available in Travis, only needed for doc")
 //tag::snippet-in-doc[]
 class DockerEdgeJupiterTest {
 
