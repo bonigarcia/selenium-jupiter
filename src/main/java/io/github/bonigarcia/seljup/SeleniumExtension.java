@@ -425,8 +425,12 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     private boolean isSingleSession(ExtensionContext extensionContext) {
-        boolean singleSession = extensionContext.getTestClass().getClass()
-                .isAnnotationPresent(SingleSession.class);
+        boolean singleSession = false;
+        Optional<Class<?>> testClass = extensionContext.getTestClass();
+        if (testClass.isPresent()) {
+            singleSession = testClass.get()
+                    .isAnnotationPresent(SingleSession.class);
+        }
         log.trace("Single session {}", singleSession);
         return singleSession;
     }
