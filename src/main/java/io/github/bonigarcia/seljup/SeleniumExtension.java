@@ -53,7 +53,6 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.junit.platform.commons.util.AnnotationUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -426,10 +425,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     private boolean isSingleSession(ExtensionContext extensionContext) {
-        boolean singleSession = extensionContext
-                .getTestClass().map(clazz -> AnnotationUtils
-                        .findAnnotation(clazz, SingleSession.class) != null)
-                .orElse(false);
+        boolean singleSession = extensionContext.getTestClass().getClass()
+                .isAnnotationPresent(SingleSession.class);
         log.trace("Single session {}", singleSession);
         return singleSession;
     }
