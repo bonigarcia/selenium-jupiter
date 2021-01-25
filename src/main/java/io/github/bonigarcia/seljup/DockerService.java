@@ -215,13 +215,19 @@ public class DockerService {
             throws DockerException, InterruptedException {
         if (!preferences.checkKeyInPreferences(imageId)
                 || !getConfig().isUsePreferences() || !localDaemon) {
-            log.info("Pulling Docker image {}", imageId);
-            dockerClient.pullImageCmd(imageId)
-                    .exec(new Adapter<PullResponseItem>() {
-                    }).awaitCompletion();
-            log.trace("Docker image {} downloaded", imageId);
-            if (getConfig().isUsePreferences() && localDaemon) {
-                preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
+            try {
+                log.info("Pulling Docker image {}", imageId);
+                dockerClient.pullImageCmd(imageId)
+                        .exec(new Adapter<PullResponseItem>() {
+                        }).awaitCompletion();
+                log.trace("Docker image {} downloaded", imageId);
+                if (getConfig().isUsePreferences() && localDaemon) {
+                    preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
+                }
+
+            } catch (Exception e) {
+                log.warn("Exception pulling image {}: {}", imageId,
+                        e.getMessage());
             }
         }
     }
