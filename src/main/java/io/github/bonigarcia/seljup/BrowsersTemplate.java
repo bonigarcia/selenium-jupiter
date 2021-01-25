@@ -75,7 +75,7 @@ public class BrowsersTemplate {
         }
 
         public String getVersionForRemote() {
-            if (version.equalsIgnoreCase("latest")) {
+            if (version != null && version.equalsIgnoreCase("latest")) {
                 return "";
             }
             return version;
