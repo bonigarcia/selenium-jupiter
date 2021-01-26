@@ -1,6 +1,6 @@
 == Docker browsers 
 
-As of version 2.0.0, _Selenium-Jupiter_ allows to ask for browsers in https://www.docker.com/[Docker] containers. The only requirement to use this feature is to install https://www.docker.com/get-docker[Docker Engine] in the machine running the tests. Internally, _Selenium-Jupiter_ uses a https://github.com/spotify/docker-client[docker-client] and different Docker images for browsers, namely:
+As of version 2.0.0, _Selenium-Jupiter_ allows to ask for browsers in https://www.docker.com/[Docker] containers. The only requirement to use this feature is to install https://www.docker.com/get-docker[Docker Engine] in the machine running the tests. Internally, _Selenium-Jupiter_ uses https://github.com/docker-java/docker-java[docker-java] and different Docker images for browsers, namely:
 
 * Stable versions of Docker browser, provided by https://aerokube.com/selenoid/latest/[Selenoid].
 * Beta and nightly versions of Docker browser, provided by https://elastest.io/[ElasTest].
@@ -10,7 +10,7 @@ As shown in the following section, the mode of operation is similar to local bro
 
 === Chrome
 
-The following example contains a simple test example using Chrome browsers in Docker. Check out the code https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[here]. As you can see, the first `@Test` method (called `testChrome`) declares a parameter of type `RemoteWebDriver`. This parameter is annotated with `@DockerBrowser`. This annotation requires to set the browser type, in this case `CHROME`. If no version is specified, then the latest version of the browser will be used. This feature is known as *_evergreen_ Docker browsers*, and it is implementing by consuming the REST API of https://hub.docker.com/[Docker Hub], asking for the list of https://hub.docker.com/u/selenoid/[Selenoid] browsers. On the other hand, the second `@Test` (called `testChromeWithVersion`) a fixed version is set, in this case `67.0`.  
+The following example contains a simple test example using Chrome browsers in Docker. Check out the code https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[here]. As you can see, the first `@Test` method (called `testChrome`) declares a parameter of type `RemoteWebDriver`. This parameter is annotated with `@DockerBrowser`. This annotation requires to set the browser type, in this case `CHROME`. If no version is specified, then the latest version of the browser will be used. This feature is known as *_evergreen_ Docker browsers*, and it is implementing by consuming the REST API of https://hub.docker.com/[Docker Hub], asking for the list of https://hub.docker.com/u/selenoid/[Selenoid] browsers. On the other hand, the second `@Test` (called `testChromeWithVersion`) a fixed version is set.  
 
 [source,java]
 ----
@@ -40,7 +40,7 @@ The use of Firefox is equivalent. With respect to the previous example, it simpl
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-NOTE: Notice that the version of the second test is simply `64`. The actual version of the image is `64.0`, but _Selenium-Jupiter_ supposes that version is `.0` if not specified.
+NOTE: Notice that the version of the second test is simply `84`. The actual version of the image is `84.0`, but _Selenium-Jupiter_ supposes that version is `.0` if not specified.
 
 === Opera
 
@@ -53,7 +53,9 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaJupi
 
 === Edge
 
-_Selenium-Jupiter_ can be used to control a Microsoft Edge browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the https://github.com/aerokube/windows-images[tutorial provided by Aerokube]. If that tutorial is followed step by step, a Docker image named `windows/edge:18` will be available in the local machine. Then, _Selenium-Jupiter_ can be used to control the Edge browser as follows: 
+_Selenium-Jupiter_ can be used to control a Microsoft Edge browser (Linux version) in a Docker container out of the box.
+
+
 
 [source,java]
 ----
@@ -62,7 +64,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeJupit
 
 === Internet Explorer
 
-The same way than Edge, _Selenium-Jupiter_ can also be used to control a Internet Explorer browser in a Docker container. This time, the https://github.com/aerokube/windows-images[tutorial provided by Aerokube] need to be used to build the `windows/ie:11` image. Then, _Selenium-Jupiter_ uses that image, for example as follows:
+_Selenium-Jupiter_ can also be used to control a Internet Explorer browser in a Docker container. Due to licensing issues, the required Docker image is not available in Docker Hub, and it must be built in local, following the https://github.com/aerokube/windows-images[tutorial provided by Aerokube]. If that tutorial is followed step by step, a Docker image named `windows/ie:11` will be available in the local machine. Then, _Selenium-Jupiter_ can be used to control the Edge browser as follows: 
 
 [source,java]
 ----

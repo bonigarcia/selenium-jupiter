@@ -1,5 +1,5 @@
 = *_Selenium-Jupiter_*: JUnit 5 extension for Selenium
-Boni García <boni.garcia@urjc.es>
+Boni García <boni.garcia@uc3m.es>
 Version {project-version}
 
 :revnumber: {project-version}
