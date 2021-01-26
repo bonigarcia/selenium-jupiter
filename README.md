@@ -49,7 +49,7 @@ In order to include *Selenium-Jupiter* in a Maven project, first add the followi
 
 ```
 dependencies {
-    testCompile("io.github.bonigarcia:selenium-jupiter:3.4.0")
+    testImplementation("io.github.bonigarcia:selenium-jupiter:3.4.0")
 }
 ```
 
