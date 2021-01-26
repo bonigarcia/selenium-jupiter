@@ -48,35 +48,35 @@ compileTestJava {
 }
 
 dependencies {
-    compile("org.seleniumhq.selenium:selenium-java:${selenium}")
-    compile("io.github.bonigarcia:webdrivermanager:${webdrivermanager}")
-    compile("io.appium:java-client:${appium}")
-    compile("com.github.docker-java:docker-java:${dockerjava}") {
+    implementation("org.seleniumhq.selenium:selenium-java:${selenium}")
+    implementation("io.github.bonigarcia:webdrivermanager:${webdrivermanager}")
+    implementation("io.appium:java-client:${appium}")
+    implementation("com.github.docker-java:docker-java:${dockerjava}") {
         exclude("com.github.docker-java:docker-java-transport-jersey")
         exclude("com.github.docker-java:docker-java-transport-netty")
     }
-    compile("com.github.docker-java:docker-java-transport-httpclient5:${dockerjava}")
-    compile("com.codeborne:phantomjsdriver:${phantomjsdriver}")
-    compile("com.codeborne:selenide:${selenide}") {
+    implementation("com.github.docker-java:docker-java-transport-httpclient5:${dockerjava}")
+    implementation("com.codeborne:phantomjsdriver:${phantomjsdriver}")
+    implementation("com.codeborne:selenide:${selenide}") {
         exclude("io.github.bonigarcia:webdrivermanager")
     }
-    compile("org.seleniumhq.selenium:htmlunit-driver:${htmlunit}")
-    compile("org.slf4j:slf4j-api:${slf4j}")
-    compile("com.squareup.retrofit2:retrofit:${retrofit}")
-    compile("com.squareup.retrofit2:adapter-rxjava:${retrofit}")
-    compile("com.squareup.retrofit2:converter-gson:${retrofit}")
-    compile("ch.qos.logback:logback-classic:${logback}")
-    compile("org.junit.jupiter:junit-jupiter-api:${junitjupiter}")
-    compile("io.javalin:javalin:${javalin}")
-    compile("com.squareup.okhttp3:okhttp:${okhttp}")
-    compile("com.github.jnr:jnr-ffi:${jnrffi}")
-    compile("com.google.guava:guava:${guava}")
-    compile("org.apache.commons:commons-collections4:${commoncollections}")
+    implementation("org.seleniumhq.selenium:htmlunit-driver:${htmlunit}")
+    implementation("org.slf4j:slf4j-api:${slf4j}")
+    implementation("com.squareup.retrofit2:retrofit:${retrofit}")
+    implementation("com.squareup.retrofit2:adapter-rxjava:${retrofit}")
+    implementation("com.squareup.retrofit2:converter-gson:${retrofit}")
+    implementation("ch.qos.logback:logback-classic:${logback}")
+    implementation("org.junit.jupiter:junit-jupiter-api:${junitjupiter}")
+    implementation("io.javalin:javalin:${javalin}")
+    implementation("com.squareup.okhttp3:okhttp:${okhttp}")
+    implementation("com.github.jnr:jnr-ffi:${jnrffi}")
+    implementation("com.google.guava:guava:${guava}")
+    implementation("org.apache.commons:commons-collections4:${commoncollections}")
     
-    testCompile("org.junit.jupiter:junit-jupiter-engine:${junitjupiter}")
-    testCompile("org.junit.jupiter:junit-jupiter-params:${junitjupiter}")
-    testCompile("org.seleniumhq.selenium:selenium-server:${selenium}")
-    testCompile("org.mockito:mockito-core:${mockito}")
-    testCompile("org.mockito:mockito-junit-jupiter:${mockito}")
-    testCompile("org.hamcrest:hamcrest-all:${hamcrest}")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiter}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitjupiter}")
+    testImplementation("org.seleniumhq.selenium:selenium-server:${selenium}")
+    testImplementation("org.mockito:mockito-core:${mockito}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${mockito}")
+    testImplementation("org.hamcrest:hamcrest-all:${hamcrest}")
 }
