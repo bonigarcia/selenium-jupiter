@@ -53,7 +53,7 @@ dependencies {
 }
 ```
 
-*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testCompile` in Gradle .
+*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testImplementation` in Gradle .
 
 ### Local browsers
 
