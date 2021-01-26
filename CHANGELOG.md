@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.4.0] - 2021-01-26
+### Added
+- Support for Edge (for Linux) in Docker containers (pulled from Docker Hub)
+- Support for standalone mode in Docker (catch exception when pulling images, issue #94)
+
+### Changed
+- Replace spotify/docker-client with docker-java/docker-java (PR #97)
+
+
+### Fixed
+- Use empty string in remote capabilities for latest version (issue #54)
+
+### Removed
+- Remove request entity processing config key (incompatible with docker-java)
+
+
 ## [3.3.5] - 2020-09-11
 ### Added
 - Include config key sel.jup.docker.request.entity.processing (issue #82)
