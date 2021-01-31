@@ -14,7 +14,7 @@
         <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
         <selenide.version>5.18.0</selenide.version>
         <htmlunit.driver.version>2.46.0</htmlunit.driver.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <retrofit.version>2.5.0</retrofit.version>
         <javalin.version>2.8.0</javalin.version>
