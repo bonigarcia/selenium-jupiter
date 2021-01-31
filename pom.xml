@@ -20,7 +20,7 @@
         <javalin.version>2.8.0</javalin.version>
         <okhttp.version>3.14.2</okhttp.version>
         <jnr-ffi.version>2.1.9</jnr-ffi.version>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>30.1-jre</guava.version>
         <commons-collections.version>4.4</commons-collections.version>
 
         <!-- Test dependencies -->
