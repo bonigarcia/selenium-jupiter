@@ -10,7 +10,7 @@ ext {
 	phantomjsdriver = '1.4.4'
 	selenide = '5.18.0'
 	htmlunit = '2.46.0'
-	slf4j = '1.7.25'
+	slf4j = '1.7.30'
 	logback = '1.2.3'
 	retrofit = '2.5.0'
 	javalin = '2.8.0'
