@@ -14,7 +14,7 @@ ext {
 	logback = '1.2.3'
 	retrofit = '2.9.0'
 	javalin = '2.8.0'
-	okhttp = '3.14.2'
+	okhttp = '4.9.1'
 	jnrffi = '2.1.9'
 	guava = '30.1-jre'
 	commoncollections = '4.4'
