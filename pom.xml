@@ -16,7 +16,7 @@
         <htmlunit.driver.version>2.46.0</htmlunit.driver.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <retrofit.version>2.5.0</retrofit.version>
+        <retrofit.version>2.9.0</retrofit.version>
         <javalin.version>2.8.0</javalin.version>
         <okhttp.version>3.14.2</okhttp.version>
         <jnr-ffi.version>2.1.9</jnr-ffi.version>
