@@ -16,9 +16,9 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
+import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.BrowserType.valueOf;
 import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
@@ -34,8 +34,8 @@ import com.google.gson.Gson;
 
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
-import io.javalin.Handler;
 import io.javalin.Javalin;
+import io.javalin.http.Handler;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -161,7 +161,7 @@ public class Server {
             break;
         default:
         case POST:
-            RequestBody body = RequestBody.create(JSON, json);
+            RequestBody body = RequestBody.create(json, JSON);
             requestBuilder.post(body);
             break;
         }
