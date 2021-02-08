@@ -9,7 +9,7 @@ ext {
 	dockerjava = '3.2.7'
 	phantomjsdriver = '1.4.4'
 	selenide = '5.18.0'
-	htmlunit = '2.46.0'
+	htmlunit = '2.47.1'
 	slf4j = '1.7.30'
 	logback = '1.2.3'
 	retrofit = '2.9.0'
