@@ -19,7 +19,7 @@ ext {
 	guava = '30.1-jre'
 	commoncollections = '4.4'
 
-	junitjupiter = '5.7.0'
+	junitjupiter = '5.7.1'
 	mockito = '3.7.7' 
 	hamcrest = '1.3' 
 }
