@@ -63,6 +63,7 @@ Once we have included this dependency, *Selenium-Jupiter* can be used to control
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
