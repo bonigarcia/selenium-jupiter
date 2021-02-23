@@ -20,7 +20,7 @@ ext {
 	commoncollections = '4.4'
 
 	junitjupiter = '5.7.1'
-	mockito = '3.7.7' 
+	mockito = '3.8.0' 
 	hamcrest = '1.3' 
 }
 
