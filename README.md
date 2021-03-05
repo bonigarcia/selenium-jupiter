@@ -29,7 +29,7 @@
 
 ## Motivation
 
-*Selenium-Jupiter* allows to use [Selenium WebDriver] from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* takes the most of several JUnit 5 features, such as [dependency injection for constructors and methods] and [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
+*Selenium-Jupiter* allows to use [Selenium WebDriver] from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* makes the most of several JUnit 5 features, such as [dependency injection for constructors and methods], or [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Edge, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
 
 
 ## Selenium-Jupiter as Java dependency
@@ -53,7 +53,7 @@ dependencies {
 }
 ```
 
-*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testImplementation` in Gradle .
+*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testImplementation` in Gradle.
 
 ### Local browsers
 
@@ -147,8 +147,8 @@ class SeleniumJupiterDockerTest {
 
     @Test
     void testChrome(
-            @DockerBrowser(type = CHROME, version = "latest") RemoteWebDriver driver) {
-        // use Chrome (latest version) in a Docker container in this test
+            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+        // use Chrome (latest version, discovered at runtime) in a Docker container in this test
     }
 
     @Test
@@ -196,7 +196,7 @@ class AppiumJupiterTest {
 
 ## Selenium-Jupiter CLI
 
-As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Line Interface (CLI), i.e. the shell, to get VNC sessions of Docker browsers (Chrome, Firefox, Opera, Android). There are two ways of using this feature:
+As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Line Interface (CLI), i.e. the shell, to get VNC sessions of Docker browsers (Chrome, Firefox, Opera, Edge, Android). There are two ways of using this feature:
 
 * Directly from the source code, using Maven. The command to be used is ``mvn exec:java -Dexec.args="browserName"``. For instance:
 
