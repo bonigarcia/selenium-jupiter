@@ -161,7 +161,7 @@ public class Server {
             break;
         default:
         case POST:
-            RequestBody body = RequestBody.create(json, JSON);
+            RequestBody body = RequestBody.create(JSON, json);
             requestBuilder.post(body);
             break;
         }
