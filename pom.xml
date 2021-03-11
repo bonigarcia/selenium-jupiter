@@ -17,7 +17,7 @@
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <javalin.version>3.13.3</javalin.version>
+        <javalin.version>3.13.4</javalin.version>
         <okhttp.version>3.14.2</okhttp.version>
         <jnr-ffi.version>2.2.1</jnr-ffi.version>
         <guava.version>30.1-jre</guava.version>
