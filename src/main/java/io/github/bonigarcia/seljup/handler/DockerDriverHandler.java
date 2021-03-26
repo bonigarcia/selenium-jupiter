@@ -210,9 +210,6 @@ public class DockerDriverHandler {
             return webdriver;
 
         } catch (Exception e) {
-            if (e instanceof InterruptedException) {
-                Thread.currentThread().interrupt();
-            }
             String errorMessage = format(
                     "Exception resolving driver in Docker (%s %s)", browserType,
                     version);
@@ -246,8 +243,7 @@ public class DockerDriverHandler {
 
     private WebDriver getDriverForBrowser(BrowserInstance browserInstance,
             String version, boolean createWebDriver)
-            throws IllegalAccessException, IOException, DockerException,
-            InterruptedException {
+            throws IllegalAccessException, IOException, DockerException {
         boolean enableVnc = getConfig().isVnc();
         DesiredCapabilities capabilities = getCapabilities(browserInstance,
                 enableVnc);
@@ -324,8 +320,8 @@ public class DockerDriverHandler {
     }
 
     private boolean setHubUrl(BrowserInstance browserInstance,
-            String versionFromLabel) throws MalformedURLException,
-            DockerException, InterruptedException {
+            String versionFromLabel)
+            throws MalformedURLException, DockerException {
         String seleniumServerUrl = getConfig().getSeleniumServerUrl();
         boolean seleniumServerUrlAvailable = seleniumServerUrl != null
                 && !seleniumServerUrl.isEmpty();
@@ -357,8 +353,8 @@ public class DockerDriverHandler {
     }
 
     private WebDriver getDriverForAndroid(BrowserInstance browserInstance,
-            String version, String deviceName) throws DockerException,
-            InterruptedException, IOException, IllegalAccessException {
+            String version, String deviceName)
+            throws DockerException, IOException, IllegalAccessException {
         if (getConfig().isRecording() || getConfig().isRecordingWhenFailure()) {
             filesInVideoFolder = asList(hostVideoFolder.listFiles());
         }
@@ -385,7 +381,11 @@ public class DockerDriverHandler {
         if (0 < androidStartupTimeoutSec) {
             log.debug("Waiting for Android device to start for {} seconds",
                     androidStartupTimeoutSec);
-            sleep(SECONDS.toMillis(androidStartupTimeoutSec));
+            try {
+                sleep(SECONDS.toMillis(androidStartupTimeoutSec));
+            } catch (InterruptedException ie) {
+                currentThread().interrupt();
+            }
         }
 
         int androidAppiumPingPeriodSec = getConfig()
@@ -421,8 +421,7 @@ public class DockerDriverHandler {
     }
 
     private void checkAndroidException(int androidAppiumPingPeriodSec,
-            int androidDeviceTimeoutSec, long endTimeMillis, Exception e)
-            throws InterruptedException {
+            int androidDeviceTimeoutSec, long endTimeMillis, Exception e) {
         if (currentTimeMillis() > endTimeMillis) {
             throw new SeleniumJupiterException(
                     "Timeout (" + androidDeviceTimeoutSec
@@ -433,7 +432,15 @@ public class DockerDriverHandler {
         if (errorMessage.contains("Could not find package")) {
             throw new SeleniumJupiterException(errorMessage);
         }
-        sleep(SECONDS.toMillis(androidAppiumPingPeriodSec));
+        waitMilliSecs(SECONDS.toMillis(androidAppiumPingPeriodSec));
+    }
+
+    private void waitMilliSecs(long milliseconds) {
+        try {
+            sleep(milliseconds);
+        } catch (InterruptedException ie) {
+            currentThread().interrupt();
+        }
     }
 
     private String getErrorMessage(Exception e) {
@@ -620,7 +627,7 @@ public class DockerDriverHandler {
 
     public String startAndroidBrowser(String version, String deviceName,
             String browserNameSetByUser, CloudType cloudType)
-            throws DockerException, InterruptedException {
+            throws DockerException {
         if (!IS_OS_LINUX) {
             throw new SeleniumJupiterException(
                     "Android devices are only supported in Linux hosts");
@@ -710,7 +717,7 @@ public class DockerDriverHandler {
     }
 
     public String startDockerBrowser(BrowserInstance browserInstance,
-            String version) throws DockerException, InterruptedException {
+            String version) throws DockerException {
 
         String browserImage;
         BrowserType browserType = browserInstance.getBrowserType();
@@ -732,8 +739,7 @@ public class DockerDriverHandler {
         return selenoidContainer.getContainerUrl();
     }
 
-    public DockerContainer startSelenoidContainer()
-            throws DockerException, InterruptedException {
+    public DockerContainer startSelenoidContainer() throws DockerException {
 
         DockerContainer selenoidContainer;
         String selenoidImage = getConfig().getSelenoidImage();
@@ -822,8 +828,7 @@ public class DockerDriverHandler {
     }
 
     public DockerContainer startAndroidContainer(String androidImage,
-            String deviceName, CloudType cloudType)
-            throws DockerException, InterruptedException {
+            String deviceName, CloudType cloudType) throws DockerException {
 
         DockerContainer androidContainer;
         if (containerMap.containsKey(androidImage)) {
@@ -1085,8 +1090,7 @@ public class DockerDriverHandler {
     }
 
     private String getNoVncUrl(String selenoidHost, int selenoidPort,
-            String sessionId, String novncPassword)
-            throws DockerException, InterruptedException {
+            String sessionId, String novncPassword) throws DockerException {
 
         DockerContainer novncContainer = startNoVncContainer();
         String novncUrl = novncContainer.getContainerUrl();
@@ -1096,8 +1100,7 @@ public class DockerDriverHandler {
                 novncUrl, selenoidHost, selenoidPort, sessionId, novncPassword);
     }
 
-    public DockerContainer startNoVncContainer()
-            throws DockerException, InterruptedException {
+    public DockerContainer startNoVncContainer() throws DockerException {
 
         DockerContainer novncContainer;
         String novncImage = getConfig().getNovncImage();
@@ -1175,14 +1178,8 @@ public class DockerDriverHandler {
                 }
                 log.trace("Recording {} not present ... waiting {} ms",
                         recordingFile, dockerPollTimeMs);
-                try {
-                    sleep(dockerPollTimeMs);
-                } catch (InterruptedException e) {
-                    log.warn(
-                            "Interrupted Exception while waiting for container",
-                            e);
-                    currentThread().interrupt();
-                }
+
+                waitMilliSecs(dockerPollTimeMs);
             }
 
             String newRecordingName = name + ".mp4";

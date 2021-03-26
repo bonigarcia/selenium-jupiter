@@ -211,8 +211,7 @@ public class DockerService {
         return exposedPort[0].getHostPortSpec();
     }
 
-    public void pullImage(String imageId)
-            throws DockerException, InterruptedException {
+    public void pullImage(String imageId) throws DockerException {
         if (!preferences.checkKeyInPreferences(imageId)
                 || !getConfig().isUsePreferences() || !localDaemon) {
             try {
@@ -224,9 +223,6 @@ public class DockerService {
                 if (getConfig().isUsePreferences() && localDaemon) {
                     preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
                 }
-            } catch (InterruptedException e) {
-                log.warn("Interrupted while pulling Docker image", e);
-                Thread.currentThread().interrupt();
             } catch (Exception e) {
                 log.warn("Exception pulling image {}: {}", imageId,
                         e.getMessage());
