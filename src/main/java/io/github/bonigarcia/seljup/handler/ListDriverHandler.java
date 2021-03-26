@@ -83,6 +83,9 @@ public class ListDriverHandler extends DriverHandler {
             }
 
         } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             handleException(e);
         }
     }

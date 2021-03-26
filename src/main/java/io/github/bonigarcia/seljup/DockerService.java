@@ -224,7 +224,9 @@ public class DockerService {
                 if (getConfig().isUsePreferences() && localDaemon) {
                     preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
                 }
-
+            } catch (InterruptedException e) {
+                log.warn("Interrupted while pulling Docker image", e);
+                Thread.currentThread().interrupt();
             } catch (Exception e) {
                 log.warn("Exception pulling image {}: {}", imageId,
                         e.getMessage());

@@ -210,6 +210,9 @@ public class DockerDriverHandler {
             return webdriver;
 
         } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             String errorMessage = format(
                     "Exception resolving driver in Docker (%s %s)", browserType,
                     version);
