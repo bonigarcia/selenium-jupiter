@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -90,7 +90,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * @author Boni Garcia (boni.gg@gmail.com)
  * @since 1.0.0
  */
-public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
+public class SeleniumExtension
+        implements ParameterResolver, AfterTestExecutionCallback,
         AfterAllCallback, TestTemplateInvocationContextProvider {
 
     final Logger log = getLogger(lookup().lookupClass());
@@ -408,8 +409,8 @@ public class SeleniumExtension implements ParameterResolver, AfterEachCallback,
     }
 
     @Override
-    public void afterEach(ExtensionContext extensionContext) {
-        teardown(extensionContext, !isSingleSession(extensionContext), true);
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        teardown(context, !isSingleSession(context), true);
     }
 
     @Override
