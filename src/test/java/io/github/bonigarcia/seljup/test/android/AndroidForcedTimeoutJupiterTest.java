@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
-import io.github.bonigarcia.seljup.InternalPreferences;
+import io.github.bonigarcia.seljup.DockerCache;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
@@ -46,7 +46,7 @@ class AndroidForcedTimeoutJupiterTest {
     DockerDriverHandler dockerDriverHandler;
     Config config = new Config();
     AnnotationsReader annotationsReader = new AnnotationsReader();
-    InternalPreferences preferences = new InternalPreferences(config);
+    DockerCache dockerCache = new DockerCache(config);
 
     @BeforeAll
     void setup() {
@@ -69,7 +69,7 @@ class AndroidForcedTimeoutJupiterTest {
         BrowserInstance android = new BrowserInstance(config, annotationsReader,
                 ANDROID, NONE, empty(), empty());
         dockerDriverHandler = new DockerDriverHandler(config, android, version,
-                preferences);
+                dockerCache);
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler.resolve(android, version, "Samsung Galaxy S6",
                     "", true);

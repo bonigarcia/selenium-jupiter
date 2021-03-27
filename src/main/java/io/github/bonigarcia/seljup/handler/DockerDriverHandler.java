@@ -92,10 +92,10 @@ import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.BrowserType;
 import io.github.bonigarcia.seljup.CloudType;
 import io.github.bonigarcia.seljup.DockerBrowser;
+import io.github.bonigarcia.seljup.DockerCache;
 import io.github.bonigarcia.seljup.DockerContainer;
 import io.github.bonigarcia.seljup.DockerContainer.DockerBuilder;
 import io.github.bonigarcia.seljup.DockerService;
-import io.github.bonigarcia.seljup.InternalPreferences;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.SelenoidConfig;
 import io.github.bonigarcia.seljup.WebDriverCreator;
@@ -142,11 +142,11 @@ public class DockerDriverHandler {
     String browserVersion;
 
     public DockerDriverHandler(Config config, BrowserInstance browserInstance,
-            String version, InternalPreferences preferences) {
+            String version, DockerCache dockerCache) {
         this.config = config;
         this.selenoidConfig = new SelenoidConfig(config, browserInstance,
                 version);
-        this.dockerService = new DockerService(config, preferences);
+        this.dockerService = new DockerService(config, dockerCache);
         this.containerMap = new LinkedHashMap<>();
         this.finalizerCommandMap = new LinkedHashMap<>();
         this.testInstance = empty();

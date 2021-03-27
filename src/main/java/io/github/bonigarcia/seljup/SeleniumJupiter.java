@@ -47,7 +47,7 @@ public class SeleniumJupiter extends SeleniumExtension {
 
     static Config config = new Config();
     static AnnotationsReader annotationsReader = new AnnotationsReader();
-    static InternalPreferences preferences = new InternalPreferences(config);
+    static DockerCache dockerCache = new DockerCache(config);
 
     public static void main(String[] args) {
         String validBrowsers = "chrome|firefox|opera|edge|iexplorer|android";
@@ -58,8 +58,8 @@ public class SeleniumJupiter extends SeleniumExtension {
             String arg = args[0];
             if (arg.equalsIgnoreCase("server")) {
                 startServer(args);
-            } else if (arg.equalsIgnoreCase("clear-preferences")) {
-                new InternalPreferences(config).clear();
+            } else if (arg.equalsIgnoreCase("clear-docker-cache")) {
+                new DockerCache(config).clear();
             } else {
                 resolveLocal(args);
             }
@@ -91,7 +91,7 @@ public class SeleniumJupiter extends SeleniumExtension {
                     BrowserType.valueOf(browser.toUpperCase()), NONE, empty(),
                     empty());
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                    config, browserInstance, version, preferences);
+                    config, browserInstance, version, dockerCache);
 
             WebDriver webdriver = dockerDriverHandler.resolve(browserInstance,
                     version, deviceName, config.getDockerServerUrl(), true);
@@ -155,8 +155,8 @@ public class SeleniumJupiter extends SeleniumExtension {
         logger.error("\t(where default port is 4042)");
 
         logger.error(
-                "3. To clear previously Docker image versions (as Java preferences):");
-        logger.error("\tSelenium-Jupiter clear-preferences");
+                "3. To clear Docker cache (image versions previously pulled):");
+        logger.error("\tSelenium-Jupiter clear-docker-cache");
     }
 
 }

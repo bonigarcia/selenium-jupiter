@@ -44,7 +44,7 @@ class DockerVncMixedJupiterTest {
     @BeforeAll
     void setup() {
         seleniumJupiter.getConfig().setVnc(true);
-        seleniumJupiter.getConfig().setUsePreferences(false);
+        seleniumJupiter.getConfig().setUseDockerCache(false);
     }
 
     @Test

@@ -21,6 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class Config {
 
     final Logger log = getLogger(lookup().lookupClass());
+
+    static final String HOME = "~";
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
@@ -179,6 +182,10 @@ public class Config {
             String.class);
     ConfigKey<String> dockerStartupTimeoutDuration = new ConfigKey<>(
             "sel.jup.docker.startup.timeout.duration", String.class);
+    ConfigKey<String> dockerCache = new ConfigKey<>("sel.jup.docker.cache",
+            String.class);
+    ConfigKey<Boolean> dockerAvoidCache = new ConfigKey<>(
+            "sel.jup.docker.avoid.cache", Boolean.class);
 
     ConfigKey<String> androidDefaultVersion = new ConfigKey<>(
             "sel.jup.android.default.version", String.class);
@@ -258,8 +265,10 @@ public class Config {
             "sel.jup.remote.webdriver.poll.time.sec", Integer.class);
     ConfigKey<Integer> ttlSec = new ConfigKey<>("sel.jup.ttl.sec",
             Integer.class);
-    ConfigKey<Boolean> usePreferences = new ConfigKey<>(
-            "sel.jup.wdm.use.preferences", Boolean.class);
+    ConfigKey<Boolean> useDockerCache = new ConfigKey<>(
+            "sel.jup.wdm.use.docker.cache", Boolean.class);
+    ConfigKey<String> cachePath = new ConfigKey<>("sel.jup.cache.path",
+            String.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -898,6 +907,22 @@ public class Config {
         this.dockerStartupTimeoutDuration.setValue(value);
     }
 
+    public String getDockerCache() {
+        return resolve(dockerCache);
+    }
+
+    public void setDockerCache(String value) {
+        this.dockerCache.setValue(value);
+    }
+
+    public boolean isDockerAvoidCache() {
+        return resolve(dockerAvoidCache);
+    }
+
+    public void setDockerAvoidCaceh(boolean value) {
+        this.dockerAvoidCache.setValue(value);
+    }
+
     public String getAndroidDefaultVersion() {
         return resolve(androidDefaultVersion);
     }
@@ -1209,12 +1234,36 @@ public class Config {
         return this;
     }
 
-    public boolean isUsePreferences() {
-        return resolve(usePreferences);
+    public boolean isUseDockerCache() {
+        return resolve(useDockerCache);
     }
 
-    public Config setUsePreferences(boolean value) {
-        this.usePreferences.setValue(value);
+    public Config setUseDockerCache(boolean value) {
+        this.useDockerCache.setValue(value);
+        return this;
+    }
+
+    public String getCachePath() {
+        return resolvePath(resolve(cachePath));
+    }
+
+    private String resolvePath(String path) {
+        if (path != null) {
+            // Partial support for Bash tilde expansion:
+            // http://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html
+            if (path.startsWith(HOME + '/')) {
+                path = Paths
+                        .get(System.getProperty("user.home"), path.substring(1))
+                        .toString();
+            } else if (path.equals(".")) {
+                path = Paths.get("").toAbsolutePath().toString();
+            }
+        }
+        return path;
+    }
+
+    public Config setCachePath(String value) {
+        this.cachePath.setValue(value);
         return this;
     }
 

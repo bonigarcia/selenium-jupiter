@@ -58,12 +58,12 @@ public class DockerBrowserConfig {
     BrowserConfig iexplorer;
     transient Config config;
     transient String version;
-    transient InternalPreferences preferences;
+    transient DockerCache dockerCache;
 
     public DockerBrowserConfig(List<String> envs, Config config,
             BrowserInstance browserInstance, String label) {
         this.config = config;
-        this.preferences = new InternalPreferences(config);
+        this.dockerCache = new DockerCache(config);
 
         boolean isLatest = label == null || label.isEmpty()
                 || label.equalsIgnoreCase(LATEST);
@@ -134,10 +134,10 @@ public class DockerBrowserConfig {
         String latestVersion = null;
         if (config.isBrowserListFromDockerHub()) {
             String key = browserInstance.getBrowserTypeAsString();
-            boolean versionInPreferences = getConfig().isUsePreferences()
-                    && preferences.checkKeyInPreferences(key);
-            if (versionInPreferences) {
-                latestVersion = preferences.getValueFromPreferences(key);
+            boolean versionInDockerCache = getConfig().isUseDockerCache()
+                    && dockerCache.checkKeyInDockerCache(key);
+            if (versionInDockerCache) {
+                latestVersion = dockerCache.getValueFromDockerCache(key);
             } else {
                 try {
                     latestVersion = getLatestVersionFromDockerHub(
@@ -222,8 +222,8 @@ public class DockerBrowserConfig {
             break;
         }
 
-        if (getConfig().isUsePreferences()) {
-            preferences.putValueInPreferencesIfEmpty(
+        if (getConfig().isUseDockerCache()) {
+            dockerCache.putValueInDockerCacheIfEmpty(
                     browserInstance.getBrowserTypeAsString(), latestVersion);
         }
         return latestVersion;

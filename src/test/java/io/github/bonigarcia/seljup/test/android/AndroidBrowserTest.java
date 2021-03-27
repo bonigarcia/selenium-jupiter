@@ -31,7 +31,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
-import io.github.bonigarcia.seljup.InternalPreferences;
+import io.github.bonigarcia.seljup.DockerCache;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
@@ -40,7 +40,7 @@ class AndroidBrowserTest {
 
     Config config = new Config();
     AnnotationsReader annotationsReader = new AnnotationsReader();
-    InternalPreferences preferences = new InternalPreferences(config);
+    DockerCache dockerCache = new DockerCache(config);
     BrowserInstance android = new BrowserInstance(config, annotationsReader,
             ANDROID, NONE, empty(), empty());
 
@@ -50,7 +50,7 @@ class AndroidBrowserTest {
     void testAndroidVersions(String version) throws Exception {
         config.setAndroidLogging(true);
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                config, android, version, preferences);
+                config, android, version, dockerCache);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName(), "", NONE);
         dockerDriverHandler.cleanup();
@@ -61,7 +61,7 @@ class AndroidBrowserTest {
     void testAndroidWrongVersion() throws Exception {
         config.setAndroidDefaultVersion("");
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
-                config, android, "", preferences);
+                config, android, "", dockerCache);
         assertThrows(SeleniumJupiterException.class, () -> {
             dockerDriverHandler.startAndroidBrowser("", "", "", NONE);
         });

@@ -64,7 +64,7 @@ public class Server {
         Javalin app = Javalin.create().start(port);
         Config config = new Config();
         AnnotationsReader annotationsReader = new AnnotationsReader();
-        InternalPreferences preferences = new InternalPreferences(config);
+        DockerCache dockerCache = new DockerCache(config);
         Gson gson = new Gson();
         final String[] hubUrl = new String[1];
         final DockerDriverHandler[] dockerDriverHandler = new DockerDriverHandler[1];
@@ -92,7 +92,7 @@ public class Server {
                 BrowserInstance browserInstance = new BrowserInstance(config,
                         annotationsReader, browserType, NONE, empty(), empty());
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
-                        browserInstance, version, preferences);
+                        browserInstance, version, dockerCache);
 
                 dockerDriverHandler[0].resolve(browserInstance, version, "", "",
                         false);

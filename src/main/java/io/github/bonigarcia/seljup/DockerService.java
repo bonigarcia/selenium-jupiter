@@ -66,13 +66,13 @@ public class DockerService {
     private int dockerWaitTimeoutSec;
     private int dockerPollTimeMs;
     private DockerClient dockerClient;
-    private InternalPreferences preferences;
+    private DockerCache dockerCache;
     private boolean localDaemon = true;
     private URI dockerHostUri;
 
-    public DockerService(Config config, InternalPreferences preferences) {
+    public DockerService(Config config, DockerCache dockerCache) {
         this.config = config;
-        this.preferences = preferences;
+        this.dockerCache = dockerCache;
 
         dockerDefaultSocket = getConfig().getDockerDefaultSocket();
         dockerWaitTimeoutSec = getConfig().getDockerWaitTimeoutSec();
@@ -212,16 +212,16 @@ public class DockerService {
     }
 
     public void pullImage(String imageId) throws DockerException {
-        if (!preferences.checkKeyInPreferences(imageId)
-                || !getConfig().isUsePreferences() || !localDaemon) {
+        if (!dockerCache.checkKeyInDockerCache(imageId)
+                || !getConfig().isUseDockerCache() || !localDaemon) {
             try {
                 log.info("Pulling Docker image {}", imageId);
                 dockerClient.pullImageCmd(imageId)
                         .exec(new Adapter<PullResponseItem>() {
                         }).awaitCompletion();
                 log.trace("Docker image {} downloaded", imageId);
-                if (getConfig().isUsePreferences() && localDaemon) {
-                    preferences.putValueInPreferencesIfEmpty(imageId, "pulled");
+                if (getConfig().isUseDockerCache() && localDaemon) {
+                    dockerCache.putValueInDockerCacheIfEmpty(imageId, "pulled");
                 }
             } catch (Exception e) {
                 log.warn("Exception pulling image {}: {}", imageId,

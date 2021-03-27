@@ -100,8 +100,7 @@ public class SeleniumExtension
 
     private Config config = new Config();
     private AnnotationsReader annotationsReader = new AnnotationsReader();
-    private InternalPreferences preferences = new InternalPreferences(
-            getConfig());
+    private DockerCache dockerCache = new DockerCache(getConfig());
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
     private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
     protected Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
@@ -391,7 +390,7 @@ public class SeleniumExtension
         containersMap.put(contextId, containerMap);
 
         if (dockerService == null) {
-            dockerService = new DockerService(config, preferences);
+            dockerService = new DockerService(config, dockerCache);
         }
         driverHandler.setDockerService(dockerService);
     }
@@ -702,8 +701,8 @@ public class SeleniumExtension
         return annotationsReader;
     }
 
-    public void clearPreferences() {
-        preferences.clear();
+    public void clearDockerCache() {
+        dockerCache.clear();
     }
 
 }
