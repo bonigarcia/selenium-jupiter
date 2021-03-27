@@ -219,7 +219,7 @@ public class DockerService {
                 dockerClient.pullImageCmd(imageId)
                         .exec(new Adapter<PullResponseItem>() {
                         }).awaitCompletion();
-                log.trace("Docker image {} downloaded", imageId);
+                log.trace("Docker image {} pulled", imageId);
                 if (getConfig().isUseDockerCache() && localDaemon) {
                     dockerCache.putValueInDockerCacheIfEmpty(imageId, "pulled");
                 }
