@@ -16,12 +16,9 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
-import static io.github.bonigarcia.seljup.CloudType.GENYMOTION_SAAS;
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
@@ -84,13 +81,11 @@ import org.slf4j.Logger;
 
 import com.codeborne.selenide.SelenideDriver;
 import com.github.dockerjava.api.exception.DockerException;
-import com.google.gson.GsonBuilder;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.BrowserType;
-import io.github.bonigarcia.seljup.CloudType;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.DockerCache;
 import io.github.bonigarcia.seljup.DockerContainer;
@@ -173,9 +168,8 @@ public class DockerDriverHandler {
 
     public WebDriver resolve(DockerBrowser dockerBrowser) {
         BrowserType browserType = dockerBrowser.type();
-        CloudType cloudType = dockerBrowser.cloud();
         BrowserInstance browserInstance = new BrowserInstance(config,
-                annotationsReader, browserType, cloudType,
+                annotationsReader, browserType,
                 Optional.ofNullable(dockerBrowser.browserName()),
                 Optional.ofNullable(dockerBrowser.volumes()));
         String version = dockerBrowser.version();
@@ -364,9 +358,8 @@ public class DockerDriverHandler {
         String deviceNameCapability = deviceName != null
                 && !deviceName.isEmpty() ? deviceName
                         : getConfig().getAndroidDeviceName();
-        CloudType cloudType = browserInstance.getCloudType();
         String appiumUrl = startAndroidBrowser(version, deviceNameCapability,
-                browserInstance.getBrowserName(), cloudType);
+                browserInstance.getBrowserName());
 
         DesiredCapabilities capabilities = getCapabilitiesForAndroid(
                 browserInstance, deviceNameCapability);
@@ -626,92 +619,84 @@ public class DockerDriverHandler {
     }
 
     public String startAndroidBrowser(String version, String deviceName,
-            String browserNameSetByUser, CloudType cloudType)
-            throws DockerException {
+            String browserNameSetByUser) throws DockerException {
         if (!IS_OS_LINUX) {
             throw new SeleniumJupiterException(
                     "Android devices are only supported in Linux hosts");
         }
 
         String androidImage;
+        String versionTag;
+        String apiLevel;
 
-        if (cloudType == NONE) {
-            String versionTag;
-            String apiLevel;
-
-            switch (version) {
-            case "5.0.1":
-            case LATEST + "-7":
-                androidImage = getConfig().getAndroidImage501();
-                apiLevel = "21";
-                browserName = BROWSER;
-                versionTag = "37.0";
-                break;
-            case "5.1.1":
-            case LATEST + "-6":
-                androidImage = getConfig().getAndroidImage511();
-                apiLevel = "22";
-                browserName = BROWSER;
-                versionTag = "39.0";
-                break;
-            case "6.0":
-            case LATEST + "-5":
-                androidImage = getConfig().getAndroidImage60();
-                apiLevel = "23";
-                browserName = BROWSER;
-                versionTag = "44.0";
-                break;
-            case "7.0":
-            case LATEST + "-4":
-                androidImage = getConfig().getAndroidImage701();
-                apiLevel = "24";
-                browserName = CHROME;
-                versionTag = "51.0";
-                break;
-            case "7.1.1":
-            case LATEST + "-3":
-                androidImage = getConfig().getAndroidImage711();
-                apiLevel = "25";
-                browserName = CHROME;
-                versionTag = "55.0";
-                break;
-            case "8.0":
-            case LATEST + "-2":
-                androidImage = getConfig().getAndroidImage80();
-                apiLevel = "26";
-                browserName = CHROME;
-                versionTag = "58.0";
-                break;
-            case "8.1":
-            case LATEST + "-1":
-                androidImage = getConfig().getAndroidImage81();
-                apiLevel = "27";
-                browserName = CHROME;
-                versionTag = "61.0";
-                break;
-            case "9.0":
-            case LATEST:
-                androidImage = getConfig().getAndroidImage90();
-                apiLevel = "28";
-                browserName = CHROME;
-                versionTag = "66.0";
-                break;
-            default:
-                throw new SeleniumJupiterException("Version " + version
-                        + " not valid for Android devices");
-            }
-            log.info("Starting {} {} in Android {} (API level {})", browserName,
-                    versionTag, version, apiLevel);
-
-        } else {
-            androidImage = getConfig().getAndroidImageGenymotion();
-            browserName = browserNameSetByUser;
+        switch (version) {
+        case "5.0.1":
+        case LATEST + "-7":
+            androidImage = getConfig().getAndroidImage501();
+            apiLevel = "21";
+            browserName = BROWSER;
+            versionTag = "37.0";
+            break;
+        case "5.1.1":
+        case LATEST + "-6":
+            androidImage = getConfig().getAndroidImage511();
+            apiLevel = "22";
+            browserName = BROWSER;
+            versionTag = "39.0";
+            break;
+        case "6.0":
+        case LATEST + "-5":
+            androidImage = getConfig().getAndroidImage60();
+            apiLevel = "23";
+            browserName = BROWSER;
+            versionTag = "44.0";
+            break;
+        case "7.0":
+        case LATEST + "-4":
+            androidImage = getConfig().getAndroidImage701();
+            apiLevel = "24";
+            browserName = CHROME;
+            versionTag = "51.0";
+            break;
+        case "7.1.1":
+        case LATEST + "-3":
+            androidImage = getConfig().getAndroidImage711();
+            apiLevel = "25";
+            browserName = CHROME;
+            versionTag = "55.0";
+            break;
+        case "8.0":
+        case LATEST + "-2":
+            androidImage = getConfig().getAndroidImage80();
+            apiLevel = "26";
+            browserName = CHROME;
+            versionTag = "58.0";
+            break;
+        case "8.1":
+        case LATEST + "-1":
+            androidImage = getConfig().getAndroidImage81();
+            apiLevel = "27";
+            browserName = CHROME;
+            versionTag = "61.0";
+            break;
+        case "9.0":
+        case LATEST:
+            androidImage = getConfig().getAndroidImage90();
+            apiLevel = "28";
+            browserName = CHROME;
+            versionTag = "66.0";
+            break;
+        default:
+            throw new SeleniumJupiterException(
+                    "Version " + version + " not valid for Android devices");
         }
+        log.info("Starting {} {} in Android {} (API level {})", browserName,
+                versionTag, version, apiLevel);
 
         dockerService.pullImage(androidImage);
 
         DockerContainer androidContainer = startAndroidContainer(androidImage,
-                deviceName, cloudType);
+                deviceName);
         return androidContainer.getContainerUrl();
 
     }
@@ -828,7 +813,7 @@ public class DockerDriverHandler {
     }
 
     public DockerContainer startAndroidContainer(String androidImage,
-            String deviceName, CloudType cloudType) throws DockerException {
+            String deviceName) throws DockerException {
 
         DockerContainer androidContainer;
         if (containerMap.containsKey(androidImage)) {
@@ -859,32 +844,15 @@ public class DockerDriverHandler {
 
             // envs
             String network = getConfig().getDockerNetwork();
-            List<String> envs = getAndroidEnvs(deviceName, cloudType,
-                    recording);
+            List<String> envs = getAndroidEnvs(deviceName, recording);
 
             // Build container
             DockerBuilder dockerBuilder = DockerContainer
                     .dockerBuilder(androidImage).exposedPorts(exposedPorts)
                     .binds(binds).envs(envs).network(network).privileged();
 
-            String androidGenymotionDeviceName = getConfig()
-                    .getAndroidGenymotionDeviceName();
-            boolean useGenymotion = cloudType == GENYMOTION_SAAS
-                    && !isNullOrEmpty(androidGenymotionDeviceName);
-            if (useGenymotion) {
-                getGenymotionContainer(dockerBuilder,
-                        androidGenymotionDeviceName);
-            }
-
             androidContainer = dockerBuilder.build();
             String containerId = dockerService.startContainer(androidContainer);
-
-            if (useGenymotion) {
-                String[] disposeDeviceCommand = { "gmtool", "--cloud", "admin",
-                        "stopdisposable", androidGenymotionDeviceName };
-                finalizerCommandMap.put(containerId, disposeDeviceCommand);
-            }
-
             String androidHost = dockerService.getHost(containerId, network);
             String androidPort = dockerService.getBindPort(containerId,
                     internalAppiumPort + "/tcp");
@@ -904,97 +872,7 @@ public class DockerDriverHandler {
         return androidContainer;
     }
 
-    private void getGenymotionContainer(DockerBuilder dockerBuilder,
-            String androidGenymotionDeviceName) {
-        Devices[] devices = new Devices[1];
-        String androidGenymotionTemplate = getConfig()
-                .getAndroidGenymotionTemplate();
-        String androidGenymotionAndroidVersion = getConfig()
-                .getAndroidGenymotionAndroidVersion();
-        if (!isNullOrEmpty(androidGenymotionAndroidVersion)) {
-            androidGenymotionTemplate += " - "
-                    + androidGenymotionAndroidVersion;
-        }
-        String androidGenymotionAndroidApi = getConfig()
-                .getAndroidGenymotionAndroidApi();
-        if (!isNullOrEmpty(androidGenymotionAndroidApi)) {
-            androidGenymotionTemplate += " - API "
-                    + androidGenymotionAndroidApi;
-        }
-        String androidGenymotionScreenSize = getConfig()
-                .getAndroidGenymotionScreenSize();
-        if (!isNullOrEmpty(androidGenymotionScreenSize)) {
-            androidGenymotionTemplate += " - " + androidGenymotionScreenSize;
-        }
-
-        log.debug("Using Genymotion device name: {}, template: {}",
-                androidGenymotionDeviceName, androidGenymotionTemplate);
-        devices[0] = new Devices(androidGenymotionDeviceName,
-                androidGenymotionTemplate);
-        String deviceJson = new GsonBuilder().disableHtmlEscaping().create()
-                .toJson(devices);
-
-        String chromedriverVersion = getConfig()
-                .getAndroidGenymotionChromedriver();
-        if (isNullOrEmpty(chromedriverVersion)
-                && !isNullOrEmpty(androidGenymotionAndroidVersion)) {
-            switch (androidGenymotionAndroidVersion) {
-            case "5.0.1":
-                chromedriverVersion = "2.21";
-                break;
-            case "5.1.1":
-                chromedriverVersion = "2.13";
-                break;
-            case "6.0":
-            case "6.0.0":
-                chromedriverVersion = "2.18";
-                break;
-            case "7.0":
-            case "7.0.0":
-                chromedriverVersion = "2.23";
-                break;
-            case "7.1.1":
-                chromedriverVersion = "2.28";
-                break;
-            case "8.0":
-            case "8.0.0":
-                chromedriverVersion = "2.31";
-                break;
-            case "8.1":
-            case "8.1.0":
-                chromedriverVersion = "2.33";
-                break;
-            case "9.0":
-            case "9.0.0":
-                chromedriverVersion = "2.40";
-                break;
-            default:
-                chromedriverVersion = "";
-                break;
-            }
-        }
-        String downloadChromeDriverScript = "";
-        if (!isNullOrEmpty(chromedriverVersion)) {
-            log.debug(
-                    "Chromedriver {} is downloaded inside Genymotion container",
-                    chromedriverVersion);
-            downloadChromeDriverScript = "wget https://chromedriver.storage.googleapis.com/"
-                    + chromedriverVersion + "/chromedriver_linux64.zip; "
-                    + "unzip chromedriver_linux64.zip; "
-                    + "cp chromedriver /usr/lib/node_modules/appium/node_modules/appium-chromedriver/chromedriver/linux/chromedriver_64; "
-                    + "rm chromedriver*; ";
-        }
-
-        log.trace("Devices.json = {}", deviceJson);
-        List<String> cmd = asList("sh", "-c",
-                "mkdir /root/tmp; echo '" + deviceJson
-                        + "' > /root/tmp/devices.json; "
-                        + downloadChromeDriverScript + "./geny_start.sh");
-        dockerBuilder.cmd(cmd);
-    }
-
-    private List<String> getAndroidEnvs(String deviceName, CloudType cloudType,
-            boolean recording) {
+    private List<String> getAndroidEnvs(String deviceName, boolean recording) {
         List<String> envs = new ArrayList<>();
         String screenWidth = getConfig().getAndroidScreenWidth();
         String screenHeigth = getConfig().getAndroidScreenHeigth();
@@ -1014,12 +892,6 @@ public class DockerDriverHandler {
             envs.add("AUTO_RECORD=false");
         }
 
-        if (cloudType == GENYMOTION_SAAS) {
-            envs.add("TYPE=SaaS");
-            envs.add("USER=" + getConfig().getAndroidGenymotionUser());
-            envs.add("PASS=" + getConfig().getAndroidGenymotionPassword());
-            envs.add("LICENSE=" + getConfig().getAndroidGenymotionLicense());
-        }
         return envs;
     }
 

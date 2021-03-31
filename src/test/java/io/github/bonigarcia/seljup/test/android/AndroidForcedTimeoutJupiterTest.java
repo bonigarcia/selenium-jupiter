@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -67,7 +66,7 @@ class AndroidForcedTimeoutJupiterTest {
     @ValueSource(strings = { "9.0" })
     void androidTimeoutTest(String version) {
         BrowserInstance android = new BrowserInstance(config, annotationsReader,
-                ANDROID, NONE, empty(), empty());
+                ANDROID, empty(), empty());
         dockerDriverHandler = new DockerDriverHandler(config, android, version,
                 dockerCache);
         assertThrows(SeleniumJupiterException.class, () -> {

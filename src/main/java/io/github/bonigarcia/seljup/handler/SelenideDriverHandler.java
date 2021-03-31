@@ -63,7 +63,6 @@ public class SelenideDriverHandler extends DriverHandler {
             if (dockerBrowser.isPresent()) {
                 BrowserInstance browserInstance = new BrowserInstance(config,
                         annotationsReader, dockerBrowser.get().type(),
-                        dockerBrowser.get().cloud(),
                         Optional.ofNullable(dockerBrowser.get().browserName()),
                         Optional.ofNullable(dockerBrowser.get().volumes()));
                 dockerDriverHandler = new DockerDriverHandler(context,

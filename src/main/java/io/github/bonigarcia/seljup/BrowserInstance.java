@@ -56,7 +56,6 @@ public class BrowserInstance {
 
     Config config;
     BrowserType browserType;
-    CloudType cloudType;
     String dockerImage;
     String browserName;
     String path;
@@ -66,11 +65,10 @@ public class BrowserInstance {
     List<String> volumes;
 
     public BrowserInstance(Config config, AnnotationsReader annotationsReader,
-            BrowserType browserType, CloudType cloudType,
-            Optional<String> browserName, Optional<String[]> volumes) {
+            BrowserType browserType, Optional<String> browserName,
+            Optional<String[]> volumes) {
         this.config = config;
         this.browserType = browserType;
-        this.cloudType = cloudType;
         if (volumes.isPresent()) {
             this.volumes = new ArrayList<>();
             String currentFolder = getFullPathNoEndSeparator(
@@ -174,10 +172,6 @@ public class BrowserInstance {
 
     public BrowserType getBrowserType() {
         return browserType;
-    }
-
-    public CloudType getCloudType() {
-        return cloudType;
     }
 
     public String getBrowserTypeAsString() {

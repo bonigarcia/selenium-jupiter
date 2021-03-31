@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.CloudType.NONE;
-
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -108,15 +106,6 @@ public class BrowsersTemplate {
         public BrowserType toBrowserType() {
             return BrowserType
                     .valueOf(getType().replace(IN_DOCKER, "").toUpperCase());
-
-        }
-
-        public CloudType toCloudType() {
-            if (getCloud() == null || getCloud().isEmpty()) {
-                return NONE;
-            } else {
-                return CloudType.valueOf(getCloud().toUpperCase());
-            }
 
         }
 

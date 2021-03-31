@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,7 +41,7 @@ class AndroidBrowserTest {
     AnnotationsReader annotationsReader = new AnnotationsReader();
     DockerCache dockerCache = new DockerCache(config);
     BrowserInstance android = new BrowserInstance(config, annotationsReader,
-            ANDROID, NONE, empty(), empty());
+            ANDROID, empty(), empty());
 
     @ParameterizedTest
     @EnabledOnOs(OS.LINUX)
@@ -52,7 +51,7 @@ class AndroidBrowserTest {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, version, dockerCache);
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
-                config.getAndroidDeviceName(), "", NONE);
+                config.getAndroidDeviceName(), "");
         dockerDriverHandler.cleanup();
         assertThat(androidUrl, notNullValue());
     }
@@ -63,7 +62,7 @@ class AndroidBrowserTest {
         DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                 config, android, "", dockerCache);
         assertThrows(SeleniumJupiterException.class, () -> {
-            dockerDriverHandler.startAndroidBrowser("", "", "", NONE);
+            dockerDriverHandler.startAndroidBrowser("", "", "");
         });
     }
 

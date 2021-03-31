@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.join;
@@ -88,7 +87,7 @@ public class SeleniumJupiter extends SeleniumExtension {
 
             BrowserInstance browserInstance = new BrowserInstance(config,
                     annotationsReader,
-                    BrowserType.valueOf(browser.toUpperCase()), NONE, empty(),
+                    BrowserType.valueOf(browser.toUpperCase()), empty(),
                     empty());
             DockerDriverHandler dockerDriverHandler = new DockerDriverHandler(
                     config, browserInstance, version, dockerCache);

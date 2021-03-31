@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -42,8 +41,6 @@ public @interface DockerBrowser {
     public String deviceName() default "";
 
     public String url() default "";
-
-    public CloudType cloud() default NONE;
 
     public String browserName() default "";
 

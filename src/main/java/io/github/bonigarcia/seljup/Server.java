@@ -20,7 +20,6 @@ import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.BrowserType.valueOf;
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Optional.empty;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -90,7 +89,7 @@ public class Server {
                 String version = session.getDesiredCapabilities().getVersion();
                 BrowserType browserType = getBrowserType(browserName);
                 BrowserInstance browserInstance = new BrowserInstance(config,
-                        annotationsReader, browserType, NONE, empty(), empty());
+                        annotationsReader, browserType, empty(), empty());
                 dockerDriverHandler[0] = new DockerDriverHandler(config,
                         browserInstance, version, dockerCache);
 

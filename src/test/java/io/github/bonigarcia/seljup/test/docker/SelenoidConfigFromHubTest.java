@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static io.github.bonigarcia.seljup.CloudType.NONE;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,7 +43,7 @@ class SelenoidConfigFromHubTest {
     Config config = new Config();
     AnnotationsReader annotationsReader = new AnnotationsReader();
     BrowserInstance chrome = new BrowserInstance(config, annotationsReader,
-            CHROME, NONE, empty(), empty());
+            CHROME, empty(), empty());
 
     @InjectMocks
     SelenoidConfig selenoidConfig = new SelenoidConfig(config, chrome, "");
