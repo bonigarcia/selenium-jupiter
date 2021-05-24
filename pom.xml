@@ -19,7 +19,7 @@
         <retrofit.version>2.9.0</retrofit.version>
         <javalin.version>3.13.7</javalin.version>
         <okhttp.version>3.14.2</okhttp.version>
-        <jnr-ffi.version>2.2.2</jnr-ffi.version>
+        <jnr-ffi.version>2.2.3</jnr-ffi.version>
         <guava.version>30.1.1-jre</guava.version>
         <commons-collections.version>4.4</commons-collections.version>
 
