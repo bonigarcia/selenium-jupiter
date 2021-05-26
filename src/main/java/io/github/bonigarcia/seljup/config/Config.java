@@ -343,7 +343,7 @@ public class Config {
         return resolve(properties);
     }
 
-    public void setProperties(boolean properties) {
+    public void setProperties(String properties) {
         this.properties.setValue(properties);
     }
 
