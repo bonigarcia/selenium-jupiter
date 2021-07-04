@@ -54,7 +54,7 @@ class EdgeAnnotationReaderTest {
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);
         assertThat(edgeOptions.getCapability("pageLoadStrategy"))
-                .isEqualTo("video");
+                .isEqualTo("eager");
     }
 
     @Test
