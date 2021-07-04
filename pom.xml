@@ -3,7 +3,7 @@
 
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>3.4.1-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
 
     <properties>
         <!-- Dependencies -->
@@ -55,7 +55,7 @@
 
     <name>selenium-jupiter</name>
     <description>
-		JUnit 5 extension aimed to ease the use of Selenium (WebDriver and Grid) in JUnit 5 tests
+		JUnit 5 extension for Selenium WebDriver
 	</description>
     <url>https://github.com/bonigarcia/selenium-jupiter</url>
 
@@ -63,7 +63,6 @@
         <developer>
             <id>bonigarcia</id>
             <name>Boni Garcia</name>
-            <email>boni.gg@gmail.com</email>
         </developer>
     </developers>
 
@@ -80,11 +79,6 @@
         <url>https://github.com/bonigarcia/selenium-jupiter</url>
         <tag>develop</tag>
     </scm>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/bonigarcia/selenium-jupiter/issues</url>
-    </issueManagement>
 
     <dependencies>
         <!-- compile -->
