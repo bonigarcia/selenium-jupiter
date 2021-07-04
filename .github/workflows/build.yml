@@ -9,6 +9,7 @@ on:
 env:
   DISPLAY: :99
   WDM_GITHUBTOKEN: ${{ secrets.WDM_GITHUBTOKEN }}
+  GITHUB_TOKEN: ${{ secrets.WDM_GITHUBTOKEN }}
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
