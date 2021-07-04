@@ -54,7 +54,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Docker Service.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.1.2
  */
 public class DockerService {

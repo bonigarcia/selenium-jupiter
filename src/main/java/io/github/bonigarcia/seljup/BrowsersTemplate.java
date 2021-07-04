@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 /**
  * Template browsers.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 public class BrowsersTemplate {

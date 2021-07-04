@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * Key-value for the array of capabilities (used with DriverCapabilities
  * annotation).
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 

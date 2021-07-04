@@ -22,7 +22,7 @@ import retrofit2.http.GET;
 /**
  * Selenoid API.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.2.1
  */
 public interface SelenoidApi {

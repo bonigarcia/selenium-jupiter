@@ -29,7 +29,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 /**
  * Test interactive mode (from the shell).
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.1.0
  */
 class InteractiveJupiterTest {

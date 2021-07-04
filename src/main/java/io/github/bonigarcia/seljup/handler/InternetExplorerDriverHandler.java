@@ -33,7 +33,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Handler for Internet Explorer.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.2.0
  */
 public class InternetExplorerDriverHandler extends DriverHandler {

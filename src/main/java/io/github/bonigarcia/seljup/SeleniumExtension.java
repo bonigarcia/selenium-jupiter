@@ -87,7 +87,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 /**
  * Selenium extension for Jupiter (JUnit 5) tests.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.0.0
  */
 public class SeleniumExtension

@@ -44,7 +44,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Resolver for lists of RemoteWebDriver.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 public class ListDriverHandler extends DriverHandler {

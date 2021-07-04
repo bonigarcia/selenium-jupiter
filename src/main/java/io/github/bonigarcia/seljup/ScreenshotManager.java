@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Utilities for screenshots.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 public class ScreenshotManager {

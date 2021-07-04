@@ -19,7 +19,7 @@ package io.github.bonigarcia.seljup.config;
 /**
  * Configuration key class.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.1.0
  */
 public class ConfigKey<T> {

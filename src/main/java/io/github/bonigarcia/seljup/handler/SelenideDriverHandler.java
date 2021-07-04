@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Resolver for SelenideDriver.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.2.0
  */
 public class SelenideDriverHandler extends DriverHandler {

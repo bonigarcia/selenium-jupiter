@@ -29,7 +29,7 @@ import com.github.dockerjava.api.model.Bind;
 /**
  * Docker Container.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.1.2
  */
 public class DockerContainer {

@@ -40,7 +40,7 @@ import io.github.bonigarcia.wdm.config.WebDriverManagerException;
 /**
  * Docker cache.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.5.0
  */
 public class DockerCache {

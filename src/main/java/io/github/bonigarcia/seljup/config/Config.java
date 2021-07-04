@@ -32,7 +32,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 /**
  * Configuration class.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.1.0
  */
 public class Config {

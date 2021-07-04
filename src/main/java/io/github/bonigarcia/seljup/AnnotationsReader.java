@@ -40,7 +40,7 @@ import org.slf4j.Logger;
  * Options/capabilities reader from annotated parameters or test instance to the
  * proper type (ChromeOptions, FirefoxOptions, Capabilities, etc).
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.0.0
  */
 public class AnnotationsReader {

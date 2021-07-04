@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * WebDriver options (binary).
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 @Retention(RUNTIME)

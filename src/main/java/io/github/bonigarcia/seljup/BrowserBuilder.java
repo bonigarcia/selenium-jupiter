@@ -21,7 +21,7 @@ import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 /**
  * Browser builder.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.2.0
  */
 public class BrowserBuilder {

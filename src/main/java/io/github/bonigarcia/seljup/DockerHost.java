@@ -28,7 +28,7 @@ import com.google.common.net.HostAndPort;
 /**
  * It represents a dockerd endpoint (a codified DOCKER_HOST).
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.4.0
  */
 

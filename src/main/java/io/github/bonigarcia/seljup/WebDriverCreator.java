@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Utility for instantiate WebDriver objects.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.0.0
  */
 public class WebDriverCreator {

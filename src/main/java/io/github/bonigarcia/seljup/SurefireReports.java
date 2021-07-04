@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 /**
  * Logic for surefire-reports output folder.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.1.0
  */
 public class SurefireReports {

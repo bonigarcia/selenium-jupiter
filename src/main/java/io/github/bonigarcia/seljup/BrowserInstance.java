@@ -44,7 +44,7 @@ import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 /**
  * Browser instance.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.0.0
  */
 public class BrowserInstance {

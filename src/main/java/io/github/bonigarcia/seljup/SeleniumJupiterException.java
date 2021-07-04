@@ -19,7 +19,7 @@ package io.github.bonigarcia.seljup;
 /**
  * Custom exception of selenium-jupiter extension.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.0.0
  */
 public class SeleniumJupiterException extends RuntimeException {

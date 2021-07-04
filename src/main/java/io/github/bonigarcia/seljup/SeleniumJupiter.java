@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.handler.DockerDriverHandler;
 /**
  * Main class for interactive mode.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.0.0
  */
 public class SeleniumJupiter extends SeleniumExtension {

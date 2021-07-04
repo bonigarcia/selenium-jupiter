@@ -19,7 +19,7 @@ package io.github.bonigarcia.seljup;
 /**
  * Selenoid status.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.2.1
  */
 public class SelenoidStatus {

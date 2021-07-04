@@ -19,7 +19,7 @@ package io.github.bonigarcia.seljup;
 /**
  * Enumeration for Selenoid browsers.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.2.0
  */
 public enum BrowserType {

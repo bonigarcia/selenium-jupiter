@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 /**
  * Docker Hub API.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 public interface DockerHubApi {

@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 /**
  * Test using custom Docker URL.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 3.1.0
  */
 class TemplateRegisterDockerTest {

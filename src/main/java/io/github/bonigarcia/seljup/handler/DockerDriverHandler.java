@@ -99,7 +99,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Resolver for DockerDriver's.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 1.2.0
  */
 public class DockerDriverHandler {

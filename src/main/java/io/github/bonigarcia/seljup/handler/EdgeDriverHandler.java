@@ -33,7 +33,7 @@ import io.github.bonigarcia.seljup.config.Config;
 /**
  * Handler for Edge.
  *
- * @author Boni Garcia (boni.gg@gmail.com)
+ * @author Boni Garcia
  * @since 2.0.0
  */
 public class EdgeDriverHandler extends DriverHandler {
