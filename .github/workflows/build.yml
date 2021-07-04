@@ -13,12 +13,11 @@ env:
 
 jobs:
   build:
-    tests:
-      runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          os: [ ubuntu-latest ]
-          java: [ '11' ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        java: [ '11' ]
 
     steps:
     - name: Checkout GitHub repo
