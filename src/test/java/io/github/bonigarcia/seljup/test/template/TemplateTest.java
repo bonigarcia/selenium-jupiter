@@ -20,12 +20,16 @@ package io.github.bonigarcia.seljup.test.template;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+//end::snippet-in-doc[]
+@Disabled("Redudant test, only needed for doc")
+//tag::snippet-in-doc[]
 class TemplateTest {
 
     @RegisterExtension
