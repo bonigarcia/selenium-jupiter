@@ -51,7 +51,8 @@ class EdgeAnnotationReaderTest {
                 EdgeDriver.class);
         method.setAccessible(true);
         Parameter parameter = method.getParameters()[0];
-        Optional<Object> testInstance = Optional.of(testClass.newInstance());
+        Optional<Object> testInstance = Optional
+                .of(testClass.getDeclaredConstructor().newInstance());
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);
         assertThat(edgeOptions.getCapability("pageLoadStrategy"),

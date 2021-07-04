@@ -55,7 +55,8 @@ class FirefoxAnnotationReaderTest {
                 FirefoxDriver.class);
         method.setAccessible(true);
         Parameter parameter = method.getParameters()[0];
-        Optional<Object> testInstance = Optional.of(testClass.newInstance());
+        Optional<Object> testInstance = Optional
+                .of(testClass.getDeclaredConstructor().newInstance());
 
         FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader
                 .getOptions(parameter, testInstance);

@@ -51,7 +51,8 @@ class SafariAnnotationReaderTest {
                 SafariDriver.class);
         method.setAccessible(true);
         Parameter parameter = method.getParameters()[0];
-        Optional<Object> testInstance = Optional.of(testClass.newInstance());
+        Optional<Object> testInstance = Optional
+                .of(testClass.getDeclaredConstructor().newInstance());
         SafariOptions safariOptions = (SafariOptions) annotationsReader
                 .getOptions(parameter, testInstance);
 
