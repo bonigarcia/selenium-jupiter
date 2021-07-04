@@ -1,15 +1,20 @@
 package io.github.bonigarcia.seljup.test.singlessession;
 
-import io.github.bonigarcia.seljup.SeleniumJupiter;
-import io.github.bonigarcia.seljup.SingleSession;
-import org.junit.jupiter.api.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.seljup.SingleSession;
 
 @TestInstance(PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -24,8 +29,7 @@ class ScreenshotNamedWithClassTest {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig()
-                .setScreenshotAtTheEndOfTests("whenfailure");
+        seleniumJupiter.getConfig().setScreenshotAtTheEndOfTests("whenfailure");
         seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 
@@ -37,8 +41,8 @@ class ScreenshotNamedWithClassTest {
     @Test
     void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("Test should fail and create screenshot"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

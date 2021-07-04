@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.constructor;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,8 +41,8 @@ class ChromeInConstructorWithOptionsJupiterTest {
     void testGlobalChrome() {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName(),
-                equalTo("video"));
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
     }
 
 }

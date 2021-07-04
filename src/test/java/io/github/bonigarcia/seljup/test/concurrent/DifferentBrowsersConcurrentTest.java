@@ -17,9 +17,7 @@
 package io.github.bonigarcia.seljup.test.concurrent;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -49,35 +47,35 @@ class DifferentBrowsersConcurrentTest {
     @Test
     void testWithChrome1(ChromeDriver driver) {
         log.debug("#1 Chrome {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
         exercise(driver);
     }
 
     @Test
     void testWithFirefox1(FirefoxDriver driver) {
         log.debug("#1 Firefox {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
         exercise(driver);
     }
 
     @Test
     void testWithChrome2(ChromeDriver driver) {
         log.debug("#2 Chrome {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
         exercise(driver);
     }
 
     @Test
     void testWithFirefox2(FirefoxDriver driver) {
         log.debug("#2 Firefox {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
         exercise(driver);
     }
 
     void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

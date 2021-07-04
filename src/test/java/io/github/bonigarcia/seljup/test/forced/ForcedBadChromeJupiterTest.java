@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ class ForcedBadChromeJupiterTest {
 
     @Test
     void chromeTest(@Binary("/bad/path/to/chrome") ChromeDriver driver) {
-        assertThat(driver, nullValue());
+        assertThat(driver).isNull();
     }
 
 }

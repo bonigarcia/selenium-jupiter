@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.singlessession;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -44,8 +43,7 @@ class OrderedMultipleJupiterTest {
 
     RemoteWebDriver driver1, driver2;
 
-    OrderedMultipleJupiterTest(ChromeDriver driver1,
-            RemoteWebDriver driver2) {
+    OrderedMultipleJupiterTest(ChromeDriver driver1, RemoteWebDriver driver2) {
         this.driver1 = driver1;
         this.driver2 = driver2;
     }
@@ -68,8 +66,8 @@ class OrderedMultipleJupiterTest {
 
     private void step1(RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
     private void step2(RemoteWebDriver driver) {

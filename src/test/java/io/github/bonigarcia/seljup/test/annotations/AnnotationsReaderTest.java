@@ -16,11 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.annotations;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashMap;
@@ -49,8 +45,8 @@ class AnnotationsReaderTest {
     @Test
     void testThrowsExceptionWithNullCapabilitiesClass() throws Exception {
         assertThrows(SeleniumJupiterException.class, () -> {
-            annotationsReader.getFromAnnotatedField(testInstance,
-                    Options.class, null);
+            annotationsReader.getFromAnnotatedField(testInstance, Options.class,
+                    null);
         }, "The parameter capabilitiesClass must not be null.");
     }
 
@@ -58,7 +54,7 @@ class AnnotationsReaderTest {
     void testGetsNullOptionsIfEmptyTestInstance() throws Exception {
         Object options = annotationsReader
                 .getOptionsFromAnnotatedField(Optional.empty(), Options.class);
-        assertThat(options, nullValue());
+        assertThat(options).isNull();
     }
 
     @Test
@@ -66,7 +62,7 @@ class AnnotationsReaderTest {
             throws Exception {
         Object options = annotationsReader
                 .getOptionsFromAnnotatedField(testInstance, Options.class);
-        assertThat(options, instanceOf(Integer.class));
+        assertThat(options).isInstanceOf(Integer.class);
     }
 
     @Test
@@ -74,20 +70,20 @@ class AnnotationsReaderTest {
             throws Exception {
         Capabilities options = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, Capabilities.class);
-        assertThat(options, nullValue());
+        assertThat(options).isNull();
     }
 
     @Test
     void testGetsOptionsFromAnnotatedFieldWithSpeciedType() throws Exception {
         CapabilitiesA optionsA = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, CapabilitiesA.class);
-        assertThat(optionsA, notNullValue());
-        assertThat(optionsA.getId(), equalTo("A"));
+        assertThat(optionsA).isNotNull();
+        assertThat(optionsA.getId()).isEqualTo("A");
 
         CapabilitiesB optionsB = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, CapabilitiesB.class);
-        assertThat(optionsB, notNullValue());
-        assertThat(optionsB.getId(), equalTo("B"));
+        assertThat(optionsB).isNotNull();
+        assertThat(optionsB.getId()).isEqualTo("B");
     }
 
     private static class ClassWithOptions {

@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.appium;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 // tag::snippet-in-doc[]
 import java.io.File;
@@ -61,7 +60,7 @@ class AppiumApkJupiterTest {
     void testWithAndroid(AppiumDriver<MobileElement> driver)
             throws InterruptedException {
         WebElement button = driver.findElement(By.id("buttonStartWebview"));
-        assertThat(button, notNullValue());
+        assertThat(button).isNotNull();
         button.click();
 
         WebElement inputField = driver.findElement(By.id("name_input"));

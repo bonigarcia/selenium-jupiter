@@ -18,8 +18,7 @@ package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -65,10 +64,10 @@ class DockerRecordingJupiterTest {
     void testLatest(
             @DockerBrowser(type = CHROME, version = "88.0") RemoteWebDriver arg0) {
         arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
-        recordingFile = new File("testLatest_arg0_CHROME_88.0_"
-                + arg0.getSessionId() + ".mp4");
+        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
+
+        recordingFile = new File(
+                "testLatest_arg0_CHROME_88.0_" + arg0.getSessionId() + ".mp4");
     }
 
 }

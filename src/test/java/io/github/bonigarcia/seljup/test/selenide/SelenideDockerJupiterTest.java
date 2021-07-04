@@ -20,8 +20,7 @@ package io.github.bonigarcia.seljup.test.selenide;
 import static com.codeborne.selenide.Condition.visible;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.By.linkText;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -57,8 +56,7 @@ class SelenideDockerJupiterTest {
     void testDockerSelenideFirefox(
             @DockerBrowser(type = FIREFOX) SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.title(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.title()).contains("JUnit 5 extension for Selenium");
     }
 
 }

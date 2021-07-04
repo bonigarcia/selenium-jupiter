@@ -18,8 +18,7 @@ package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import java.io.File;
@@ -48,17 +47,16 @@ class DockerVncMixedJupiterTest {
     }
 
     @Test
-    void testHtmlVnc(
-            @DockerBrowser(type = CHROME) RemoteWebDriver driver1,
+    void testHtmlVnc(@DockerBrowser(type = CHROME) RemoteWebDriver driver1,
             @DockerBrowser(type = FIREFOX) RemoteWebDriver driver2)
             throws InterruptedException {
         driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
         driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
 
-        assertThat(driver1.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
-        assertThat(driver2.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver1.getTitle())
+                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver2.getTitle())
+                .contains("JUnit 5 extension for Selenium");
 
         // Thread.sleep(50000);
     }

@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.constructor;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -39,8 +38,7 @@ class MixedInConstructorJupiterTest {
     RemoteWebDriver driver2;
     List<WebDriver> driverList1;
 
-    MixedInConstructorJupiterTest(WebDriver driver1,
-            RemoteWebDriver driver2,
+    MixedInConstructorJupiterTest(WebDriver driver1, RemoteWebDriver driver2,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
         this.driver1 = driver1;
         this.driver2 = driver2;
@@ -60,8 +58,8 @@ class MixedInConstructorJupiterTest {
 
     private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

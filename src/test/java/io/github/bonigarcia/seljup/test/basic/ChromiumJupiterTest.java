@@ -18,8 +18,7 @@ package io.github.bonigarcia.seljup.test.basic;
 
 import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -53,8 +52,8 @@ class ChromiumJupiterTest {
     @Test
     void testChromium(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.generic;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,8 +37,8 @@ class GenericMixedTest {
     private void exercise(WebDriver... driverList) {
         for (WebDriver driver : driverList) {
             driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-            assertThat(driver.getTitle(), containsString(
-                    "JUnit 5 extension for Selenium"));
+            assertThat(driver.getTitle())
+                    .contains("JUnit 5 extension for Selenium");
         }
     }
 

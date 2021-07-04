@@ -17,10 +17,7 @@
 package io.github.bonigarcia.seljup.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,17 +34,16 @@ class SeleniumJupiterTest {
     @Test
     void testWithChrome(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
     @Test
-    void testWithChromeAndFirefox(ChromeDriver driver1,
-            FirefoxDriver driver2) {
+    void testWithChromeAndFirefox(ChromeDriver driver1, FirefoxDriver driver2) {
         driver1.get("http://www.seleniumhq.org/");
         driver2.get("http://junit.org/junit5/");
-        assertThat(driver1.getTitle(), startsWith("Selenium"));
-        assertThat(driver2.getTitle(), equalTo("JUnit 5"));
+        assertThat(driver1.getTitle()).startsWith("Selenium");
+        assertThat(driver2.getTitle()).isEqualTo("JUnit 5");
     }
 
 }

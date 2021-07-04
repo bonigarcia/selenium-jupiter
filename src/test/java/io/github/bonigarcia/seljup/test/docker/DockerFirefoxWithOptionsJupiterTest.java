@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,13 +32,12 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerFirefoxWithOptionsJupiterTest {
 
     @Test
-    void webrtcTest(@Preferences({
-            "media.navigator.permission.disabled=true",
+    void webrtcTest(@Preferences({ "media.navigator.permission.disabled=true",
             "media.navigator.streams.fake=true" }) @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName(),
-                equalTo("video"));
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
     }
 
 }

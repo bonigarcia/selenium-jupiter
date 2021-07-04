@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
@@ -38,11 +37,10 @@ class AndroidCustomJupiterTest {
     // tag::snippet-in-doc[]
     @Test
     void testAndroid(
-            @DockerBrowser(type = ANDROID, version = "9.0", deviceName = "Nexus S")
-            RemoteWebDriver driver) {
+            @DockerBrowser(type = ANDROID, version = "9.0", deviceName = "Nexus S") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

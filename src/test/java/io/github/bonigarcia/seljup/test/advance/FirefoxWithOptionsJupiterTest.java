@@ -17,9 +17,7 @@
 package io.github.bonigarcia.seljup.test.advance;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,15 +38,15 @@ class FirefoxWithOptionsJupiterTest {
             "media.navigator.streams.fake=true" }) FirefoxDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName(),
-                equalTo("video"));
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
     }
 
     @Test
     void extensionTest(@Extensions("hello_world.xpi") FirefoxDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

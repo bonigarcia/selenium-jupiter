@@ -16,9 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -55,8 +53,8 @@ class EdgeAnnotationReaderTest {
                 .of(testClass.getDeclaredConstructor().newInstance());
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);
-        assertThat(edgeOptions.getCapability("pageLoadStrategy"),
-                equalTo("eager"));
+        assertThat(edgeOptions.getCapability("pageLoadStrategy"))
+                .isEqualTo("video");
     }
 
     @Test
@@ -66,6 +64,6 @@ class EdgeAnnotationReaderTest {
                 .of(new ClassWithMultipleOptions());
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(null, testInstance);
-        assertThat(edgeOptions, notNullValue());
+        assertThat(edgeOptions).isNotNull();
     }
 }

@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.lang.reflect.Method;
@@ -66,6 +65,6 @@ class SafariAnnotationReaderTest {
                 .of(new ClassWithMultipleOptions());
         SafariOptions safariOptions = (SafariOptions) annotationsReader
                 .getOptions(null, testInstance);
-        assertThat(safariOptions, notNullValue());
+        assertThat(safariOptions).isNotNull();
     }
 }

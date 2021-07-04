@@ -16,15 +16,11 @@
  */
 package io.github.bonigarcia.seljup.test.appium;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
-import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.SeleniumJupiter;
 import java.io.File;
 import java.net.URISyntaxException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -32,6 +28,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
 @Disabled("Android emulator not available on Travis CI")
@@ -68,7 +69,7 @@ class AppiumApkLogLevelJupiterTest {
     void testWithAndroid(AppiumDriver<MobileElement> driver)
             throws InterruptedException {
         WebElement button = driver.findElement(By.id("buttonStartWebview"));
-        assertThat(button, notNullValue());
+        assertThat(button).isNotNull();
         button.click();
 
         WebElement inputField = driver.findElement(By.id("name_input"));

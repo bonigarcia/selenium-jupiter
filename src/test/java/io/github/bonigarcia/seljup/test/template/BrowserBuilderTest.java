@@ -28,8 +28,7 @@ import static io.github.bonigarcia.seljup.BrowserBuilder.opera;
 import static io.github.bonigarcia.seljup.BrowserBuilder.operaInDocker;
 import static io.github.bonigarcia.seljup.BrowserBuilder.phantomjs;
 import static io.github.bonigarcia.seljup.BrowserBuilder.safari;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 
@@ -52,7 +51,7 @@ class BrowserBuilderTest {
     void templateTest(BrowserBuilder browserBuilder) {
         Browser browser = browserBuilder.version("").browserName("")
                 .deviceName("").build();
-        assertThat(browser, notNullValue());
+        assertThat(browser).isNotNull();
     }
 
 }

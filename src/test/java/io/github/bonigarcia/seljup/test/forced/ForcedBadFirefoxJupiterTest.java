@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,9 +37,8 @@ class ForcedBadFirefoxJupiterTest {
     }
 
     @Test
-    void firefoxTest(
-            @Binary("/bad/path/to/firefox") FirefoxDriver driver) {
-        assertThat(driver, nullValue());
+    void firefoxTest(@Binary("/bad/path/to/firefox") FirefoxDriver driver) {
+        assertThat(driver).isNull();
     }
 
 }

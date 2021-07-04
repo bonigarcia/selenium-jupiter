@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.generic;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -57,8 +56,7 @@ class GenericWithScreenshotTest {
     @Test
     void screenshotGenericTest(WebDriver arg0) {
         arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
 
         imageFile = new File("screenshotGenericTest_arg0_CHROME_88.0_"
                 + ((RemoteWebDriver) arg0).getSessionId() + ".png");

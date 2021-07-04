@@ -16,9 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,9 +32,9 @@ class BrowserListFromDockerHubJupiterTest {
     void listImagesTest() throws IOException {
         DockerHubService service = new DockerHubService(new Config());
         List<?> list = service.listTags();
-        assertThat(list, notNullValue());
-        assertThat(list.isEmpty(), is(false));
-        assertThat(list.size() > 100, is(true));
+        assertThat(list).isNotNull();
+        assertThat(list.isEmpty()).isFalse();
+        assertThat(list.size()).isGreaterThan(100);
     }
 
 }

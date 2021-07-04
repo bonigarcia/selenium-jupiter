@@ -17,16 +17,15 @@
 package io.github.bonigarcia.seljup.test.template;
 
 import static io.github.bonigarcia.seljup.BrowserBuilder.chromeInDocker;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 /**
  * Test using custom Docker URL.
@@ -48,8 +47,8 @@ class TemplateRegisterDockerTest {
     @TestTemplate
     void templateTest(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

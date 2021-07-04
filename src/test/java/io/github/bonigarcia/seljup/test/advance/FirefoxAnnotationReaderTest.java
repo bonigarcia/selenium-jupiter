@@ -16,9 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.firefox.FirefoxOptions.FIREFOX_OPTIONS;
 
 import java.lang.reflect.Method;
@@ -63,9 +61,11 @@ class FirefoxAnnotationReaderTest {
         Map<String, Map<String, Boolean>> options = (Map<String, Map<String, Boolean>>) firefoxOptions
                 .asMap().get(FIREFOX_OPTIONS);
 
-        assertTrue(options.get("prefs")
-                .get("media.navigator.permission.disabled"));
-        assertTrue(options.get("prefs").get("media.navigator.streams.fake"));
+        assertThat(
+                options.get("prefs").get("media.navigator.permission.disabled"))
+                        .isTrue();
+        assertThat(options.get("prefs").get("media.navigator.streams.fake"))
+                .isTrue();
     }
 
     @Test
@@ -75,6 +75,6 @@ class FirefoxAnnotationReaderTest {
                 .of(new ClassWithMultipleOptions());
         FirefoxOptions firefoxOptions = (FirefoxOptions) annotationsReader
                 .getOptions(null, testInstance);
-        assertThat(firefoxOptions, notNullValue());
+        assertThat(firefoxOptions).isNotNull();
     }
 }

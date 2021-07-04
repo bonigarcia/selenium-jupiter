@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.basic;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +31,7 @@ class PhantomjsJupiterTest {
     @Test
     void test(PhantomJSDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getPageSource(), notNullValue());
+        assertThat(driver.getPageSource()).isNotNull();
     }
 
 }

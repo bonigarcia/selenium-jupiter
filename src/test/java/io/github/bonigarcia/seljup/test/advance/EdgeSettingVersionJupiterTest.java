@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 // end::snippet-in-doc[]
@@ -45,8 +44,8 @@ class EdgeSettingVersionJupiterTest {
     @Test
     void webrtcTest(EdgeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

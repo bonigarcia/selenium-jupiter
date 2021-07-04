@@ -21,8 +21,7 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.List;
@@ -59,8 +58,8 @@ class PerformenceDockerChromeJupiterTest {
                             ((RemoteWebDriver) driver).getSessionId());
                     driver.get(
                             "https://bonigarcia.github.io/selenium-jupiter/");
-                    assertThat(driver.getTitle(), containsString(
-                            "JUnit 5 extension for Selenium"));
+                    assertThat(driver.getTitle())
+                            .contains("JUnit 5 extension for Selenium");
                 } finally {
                     latch.countDown();
                 }

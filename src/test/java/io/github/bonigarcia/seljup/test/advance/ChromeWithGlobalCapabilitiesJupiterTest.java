@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.advance;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +44,8 @@ class ChromeWithGlobalCapabilitiesJupiterTest {
     @Test
     void chromeTest(ChromeDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

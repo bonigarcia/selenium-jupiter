@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -59,8 +58,7 @@ class DockerHtmlVncJupiterTest {
     void testHtmlVnc(
             @DockerBrowser(type = CHROME, version = "88.0") RemoteWebDriver arg0) {
         arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
 
         String folder = "target/surefire-reports/io.github.bonigarcia.seljup.test.docker.DockerHtmlVncJupiterTest";
         htmlFile = new File(folder, "testHtmlVnc_arg0_CHROME_88.0_"

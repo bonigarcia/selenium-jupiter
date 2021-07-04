@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ class BrowserListFromDockerHubWithFallbackJupiterTest {
     @Test
     void chromeTest(
             @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
     }
 
 }

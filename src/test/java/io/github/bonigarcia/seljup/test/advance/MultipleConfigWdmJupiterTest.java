@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 // tag::snippet-in-doc[]
@@ -46,8 +45,8 @@ class MultipleConfigWdmJupiterTest {
         chrome.get(sut);
         firefox.get(sut);
 
-        assertThat(chrome.getTitle(), containsString(title));
-        assertThat(firefox.getTitle(), containsString(title));
+        assertThat(chrome.getTitle()).contains(title);
+        assertThat(firefox.getTitle()).contains(title);
     }
 
 }

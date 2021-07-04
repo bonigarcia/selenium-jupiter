@@ -17,9 +17,7 @@
 package io.github.bonigarcia.seljup.test.advance;
 
 import static java.util.Optional.empty;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -53,8 +51,8 @@ class OperaAnnotationReaderTest {
         OperaOptions operaOptions = (OperaOptions) annotationsReader
                 .getOptions(parameter, empty());
 
-        assertThat(operaOptions.asMap().get("operaOptions").toString(),
-                containsString("binary"));
+        assertThat(operaOptions.asMap().get("operaOptions").toString())
+                .contains("binary");
     }
 
     @Test
@@ -64,6 +62,7 @@ class OperaAnnotationReaderTest {
                 .of(new ClassWithMultipleOptions());
         OperaOptions operaOptions = (OperaOptions) annotationsReader
                 .getOptions(null, testInstance);
-        assertThat(operaOptions, notNullValue());
+        assertThat(operaOptions).isNotNull();
     }
+
 }

@@ -18,8 +18,7 @@ package io.github.bonigarcia.seljup.test.android;
 
 import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static java.util.Optional.empty;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -53,7 +52,7 @@ class AndroidBrowserTest {
         String androidUrl = dockerDriverHandler.startAndroidBrowser(version,
                 config.getAndroidDeviceName(), "");
         dockerDriverHandler.cleanup();
-        assertThat(androidUrl, notNullValue());
+        assertThat(androidUrl).isNotNull();
     }
 
     @Test

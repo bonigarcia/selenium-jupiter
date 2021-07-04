@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.template;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 // tag::snippet-in-doc[]
@@ -45,10 +44,10 @@ class TemplateTwoBrowsersTest {
     void templateTest(WebDriver driver1, WebDriver driver2) {
         driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
         driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver1.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
-        assertThat(driver2.getTitle(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver1.getTitle())
+                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver2.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

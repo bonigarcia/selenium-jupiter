@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.concurrent;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -39,13 +38,13 @@ class TwoChromesConcurrentTest {
     @Test
     void testWithOneChrome(ChromeDriver driver) {
         log.debug("Chrome #1 {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
     }
 
     @Test
     void testWithOtherChrome(ChromeDriver driver) {
         log.debug("Chrome #2 {}", driver);
-        assertThat(driver, notNullValue());
+        assertThat(driver).isNotNull();
     }
 
 }

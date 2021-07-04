@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.singlessession;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -56,14 +55,14 @@ class FailureCreatesScreenshotTest {
     @Test
     void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle(),
-                containsString("Test should fail and create screenshot"));
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
     @Test
     void notFailAndNotCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/");
-        assertThat(driver.getTitle(), containsString("Boni"));
+        assertThat(driver.getTitle()).contains("Boni");
     }
 
 }

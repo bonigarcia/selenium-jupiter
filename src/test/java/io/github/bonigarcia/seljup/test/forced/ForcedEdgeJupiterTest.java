@@ -18,8 +18,7 @@ package io.github.bonigarcia.seljup.test.forced;
 
 import static io.github.bonigarcia.wdm.config.OperatingSystem.WIN;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +43,7 @@ class ForcedEdgeJupiterTest {
     @Test
     void edgeTest(EdgeDriver driver) {
         assumeFalse(IS_OS_WINDOWS);
-        assertThat(driver, nullValue());
+        assertThat(driver).isNull();
     }
 
 }

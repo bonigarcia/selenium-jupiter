@@ -16,8 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,14 +39,13 @@ class ForcedAppiumJupiterTest {
 
     @Test
     void appiumNoCapabilitiesTest(AppiumDriver<WebElement> driver) {
-        assertThat(driver, nullValue());
+        assertThat(driver).isNull();
     }
 
     @Test
-    void appiumWithCapabilitiesTest(
-            @DriverCapabilities({ "browserName=chrome",
-                    "deviceName=Android" }) AppiumDriver<WebElement> driver) {
-        assertThat(driver, nullValue());
+    void appiumWithCapabilitiesTest(@DriverCapabilities({ "browserName=chrome",
+            "deviceName=Android" }) AppiumDriver<WebElement> driver) {
+        assertThat(driver).isNull();
     }
 
 }

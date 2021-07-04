@@ -17,8 +17,7 @@
 package io.github.bonigarcia.seljup.test.selenide;
 
 // tag::snippet-in-doc[]
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 // end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
@@ -52,15 +51,13 @@ class SelenideRemoteJupiterTest {
 
     @Test
     void testRemoteSelenideParameterConfig(
-            @DriverUrl("http://localhost:4444/wd/hub")
-            @DriverCapabilities("browserName=chrome") SelenideDriver driver) {
+            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities("browserName=chrome") SelenideDriver driver) {
         exercise(driver);
     }
 
     private void exercise(SelenideDriver driver) {
         driver.open("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.title(),
-                containsString("JUnit 5 extension for Selenium"));
+        assertThat(driver.title()).contains("JUnit 5 extension for Selenium");
     }
 
 }

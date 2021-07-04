@@ -17,18 +17,18 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import com.github.dockerjava.api.exception.DockerException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
+
+import com.github.dockerjava.api.exception.DockerException;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -49,7 +49,7 @@ class ExecCommandInContainerTest {
                 .execCommandInContainer(containerId.get(), command);
         log.debug("Result of executing command {} in Docker container: {}",
                 command, result);
-        assertThat(result, notNullValue());
+        assertThat(result).isNotNull();
     }
 
 }

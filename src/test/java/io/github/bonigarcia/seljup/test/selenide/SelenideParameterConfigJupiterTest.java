@@ -19,8 +19,7 @@ package io.github.bonigarcia.seljup.test.selenide;
 // tag::snippet-in-doc[]
 import static com.codeborne.selenide.Browsers.CHROME;
 import static com.codeborne.selenide.Browsers.FIREFOX;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,8 +48,8 @@ class SelenideParameterConfigJupiterTest {
     private void exercise(SelenideDriver... drivers) {
         for (SelenideDriver driver : drivers) {
             driver.open("https://bonigarcia.github.io/selenium-jupiter/");
-            assertThat(driver.title(),
-                    containsString("JUnit 5 extension for Selenium"));
+            assertThat(driver.title())
+                    .contains("JUnit 5 extension for Selenium");
         }
     }
 
