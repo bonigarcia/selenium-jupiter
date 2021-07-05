@@ -720,7 +720,7 @@ public class SeleniumExtension implements ParameterResolver,
             ExtensionContext context) {
         AnnotatedElement element = context.getElement().orElse(null);
         return findAnnotation(element, EnabledIfBrowserAvailable.class)
-                .map(annotation -> toResult(annotation)).orElse(ENABLED);
+                .map(this::toResult).orElse(ENABLED);
     }
 
     private ConditionEvaluationResult toResult(
