@@ -9,8 +9,13 @@
 
     <properties>
         <!-- Dependencies -->
+        <selenium.version>3.141.59</selenium.version>
         <webdrivermanager.version>5.0.0-SNAPSHOT</webdrivermanager.version>
+        <appium-java-client.version>7.5.1</appium-java-client.version>
         <docker-java.version>3.2.11</docker-java.version>
+        <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
+        <selenide.version>5.22.2</selenide.version>
+        <htmlunit.driver.version>2.51.0</htmlunit.driver.version>
         <slf4j.version>1.7.31</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <retrofit.version>2.9.0</retrofit.version>
@@ -22,11 +27,6 @@
         <junit.jupiter.version>5.7.2</junit.jupiter.version>
         <mockito.version>3.11.2</mockito.version>
         <assertj.version>3.20.2</assertj.version>
-        <selenium.version>3.141.59</selenium.version>
-        <selenide.version>5.22.2</selenide.version>
-        <appium-java-client.version>7.5.1</appium-java-client.version>
-        <htmlunit.driver.version>2.51.0</htmlunit.driver.version>
-        <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
 
         <!-- Plugins -->
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
@@ -84,14 +84,9 @@
     <dependencies>
         <!-- compile -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
@@ -103,6 +98,11 @@
                     <artifactId>httpclient5</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium-java-client.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.docker-java</groupId>
@@ -123,6 +123,41 @@
             <groupId>com.github.docker-java</groupId>
             <artifactId>docker-java-transport-httpclient5</artifactId>
             <version>${docker-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>${phantomjsdriver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.client5</groupId>
+                    <artifactId>httpclient5</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <version>${htmlunit.driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
@@ -161,36 +196,6 @@
             <groupId>io.javalin</groupId>
             <artifactId>javalin</artifactId>
             <version>${javalin.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.appium</groupId>
-            <artifactId>java-client</artifactId>
-            <version>${appium-java-client.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>phantomjsdriver</artifactId>
-            <version>${phantomjsdriver.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>${selenide.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <version>${htmlunit.driver.version}</version>
             <scope>provided</scope>
         </dependency>
 
