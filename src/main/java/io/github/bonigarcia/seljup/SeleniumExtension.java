@@ -511,7 +511,7 @@ public class SeleniumExtension implements ParameterResolver,
                 }
             } else {
                 WebDriver webDriver;
-                if (object.getClass().toGenericString()
+                if (object.getClass().getCanonicalName()
                         .equals("com.codeborne.selenide.SelenideDriver")) {
                     webDriver = ((SelenideDriver) object).getWebDriver();
                 } else {
