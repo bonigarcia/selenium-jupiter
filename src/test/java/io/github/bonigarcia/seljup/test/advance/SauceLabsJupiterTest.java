@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled
+@Disabled("Sauce Labs credentials required")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumJupiter.class)
 class SauceLabsJupiterTest {

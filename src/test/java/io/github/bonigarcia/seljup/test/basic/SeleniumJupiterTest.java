@@ -27,7 +27,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Redudant test for Travis CI suite")
+@Disabled("Redudant test for CI suite")
 @ExtendWith(SeleniumJupiter.class)
 class SeleniumJupiterTest {
 

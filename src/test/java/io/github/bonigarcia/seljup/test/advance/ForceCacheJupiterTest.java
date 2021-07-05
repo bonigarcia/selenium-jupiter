@@ -29,7 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
-@Disabled("Redudant test for Travis CI suite")
+@Disabled("Redudant test for CI suite")
 // tag::snippet-in-doc[]
 class ForceCacheJupiterTest {
 

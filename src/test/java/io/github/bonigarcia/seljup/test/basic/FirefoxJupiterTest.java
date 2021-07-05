@@ -39,7 +39,7 @@ class FirefoxJupiterTest {
     }
 
     // end::snippet-in-doc[]
-    @Disabled("Redudant test for Travis CI suite")
+    @Disabled("Redudant test for CI suite")
     // tag::snippet-in-doc[]
     @Test
     void testWithTwoFirefoxs(FirefoxDriver driver1, FirefoxDriver driver2) {

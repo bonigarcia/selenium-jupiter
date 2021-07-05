@@ -28,7 +28,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
-@Disabled("Internet Explorer is not available on Travis CI")
+@Disabled("Internet Explorer is not available on CI")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumJupiter.class)
 class IExplorerJupiterTest {

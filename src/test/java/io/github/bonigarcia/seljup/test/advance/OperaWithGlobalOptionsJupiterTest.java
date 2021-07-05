@@ -28,7 +28,7 @@ import org.openqa.selenium.opera.OperaOptions;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Opera not available on Travis CI")
+@Disabled("Redudant test for CI suite")
 @ExtendWith(SeleniumJupiter.class)
 class OperaWithGlobalOptionsJupiterTest {
 

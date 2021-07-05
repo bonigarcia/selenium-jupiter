@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 // end::snippet-in-doc[]
-@Disabled("Android emulator not available on Travis CI")
+@Disabled("Android emulator not available on CI")
 // tag::snippet-in-doc[]
 class AppiumApkLogLevelJupiterTest {
 

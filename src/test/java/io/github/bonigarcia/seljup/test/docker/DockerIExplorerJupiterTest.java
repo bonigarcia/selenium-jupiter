@@ -32,7 +32,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 //end::snippet-in-doc[]
-@Disabled("Internet Explorer in Docker not available in Travis, only needed for doc")
+@Disabled("Internet Explorer in Docker not available in CI, only needed for doc")
 //tag::snippet-in-doc[]
 class DockerIExplorerJupiterTest {
 
