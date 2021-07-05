@@ -16,24 +16,23 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
+import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.seljup.Binary;
-import io.github.bonigarcia.seljup.Extensions;
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Opera not available on Travis CI")
+@EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
 class OperaExtensionJupiterTest {
 
     @Test
-    void operaExtensionTest(
-            @Binary("/usr/bin/opera") @Extensions("atomizer.crx") OperaDriver driver) {
+    void operaExtensionTest(@Binary("/usr/bin/opera") OperaDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

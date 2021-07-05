@@ -17,20 +17,17 @@
 package io.github.bonigarcia.seljup.test.basic;
 
 // tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.EDGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.edge.EdgeDriver;
 
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
-@Disabled("Edge is not available on Travis CI")
-// tag::snippet-in-doc[]
+@EnabledIfBrowserAvailable(EDGE)
 @ExtendWith(SeleniumJupiter.class)
 class EdgeJupiterTest {
 

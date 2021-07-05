@@ -16,21 +16,19 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
+//tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.EDGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.edge.EdgeDriver;
 
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
-@Disabled("Edge not available on Travis CI")
-// tag::snippet-in-doc[]
+@EnabledIfBrowserAvailable(EDGE)
 class EdgeSettingVersionJupiterTest {
 
     @RegisterExtension
@@ -38,7 +36,7 @@ class EdgeSettingVersionJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumJupiter.getConfig().edgedriver().driverVersion("3.14393");
+        seleniumJupiter.getConfig().edgedriver();
     }
 
     @Test

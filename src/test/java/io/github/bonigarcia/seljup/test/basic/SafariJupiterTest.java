@@ -16,21 +16,18 @@
  */
 package io.github.bonigarcia.seljup.test.basic;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.safari.SafariDriver;
 
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
-@Disabled("SafariDriver requires Safari 10 running on OSX El Capitan or greater.")
-// tag::snippet-in-doc[]
+@EnabledIfBrowserAvailable(SAFARI)
 @ExtendWith(SeleniumJupiter.class)
 class SafariJupiterTest {
 

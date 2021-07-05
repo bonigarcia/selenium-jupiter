@@ -16,19 +16,20 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Opera not available on Travis CI")
+@EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
 class OperaWithOptionsJupiterTest {
 

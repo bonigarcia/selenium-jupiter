@@ -26,14 +26,17 @@ import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
+import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,6 +50,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.ConditionEvaluationResult;
+import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -83,6 +88,7 @@ import io.github.bonigarcia.seljup.handler.RemoteDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
 import io.github.bonigarcia.seljup.handler.SelenideDriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.config.DriverManagerType;
 
 /**
  * Selenium extension for Jupiter (JUnit 5) tests.
@@ -90,13 +96,15 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * @author Boni Garcia
  * @since 1.0.0
  */
-public class SeleniumExtension
-        implements ParameterResolver, AfterTestExecutionCallback,
-        AfterAllCallback, TestTemplateInvocationContextProvider {
+public class SeleniumExtension implements ParameterResolver,
+        AfterTestExecutionCallback, AfterAllCallback,
+        TestTemplateInvocationContextProvider, ExecutionCondition {
 
     final Logger log = getLogger(lookup().lookupClass());
 
     static final String CLASSPATH_PREFIX = "classpath:";
+    static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
+            .enabled("Browser(s) available in the system");
 
     private Config config = new Config();
     private AnnotationsReader annotationsReader = new AnnotationsReader();
@@ -703,6 +711,31 @@ public class SeleniumExtension
 
     public void clearDockerCache() {
         dockerCache.clear();
+    }
+
+    @Override
+    public ConditionEvaluationResult evaluateExecutionCondition(
+            ExtensionContext context) {
+        AnnotatedElement element = context.getElement().orElse(null);
+        return findAnnotation(element, EnabledIfBrowserAvailable.class)
+                .map(annotation -> toResult(element, annotation))
+                .orElse(ENABLED);
+    }
+
+    private ConditionEvaluationResult toResult(AnnotatedElement element,
+            EnabledIfBrowserAvailable annotation) {
+        io.github.bonigarcia.seljup.Browser[] browsers = annotation.value();
+        for (io.github.bonigarcia.seljup.Browser browser : browsers) {
+            DriverManagerType driverManagerType = DriverManagerType
+                    .valueOf(browser.name());
+            Optional<Path> browserPath = WebDriverManager
+                    .getInstance(driverManagerType).getBrowserPath();
+            if (browserPath.isEmpty()) {
+                return ConditionEvaluationResult
+                        .disabled(browser + " is not installed in the system");
+            }
+        }
+        return ENABLED;
     }
 
 }
