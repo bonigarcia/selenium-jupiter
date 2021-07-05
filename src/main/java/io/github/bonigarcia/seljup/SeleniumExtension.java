@@ -59,20 +59,12 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
 import com.codeborne.selenide.SelenideDriver;
 import com.google.gson.Gson;
 
-import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.AppiumDriverHandler;
@@ -112,7 +104,7 @@ public class SeleniumExtension implements ParameterResolver,
     private List<Class<?>> typeList = new CopyOnWriteArrayList<>();
     private Map<String, List<DriverHandler>> driverHandlerMap = new ConcurrentHashMap<>();
     protected Map<String, Class<?>> handlerMap = new ConcurrentHashMap<>();
-    protected Map<String, Class<?>> templateHandlerMap = new ConcurrentHashMap<>();
+    protected Map<String, String> templateHandlerMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, DockerContainer>> containersMap = new ConcurrentHashMap<>();
     private DockerService dockerService;
     private Map<String, List<Browser>> browserListMap = new ConcurrentHashMap<>();
@@ -145,25 +137,38 @@ public class SeleniumExtension implements ParameterResolver,
         addEntry(handlerMap, "com.codeborne.selenide.SelenideDriver",
                 SelenideDriverHandler.class);
 
-        addEntry(templateHandlerMap, "chrome", ChromeDriver.class);
-        addEntry(templateHandlerMap, "firefox", FirefoxDriver.class);
-        addEntry(templateHandlerMap, "edge", EdgeDriver.class);
-        addEntry(templateHandlerMap, "opera", OperaDriver.class);
-        addEntry(templateHandlerMap, "safari", SafariDriver.class);
-        addEntry(templateHandlerMap, "appium", AppiumDriver.class);
-        addEntry(templateHandlerMap, "phantomjs", PhantomJSDriver.class);
-        addEntry(templateHandlerMap, "iexplorer", InternetExplorerDriver.class);
+        addEntry(templateHandlerMap, "chrome",
+                "org.openqa.selenium.chrome.ChromeDriver");
+        addEntry(templateHandlerMap, "firefox",
+                "org.openqa.selenium.firefox.FirefoxDriver");
+        addEntry(templateHandlerMap, "edge",
+                "org.openqa.selenium.edge.EdgeDriver");
+        addEntry(templateHandlerMap, "opera",
+                "org.openqa.selenium.opera.OperaDriver");
+        addEntry(templateHandlerMap, "safari",
+                "org.openqa.selenium.safari.SafariDriver");
+        addEntry(templateHandlerMap, "appium",
+                "io.appium.java_client.AppiumDriver");
+        addEntry(templateHandlerMap, "phantomjs",
+                "org.openqa.selenium.phantomjs.PhantomJSDriver");
+        addEntry(templateHandlerMap, "iexplorer",
+                "org.openqa.selenium.ie.InternetExplorerDriver");
         addEntry(templateHandlerMap, "internet explorer",
-                InternetExplorerDriver.class);
-        addEntry(templateHandlerMap, "chrome-in-docker", RemoteWebDriver.class);
+                "org.openqa.selenium.ie.InternetExplorerDriver");
+        addEntry(templateHandlerMap, "chrome-in-docker",
+                "org.openqa.selenium.remote.RemoteWebDriver");
         addEntry(templateHandlerMap, "firefox-in-docker",
-                RemoteWebDriver.class);
-        addEntry(templateHandlerMap, "opera-in-docker", RemoteWebDriver.class);
-        addEntry(templateHandlerMap, "edge-in-docker", RemoteWebDriver.class);
+                "org.openqa.selenium.remote.RemoteWebDriver");
+        addEntry(templateHandlerMap, "opera-in-docker",
+                "org.openqa.selenium.remote.RemoteWebDriver");
+        addEntry(templateHandlerMap, "edge-in-docker",
+                "org.openqa.selenium.remote.RemoteWebDriver");
         addEntry(templateHandlerMap, "iexplorer-in-docker",
-                RemoteWebDriver.class);
-        addEntry(templateHandlerMap, "android", RemoteWebDriver.class);
-        addEntry(templateHandlerMap, "selenide", SelenideDriverHandler.class);
+                "org.openqa.selenium.remote.RemoteWebDriver");
+        addEntry(templateHandlerMap, "android",
+                "org.openqa.selenium.remote.RemoteWebDriver");
+        addEntry(templateHandlerMap, "selenide",
+                "io.github.bonigarcia.seljup.handler.SelenideDriverHandler");
     }
 
     @Override
@@ -211,7 +216,12 @@ public class SeleniumExtension implements ParameterResolver,
             browser.setUrl(urlFromAnnotation.get());
         }
         if (browser != null) {
-            type = templateHandlerMap.get(browser.getType());
+            String browserType = browser.getType();
+            try {
+                type = Class.forName(templateHandlerMap.get(browserType));
+            } catch (ClassNotFoundException e) {
+                log.error("Cannot get class for type {}", browserType, e);
+            }
             url = browser.getUrl();
         }
 
@@ -501,7 +511,8 @@ public class SeleniumExtension implements ParameterResolver,
                 }
             } else {
                 WebDriver webDriver;
-                if (SelenideDriver.class.isAssignableFrom(object.getClass())) {
+                if (object.getClass().toGenericString()
+                        .equals("com.codeborne.selenide.SelenideDriver")) {
                     webDriver = ((SelenideDriver) object).getWebDriver();
                 } else {
                     webDriver = (WebDriver) object;
@@ -646,8 +657,7 @@ public class SeleniumExtension implements ParameterResolver,
         };
     }
 
-    public void addEntry(Map<String, Class<?>> map, String key,
-            Class<?> value) {
+    public <T> void addEntry(Map<String, T> map, String key, T value) {
         try {
             map.put(key, value);
         } catch (Exception e) {
