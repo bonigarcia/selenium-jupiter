@@ -358,8 +358,7 @@ public class DockerDriverHandler {
         String deviceNameCapability = deviceName != null
                 && !deviceName.isEmpty() ? deviceName
                         : getConfig().getAndroidDeviceName();
-        String appiumUrl = startAndroidBrowser(version, deviceNameCapability,
-                browserInstance.getBrowserName());
+        String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
 
         DesiredCapabilities capabilities = getCapabilitiesForAndroid(
                 browserInstance, deviceNameCapability);
@@ -618,8 +617,8 @@ public class DockerDriverHandler {
         dockerService.close();
     }
 
-    public String startAndroidBrowser(String version, String deviceName,
-            String browserNameSetByUser) throws DockerException {
+    public String startAndroidBrowser(String version, String deviceName)
+            throws DockerException {
         if (!IS_OS_LINUX) {
             throw new SeleniumJupiterException(
                     "Android devices are only supported in Linux hosts");
