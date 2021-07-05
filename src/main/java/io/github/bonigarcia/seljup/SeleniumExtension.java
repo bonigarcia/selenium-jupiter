@@ -718,11 +718,10 @@ public class SeleniumExtension implements ParameterResolver,
             ExtensionContext context) {
         AnnotatedElement element = context.getElement().orElse(null);
         return findAnnotation(element, EnabledIfBrowserAvailable.class)
-                .map(annotation -> toResult(element, annotation))
-                .orElse(ENABLED);
+                .map(annotation -> toResult(annotation)).orElse(ENABLED);
     }
 
-    private ConditionEvaluationResult toResult(AnnotatedElement element,
+    private ConditionEvaluationResult toResult(
             EnabledIfBrowserAvailable annotation) {
         io.github.bonigarcia.seljup.Browser[] browsers = annotation.value();
         for (io.github.bonigarcia.seljup.Browser browser : browsers) {
@@ -730,6 +729,7 @@ public class SeleniumExtension implements ParameterResolver,
                     .valueOf(browser.name());
             Optional<Path> browserPath = WebDriverManager
                     .getInstance(driverManagerType).getBrowserPath();
+
             if (browserPath.isEmpty()) {
                 return ConditionEvaluationResult
                         .disabled(browser + " is not installed in the system");
