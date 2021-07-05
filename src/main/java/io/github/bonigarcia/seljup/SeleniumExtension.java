@@ -121,6 +121,8 @@ public class SeleniumExtension implements ParameterResolver,
     public SeleniumExtension() {
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
                 ChromeDriverHandler.class);
+        addEntry(handlerMap, "org.openqa.selenium.chromium.ChromiumDriver",
+                ChromeDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.firefox.FirefoxDriver",
                 FirefoxDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.edge.EdgeDriver",

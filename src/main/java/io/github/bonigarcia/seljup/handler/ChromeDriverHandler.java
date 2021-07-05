@@ -17,7 +17,6 @@
 package io.github.bonigarcia.seljup.handler;
 
 import static java.util.Arrays.stream;
-import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 
 import java.io.IOException;
 import java.lang.reflect.Parameter;
@@ -35,7 +34,6 @@ import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.config.Config;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Resolver for ChromeDriver.
@@ -63,12 +61,6 @@ public class ChromeDriverHandler extends DriverHandler {
                     .getCapabilities(parameter, testInstance);
             ChromeOptions chromeOptions = (ChromeOptions) getOptions(parameter,
                     testInstance);
-
-            if (chromeOptions.asMap().get(CAPABILITY).toString().toLowerCase()
-                    .contains("chromium")) {
-                WebDriverManager.chromiumdriver().setup();
-            }
-
             if (capabilities.isPresent()) {
                 chromeOptions.merge(capabilities.get());
             }
