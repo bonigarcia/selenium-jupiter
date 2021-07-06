@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.advance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,12 +30,13 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @ExtendWith(SeleniumJupiter.class)
+@Disabled("Redundant test")
 class MultipleConfigWdmJupiterTest {
 
     @BeforeAll
     static void setup() {
-        WebDriverManager.chromedriver().driverVersion("2.35");
-        WebDriverManager.firefoxdriver().driverVersion("0.22.0");
+        WebDriverManager.chromedriver().forceDownload();
+        WebDriverManager.firefoxdriver().useLocalVersionsPropertiesFirst();
     }
 
     @Test
