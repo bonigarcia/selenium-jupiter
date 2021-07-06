@@ -18,17 +18,14 @@ package io.github.bonigarcia.seljup.test.advance;
 
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
 
-// end::snippet-in-doc[]
 import org.junit.jupiter.api.BeforeAll;
-// tag::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.grid.selenium.GridLauncherV3;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.grid.Main;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
@@ -36,46 +33,34 @@ import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-// end::snippet-in-doc[]
-
-@Disabled
-// tag::snippet-in-doc[]
 @ExtendWith(SeleniumJupiter.class)
 class RemoteWebDriverJupiterTest {
 
     @DriverUrl
     String url = "http://localhost:4444/wd/hub";
 
-    @DriverCapabilities
-    Capabilities capabilities = firefox();
-
     @BeforeAll
     static void setup() throws Exception {
-        // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
-
-        // Register Chrome in hub
+        // Resolve drivers
         WebDriverManager.chromedriver().setup();
-        GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=chrome", "-port", "5555" });
-
-        // Register Firefox in hub
         WebDriverManager.firefoxdriver().setup();
-        GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=firefox", "-port", "5556" });
+
+        // Start Selenium Grid in standalone mode
+        Main.main(new String[] { "standalone", "--port", "4444" });
+    }
+
+    @DriverCapabilities
+    Capabilities capabilities = new FirefoxOptions();
+
+    @Test
+    void testWithRemoteFirefox(RemoteWebDriver driver) {
+        exercise(driver);
     }
 
     @Test
     void testWithRemoteChrome(
             @DriverUrl("http://localhost:4444/wd/hub")
             @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
-        exercise(driver);
-    }
-
-    @Test
-    void testWithRemoteFirefox(RemoteWebDriver driver) {
         exercise(driver);
     }
 

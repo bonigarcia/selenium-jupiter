@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
@@ -38,8 +37,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.collections4.CollectionUtils.disjunction;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_LINUX;
-import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
-import static org.openqa.selenium.chrome.ChromeOptions.CAPABILITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
@@ -71,7 +68,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -79,10 +75,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
-import com.codeborne.selenide.SelenideDriver;
 import com.github.dockerjava.api.exception.DockerException;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserInstance;
 import io.github.bonigarcia.seljup.BrowserType;
@@ -193,15 +187,8 @@ public class DockerDriverHandler {
                         getConfig().getOutputFolder()));
             }
 
-            WebDriver webdriver;
-            if (browserType == ANDROID) {
-                webdriver = getDriverForAndroid(browserInstance, version,
-                        deviceName);
-            } else {
-                webdriver = getDriverForBrowser(browserInstance, version,
-                        createWebDriver);
-            }
-            return webdriver;
+            return getDriverForBrowser(browserInstance, version,
+                    createWebDriver);
 
         } catch (Exception e) {
             String errorMessage = format(
@@ -346,102 +333,12 @@ public class DockerDriverHandler {
         log.info("{}", novncUrl);
     }
 
-    private WebDriver getDriverForAndroid(BrowserInstance browserInstance,
-            String version, String deviceName)
-            throws DockerException, IOException, IllegalAccessException {
-        if (getConfig().isRecording() || getConfig().isRecordingWhenFailure()) {
-            filesInVideoFolder = asList(hostVideoFolder.listFiles());
-        }
-        if (version == null || version.isEmpty()) {
-            version = getConfig().getAndroidDefaultVersion();
-        }
-        String deviceNameCapability = deviceName != null
-                && !deviceName.isEmpty() ? deviceName
-                        : getConfig().getAndroidDeviceName();
-        String appiumUrl = startAndroidBrowser(version, deviceNameCapability);
-
-        DesiredCapabilities capabilities = getCapabilitiesForAndroid(
-                browserInstance, deviceNameCapability);
-        capabilities.setBrowserName(browserName);
-
-        log.info("Appium URL in Android device: {}", appiumUrl);
-        log.info("Android device name: {} -- Browser: {}", deviceNameCapability,
-                browserName);
-
-        int androidStartupTimeoutSec = getConfig()
-                .getAndroidDeviceStartupTimeoutSec();
-        if (0 < androidStartupTimeoutSec) {
-            log.debug("Waiting for Android device to start for {} seconds",
-                    androidStartupTimeoutSec);
-            try {
-                sleep(SECONDS.toMillis(androidStartupTimeoutSec));
-            } catch (InterruptedException ie) {
-                currentThread().interrupt();
-            }
-        }
-
-        int androidAppiumPingPeriodSec = getConfig()
-                .getAndroidAppiumPingPeriodSec();
-        if (androidAppiumPingPeriodSec < APPIUM_MIN_PING_SEC) {
-            androidAppiumPingPeriodSec = APPIUM_MIN_PING_SEC;
-        }
-        log.debug(
-                "Waiting for Appium creates session in Android device ... this might take long, please wait (retries each {} seconds)",
-                androidAppiumPingPeriodSec);
-
-        AndroidDriver<WebElement> androidDriver = null;
-        int androidDeviceTimeoutSec = getConfig().getAndroidDeviceTimeoutSec();
-        long endTimeMillis = currentTimeMillis()
-                + androidDeviceTimeoutSec * 1000;
-        do {
-            try {
-                androidDriver = new AndroidDriver<>(new URL(appiumUrl),
-                        capabilities);
-            } catch (Exception e) {
-                checkAndroidException(androidAppiumPingPeriodSec,
-                        androidDeviceTimeoutSec, endTimeMillis, e);
-            }
-        } while (androidDriver == null);
-        log.info("Android device ready {}", androidDriver);
-        updateName(browserInstance.getBrowserType(), version, androidDriver);
-
-        if (getConfig().isVnc()) {
-            logSessionId(androidDriver.getSessionId());
-            logNoVncUrl(androidNoVncUrl);
-        }
-        return androidDriver;
-    }
-
-    private void checkAndroidException(int androidAppiumPingPeriodSec,
-            int androidDeviceTimeoutSec, long endTimeMillis, Exception e) {
-        if (currentTimeMillis() > endTimeMillis) {
-            throw new SeleniumJupiterException(
-                    "Timeout (" + androidDeviceTimeoutSec
-                            + " seconds) waiting for Android device in Docker");
-        }
-        String errorMessage = getErrorMessage(e);
-        log.debug("Android device not ready: {}", errorMessage);
-        if (errorMessage.contains("Could not find package")) {
-            throw new SeleniumJupiterException(errorMessage);
-        }
-        waitMilliSecs(SECONDS.toMillis(androidAppiumPingPeriodSec));
-    }
-
     private void waitMilliSecs(long milliseconds) {
         try {
             sleep(milliseconds);
         } catch (InterruptedException ie) {
             currentThread().interrupt();
         }
-    }
-
-    private String getErrorMessage(Exception e) {
-        String errorMessage = getRootCause(e).getMessage();
-        int i = errorMessage.indexOf('\n');
-        if (i != -1) {
-            errorMessage = errorMessage.substring(0, i);
-        }
-        return errorMessage;
     }
 
     private void updateName(BrowserType browser, String imageVersion,
@@ -503,27 +400,6 @@ public class DockerDriverHandler {
             options.merge(optionalCapabilities.get());
         }
         capabilities.setCapability(browserInstance.getOptionsKey(), options);
-        log.trace("Using {}", capabilities);
-        return capabilities;
-    }
-
-    private DesiredCapabilities getCapabilitiesForAndroid(
-            BrowserInstance browserInstance, String deviceNameCapability)
-            throws IllegalAccessException, IOException {
-        DesiredCapabilities capabilities = browserInstance.getCapabilities();
-        capabilities.setCapability("browserName", browserName);
-        capabilities.setCapability("deviceName", deviceNameCapability);
-
-        Optional<Capabilities> optionalCapabilities = annotationsReader != null
-                ? annotationsReader.getCapabilities(parameter, testInstance)
-                : Optional.of(new DesiredCapabilities());
-        MutableCapabilities options = browserInstance.getDriverHandler()
-                .getOptions(parameter, testInstance);
-
-        if (optionalCapabilities.isPresent()) {
-            options.merge(optionalCapabilities.get());
-        }
-        capabilities.setCapability(CAPABILITY, options);
         log.trace("Using {}", capabilities);
         return capabilities;
     }
@@ -945,8 +821,7 @@ public class DockerDriverHandler {
         int count = 0;
         for (Parameter param : parameters) {
             Class<?> type = param.getType();
-            if (WebDriver.class.isAssignableFrom(type)
-                    || SelenideDriver.class.isAssignableFrom(type)) {
+            if (WebDriver.class.isAssignableFrom(type)) {
                 count++;
             } else if (type.isAssignableFrom(List.class)) {
                 DockerBrowser dockerBrowser = param

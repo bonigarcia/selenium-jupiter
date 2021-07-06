@@ -62,12 +62,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
-import com.codeborne.selenide.SelenideDriver;
 import com.google.gson.Gson;
 
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
-import io.github.bonigarcia.seljup.handler.AppiumDriverHandler;
 import io.github.bonigarcia.seljup.handler.ChromeDriverHandler;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
@@ -78,7 +76,6 @@ import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 import io.github.bonigarcia.seljup.handler.OtherDriverHandler;
 import io.github.bonigarcia.seljup.handler.RemoteDriverHandler;
 import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
-import io.github.bonigarcia.seljup.handler.SelenideDriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 
@@ -127,15 +124,11 @@ public class SeleniumExtension implements ParameterResolver,
                 RemoteDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.WebDriver",
                 RemoteDriverHandler.class);
-        addEntry(handlerMap, "io.appium.java_client.AppiumDriver",
-                AppiumDriverHandler.class);
         addEntry(handlerMap, "java.util.List", ListDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.phantomjs.PhantomJSDriver",
                 OtherDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.ie.InternetExplorerDriver",
                 InternetExplorerDriverHandler.class);
-        addEntry(handlerMap, "com.codeborne.selenide.SelenideDriver",
-                SelenideDriverHandler.class);
 
         addEntry(templateHandlerMap, "chrome",
                 "org.openqa.selenium.chrome.ChromeDriver");
@@ -176,7 +169,7 @@ public class SeleniumExtension implements ParameterResolver,
             ExtensionContext extensionContext) {
         Class<?> type = parameterContext.getParameter().getType();
         return (WebDriver.class.isAssignableFrom(type)
-                || type.equals(List.class) || type.equals(SelenideDriver.class))
+                || type.equals(List.class))
                 && !isTestTemplate(extensionContext);
     }
 
@@ -260,8 +253,7 @@ public class SeleniumExtension implements ParameterResolver,
             String contextId = extensionContext.getUniqueId();
             if (type.equals(RemoteWebDriver.class)
                     || type.equals(WebDriver.class) || type.equals(List.class)
-                    || (dockerBrowser.isPresent()
-                            && type.equals(SelenideDriver.class))) {
+                    || dockerBrowser.isPresent()) {
                 initHandlerForDocker(contextId, driverHandler);
             }
 
@@ -510,13 +502,7 @@ public class SeleniumExtension implements ParameterResolver,
                     conditionalQuitWebDriver(webDriverList.get(i), quitDriver);
                 }
             } else {
-                WebDriver webDriver;
-                if (object.getClass().getCanonicalName()
-                        .equals("com.codeborne.selenide.SelenideDriver")) {
-                    webDriver = ((SelenideDriver) object).getWebDriver();
-                } else {
-                    webDriver = (WebDriver) object;
-                }
+                WebDriver webDriver = (WebDriver) object;
                 if (screenshot) {
                     screenshotManager.makeScreenshot(webDriver,
                             driverHandler.getName());

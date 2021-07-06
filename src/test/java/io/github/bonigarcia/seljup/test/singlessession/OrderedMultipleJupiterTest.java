@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -71,7 +72,7 @@ class OrderedMultipleJupiterTest {
     }
 
     private void step2(RemoteWebDriver driver) {
-        WebElement about = driver.findElementByLinkText("About");
+        WebElement about = driver.findElement(By.linkText("About"));
         about.click();
         assertTrue(about.isDisplayed());
     }

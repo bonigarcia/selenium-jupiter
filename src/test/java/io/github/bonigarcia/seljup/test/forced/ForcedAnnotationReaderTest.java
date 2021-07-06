@@ -32,11 +32,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import io.appium.java_client.AppiumDriver;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
 import io.github.bonigarcia.seljup.config.Config;
-import io.github.bonigarcia.seljup.handler.AppiumDriverHandler;
 import io.github.bonigarcia.seljup.handler.ChromeDriverHandler;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
@@ -48,12 +46,6 @@ class ForcedAnnotationReaderTest {
 
     static Stream<Arguments> forcedTestProvider() {
         return Stream.of(
-                Arguments.of(AppiumDriverHandler.class,
-                        ForcedAppiumJupiterTest.class, AppiumDriver.class,
-                        "appiumNoCapabilitiesTest"),
-                Arguments.of(AppiumDriverHandler.class,
-                        ForcedAppiumJupiterTest.class, AppiumDriver.class,
-                        "appiumWithCapabilitiesTest"),
                 Arguments.of(ChromeDriverHandler.class,
                         ForcedBadChromeJupiterTest.class, ChromeDriver.class,
                         "chromeTest"),

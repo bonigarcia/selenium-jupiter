@@ -21,9 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
-import static org.openqa.selenium.remote.DesiredCapabilities.chrome;
-import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
-import static org.openqa.selenium.remote.DesiredCapabilities.operaBlink;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
@@ -37,6 +34,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -70,6 +70,7 @@ class ServerJupiterTest {
                 serverPort);
         RemoteWebDriver driver = new RemoteWebDriver(new URL(serverUrl),
                 capabilities);
+
         assertNotNull(driver);
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
@@ -80,7 +81,8 @@ class ServerJupiterTest {
     }
 
     static Stream<Capabilities> capabilitesProvider() {
-        return Stream.of(chrome(), firefox(), operaBlink());
+        return Stream.of(new ChromeOptions(), new FirefoxOptions(),
+                new OperaOptions());
     }
 
     String getFreePort() throws IOException {

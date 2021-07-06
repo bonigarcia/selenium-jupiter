@@ -8,25 +8,23 @@
     <version>4.0.0-SNAPSHOT</version>
 
     <properties>
-        <!-- Dependencies -->
+        <!-- Compile dependencies -->
         <slf4j.version>1.7.31</slf4j.version>
         <webdrivermanager.version>5.0.0-SNAPSHOT</webdrivermanager.version>
         <docker-java.version>3.2.11</docker-java.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <javalin.version>3.13.9</javalin.version>
         <guava.version>30.1.1-jre</guava.version>
         <commons-collections.version>4.4</commons-collections.version>
 
+        <!-- Provided dependencies -->
+        <junit.jupiter.version>5.7.2</junit.jupiter.version>
+        <selenium.version>4.0.0-beta-4</selenium.version>
+        <javalin.version>3.13.9</javalin.version>
+
         <!-- Test dependencies -->
         <logback.version>1.2.3</logback.version>
-        <junit.jupiter.version>5.7.2</junit.jupiter.version>
         <mockito.version>3.11.2</mockito.version>
         <assertj.version>3.20.2</assertj.version>
-        <selenium.version>3.141.59</selenium.version>
-        <appium-java-client.version>7.5.1</appium-java-client.version>
-        <phantomjsdriver.version>1.4.4</phantomjsdriver.version>
-        <selenide.version>5.22.3</selenide.version>
-        <htmlunit.driver.version>2.51.0</htmlunit.driver.version>
 
         <!-- Plugins -->
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
@@ -40,7 +38,7 @@
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <maven-site.version>3.9.1</maven-site.version>
 
-        <!-- Java 11 -->
+        <!-- Java -->
         <java.version>11</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -153,39 +151,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
-            <version>${javalin.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.appium</groupId>
-            <artifactId>java-client</artifactId>
-            <version>${appium-java-client.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>phantomjsdriver</artifactId>
-            <version>${phantomjsdriver.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>${selenide.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <version>${htmlunit.driver.version}</version>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>${javalin.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -204,27 +178,8 @@
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
+            <artifactId>selenium-grid</artifactId>
             <version>${selenium.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-http</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-io</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-util</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.advance;
 // tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.Browser.EDGE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openqa.selenium.PageLoadStrategy.EAGER;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ class EdgeWithGlobalOptionsJupiterTest {
     @Options
     EdgeOptions edgeOptions = new EdgeOptions();
     {
-        edgeOptions.setPageLoadStrategy("eager");
+        edgeOptions.setPageLoadStrategy(EAGER);
     }
 
     @Test

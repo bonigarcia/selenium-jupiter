@@ -17,12 +17,13 @@
 package io.github.bonigarcia.seljup.test.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openqa.selenium.net.PortProber.findFreePort;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.grid.selenium.GridLauncherV3;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
@@ -36,26 +37,19 @@ class TemplateRemoteTest {
 
     @BeforeAll
     static void setup() {
-        // Start hub
-        GridLauncherV3.main(new String[] { "-role", "hub", "-port", "4444" });
-
-        // Register Chrome in hub
+        // Resolve drivers
         WebDriverManager.chromedriver().setup();
-        GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=chrome", "-port", "5555" });
-
-        // Register Firefox in hub
         WebDriverManager.firefoxdriver().setup();
-        GridLauncherV3.main(new String[] { "-role", "node", "-hub",
-                "http://localhost:4444/grid/register", "-browser",
-                "browserName=firefox", "-port", "5556" });
 
-        // Register Chrome and Firefox in template
-        Browser chrome = BrowserBuilder.chrome()
-                .url("http://localhost:4444/wd/hub").build();
-        Browser firefox = BrowserBuilder.firefox()
-                .url("http://localhost:4444/wd/hub").build();
+        // Start Selenium Grid in standalone mode
+        int port = findFreePort();
+        Main.main(
+                new String[] { "standalone", "--port", String.valueOf(port) });
+
+        // Register Chrome and Firefox in the browser scenario for the template
+        String serverUrl = "http://localhost:" + port + "/wd/hub";
+        Browser chrome = BrowserBuilder.chrome().url(serverUrl).build();
+        Browser firefox = BrowserBuilder.firefox().url(serverUrl).build();
         seleniumJupiter.addBrowsers(chrome);
         seleniumJupiter.addBrowsers(firefox);
     }
