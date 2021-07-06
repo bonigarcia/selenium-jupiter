@@ -40,7 +40,7 @@ class DockerFirefoxJupiterTest {
 
     @Test
     void testVersion(
-            @DockerBrowser(type = FIREFOX, version = "84") RemoteWebDriver driver) {
+            @DockerBrowser(type = FIREFOX, version = "89") RemoteWebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

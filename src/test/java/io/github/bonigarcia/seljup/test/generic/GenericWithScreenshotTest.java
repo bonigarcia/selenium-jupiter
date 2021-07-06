@@ -44,7 +44,7 @@ class GenericWithScreenshotTest {
     void setup() {
         seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
-        seleniumJupiter.getConfig().setDefaultVersion("88.0");
+        seleniumJupiter.getConfig().setDefaultVersion("91.0");
     }
 
     @AfterAll
@@ -58,7 +58,7 @@ class GenericWithScreenshotTest {
         arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
 
-        imageFile = new File("screenshotGenericTest_arg0_CHROME_88.0_"
+        imageFile = new File("screenshotGenericTest_arg0_CHROME_91.0_"
                 + ((RemoteWebDriver) arg0).getSessionId() + ".png");
     }
 
