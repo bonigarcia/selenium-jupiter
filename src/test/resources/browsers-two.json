@@ -13,7 +13,7 @@
             "type": "chrome"
          },
          {
-            "type": "phantomjs"
+            "type": "firefox"
          }
       ]
    ]

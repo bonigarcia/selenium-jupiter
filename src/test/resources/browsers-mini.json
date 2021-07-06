@@ -2,7 +2,7 @@
    "browsers": [
       [
          {
-            "type": "phantomjs"
+            "type": "chrome"
          }
       ]
    ]
