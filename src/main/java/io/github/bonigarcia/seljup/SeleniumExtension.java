@@ -67,6 +67,7 @@ import com.google.gson.Gson;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.seljup.handler.ChromeDriverHandler;
+import io.github.bonigarcia.seljup.handler.ChromiumDriverHandler;
 import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.seljup.handler.EdgeDriverHandler;
 import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
@@ -111,7 +112,7 @@ public class SeleniumExtension implements ParameterResolver,
         addEntry(handlerMap, "org.openqa.selenium.chrome.ChromeDriver",
                 ChromeDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.chromium.ChromiumDriver",
-                ChromeDriverHandler.class);
+                ChromiumDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.firefox.FirefoxDriver",
                 FirefoxDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.edge.EdgeDriver",
