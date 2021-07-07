@@ -104,6 +104,7 @@ public class Server {
                     hubUrl[0] + requestPath.replace(serverPath, ""),
                     requestMethod, requestBody, timeoutSec);
             log.info("Server response: {}", response);
+            ctx.contentType("application/json");
             ctx.result(response);
 
             // DELETE /session/sessionId
