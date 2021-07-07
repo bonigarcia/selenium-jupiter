@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup.test.advance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openqa.selenium.PageLoadStrategy.EAGER;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -54,7 +55,7 @@ class EdgeAnnotationReaderTest {
         EdgeOptions edgeOptions = (EdgeOptions) annotationsReader
                 .getOptions(parameter, testInstance);
         assertThat(edgeOptions.getCapability("pageLoadStrategy"))
-                .isEqualTo("eager");
+                .isEqualTo(EAGER);
     }
 
     @Test
