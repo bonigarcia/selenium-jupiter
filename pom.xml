@@ -5,12 +5,12 @@
 
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.0-beta-1</version>
 
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>1.7.31</slf4j.version>
-        <webdrivermanager.version>5.0.0-SNAPSHOT</webdrivermanager.version>
+        <webdrivermanager.version>5.0.0-beta-1</webdrivermanager.version>
         <docker-java.version>3.2.11</docker-java.version>
         <retrofit.version>2.9.0</retrofit.version>
         <guava.version>30.1.1-jre</guava.version>
