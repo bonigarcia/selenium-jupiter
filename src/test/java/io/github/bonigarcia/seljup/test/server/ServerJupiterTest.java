@@ -21,11 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.openqa.selenium.net.PortProber.findFreePort;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
 import java.net.URL;
 import java.util.stream.Stream;
 
@@ -56,7 +56,7 @@ class ServerJupiterTest {
 
     @BeforeAll
     void startServer() throws IOException {
-        serverPort = getFreePort();
+        serverPort = String.valueOf(findFreePort());
         log.debug("Test is starting Selenium-Jupiter server at port {}",
                 serverPort);
         SeleniumJupiter.main(new String[] { "server", serverPort });
@@ -83,12 +83,6 @@ class ServerJupiterTest {
 
     static Stream<Capabilities> capabilitesProvider() {
         return Stream.of(new ChromeOptions(), new FirefoxOptions());
-    }
-
-    String getFreePort() throws IOException {
-        try (ServerSocket socket = new ServerSocket(0)) {
-            return String.valueOf(socket.getLocalPort());
-        }
     }
 
 }
