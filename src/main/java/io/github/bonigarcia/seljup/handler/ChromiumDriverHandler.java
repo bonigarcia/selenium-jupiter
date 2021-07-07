@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
+import static org.openqa.selenium.net.PortProber.findFreePort;
+
 import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.nio.file.Path;
@@ -58,6 +60,7 @@ public class ChromiumDriverHandler extends ChromeDriverHandler {
         if (browserPath.isPresent()) {
             chromeOptions.setBinary(browserPath.get().toString());
         }
+        chromeOptions.addArguments("--remote-debugging-port=" + findFreePort());
         return chromeOptions;
     }
 
