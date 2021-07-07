@@ -36,7 +36,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -83,8 +82,7 @@ class ServerJupiterTest {
     }
 
     static Stream<Capabilities> capabilitesProvider() {
-        return Stream.of(new ChromeOptions(), new FirefoxOptions(),
-                new OperaOptions());
+        return Stream.of(new ChromeOptions(), new FirefoxOptions());
     }
 
     String getFreePort() throws IOException {
