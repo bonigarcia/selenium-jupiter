@@ -180,6 +180,7 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-grid</artifactId>
             <version>${selenium.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
