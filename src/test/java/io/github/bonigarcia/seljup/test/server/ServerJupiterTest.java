@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -48,6 +49,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
  * @author Boni Garcia
  * @since 2.1.0
  */
+@Disabled
 @TestInstance(PER_CLASS)
 class ServerJupiterTest {
 
@@ -73,8 +75,10 @@ class ServerJupiterTest {
 
         assertNotNull(driver);
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+
+        String title = driver.getTitle();
+        log.debug("The title is {}", title);
+        assertThat(title).contains("JUnit 5 extension for Selenium");
 
         driver.quit();
         assertNull(driver.getSessionId());
