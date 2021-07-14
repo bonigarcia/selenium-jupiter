@@ -60,6 +60,9 @@ public class ChromiumDriverHandler extends ChromeDriverHandler {
         if (browserPath.isPresent()) {
             chromeOptions.setBinary(browserPath.get().toString());
         }
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
         chromeOptions.addArguments("--remote-debugging-port=" + findFreePort());
         return chromeOptions;
     }
