@@ -126,8 +126,6 @@ public class SeleniumExtension implements ParameterResolver,
         addEntry(handlerMap, "org.openqa.selenium.WebDriver",
                 RemoteDriverHandler.class);
         addEntry(handlerMap, "java.util.List", ListDriverHandler.class);
-        addEntry(handlerMap, "org.openqa.selenium.phantomjs.PhantomJSDriver",
-                OtherDriverHandler.class);
         addEntry(handlerMap, "org.openqa.selenium.ie.InternetExplorerDriver",
                 InternetExplorerDriverHandler.class);
 
@@ -143,8 +141,6 @@ public class SeleniumExtension implements ParameterResolver,
                 "org.openqa.selenium.safari.SafariDriver");
         addEntry(templateHandlerMap, "appium",
                 "io.appium.java_client.AppiumDriver");
-        addEntry(templateHandlerMap, "phantomjs",
-                "org.openqa.selenium.phantomjs.PhantomJSDriver");
         addEntry(templateHandlerMap, "iexplorer",
                 "org.openqa.selenium.ie.InternetExplorerDriver");
         addEntry(templateHandlerMap, "internet explorer",

@@ -62,10 +62,6 @@ public class BrowserBuilder {
         return new BrowserBuilder("appium");
     }
 
-    public static BrowserBuilder phantomjs() {
-        return new BrowserBuilder("phantomjs");
-    }
-
     public static BrowserBuilder iexplorer() {
         return new BrowserBuilder("iexplorer");
     }

@@ -26,7 +26,6 @@ import static io.github.bonigarcia.seljup.BrowserBuilder.firefoxInDocker;
 import static io.github.bonigarcia.seljup.BrowserBuilder.iexplorer;
 import static io.github.bonigarcia.seljup.BrowserBuilder.opera;
 import static io.github.bonigarcia.seljup.BrowserBuilder.operaInDocker;
-import static io.github.bonigarcia.seljup.BrowserBuilder.phantomjs;
 import static io.github.bonigarcia.seljup.BrowserBuilder.safari;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +42,7 @@ class BrowserBuilderTest {
     static Stream<BrowserBuilder> browserBuilderProvider() {
         return Stream.of(chrome(), firefox(), opera(), android(), appium(),
                 edge(), chromeInDocker(), firefoxInDocker(), operaInDocker(),
-                phantomjs(), safari(), iexplorer());
+                safari(), iexplorer());
     }
 
     @ParameterizedTest

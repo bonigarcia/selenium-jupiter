@@ -1313,7 +1313,4 @@ public class Config {
         return WebDriverManager.operadriver();
     }
 
-    public WebDriverManager phantomjs() {
-        return WebDriverManager.phantomjs();
-    }
 }
