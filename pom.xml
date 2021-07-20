@@ -22,7 +22,7 @@
         <javalin.version>3.13.9</javalin.version>
 
         <!-- Test dependencies -->
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.4</logback.version>
         <mockito.version>3.11.2</mockito.version>
         <assertj.version>3.20.2</assertj.version>
 
