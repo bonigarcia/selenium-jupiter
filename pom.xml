@@ -9,7 +9,7 @@
 
     <properties>
         <!-- Compile dependencies -->
-        <slf4j.version>1.7.31</slf4j.version>
+        <slf4j.version>1.7.32</slf4j.version>
         <webdrivermanager.version>5.0.0-SNAPSHOT</webdrivermanager.version>
         <docker-java.version>3.2.11</docker-java.version>
         <retrofit.version>2.9.0</retrofit.version>
