@@ -17,17 +17,17 @@
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.7.2</junit.jupiter.version>
         <selenium.version>4.0.0-beta-4</selenium.version>
-        <javalin.version>3.13.9</javalin.version>
+        <javalin.version>3.13.10</javalin.version>
 
         <!-- Test dependencies -->
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.4</logback.version>
         <mockito.version>3.11.2</mockito.version>
         <assertj.version>3.20.2</assertj.version>
 
         <!-- Plugins -->
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-asciidoctor-plugin.version>2.1.0</maven-asciidoctor-plugin.version>
+        <maven-asciidoctor-plugin.version>2.2.0</maven-asciidoctor-plugin.version>
         <asciidoctorj-pdf.version>1.6.0</asciidoctorj-pdf.version>
         <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
