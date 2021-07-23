@@ -65,29 +65,29 @@ public abstract class DriverHandler {
         this.annotationsReader = annotationsReader;
     }
 
-    public static Optional<DriverHandler> getInstance(BrowserType browserType,
-            Parameter parameter, ExtensionContext extensionContext,
-            Config config, AnnotationsReader annotationsReader) {
+    public static Optional<DriverHandler> getInstance(
+            Optional<BrowserType> browserType, Parameter parameter,
+            ExtensionContext extensionContext, Config config,
+            AnnotationsReader annotationsReader) {
         Class<?> type = parameter.getType();
-        if (type == ChromeDriver.class
-                || (browserType != null && (browserType == BrowserType.CHROME
-                        || browserType == BrowserType.CHROME_MOBILE))) {
+        if (type == ChromeDriver.class || (browserType.isPresent()
+                && browserType.get().isChromeBased())) {
             return Optional.of(new ChromeDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
-        } else if (type == FirefoxDriver.class || (browserType != null
-                && browserType == BrowserType.FIREFOX)) {
+        } else if (type == FirefoxDriver.class || (browserType.isPresent()
+                && browserType.get() == BrowserType.FIREFOX)) {
             return Optional.of(new FirefoxDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
-        } else if (type == OperaDriver.class
-                || (browserType != null && browserType == BrowserType.OPERA)) {
+        } else if (type == OperaDriver.class || (browserType.isPresent()
+                && browserType.get() == BrowserType.OPERA)) {
             return Optional.of(new OperaDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
-        } else if (type == EdgeDriver.class
-                || (browserType != null && browserType == BrowserType.EDGE)) {
+        } else if (type == EdgeDriver.class || (browserType.isPresent()
+                && browserType.get() == BrowserType.EDGE)) {
             return Optional.of(new EdgeDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
-        } else if (type == SafariDriver.class
-                || (browserType != null && browserType == BrowserType.SAFARI)) {
+        } else if (type == SafariDriver.class || (browserType.isPresent()
+                && browserType.get() == BrowserType.SAFARI)) {
             return Optional.of(new SafariDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
         } else if (type == InternetExplorerDriver.class) {

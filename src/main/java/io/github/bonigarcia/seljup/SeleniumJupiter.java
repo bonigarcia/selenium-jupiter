@@ -106,7 +106,6 @@ public class SeleniumJupiter implements ParameterResolver,
                 && !isTestTemplate(extensionContext);
     }
 
-    // TODO refactor this logic
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
@@ -120,7 +119,6 @@ public class SeleniumJupiter implements ParameterResolver,
 
         WebDriverManager wdm = null;
         Browser browser = null;
-        BrowserType browserType = null;
         int browserNumber = 1;
 
         Class<?> type = parameter.getType();
@@ -148,77 +146,25 @@ public class SeleniumJupiter implements ParameterResolver,
         if (isGeneric && !browserListMap.isEmpty()) {
             // Template
             browser = getBrowser(contextId, index);
-            if (browser != null) {
-                browserType = browser.toBrowserType();
-                wdm = WebDriverManager.getInstance(browserType.toBrowserName())
-                        .browserVersion(browser.getVersion())
-                        .remoteAddress(browser.getUrl());
-                if (url.isPresent()) {
-                    wdm.remoteAddress(url.get().toString());
-                }
-                if (browser.isDockerBrowser()) {
-                    wdm.browserInDocker();
-                }
-                if (browser.isAndroidBrowser()) {
-                    wdm.browserInDockerAndroid();
-                }
-            } else {
-                wdm = WebDriverManager.getInstance();
-            }
-
-            Optional<Capabilities> capabilities = getCapabilities(
-                    extensionContext, parameter, browserType);
-            if (capabilities.isPresent()) {
-                wdm.capabilities(capabilities.get());
-            }
+            wdm = getManagerForTemplate(extensionContext, parameter, browser,
+                    url);
 
         } else if (dockerBrowser.isPresent()) {
             // Docker
-            browserType = dockerBrowser.get().type();
-            String browserVersion = dockerBrowser.get().version();
-            wdm = WebDriverManager.getInstance(browserType.toBrowserName())
-                    .browserVersion(browserVersion).browserInDocker();
-            if (browserType == CHROME_MOBILE) {
-                wdm.browserInDockerAndroid();
-            }
-            if (dockerBrowser.get().recording()) {
-                wdm.enableRecording();
-            }
-            if (dockerBrowser.get().vnc()) {
-                wdm.enableVnc();
-            }
             if (dockerBrowser.get().size() > 1) {
                 browserNumber = dockerBrowser.get().size();
             }
-            Optional<Capabilities> capabilities = getCapabilities(
-                    extensionContext, parameter, browserType);
-            if (capabilities.isPresent()) {
-                wdm.capabilities(capabilities.get());
-            }
+            wdm = getManagerForDocker(extensionContext, parameter,
+                    dockerBrowser);
 
         } else if (url.isPresent() && caps.isPresent()) {
             // Remote
-            wdm = WebDriverManager.getInstance()
-                    .remoteAddress(url.get().toString())
-                    .capabilities(caps.get());
+            wdm = getManagerForRemote(url, caps);
 
         } else {
             // Local
-            if (type == List.class) {
-                throw new SeleniumJupiterException(
-                        "List<WebDriver> must be used together with @DockerBrowser");
-            }
-            if (isGeneric) {
-                wdm = WebDriverManager.getInstance();
-            } else {
-                wdm = WebDriverManager.getInstance(type);
-            }
-
-            Optional<Capabilities> capabilities = getCapabilities(
-                    extensionContext, parameter, browserType);
-            if (capabilities.isPresent()) {
-                wdm.capabilities(capabilities.get());
-            }
+            wdm = getManagerForLocal(extensionContext, parameter, type,
+                    isGeneric);
         }
 
         putManagerInMap(contextId, wdm);
@@ -226,9 +172,96 @@ public class SeleniumJupiter implements ParameterResolver,
         return browserNumber == 1 ? wdm.create() : wdm.create(browserNumber);
     }
 
+    private WebDriverManager getManagerForRemote(Optional<URL> url,
+            Optional<Capabilities> caps) {
+        WebDriverManager wdm;
+        wdm = WebDriverManager.getInstance().remoteAddress(url.get().toString())
+                .capabilities(caps.get());
+        return wdm;
+    }
+
+    private WebDriverManager getManagerForLocal(
+            ExtensionContext extensionContext, Parameter parameter,
+            Class<?> type, boolean isGeneric) {
+        WebDriverManager wdm;
+        if (type == List.class) {
+            throw new SeleniumJupiterException(
+                    "List<WebDriver> must be used together with @DockerBrowser");
+        }
+        if (isGeneric) {
+            wdm = WebDriverManager.getInstance();
+        } else {
+            wdm = WebDriverManager.getInstance(type);
+        }
+
+        Optional<Capabilities> capabilities = getCapabilities(extensionContext,
+                parameter, Optional.empty());
+        if (capabilities.isPresent()) {
+            wdm.capabilities(capabilities.get());
+        }
+        return wdm;
+    }
+
+    private WebDriverManager getManagerForDocker(
+            ExtensionContext extensionContext, Parameter parameter,
+            Optional<DockerBrowser> dockerBrowser) {
+        WebDriverManager wdm;
+        String browserVersion = dockerBrowser.get().version();
+        BrowserType browserType = dockerBrowser.get().type();
+        wdm = WebDriverManager.getInstance(browserType.toBrowserName())
+                .browserVersion(browserVersion).browserInDocker();
+        if (browserType == CHROME_MOBILE) {
+            wdm.browserInDockerAndroid();
+        }
+        if (dockerBrowser.get().recording()) {
+            wdm.enableRecording();
+        }
+        if (dockerBrowser.get().vnc()) {
+            wdm.enableVnc();
+        }
+        Optional<Capabilities> capabilities = getCapabilities(extensionContext,
+                parameter, Optional.of(browserType));
+        if (capabilities.isPresent()) {
+            wdm.capabilities(capabilities.get());
+        }
+        return wdm;
+    }
+
+    private WebDriverManager getManagerForTemplate(
+            ExtensionContext extensionContext, Parameter parameter,
+            Browser browser, Optional<URL> url) {
+        WebDriverManager wdm;
+        Optional<BrowserType> browserType = Optional.empty();
+        if (browser != null) {
+            browserType = Optional.of(browser.toBrowserType());
+            wdm = WebDriverManager
+                    .getInstance(browserType.get().toBrowserName())
+                    .browserVersion(browser.getVersion())
+                    .remoteAddress(browser.getUrl());
+            if (url.isPresent()) {
+                wdm.remoteAddress(url.get().toString());
+            }
+            if (browser.isDockerBrowser()) {
+                wdm.browserInDocker();
+            }
+            if (browser.isAndroidBrowser()) {
+                wdm.browserInDockerAndroid();
+            }
+        } else {
+            wdm = WebDriverManager.getInstance();
+        }
+
+        Optional<Capabilities> capabilities = getCapabilities(extensionContext,
+                parameter, browserType);
+        if (capabilities.isPresent()) {
+            wdm.capabilities(capabilities.get());
+        }
+        return wdm;
+    }
+
     private Optional<Capabilities> getCapabilities(
             ExtensionContext extensionContext, Parameter parameter,
-            BrowserType browserType) {
+            Optional<BrowserType> browserType) {
         Optional<DriverHandler> driverHandler = DriverHandler.getInstance(
                 browserType, parameter, extensionContext, config,
                 annotationsReader);

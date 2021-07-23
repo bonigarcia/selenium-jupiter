@@ -34,4 +34,8 @@ public enum BrowserType {
         }
     }
 
+    public boolean isChromeBased() {
+        return this == BrowserType.CHROME || this == BrowserType.CHROME_MOBILE;
+    }
+
 }
