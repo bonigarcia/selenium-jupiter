@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.generic;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
+@Disabled("Disable temporary")
 class GenericTest {
 
     @Test

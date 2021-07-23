@@ -16,14 +16,11 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
@@ -38,37 +35,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class EdgeDriverHandler extends DriverHandler {
 
-    public EdgeDriverHandler(Config config,
-            AnnotationsReader annotationsReader) {
-        super(config, annotationsReader);
-    }
-
     public EdgeDriverHandler(Parameter parameter, ExtensionContext context,
             Config config, AnnotationsReader annotationsReader) {
         super(parameter, context, config, annotationsReader);
     }
 
     @Override
-    public void resolve() {
-        try {
-            Optional<Object> testInstance = context.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            EdgeOptions edgeOptions = (EdgeOptions) getOptions(parameter,
-                    testInstance);
-            if (capabilities.isPresent()) {
-                edgeOptions.merge(capabilities.get());
-            }
-            object = new EdgeDriver(edgeOptions);
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    @Override
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
+    public Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance) {
         EdgeOptions edgeOptions = new EdgeOptions();
         EdgeOptions optionsFromAnnotatedField = annotationsReader
                 .getFromAnnotatedField(testInstance, Options.class,

@@ -28,33 +28,26 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@ExtendWith(SeleniumJupiter.class)
 class MixedDockerChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
     final Logger log = getLogger(lookup().lookupClass());
 
-    @BeforeEach
-    void setup() {
-        seleniumJupiter.getConfig().setVnc(true);
-    }
-
     @Test
-    void testMixed(@DockerBrowser(type = CHROME) RemoteWebDriver chrome,
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList,
-            @DockerBrowser(type = FIREFOX) RemoteWebDriver firefox)
+    void testMixed(@DockerBrowser(type = CHROME) WebDriver chrome,
+            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList,
+            @DockerBrowser(type = FIREFOX) WebDriver firefox)
             throws InterruptedException {
 
         ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS + 2);
@@ -74,7 +67,7 @@ class MixedDockerChromeJupiterTest {
     }
 
     private void exercise(ExecutorService executorService, CountDownLatch latch,
-            RemoteWebDriver driver) {
+            WebDriver driver) {
         executorService.submit(() -> {
             try {
                 log.info("Session id {}",

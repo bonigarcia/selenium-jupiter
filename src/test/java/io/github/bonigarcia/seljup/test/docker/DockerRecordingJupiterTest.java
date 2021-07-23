@@ -20,38 +20,27 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@TestInstance(PER_CLASS)
+@ExtendWith(SeleniumJupiter.class)
 class DockerRecordingJupiterTest {
-
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     final Logger log = getLogger(lookup().lookupClass());
 
     File recordingFile;
 
-    @BeforeEach
-    void setup() {
-        seleniumJupiter.getConfig().setRecording(true);
-    }
-
-    @AfterAll
+    @AfterEach
     void teardown() {
         if (recordingFile != null) {
             assertTrue(recordingFile.exists());
@@ -61,13 +50,17 @@ class DockerRecordingJupiterTest {
     }
 
     @Test
-    void testLatest(
-            @DockerBrowser(type = CHROME, version = "91.0") RemoteWebDriver arg0) {
-        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
+    void test(
+            @DockerBrowser(type = CHROME, recording = true) RemoteWebDriver driver)
+            throws InterruptedException {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
 
-        recordingFile = new File(
-                "testLatest_arg0_CHROME_91.0_" + arg0.getSessionId() + ".mp4");
+        // Uncomment this line to get a longer recording
+        // Thread.sleep(5000);
+
+        recordingFile = new File("chrome_" + driver.getSessionId() + ".mp4");
     }
 
 }

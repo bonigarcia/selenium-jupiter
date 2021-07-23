@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestInstance(PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-@Disabled
+@Disabled("Disable temporary")
 class FailureCreatesScreenshotTest {
 
     @RegisterExtension

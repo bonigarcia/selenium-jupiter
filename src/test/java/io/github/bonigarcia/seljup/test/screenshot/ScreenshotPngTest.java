@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -32,6 +33,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
+@Disabled("Disable temporary")
 class ScreenshotPngTest {
 
     @RegisterExtension

@@ -18,22 +18,14 @@ package io.github.bonigarcia.seljup.test.forced;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.opera.OperaDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@ExtendWith(SeleniumJupiter.class)
 class ForcedOperaJupiterTest {
-
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeEach
-    void setup() {
-        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
-    }
 
     @Test
     void operaTest(OperaDriver driver) {

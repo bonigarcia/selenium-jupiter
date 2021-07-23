@@ -42,6 +42,10 @@ public class BrowserBuilder {
         return new BrowserBuilder("chrome");
     }
 
+    public static BrowserBuilder chromeMobile() {
+        return new BrowserBuilder("chrome-mobile");
+    }
+
     public static BrowserBuilder firefox() {
         return new BrowserBuilder("firefox");
     }
@@ -56,10 +60,6 @@ public class BrowserBuilder {
 
     public static BrowserBuilder safari() {
         return new BrowserBuilder("safari");
-    }
-
-    public static BrowserBuilder appium() {
-        return new BrowserBuilder("appium");
     }
 
     public static BrowserBuilder iexplorer() {
@@ -82,36 +82,13 @@ public class BrowserBuilder {
         return new BrowserBuilder("edge-in-docker");
     }
 
-    public static BrowserBuilder iexplorerInDocker() {
-        return new BrowserBuilder("iexplorer-in-docker");
-    }
-
-    public static BrowserBuilder android() {
-        return new BrowserBuilder("android");
-    }
-
     public BrowserBuilder version(String version) {
         this.version = version;
         return this;
     }
 
-    public BrowserBuilder browserName(String browserName) {
-        this.browserName = browserName;
-        return this;
-    }
-
-    public BrowserBuilder deviceName(String deviceName) {
-        this.deviceName = deviceName;
-        return this;
-    }
-
     public BrowserBuilder url(String url) {
         this.url = url;
-        return this;
-    }
-
-    public BrowserBuilder cloud(String cloud) {
-        this.cloud = cloud;
         return this;
     }
 
@@ -121,8 +98,7 @@ public class BrowserBuilder {
     }
 
     public Browser build() {
-        return new Browser(type, version, browserName, deviceName, url, cloud,
-                volumes);
+        return new Browser(type, version, url, volumes);
     }
 
 }

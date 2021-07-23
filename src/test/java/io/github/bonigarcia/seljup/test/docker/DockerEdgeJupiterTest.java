@@ -35,8 +35,8 @@ class DockerEdgeJupiterTest {
 
     @BeforeAll
     static void setup() {
-        seleniumJupiter.getConfig().setVnc(true);
-        seleniumJupiter.getConfig().setRecording(true);
+        // TODO seleniumJupiter.getConfig().setVnc(true);
+        // TODO seleniumJupiter.getConfig().setRecording(true);
     }
 
     @Test

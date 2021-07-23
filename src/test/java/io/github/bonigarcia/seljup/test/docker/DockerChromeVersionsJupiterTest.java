@@ -18,7 +18,6 @@ package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 
-// end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
 // tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @Disabled("Redudant test, only needed for doc")
 // tag::snippet-in-doc[]
 @ExtendWith(SeleniumJupiter.class)
-class DockerChromeLatestJupiterTest {
+class DockerChromeVersionsJupiterTest {
 
     @Test
     void testLatestChrome(
@@ -54,7 +53,7 @@ class DockerChromeLatestJupiterTest {
 
     @Test
     void testUnstableChrome(
-            @DockerBrowser(type = CHROME, version = "unstable") WebDriver driver) {
+            @DockerBrowser(type = CHROME, version = "dev") WebDriver driver) {
         // Use development version of Chrome in this test
     }
 

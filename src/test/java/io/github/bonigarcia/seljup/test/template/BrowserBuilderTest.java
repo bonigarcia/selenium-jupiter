@@ -16,10 +16,9 @@
  */
 package io.github.bonigarcia.seljup.test.template;
 
-import static io.github.bonigarcia.seljup.BrowserBuilder.android;
-import static io.github.bonigarcia.seljup.BrowserBuilder.appium;
 import static io.github.bonigarcia.seljup.BrowserBuilder.chrome;
 import static io.github.bonigarcia.seljup.BrowserBuilder.chromeInDocker;
+import static io.github.bonigarcia.seljup.BrowserBuilder.chromeMobile;
 import static io.github.bonigarcia.seljup.BrowserBuilder.edge;
 import static io.github.bonigarcia.seljup.BrowserBuilder.firefox;
 import static io.github.bonigarcia.seljup.BrowserBuilder.firefoxInDocker;
@@ -40,16 +39,15 @@ import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 class BrowserBuilderTest {
 
     static Stream<BrowserBuilder> browserBuilderProvider() {
-        return Stream.of(chrome(), firefox(), opera(), android(), appium(),
-                edge(), chromeInDocker(), firefoxInDocker(), operaInDocker(),
-                safari(), iexplorer());
+        return Stream.of(chrome(), firefox(), opera(), edge(), safari(),
+                iexplorer(), chromeInDocker(), firefoxInDocker(),
+                operaInDocker(), chromeMobile());
     }
 
     @ParameterizedTest
     @MethodSource("browserBuilderProvider")
     void templateTest(BrowserBuilder browserBuilder) {
-        Browser browser = browserBuilder.version("").browserName("")
-                .deviceName("").build();
+        Browser browser = browserBuilder.build();
         assertThat(browser).isNotNull();
     }
 

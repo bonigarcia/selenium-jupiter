@@ -16,14 +16,11 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
@@ -38,11 +35,6 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class InternetExplorerDriverHandler extends DriverHandler {
 
-    public InternetExplorerDriverHandler(Config config,
-            AnnotationsReader annotationsReader) {
-        super(config, annotationsReader);
-    }
-
     public InternetExplorerDriverHandler(Parameter parameter,
             ExtensionContext context, Config config,
             AnnotationsReader annotationsReader) {
@@ -50,26 +42,8 @@ public class InternetExplorerDriverHandler extends DriverHandler {
     }
 
     @Override
-    public void resolve() {
-        try {
-            Optional<Object> testInstance = context.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            InternetExplorerOptions internetExplorerOptions = (InternetExplorerOptions) getOptions(
-                    parameter, testInstance);
-            if (capabilities.isPresent()) {
-                internetExplorerOptions.merge(capabilities.get());
-            }
-            object = new InternetExplorerDriver(internetExplorerOptions);
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    @Override
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
+    public Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance) {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         InternetExplorerOptions optionsFromAnnotatedField = annotationsReader
                 .getFromAnnotatedField(testInstance, Options.class,

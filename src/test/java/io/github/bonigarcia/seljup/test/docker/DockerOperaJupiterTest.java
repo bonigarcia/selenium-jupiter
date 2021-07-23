@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerOperaJupiterTest {
 
     @Test
-    void testOpera(@DockerBrowser(type = OPERA) RemoteWebDriver driver) {
+    void testOpera(@DockerBrowser(type = OPERA) WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

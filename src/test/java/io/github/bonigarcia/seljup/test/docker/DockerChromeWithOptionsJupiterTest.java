@@ -22,8 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.Options;
@@ -40,7 +40,7 @@ class DockerChromeWithOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest(@DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+    void webrtcTest(@DockerBrowser(type = CHROME) WebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())

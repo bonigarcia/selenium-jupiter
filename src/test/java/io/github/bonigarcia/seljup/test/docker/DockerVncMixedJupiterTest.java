@@ -19,37 +19,22 @@ package io.github.bonigarcia.seljup.test.docker;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-import java.io.File;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@TestInstance(PER_CLASS)
 class DockerVncMixedJupiterTest {
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    File htmlFile;
-
-    @BeforeAll
-    void setup() {
-        seleniumJupiter.getConfig().setVnc(true);
-        seleniumJupiter.getConfig().setUseDockerCache(false);
-    }
-
     @Test
-    void testHtmlVnc(@DockerBrowser(type = CHROME) RemoteWebDriver driver1,
-            @DockerBrowser(type = FIREFOX) RemoteWebDriver driver2)
-            throws InterruptedException {
+    void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver1,
+            @DockerBrowser(type = FIREFOX) WebDriver driver2) {
         driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
         driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
 
@@ -57,8 +42,6 @@ class DockerVncMixedJupiterTest {
                 .contains("JUnit 5 extension for Selenium");
         assertThat(driver2.getTitle())
                 .contains("JUnit 5 extension for Selenium");
-
-        // Thread.sleep(50000);
     }
 
 }

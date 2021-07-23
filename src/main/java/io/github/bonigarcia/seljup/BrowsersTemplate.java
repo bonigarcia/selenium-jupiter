@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.seljup;
 
+import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,20 +40,14 @@ public class BrowsersTemplate {
     public static class Browser {
         String type;
         String version;
-        String browserName;
-        String deviceName;
         String url;
-        String cloud;
         String[] volumes;
 
-        public Browser(String type, String version, String browserName,
-                String deviceName, String url, String cloud, String[] volumes) {
+        public Browser(String type, String version, String url,
+                String[] volumes) {
             this.type = type;
             this.version = version;
-            this.browserName = browserName;
-            this.deviceName = deviceName;
             this.url = url;
-            this.cloud = cloud;
             this.volumes = volumes;
         }
 
@@ -72,21 +68,6 @@ public class BrowsersTemplate {
             return version;
         }
 
-        public String getVersionForRemote() {
-            if (version != null && version.equalsIgnoreCase("latest")) {
-                return "";
-            }
-            return version;
-        }
-
-        public String getBrowserName() {
-            return browserName;
-        }
-
-        public String getDeviceName() {
-            return deviceName;
-        }
-
         public String getUrl() {
             return url;
         }
@@ -95,18 +76,14 @@ public class BrowsersTemplate {
             this.url = url;
         }
 
-        public String getCloud() {
-            return cloud;
-        }
-
-        public void setCloud(String cloud) {
-            this.cloud = cloud;
-        }
-
         public BrowserType toBrowserType() {
-            return BrowserType
-                    .valueOf(getType().replace(IN_DOCKER, "").toUpperCase());
+            return BrowserType.valueOf(getType().replace(IN_DOCKER, "")
+                    .replace("-", "_").toUpperCase());
 
+        }
+
+        public boolean isAndroidBrowser() {
+            return toBrowserType() == CHROME_MOBILE;
         }
 
         public boolean isDockerBrowser() {

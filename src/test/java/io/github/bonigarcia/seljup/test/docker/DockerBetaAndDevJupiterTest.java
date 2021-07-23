@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,52 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
-import static io.github.bonigarcia.seljup.BrowserType.IEXPLORER;
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
-//end::snippet-in-doc[]
 import org.junit.jupiter.api.Disabled;
-//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-//end::snippet-in-doc[]
-@Disabled("Internet Explorer in Docker not available in CI, only needed for doc")
-//tag::snippet-in-doc[]
-class DockerIExplorerJupiterTest {
+@Disabled("Redudant test in CI")
+@ExtendWith(SeleniumJupiter.class)
+class DockerBetaAndDevJupiterTest {
 
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeAll
-    static void setup() {
-        seleniumJupiter.getConfig().setVnc(true);
-        seleniumJupiter.getConfig().setRecording(true);
+    @Test
+    void testChromeBeta(
+            @DockerBrowser(type = CHROME, version = "beta") WebDriver driver) {
+        exercise(driver);
     }
 
     @Test
-    void testIExplorer(@DockerBrowser(type = IEXPLORER) WebDriver driver) {
+    void testChromeDev(
+            @DockerBrowser(type = CHROME, version = "dev") WebDriver driver) {
+        exercise(driver);
+    }
+
+    @Test
+    void testFirefoxBeta(
+            @DockerBrowser(type = FIREFOX, version = "beta") WebDriver driver) {
+        exercise(driver);
+    }
+
+    @Test
+    void testFirefoxDev(
+            @DockerBrowser(type = FIREFOX, version = "dev") WebDriver driver) {
+        exercise(driver);
+    }
+
+    private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
+
+        // Thread.sleep(50000);
     }
 
 }
-//end::snippet-in-doc[]

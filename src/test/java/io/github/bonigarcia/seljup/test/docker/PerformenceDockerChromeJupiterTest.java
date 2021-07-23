@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -45,7 +46,7 @@ class PerformenceDockerChromeJupiterTest {
 
     @Test
     void testPerformance(
-            @DockerBrowser(type = CHROME, version = "91.0", size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
+            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList)
             throws InterruptedException {
 
         ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS);

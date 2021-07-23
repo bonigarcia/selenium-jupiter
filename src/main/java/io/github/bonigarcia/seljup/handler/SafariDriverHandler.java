@@ -21,8 +21,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
@@ -43,33 +41,16 @@ public class SafariDriverHandler extends DriverHandler {
     }
 
     @Override
-    public void resolve() {
-        try {
-            Optional<Object> testInstance = context.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            SafariOptions safariOptions = (SafariOptions) getOptions(parameter,
-                    testInstance);
-            if (capabilities.isPresent()) {
-                safariOptions.merge(capabilities.get());
-            }
-            object = new SafariDriver(safariOptions);
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    @Override
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance) throws IllegalAccessException {
-        SafariOptions safariOptions = new SafariOptions();
+    public Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance) {
+        SafariOptions options = new SafariOptions();
         SafariOptions optionsFromAnnotatedField = annotationsReader
                 .getFromAnnotatedField(testInstance, Options.class,
                         SafariOptions.class);
         if (optionsFromAnnotatedField != null) {
-            safariOptions = optionsFromAnnotatedField;
+            options = optionsFromAnnotatedField;
         }
-        return safariOptions;
+        return options;
     }
 
 }

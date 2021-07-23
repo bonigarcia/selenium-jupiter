@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerChromeJupiterTest {
 
     @Test
-    void testChrome(@DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+    void testChrome(@DockerBrowser(type = CHROME) WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
@@ -39,7 +39,7 @@ class DockerChromeJupiterTest {
 
     @Test
     void testChromeWithVersion(
-            @DockerBrowser(type = CHROME, version = "91.0") RemoteWebDriver driver) {
+            @DockerBrowser(type = CHROME, version = "90.0") WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

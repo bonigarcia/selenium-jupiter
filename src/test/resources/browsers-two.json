@@ -7,14 +7,6 @@
          {
             "type": "firefox-in-docker"
          }
-      ],
-      [
-         {
-            "type": "chrome"
-         },
-         {
-            "type": "firefox"
-         }
       ]
    ]
 }

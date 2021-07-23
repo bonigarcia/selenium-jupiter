@@ -40,7 +40,7 @@ class TemplateRegisterRemoteTest {
 
     @BeforeAll
     static void setup() {
-        Browser chrome = BrowserBuilder.chrome().build();
+        Browser chrome = BrowserBuilder.chromeMobile().build();
         seleniumJupiter.addBrowsers(chrome);
     }
 

@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.constructor;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,6 +27,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
+@Disabled("Disable temporary")
 class ChromeInConstructorJupiterTest {
 
     ChromeDriver driver;

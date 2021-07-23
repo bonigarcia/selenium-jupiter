@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.Preferences;
@@ -33,7 +33,7 @@ class DockerFirefoxWithOptionsJupiterTest {
 
     @Test
     void webrtcTest(@Preferences({ "media.navigator.permission.disabled=true",
-            "media.navigator.streams.fake=true" }) @DockerBrowser(type = FIREFOX) RemoteWebDriver driver) {
+            "media.navigator.streams.fake=true" }) @DockerBrowser(type = FIREFOX) WebDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())

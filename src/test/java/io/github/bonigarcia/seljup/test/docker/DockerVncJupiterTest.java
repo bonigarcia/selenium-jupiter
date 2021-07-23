@@ -19,32 +19,25 @@ package io.github.bonigarcia.seljup.test.docker;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@ExtendWith(SeleniumJupiter.class)
 class DockerVncJupiterTest {
 
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeAll
-    static void setup() {
-        seleniumJupiter.getConfig().setVnc(true);
-    }
-
     @Test
-    void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver)
+    void test(@DockerBrowser(type = CHROME, vnc = true) WebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 
-        // Thread.sleep(50000);
+        // Uncomment this line to have more time for manually inspection
+        // Thread.sleep(30000);
     }
 
 }

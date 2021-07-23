@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.template;
 
-import static io.github.bonigarcia.seljup.BrowserBuilder.chromeInDocker;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -24,6 +23,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 
+import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -40,8 +40,8 @@ class TemplateRegisterDockerTest {
 
     @BeforeAll
     static void setup() {
-        Browser chrome = chromeInDocker().build();
-        seleniumJupiter.addBrowsers(chrome);
+        Browser chromeMobile = BrowserBuilder.chromeMobile().build();
+        seleniumJupiter.addBrowsers(chromeMobile);
     }
 
     @TestTemplate

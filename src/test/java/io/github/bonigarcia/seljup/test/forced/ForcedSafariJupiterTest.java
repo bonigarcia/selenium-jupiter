@@ -20,22 +20,14 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@ExtendWith(SeleniumJupiter.class)
 class ForcedSafariJupiterTest {
-
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeEach
-    void setup() {
-        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
-    }
 
     @Test
     void safariTest(SafariDriver driver) {

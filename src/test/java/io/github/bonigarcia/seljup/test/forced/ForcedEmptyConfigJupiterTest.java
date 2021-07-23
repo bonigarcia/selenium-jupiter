@@ -36,7 +36,6 @@ class ForcedEmptyConfigJupiterTest {
     @BeforeAll
     static void setup() throws Exception {
         Config config = seleniumJupiter.getConfig();
-        config.setExceptionWhenNoDriver(false);
         for (Method method : config.getClass().getMethods()) {
             if (method.getName().startsWith("set")) {
                 if (method.getParameterTypes()[0].equals(String.class)) {

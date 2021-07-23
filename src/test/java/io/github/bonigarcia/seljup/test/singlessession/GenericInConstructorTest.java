@@ -18,6 +18,7 @@ package io.github.bonigarcia.seljup.test.singlessession;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +28,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 
 @ExtendWith(SeleniumJupiter.class)
 @SingleSession
+@Disabled("Disable temporary")
 class GenericInConstructorTest {
 
     WebDriver driver;

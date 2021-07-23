@@ -25,7 +25,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -45,62 +44,69 @@ import org.slf4j.Logger;
  */
 public class AnnotationsReader {
 
-    final Logger log = getLogger(lookup().lookupClass());
+    static final Logger log = getLogger(lookup().lookupClass());
 
     public Optional<Capabilities> getCapabilities(Parameter parameter,
-            Optional<Object> testInstance) throws IllegalAccessException {
+            Optional<Object> testInstance) {
         Optional<Capabilities> out = empty();
-        DriverCapabilities driverCapabilities = parameter
-                .getAnnotation(DriverCapabilities.class);
+        try {
+            DriverCapabilities driverCapabilities = parameter
+                    .getAnnotation(DriverCapabilities.class);
 
-        Capabilities capabilities = null;
-        if (driverCapabilities != null) {
-            // Search first DriverCapabilities annotation in parameter
-            capabilities = new DesiredCapabilities();
-            for (String capability : driverCapabilities.value()) {
-                Optional<List<Object>> keyValue = getKeyValue(capability);
-                if (keyValue.isPresent()) {
-                    ((DesiredCapabilities) capabilities).setCapability(
-                            keyValue.get().get(0).toString(),
-                            keyValue.get().get(1));
+            Capabilities capabilities = null;
+            if (driverCapabilities != null) {
+                // Search first DriverCapabilities annotation in parameter
+                capabilities = new DesiredCapabilities();
+                for (String capability : driverCapabilities.value()) {
+                    Optional<List<Object>> keyValue = getKeyValue(capability);
+                    if (keyValue.isPresent()) {
+                        ((DesiredCapabilities) capabilities).setCapability(
+                                keyValue.get().get(0).toString(),
+                                keyValue.get().get(1));
+                    }
+                }
+                out = of(capabilities);
+            } else {
+                // If not, search DriverCapabilities in any field
+                Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                        testInstance, DriverCapabilities.class);
+                if (annotatedField.isPresent()) {
+                    capabilities = (Capabilities) annotatedField.get();
+                    out = of(capabilities);
                 }
             }
-            out = of(capabilities);
-        } else {
-            // If not, search DriverCapabilities in any field
-            Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                    testInstance, DriverCapabilities.class);
-            if (annotatedField.isPresent()) {
-                capabilities = (Capabilities) annotatedField.get();
-                out = of(capabilities);
-            }
+        } catch (Exception e) {
+            log.warn("Exception getting capabilities", e);
         }
         return out;
     }
 
     public Optional<URL> getUrl(Parameter parameter,
-            Optional<Object> testInstance, String seleniumServerUrl)
-            throws MalformedURLException, IllegalAccessException {
+            Optional<Object> testInstance, String seleniumServerUrl) {
         Optional<URL> out = empty();
 
-        if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
-            out = of(new URL(seleniumServerUrl));
-        } else {
-            String urlValue = null;
-            DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
-            if (driverUrl != null) {
-                // Search first DriverUrl annotation in parameter
-                urlValue = driverUrl.value();
-                out = of(new URL(urlValue));
+        try {
+            if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
+                out = of(new URL(seleniumServerUrl));
             } else {
-                // If not, search DriverUrl in any field
-                Optional<Object> annotatedField = seekFieldAnnotatedWith(
-                        testInstance, DriverUrl.class);
-                if (annotatedField.isPresent()) {
-                    urlValue = (String) annotatedField.get();
+                String urlValue = null;
+                DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
+                if (driverUrl != null) {
+                    // Search first DriverUrl annotation in parameter
+                    urlValue = driverUrl.value();
                     out = of(new URL(urlValue));
+                } else {
+                    // If not, search DriverUrl in any field
+                    Optional<Object> annotatedField = seekFieldAnnotatedWith(
+                            testInstance, DriverUrl.class);
+                    if (annotatedField.isPresent()) {
+                        urlValue = (String) annotatedField.get();
+                        out = of(new URL(urlValue));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.warn("Exception getting URL", e);
         }
         return out;
     }
@@ -135,10 +141,10 @@ public class AnnotationsReader {
 
     public <T> T getFromAnnotatedField(Optional<Object> testInstance,
             Class<? extends Annotation> annotationClass,
-            Class<T> capabilitiesClass) throws IllegalAccessException {
+            Class<T> capabilitiesClass) {
         if (capabilitiesClass == null) {
             throw new SeleniumJupiterException(
-                    "The parameter capabilitiesClass must not be null.");
+                    "The parameter capabilitiesClass must not be null");
         }
         return seekFieldAnnotatedWith(testInstance, annotationClass,
                 capabilitiesClass).orElse(null);
@@ -146,33 +152,37 @@ public class AnnotationsReader {
 
     public Optional<Object> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
-            Class<? extends Annotation> annotation)
-            throws IllegalAccessException {
+            Class<? extends Annotation> annotation) {
         return seekFieldAnnotatedWith(testInstance, annotation, null);
     }
 
     private static <T> Optional<T> seekFieldAnnotatedWith(
             Optional<Object> testInstance,
-            Class<? extends Annotation> annotation, Class<T> annotatedType)
-            throws IllegalAccessException {
+            Class<? extends Annotation> annotation, Class<T> annotatedType) {
         Optional<T> out = empty();
-        if (testInstance.isPresent()) {
-            Object object = testInstance.get();
-            Class<? extends Object> clazz = object.getClass();
-            out = getField(annotation, annotatedType, clazz, object);
-            if (!out.isPresent()) {
-                // If annotation not present in class, look for it in the
-                // parent(s)
-                Class<?> superclass;
-                while ((superclass = clazz.getSuperclass()) != Object.class) {
-                    out = getField(annotation, annotatedType, superclass,
-                            object);
-                    if (out.isPresent()) {
-                        break;
+        try {
+            if (testInstance.isPresent()) {
+                Object object = testInstance.get();
+                Class<? extends Object> clazz = object.getClass();
+                out = getField(annotation, annotatedType, clazz, object);
+                if (!out.isPresent()) {
+                    // If annotation not present in class, look for it in the
+                    // parent(s)
+                    Class<?> superclass;
+                    while ((superclass = clazz
+                            .getSuperclass()) != Object.class) {
+                        out = getField(annotation, annotatedType, superclass,
+                                object);
+                        if (out.isPresent()) {
+                            break;
+                        }
+                        clazz = clazz.getSuperclass();
                     }
-                    clazz = clazz.getSuperclass();
                 }
             }
+        } catch (Exception e) {
+            log.warn("Exception seeking field in {} annotated with {}",
+                    annotatedType, annotation, e);
         }
         return out;
     }

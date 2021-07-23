@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -38,6 +39,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 @ExtendWith(SeleniumJupiter.class)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
+@Disabled("Disable temporary")
 class OrderedMultipleJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());

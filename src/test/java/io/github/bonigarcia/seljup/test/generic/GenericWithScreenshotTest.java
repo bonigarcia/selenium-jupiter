@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -33,6 +34,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
+@Disabled("Disable temporary")
 class GenericWithScreenshotTest {
 
     @RegisterExtension
@@ -44,7 +46,7 @@ class GenericWithScreenshotTest {
     void setup() {
         seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
-        seleniumJupiter.getConfig().setDefaultVersion("91.0");
+        // TODO seleniumJupiter.getConfig().setDefaultVersion("91.0");
     }
 
     @AfterAll

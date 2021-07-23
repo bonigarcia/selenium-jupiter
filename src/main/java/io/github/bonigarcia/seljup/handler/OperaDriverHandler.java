@@ -18,14 +18,11 @@ package io.github.bonigarcia.seljup.handler;
 
 import static java.util.Arrays.stream;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
@@ -43,38 +40,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class OperaDriverHandler extends DriverHandler {
 
-    public OperaDriverHandler(Config config,
-            AnnotationsReader annotationsReader) {
-        super(config, annotationsReader);
-    }
-
     public OperaDriverHandler(Parameter parameter, ExtensionContext context,
             Config config, AnnotationsReader annotationsReader) {
         super(parameter, context, config, annotationsReader);
     }
 
     @Override
-    public void resolve() {
-        try {
-            Optional<Object> testInstance = context.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            OperaOptions operaOptions = (OperaOptions) getOptions(parameter,
-                    testInstance);
-            if (capabilities.isPresent()) {
-                operaOptions.merge(capabilities.get());
-            }
-
-            object = new OperaDriver(operaOptions);
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    @Override
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
+    public Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance) {
         OperaOptions operaOptions = new OperaOptions();
 
         if (parameter != null) {

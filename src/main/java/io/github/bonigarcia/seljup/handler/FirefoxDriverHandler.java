@@ -20,15 +20,12 @@ import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.stream;
 
-import java.io.IOException;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
@@ -48,37 +45,14 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class FirefoxDriverHandler extends DriverHandler {
 
-    public FirefoxDriverHandler(Config config,
-            AnnotationsReader annotationsReader) {
-        super(config, annotationsReader);
-    }
-
     public FirefoxDriverHandler(Parameter parameter, ExtensionContext context,
             Config config, AnnotationsReader annotationsReader) {
         super(parameter, context, config, annotationsReader);
     }
 
     @Override
-    public void resolve() {
-        try {
-            Optional<Object> testInstance = context.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            FirefoxOptions firefoxOptions = (FirefoxOptions) getOptions(
-                    parameter, testInstance);
-            if (capabilities.isPresent()) {
-                firefoxOptions.merge(capabilities.get());
-            }
-            object = new FirefoxDriver(firefoxOptions);
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    @Override
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
+    public Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance) {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
 
         if (parameter != null) {

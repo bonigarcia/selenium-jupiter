@@ -22,26 +22,26 @@ import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
-import io.github.bonigarcia.seljup.DockerContainer;
-import io.github.bonigarcia.seljup.DockerService;
-import io.github.bonigarcia.seljup.SeleniumJupiterException;
+import io.github.bonigarcia.seljup.BrowserType;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
- * Abstract resolver.
+ * Abstract driver handler.
  *
  * @author Boni Garcia
  * @since 1.2.0
@@ -53,59 +53,82 @@ public abstract class DriverHandler {
     protected Config config;
     protected AnnotationsReader annotationsReader;
     protected Parameter parameter;
-    protected ExtensionContext context;
-    protected Map<String, DockerContainer> containerMap;
-    protected DockerService dockerService;
-    protected Object object;
+    protected ExtensionContext extensionContext;
 
-    public abstract void resolve();
-
-    protected DriverHandler(Config config,
+    protected DriverHandler(Parameter parameter,
+            ExtensionContext extensionContext, Config config,
             AnnotationsReader annotationsReader) {
+        this.parameter = parameter;
+        this.extensionContext = extensionContext;
         this.config = config;
         this.annotationsReader = annotationsReader;
     }
 
-    protected DriverHandler(Parameter parameter, ExtensionContext context,
+    public static Optional<DriverHandler> getInstance(BrowserType browserType,
+            Parameter parameter, ExtensionContext extensionContext,
             Config config, AnnotationsReader annotationsReader) {
-        this(config, annotationsReader);
-        this.parameter = parameter;
-        this.context = context;
-    }
-
-    public Object getObject() {
-        return object;
-    }
-
-    public String getName() {
-        String name = "";
-        Optional<Method> testMethod = context.getTestMethod();
-        if (testMethod.isPresent()) {
-            name = testMethod.get().getName() + "_";
-        } else {
-            Optional<Class<?>> testClass = context.getTestClass();
-            if (testClass.isPresent()) {
-                name = testClass.get().getSimpleName() + "_";
-            }
+        Class<?> type = parameter.getType();
+        if (type == ChromeDriver.class
+                || (browserType != null && (browserType == BrowserType.CHROME
+                        || browserType == BrowserType.CHROME_MOBILE))) {
+            return Optional.of(new ChromeDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
+        } else if (type == FirefoxDriver.class || (browserType != null
+                && browserType == BrowserType.FIREFOX)) {
+            return Optional.of(new FirefoxDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
+        } else if (type == OperaDriver.class
+                || (browserType != null && browserType == BrowserType.OPERA)) {
+            return Optional.of(new OperaDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
+        } else if (type == EdgeDriver.class
+                || (browserType != null && browserType == BrowserType.EDGE)) {
+            return Optional.of(new EdgeDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
+        } else if (type == SafariDriver.class
+                || (browserType != null && browserType == BrowserType.SAFARI)) {
+            return Optional.of(new SafariDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
+        } else if (type == InternetExplorerDriver.class) {
+            return Optional.of(new SafariDriverHandler(parameter, extensionContext, config,
+                    annotationsReader));
         }
-        name += parameter.getName() + "_" + object.getClass().getSimpleName();
-        if (RemoteWebDriver.class.isAssignableFrom(object.getClass())) {
-            name += "_" + ((RemoteWebDriver) object).getSessionId();
-        }
-        return name;
+        return Optional.empty();
     }
 
-    public boolean throwExceptionWhenNoDriver() {
-        return getConfig().isExceptionWhenNoDriver();
+    public abstract Capabilities getOptions(Parameter parameter,
+            Optional<Object> testInstance);
+
+    public Capabilities getCapabilities() {
+        Optional<Object> testInstance = extensionContext.getTestInstance();
+        Optional<Capabilities> capabilities = annotationsReader
+                .getCapabilities(parameter, testInstance);
+        Capabilities options = getOptions(parameter, testInstance);
+
+        if (capabilities.isPresent()) {
+            options.merge(capabilities.get());
+        }
+
+        return options;
     }
 
-    public void handleException(Exception e) {
-        if (throwExceptionWhenNoDriver()) {
-            log.trace("Internal error in selenium-jupiter", e);
-            throw new SeleniumJupiterException(e);
-        }
-        log.warn("Error creating WebDriver object", e);
-    }
+//    public String getName() {
+//        String name = "";
+//        Optional<Method> testMethod = context.getTestMethod();
+//        if (testMethod.isPresent()) {
+//            name = testMethod.get().getName() + "_";
+//        } else {
+//            Optional<Class<?>> testClass = context.getTestClass();
+//            if (testClass.isPresent()) {
+//                name = testClass.get().getSimpleName() + "_";
+//            }
+//        }
+//        name += parameter.getName() + "_" + object.getClass().getSimpleName();
+//        if (RemoteWebDriver.class.isAssignableFrom(object.getClass())) {
+//            name += "_" + ((RemoteWebDriver) object).getSessionId();
+//        }
+//        return name;
+//    }
 
     public File getExtension(String fileName) {
         File file = new File(fileName);
@@ -123,28 +146,6 @@ public abstract class DriverHandler {
             log.warn("There was a problem handling extension", e);
         }
         return file;
-    }
-
-    public MutableCapabilities getOptions(Parameter parameter,
-            Optional<Object> testInstance)
-            throws IOException, IllegalAccessException {
-        throw new IllegalAccessException("Not implemented");
-    }
-
-    public void cleanup() {
-        // Nothing by default
-    }
-
-    public void setContainerMap(Map<String, DockerContainer> containerMap) {
-        this.containerMap = containerMap;
-    }
-
-    public void setDockerService(DockerService dockerService) {
-        this.dockerService = dockerService;
-    }
-
-    public Config getConfig() {
-        return config;
     }
 
 }

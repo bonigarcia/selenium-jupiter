@@ -36,13 +36,6 @@ class AnnotationsReaderTest {
     Optional<Object> testInstance = Optional.of(new ClassWithOptions());
 
     @Test
-    void testThrowsExceptionWithNullTestInstance() throws Exception {
-        assertThrows(NullPointerException.class, () -> {
-            annotationsReader.getOptionsFromAnnotatedField(null, Options.class);
-        });
-    }
-
-    @Test
     void testThrowsExceptionWithNullCapabilitiesClass() throws Exception {
         assertThrows(SeleniumJupiterException.class, () -> {
             annotationsReader.getFromAnnotatedField(testInstance, Options.class,

@@ -19,6 +19,9 @@ package io.github.bonigarcia.seljup.test.basic;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+// end::snippet-in-doc[]
+import org.junit.jupiter.api.Disabled;
+// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -35,6 +38,9 @@ class ChromeJupiterTest {
                 .contains("JUnit 5 extension for Selenium");
     }
 
+    // end::snippet-in-doc[]
+    @Disabled("Redudant test for CI suite")
+    // tag::snippet-in-doc[]
     @Test
     void testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
         driver1.get("http://www.seleniumhq.org/");

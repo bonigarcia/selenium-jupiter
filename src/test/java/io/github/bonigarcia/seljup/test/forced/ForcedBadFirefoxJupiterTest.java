@@ -18,26 +18,18 @@ package io.github.bonigarcia.seljup.test.forced;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@ExtendWith(SeleniumJupiter.class)
 class ForcedBadFirefoxJupiterTest {
 
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeEach
-    void setup() {
-        seleniumJupiter.getConfig().setExceptionWhenNoDriver(false);
-    }
-
     @Test
-    void firefoxTest(@Binary("/bad/path/to/firefox") FirefoxDriver driver) {
+    void test(@Binary("/bad/path/to/firefox") FirefoxDriver driver) {
         assertThat(driver).isNull();
     }
 

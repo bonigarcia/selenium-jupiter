@@ -36,13 +36,13 @@ public @interface DockerBrowser {
 
     public String version() default "";
 
-    public int size() default 0;
+    public int size() default 1;
 
-    public String deviceName() default "";
+    public boolean recording() default false;
+
+    public boolean vnc() default false;
 
     public String url() default "";
-
-    public String browserName() default "";
 
     public String[] volumes() default {};
 

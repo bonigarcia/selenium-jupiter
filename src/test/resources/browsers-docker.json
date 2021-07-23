@@ -21,7 +21,7 @@
       [
          {
             "type": "chrome-in-docker",
-            "version": "unstable"
+            "version": "dev"
          }
       ]
    ]

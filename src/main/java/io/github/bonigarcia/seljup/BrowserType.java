@@ -17,13 +17,22 @@
 package io.github.bonigarcia.seljup;
 
 /**
- * Enumeration for Selenoid browsers.
+ * Enumeration for browsers in Docker containers.
  *
  * @author Boni Garcia
  * @since 1.2.0
  */
 public enum BrowserType {
 
-    CHROME, FIREFOX, OPERA, ANDROID, EDGE, IEXPLORER;
+    CHROME, FIREFOX, OPERA, EDGE, SAFARI, CHROME_MOBILE;
+
+    public String toBrowserName() {
+        switch (this) {
+        case CHROME_MOBILE:
+            return CHROME.name();
+        default:
+            return this.name();
+        }
+    }
 
 }

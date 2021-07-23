@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class InternetExplorerJupiterTest {
 
     @Test
-    void webrtcTest(InternetExplorerDriver driver) {
+    void internetExplorerTest(InternetExplorerDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

@@ -57,7 +57,7 @@ class RemoteWebDriverJupiterTest {
         exercise(driver);
     }
 
-    @Test
+//    @Test
     void testWithRemoteChrome(
             @DriverUrl("http://localhost:4444/wd/hub")
             @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
