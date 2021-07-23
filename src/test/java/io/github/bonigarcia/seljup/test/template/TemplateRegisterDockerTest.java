@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.template;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -33,6 +34,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
  * @author Boni Garcia
  * @since 3.1.0
  */
+@Disabled("Hardware server or virtual machine with nested virtualization support is required to run Chrome Mobile images")
 class TemplateRegisterDockerTest {
 
     @RegisterExtension

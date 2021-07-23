@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.docker;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +28,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
+@Disabled("Hardware server or virtual machine with nested virtualization support is required to run Chrome Mobile images")
 class DockerChromeMobileVncJupiterTest {
 
     @Test
