@@ -42,8 +42,6 @@ public @interface DockerBrowser {
 
     public boolean vnc() default false;
 
-    public String url() default "";
-
-    public String[] volumes() default {};
+    public String volumes() default "";
 
 }

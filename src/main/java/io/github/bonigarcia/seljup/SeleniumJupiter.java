@@ -218,6 +218,9 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.vnc()) {
             wdm.enableVnc();
         }
+        if (!dockerBrowser.volumes().isBlank()) {
+            wdm.dockerVolumes(dockerBrowser.volumes());
+        }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
                 parameter, Optional.of(browserType));
         if (capabilities.isPresent()) {
