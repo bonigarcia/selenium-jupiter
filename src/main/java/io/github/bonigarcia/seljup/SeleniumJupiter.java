@@ -134,17 +134,21 @@ public class SeleniumJupiter implements ParameterResolver,
         if (isGeneric(type) && !browserListMap.isEmpty()) {
             // Template
             browser = getBrowser(contextId, index);
-            browserType = browser.toBrowserType();
+            if (browser != null) {
+                browserType = browser.toBrowserType();
+                wdm = WebDriverManager.getInstance(browserType.toBrowserName())
+                        .browserVersion(browser.getVersion())
+                        .remoteAddress(browser.getUrl());
+                if (browser.isDockerBrowser()) {
+                    wdm.browserInDocker();
+                }
+                if (browser.isAndroidBrowser()) {
+                    wdm.browserInDockerAndroid();
+                }
+            } else {
+                wdm = WebDriverManager.getInstance();
+            }
 
-            wdm = WebDriverManager.getInstance(browserType.toBrowserName())
-                    .browserVersion(browser.getVersion())
-                    .remoteAddress(browser.getUrl());
-            if (browser.isDockerBrowser()) {
-                wdm.browserInDocker();
-            }
-            if (browser.isAndroidBrowser()) {
-                wdm.browserInDockerAndroid();
-            }
             Optional<Capabilities> capabilities = getCapabilities(
                     extensionContext, parameter, browserType);
             if (capabilities.isPresent()) {

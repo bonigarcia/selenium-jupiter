@@ -51,13 +51,7 @@ public class BrowsersTemplate {
             this.volumes = volumes;
         }
 
-        public Browser(String type, String version) {
-            this.type = type;
-            this.version = version;
-        }
-
-        public Browser(String type) {
-            this.type = type;
+        public Browser() {
         }
 
         public String getType() {

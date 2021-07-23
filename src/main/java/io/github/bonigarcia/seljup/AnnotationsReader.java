@@ -129,7 +129,7 @@ public class AnnotationsReader {
     }
 
     public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
-            Class<Options> annotationClass) throws IllegalAccessException {
+            Class<Options> annotationClass) {
         Object out = null;
         Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
                 annotationClass, null);

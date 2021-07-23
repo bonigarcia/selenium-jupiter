@@ -27,10 +27,9 @@ public enum BrowserType {
     CHROME, FIREFOX, OPERA, EDGE, SAFARI, CHROME_MOBILE;
 
     public String toBrowserName() {
-        switch (this) {
-        case CHROME_MOBILE:
+        if (this == CHROME_MOBILE) {
             return CHROME.name();
-        default:
+        } else {
             return this.name();
         }
     }
