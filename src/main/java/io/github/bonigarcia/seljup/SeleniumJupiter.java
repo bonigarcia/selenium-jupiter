@@ -155,11 +155,11 @@ public class SeleniumJupiter implements ParameterResolver,
                 browserNumber = dockerBrowser.get().size();
             }
             wdm = getManagerForDocker(extensionContext, parameter,
-                    dockerBrowser);
+                    dockerBrowser.get());
 
         } else if (url.isPresent() && caps.isPresent()) {
             // Remote
-            wdm = getManagerForRemote(url, caps);
+            wdm = getManagerForRemote(url.get(), caps.get());
 
         } else {
             // Local
@@ -172,11 +172,10 @@ public class SeleniumJupiter implements ParameterResolver,
         return browserNumber == 1 ? wdm.create() : wdm.create(browserNumber);
     }
 
-    private WebDriverManager getManagerForRemote(Optional<URL> url,
-            Optional<Capabilities> caps) {
+    private WebDriverManager getManagerForRemote(URL url, Capabilities caps) {
         WebDriverManager wdm;
-        wdm = WebDriverManager.getInstance().remoteAddress(url.get().toString())
-                .capabilities(caps.get());
+        wdm = WebDriverManager.getInstance().remoteAddress(url.toString())
+                .capabilities(caps);
         return wdm;
     }
 
@@ -204,19 +203,19 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private WebDriverManager getManagerForDocker(
             ExtensionContext extensionContext, Parameter parameter,
-            Optional<DockerBrowser> dockerBrowser) {
+            DockerBrowser dockerBrowser) {
         WebDriverManager wdm;
-        String browserVersion = dockerBrowser.get().version();
-        BrowserType browserType = dockerBrowser.get().type();
+        String browserVersion = dockerBrowser.version();
+        BrowserType browserType = dockerBrowser.type();
         wdm = WebDriverManager.getInstance(browserType.toBrowserName())
                 .browserVersion(browserVersion).browserInDocker();
         if (browserType == CHROME_MOBILE) {
             wdm.browserInDockerAndroid();
         }
-        if (dockerBrowser.get().recording()) {
+        if (dockerBrowser.recording()) {
             wdm.enableRecording();
         }
-        if (dockerBrowser.get().vnc()) {
+        if (dockerBrowser.vnc()) {
             wdm.enableVnc();
         }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
