@@ -133,14 +133,12 @@ public class SeleniumJupiter implements ParameterResolver,
         // Single session
         Optional<List<WebDriverManager>> wdmList = getValueFromMapStartingWithKey(
                 wdmMap, contextId);
-        if (isSingleSession(extensionContext) && wdmList.isPresent()) {
-            if (wdmList.isPresent() && index < wdmList.get().size()) {
-                WebDriver driver = wdmList.get().get(index).getWebDriver();
-                if (driver != null) {
-                    log.trace("Returning driver at index {}: {}", index,
-                            driver);
-                    return driver;
-                }
+        if (isSingleSession(extensionContext) && wdmList.isPresent()
+                && index < wdmList.get().size()) {
+            WebDriver driver = wdmList.get().get(index).getWebDriver();
+            if (driver != null) {
+                log.trace("Returning driver at index {}: {}", index, driver);
+                return driver;
             }
         }
 
@@ -465,9 +463,9 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private <T extends Object> Optional<T> getValueFromMapStartingWithKey(
             Map<String, T> map, String searchKey) {
-        for (String key : map.keySet()) {
-            if (key.startsWith(searchKey)) {
-                return Optional.of(map.get(key));
+        for (Map.Entry<String, T> entry : map.entrySet()) {
+            if (entry.getKey().startsWith(searchKey)) {
+                return Optional.of(entry.getValue());
             }
         }
         return Optional.empty();
