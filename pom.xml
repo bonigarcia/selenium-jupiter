@@ -9,7 +9,7 @@
 
     <properties>
         <!-- Compile dependencies -->
-        <slf4j.version>1.7.31</slf4j.version>
+        <slf4j.version>1.7.32</slf4j.version>
         <webdrivermanager.version>5.0.0-SNAPSHOT</webdrivermanager.version>
         <guava.version>30.1.1-jre</guava.version>
         <commons-collections.version>4.4</commons-collections.version>
