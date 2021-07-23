@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.basic;
 import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chromium.ChromiumDriver;
@@ -30,6 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @ExtendWith(SeleniumJupiter.class)
 class ChromiumJupiterTest {
 
+    @Disabled("Problem with Chromium snap")
     @Test
     void testChromium(ChromiumDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");

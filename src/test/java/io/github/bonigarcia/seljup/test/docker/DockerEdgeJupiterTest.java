@@ -19,25 +19,16 @@ package io.github.bonigarcia.seljup.test.docker;
 import static io.github.bonigarcia.seljup.BrowserType.EDGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 //tag::snippet-in-doc[]
+@ExtendWith(SeleniumJupiter.class)
 class DockerEdgeJupiterTest {
-
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    @BeforeAll
-    static void setup() {
-        // TODO seleniumJupiter.getConfig().setVnc(true);
-        // TODO seleniumJupiter.getConfig().setRecording(true);
-    }
 
     @Test
     void testEdge(@DockerBrowser(type = EDGE) WebDriver driver) {
