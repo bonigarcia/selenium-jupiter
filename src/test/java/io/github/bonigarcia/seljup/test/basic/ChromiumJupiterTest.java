@@ -16,41 +16,22 @@
  */
 package io.github.bonigarcia.seljup.test.basic;
 
-import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
-import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chromium.ChromiumDriver;
 
-import io.github.bonigarcia.seljup.Options;
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@EnabledIfBrowserAvailable(CHROMIUM)
 @ExtendWith(SeleniumJupiter.class)
 class ChromiumJupiterTest {
 
-    @Options
-    ChromeOptions options = new ChromeOptions();
-    {
-        String chromium;
-        if (IS_OS_WINDOWS) {
-            String localAppDat = System.getenv("LOCALAPPDATA")
-                    .replaceAll("\\\\", "\\\\\\\\");
-            chromium = localAppDat + "\\Chromium\\Application\\chrome.exe";
-        } else {
-            chromium = IS_OS_MAC
-                    ? "/Applications/Chromium.app/Contents/MacOS/Chromium"
-                    : "/usr/bin/chromium-browser";
-        }
-        options.setBinary(chromium);
-    }
-
-    @Disabled
     @Test
-    void testChromium(ChromeDriver driver) {
+    void testChromium(ChromiumDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

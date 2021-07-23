@@ -29,6 +29,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -90,7 +91,10 @@ public abstract class DriverHandler {
             return Optional.of(new SafariDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
         } else if (type == InternetExplorerDriver.class) {
-            return Optional.of(new SafariDriverHandler(parameter,
+            return Optional.of(new InternetExplorerDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
+        } else if (type == ChromiumDriver.class) {
+            return Optional.of(new ChromiumDriverHandler(parameter,
                     extensionContext, config, annotationsReader));
         }
         return Optional.empty();
