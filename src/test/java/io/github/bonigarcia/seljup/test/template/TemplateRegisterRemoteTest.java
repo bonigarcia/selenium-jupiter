@@ -19,17 +19,17 @@ package io.github.bonigarcia.seljup.test.template;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.BrowserBuilder;
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
-@Disabled
 class TemplateRegisterRemoteTest {
 
     @RegisterExtension
@@ -39,8 +39,15 @@ class TemplateRegisterRemoteTest {
     String url = "http://localhost:4444/wd/hub";
 
     @BeforeAll
-    static void setup() {
-        Browser chrome = BrowserBuilder.chromeMobile().build();
+    static void setup() throws Exception {
+        // Resolve drivers
+        WebDriverManager.chromedriver().setup();
+        WebDriverManager.firefoxdriver().setup();
+
+        // Start Selenium Grid in standalone mode
+        Main.main(new String[] { "standalone", "--port", "4444" });
+
+        Browser chrome = BrowserBuilder.chrome().build();
         seleniumJupiter.addBrowsers(chrome);
     }
 

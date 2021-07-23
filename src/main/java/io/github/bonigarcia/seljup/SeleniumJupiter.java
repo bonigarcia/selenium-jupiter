@@ -153,6 +153,9 @@ public class SeleniumJupiter implements ParameterResolver,
                 wdm = WebDriverManager.getInstance(browserType.toBrowserName())
                         .browserVersion(browser.getVersion())
                         .remoteAddress(browser.getUrl());
+                if (url.isPresent()) {
+                    wdm.remoteAddress(url.get().toString());
+                }
                 if (browser.isDockerBrowser()) {
                     wdm.browserInDocker();
                 }

@@ -82,6 +82,10 @@ public class BrowserBuilder {
         return new BrowserBuilder("edge-in-docker");
     }
 
+    public static BrowserBuilder safariInDocker() {
+        return new BrowserBuilder("safari-in-docker");
+    }
+
     public BrowserBuilder version(String version) {
         this.version = version;
         return this;

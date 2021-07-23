@@ -26,7 +26,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.grid.Main;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
@@ -53,14 +52,14 @@ class RemoteWebDriverJupiterTest {
     Capabilities capabilities = new FirefoxOptions();
 
     @Test
-    void testWithRemoteFirefox(RemoteWebDriver driver) {
+    void testWithRemoteFirefox(WebDriver driver) {
         exercise(driver);
     }
 
-//    @Test
+    @Test
     void testWithRemoteChrome(
             @DriverUrl("http://localhost:4444/wd/hub")
-            @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
+            @DriverCapabilities("browserName=chrome") WebDriver driver) {
         exercise(driver);
     }
 
