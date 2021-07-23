@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestInstance(PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-@Disabled("To avoid breaking CI bild")
+@Disabled("To avoid breaking CI build")
 class FailureCreatesScreenshotTest {
 
     @RegisterExtension

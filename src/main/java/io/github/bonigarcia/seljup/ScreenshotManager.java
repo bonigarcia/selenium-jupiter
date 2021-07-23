@@ -25,11 +25,14 @@ import static org.openqa.selenium.OutputType.FILE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.config.Config;
@@ -60,6 +63,32 @@ public class ScreenshotManager {
                 .isScreenshotWhenFailure();
         return isSscreenshot
                 || (executionException.isPresent() && isSscreenshotWhenFailure);
+    }
+
+    String getName(ExtensionContext extensionContext, WebDriver driver) {
+        String name = "";
+        Optional<Method> testMethod = extensionContext.getTestMethod();
+        if (testMethod.isPresent()) {
+            name = testMethod.get().getName() + "_";
+        } else {
+            Optional<Class<?>> testClass = extensionContext.getTestClass();
+            if (testClass.isPresent()) {
+                name = testClass.get().getSimpleName() + "_";
+            }
+        }
+        name += driver.getClass().getSimpleName();
+        if (RemoteWebDriver.class.isAssignableFrom(driver.getClass())) {
+            name += "_" + ((RemoteWebDriver) driver).getSessionId();
+        }
+        return name;
+    }
+
+    void makeScreenshotIfRequired(ScreenshotManager screenshotManager,
+            ExtensionContext extensionContext, List<WebDriver> driverList) {
+        driverList.forEach(driver -> {
+            String fileName = getName(extensionContext, driver);
+            screenshotManager.makeScreenshotIfRequired(driver, fileName);
+        });
     }
 
     void makeScreenshotIfRequired(WebDriver driver, String fileName) {
