@@ -143,26 +143,25 @@ public class SeleniumJupiter implements ParameterResolver,
             }
         }
 
-        if (isGeneric && !browserListMap.isEmpty()) {
-            // Template
+        if (config.getManager() != null) { // Custom manager
+            wdm = config.getManager();
+
+        } else if (isGeneric && !browserListMap.isEmpty()) { // Template
             browser = getBrowser(contextId, index);
             wdm = getManagerForTemplate(extensionContext, parameter, browser,
                     url);
 
-        } else if (dockerBrowser.isPresent()) {
-            // Docker
+        } else if (dockerBrowser.isPresent()) { // Docker
             if (dockerBrowser.get().size() > 1) {
                 browserNumber = dockerBrowser.get().size();
             }
             wdm = getManagerForDocker(extensionContext, parameter,
                     dockerBrowser.get());
 
-        } else if (url.isPresent() && caps.isPresent()) {
-            // Remote
+        } else if (url.isPresent() && caps.isPresent()) { // Remote
             wdm = getManagerForRemote(url.get(), caps.get());
 
-        } else {
-            // Local
+        } else { // Local
             wdm = getManagerForLocal(extensionContext, parameter, type,
                     isGeneric);
         }

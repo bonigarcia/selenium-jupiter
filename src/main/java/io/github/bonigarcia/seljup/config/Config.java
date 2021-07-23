@@ -26,6 +26,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiterException;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Configuration class.
@@ -38,6 +39,8 @@ public class Config {
     final Logger log = getLogger(lookup().lookupClass());
 
     static final String HOME = "~";
+
+    WebDriverManager manager;
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
@@ -261,6 +264,14 @@ public class Config {
 
     public void takeScreenshotAsBase64AndPng() {
         this.screenshotFormat.setValue("base64andpng");
+    }
+
+    public WebDriverManager getManager() {
+        return manager;
+    }
+
+    public void setManager(WebDriverManager manager) {
+        this.manager = manager;
     }
 
 }
