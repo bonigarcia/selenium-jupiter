@@ -124,6 +124,7 @@ public class SeleniumJupiter implements ParameterResolver,
         int browserNumber = 1;
 
         Class<?> type = parameter.getType();
+        boolean isGeneric = isGeneric(type);
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
         Optional<URL> url = annotationsReader.getUrl(parameter, testInstance,
@@ -131,7 +132,7 @@ public class SeleniumJupiter implements ParameterResolver,
         Optional<Capabilities> caps = annotationsReader
                 .getCapabilities(parameter, testInstance);
 
-        if (isGeneric(type) && !browserListMap.isEmpty()) {
+        if (isGeneric && !browserListMap.isEmpty()) {
             // Template
             browser = getBrowser(contextId, index);
             if (browser != null) {
@@ -187,11 +188,15 @@ public class SeleniumJupiter implements ParameterResolver,
 
         } else {
             // Local
-            if (parameter.getType() == List.class) {
+            if (type == List.class) {
                 throw new SeleniumJupiterException(
                         "List<WebDriver> must be used together with @DockerBrowser");
             }
-            wdm = WebDriverManager.getInstance(parameter.getType());
+            if (isGeneric) {
+                wdm = WebDriverManager.getInstance();
+            } else {
+                wdm = WebDriverManager.getInstance(type);
+            }
 
             Optional<Capabilities> capabilities = getCapabilities(
                     extensionContext, parameter, browserType);

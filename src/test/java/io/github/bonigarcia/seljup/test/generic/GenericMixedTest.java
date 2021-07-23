@@ -18,7 +18,8 @@ package io.github.bonigarcia.seljup.test.generic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -28,20 +29,28 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-@Disabled("Disable temporary")
 class GenericMixedTest {
+
+    @BeforeEach
+    void setup() {
+        System.setProperty("wdm.defaultBrowser", "chrome-in-docker");
+    }
+
+    @AfterEach
+    void teardown() {
+        System.clearProperty("wdm.defaultBrowser");
+    }
 
     @Test
     void genericMixedTest(ChromeDriver local, RemoteWebDriver remote) {
-        exercise(local, remote);
+        exercise(local);
+        exercise(remote);
     }
 
-    private void exercise(WebDriver... driverList) {
-        for (WebDriver driver : driverList) {
-            driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-            assertThat(driver.getTitle())
-                    .contains("JUnit 5 extension for Selenium");
-        }
+    private void exercise(WebDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
     }
 
 }

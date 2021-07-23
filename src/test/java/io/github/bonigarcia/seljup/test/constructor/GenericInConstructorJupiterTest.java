@@ -19,7 +19,6 @@ package io.github.bonigarcia.seljup.test.constructor;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -27,17 +26,16 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-@Disabled("Disable temporary")
-class DockerChromeInConstructorJupiterTest {
+class GenericInConstructorJupiterTest {
 
     WebDriver driver;
 
-    DockerChromeInConstructorJupiterTest(WebDriver driver) {
+    GenericInConstructorJupiterTest(WebDriver driver) {
         this.driver = driver;
     }
 
     @Test
-    void testGlobalChrome() {
+    void test() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");

@@ -17,24 +17,25 @@
 package io.github.bonigarcia.seljup.test.constructor;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Duration;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-@Disabled("Disable temporary")
 class MixedInConstructorJupiterTest {
 
     static final int NUM_BROWSERS = 2;
+    static final long WAIT_SEC = 10;
 
     WebDriver driver1;
     RemoteWebDriver driver2;
@@ -60,8 +61,11 @@ class MixedInConstructorJupiterTest {
 
     private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+
+        Wait<WebDriver> wait = new WebDriverWait(driver,
+                Duration.ofSeconds(WAIT_SEC));
+        wait.until(
+                d -> d.getTitle().contains("JUnit 5 extension for Selenium"));
     }
 
 }
