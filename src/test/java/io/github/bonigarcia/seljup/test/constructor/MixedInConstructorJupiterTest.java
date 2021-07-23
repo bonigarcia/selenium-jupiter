@@ -35,7 +35,6 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class MixedInConstructorJupiterTest {
 
     static final int NUM_BROWSERS = 2;
-    static final long WAIT_SEC = 10;
 
     WebDriver driver1;
     RemoteWebDriver driver2;
@@ -63,7 +62,7 @@ class MixedInConstructorJupiterTest {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
 
         Wait<WebDriver> wait = new WebDriverWait(driver,
-                Duration.ofSeconds(WAIT_SEC));
+                Duration.ofSeconds(30));
         wait.until(
                 d -> d.getTitle().contains("JUnit 5 extension for Selenium"));
     }
