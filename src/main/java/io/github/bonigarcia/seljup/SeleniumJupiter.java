@@ -225,10 +225,27 @@ public class SeleniumJupiter implements ParameterResolver,
     @Override
     public void afterTestExecution(ExtensionContext extensionContext)
             throws Exception {
+        // 1. Screenshots (if required)
         String contextId = extensionContext.getUniqueId();
+        ScreenshotManager screenshotManager = new ScreenshotManager(
+                extensionContext, getConfig());
+        getValueFromMapUsingContextId(wdmMap, contextId).stream()
+                .map(WebDriverManager::getWebDriverList)
+                .forEach(driverList -> makeScreenshotIfRequired(
+                        screenshotManager, extensionContext, driverList));
+
+        // 2. Quit WebDriver
         getValueFromMapUsingContextId(wdmMap, contextId)
                 .forEach(WebDriverManager::quit);
         removeManagersFromMap(contextId);
+    }
+
+    private void makeScreenshotIfRequired(ScreenshotManager screenshotManager,
+            ExtensionContext extensionContext, List<WebDriver> driverList) {
+        driverList.forEach(driver -> {
+            String fileName = getName(extensionContext, driver);
+            screenshotManager.makeScreenshotIfRequired(driver, fileName);
+        });
     }
 
     @Override
@@ -445,6 +462,25 @@ public class SeleniumJupiter implements ParameterResolver,
             wdmMap.put(contextId, wdmList);
             log.trace("Adding {} to new map (id {})", wdm, contextId);
         }
+    }
+
+    private String getName(ExtensionContext extensionContext,
+            WebDriver driver) {
+        String name = "";
+        Optional<Method> testMethod = extensionContext.getTestMethod();
+        if (testMethod.isPresent()) {
+            name = testMethod.get().getName() + "_";
+        } else {
+            Optional<Class<?>> testClass = extensionContext.getTestClass();
+            if (testClass.isPresent()) {
+                name = testClass.get().getSimpleName() + "_";
+            }
+        }
+        name += driver.getClass().getSimpleName();
+        if (RemoteWebDriver.class.isAssignableFrom(driver.getClass())) {
+            name += "_" + ((RemoteWebDriver) driver).getSessionId();
+        }
+        return name;
     }
 
 }

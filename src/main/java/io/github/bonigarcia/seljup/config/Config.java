@@ -41,16 +41,22 @@ public class Config {
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
-    ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
-            "sel.jup.selenium.server.url", String.class);
     ConfigKey<String> outputFolder = new ConfigKey<>("sel.jup.output.folder",
             String.class);
+
+    ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
+            "sel.jup.selenium.server.url", String.class);
+
     ConfigKey<Boolean> recordingWhenFailure = new ConfigKey<>(
             "sel.jup.recording.when.failure", Boolean.class);
-    ConfigKey<String> screenshotAtTheEndOfTests = new ConfigKey<>(
-            "sel.jup.screenshot.at.the.end.of.tests", String.class);
+
+    ConfigKey<Boolean> screenshot = new ConfigKey<>("sel.jup.screenshot",
+            Boolean.class);
+    ConfigKey<Boolean> screenshotWhenFailure = new ConfigKey<>(
+            "sel.jup.screenshot.when.failure", Boolean.class);
     ConfigKey<String> screenshotFormat = new ConfigKey<>(
             "sel.jup.screenshot.format", String.class);
+
     ConfigKey<String> browserTemplateJsonFile = new ConfigKey<>(
             "sel.jup.browser.template.json.file", String.class);
     ConfigKey<String> browserTemplateJsonContent = new ConfigKey<>(
@@ -164,12 +170,20 @@ public class Config {
         this.recordingWhenFailure.setValue(value);
     }
 
-    public String getScreenshotAtTheEndOfTests() {
-        return resolve(screenshotAtTheEndOfTests);
+    public boolean isScreenshot() {
+        return resolve(screenshot);
     }
 
-    public void setScreenshotAtTheEndOfTests(String value) {
-        this.screenshotAtTheEndOfTests.setValue(value);
+    public void setScreenshot(boolean value) {
+        this.screenshot.setValue(value);
+    }
+
+    public boolean isScreenshotWhenFailure() {
+        return resolve(screenshotWhenFailure);
+    }
+
+    public void setScreenshotWhenFailure(boolean value) {
+        this.screenshotWhenFailure.setValue(value);
     }
 
     public String getScreenshotFormat() {
@@ -225,16 +239,16 @@ public class Config {
 
     // Custom values
 
+    public void enableScreenshot() {
+        this.screenshot.setValue(true);
+    }
+
+    public void enableScreenshotWhenFailure() {
+        this.screenshotWhenFailure.setValue(true);
+    }
+
     public void useSurefireOutputFolder() {
         this.outputFolder.setValue("surefire-reports");
-    }
-
-    public void enableScreenshotAtTheEndOfTests() {
-        this.screenshotAtTheEndOfTests.setValue("true");
-    }
-
-    public void disableScreenshotAtTheEndOfTests() {
-        this.screenshotAtTheEndOfTests.setValue("false");
     }
 
     public void takeScreenshotAsBase64() {

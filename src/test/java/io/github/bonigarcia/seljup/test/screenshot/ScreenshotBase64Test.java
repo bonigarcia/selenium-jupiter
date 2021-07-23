@@ -24,7 +24,6 @@ import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -33,7 +32,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
-@Disabled("Disable temporary")
 class ScreenshotBase64Test {
 
     @RegisterExtension
@@ -43,7 +41,7 @@ class ScreenshotBase64Test {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsBase64();
     }
 
@@ -58,7 +56,7 @@ class ScreenshotBase64Test {
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 
-        imageFile = new File("screenshotTest_arg0_ChromeDriver_"
+        imageFile = new File("screenshotTest_ChromeDriver_"
                 + driver.getSessionId() + ".png");
     }
 

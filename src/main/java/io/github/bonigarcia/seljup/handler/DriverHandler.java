@@ -71,27 +71,27 @@ public abstract class DriverHandler {
         if (type == ChromeDriver.class
                 || (browserType != null && (browserType == BrowserType.CHROME
                         || browserType == BrowserType.CHROME_MOBILE))) {
-            return Optional.of(new ChromeDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new ChromeDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         } else if (type == FirefoxDriver.class || (browserType != null
                 && browserType == BrowserType.FIREFOX)) {
-            return Optional.of(new FirefoxDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new FirefoxDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         } else if (type == OperaDriver.class
                 || (browserType != null && browserType == BrowserType.OPERA)) {
-            return Optional.of(new OperaDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new OperaDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         } else if (type == EdgeDriver.class
                 || (browserType != null && browserType == BrowserType.EDGE)) {
-            return Optional.of(new EdgeDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new EdgeDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         } else if (type == SafariDriver.class
                 || (browserType != null && browserType == BrowserType.SAFARI)) {
-            return Optional.of(new SafariDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new SafariDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         } else if (type == InternetExplorerDriver.class) {
-            return Optional.of(new SafariDriverHandler(parameter, extensionContext, config,
-                    annotationsReader));
+            return Optional.of(new SafariDriverHandler(parameter,
+                    extensionContext, config, annotationsReader));
         }
         return Optional.empty();
     }
@@ -111,24 +111,6 @@ public abstract class DriverHandler {
 
         return options;
     }
-
-//    public String getName() {
-//        String name = "";
-//        Optional<Method> testMethod = context.getTestMethod();
-//        if (testMethod.isPresent()) {
-//            name = testMethod.get().getName() + "_";
-//        } else {
-//            Optional<Class<?>> testClass = context.getTestClass();
-//            if (testClass.isPresent()) {
-//                name = testClass.get().getSimpleName() + "_";
-//            }
-//        }
-//        name += parameter.getName() + "_" + object.getClass().getSimpleName();
-//        if (RemoteWebDriver.class.isAssignableFrom(object.getClass())) {
-//            name += "_" + ((RemoteWebDriver) object).getSessionId();
-//        }
-//        return name;
-//    }
 
     public File getExtension(String fileName) {
         File file = new File(fileName);

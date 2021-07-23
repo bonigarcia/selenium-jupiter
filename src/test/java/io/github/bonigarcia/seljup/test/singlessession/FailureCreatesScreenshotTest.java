@@ -34,7 +34,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestInstance(PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-@Disabled("Disable temporary")
+@Disabled("To avoid breaking CI bild")
 class FailureCreatesScreenshotTest {
 
     @RegisterExtension
@@ -48,15 +48,14 @@ class FailureCreatesScreenshotTest {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig().setScreenshotAtTheEndOfTests("whenfailure");
+        seleniumJupiter.getConfig().enableScreenshotWhenFailure();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 
     @Test
     void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("AAAA");
     }
 
     @Test

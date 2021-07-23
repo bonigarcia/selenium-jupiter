@@ -55,14 +55,14 @@ public class ScreenshotManager {
     boolean isScreenshotRequired() {
         Optional<Throwable> executionException = context
                 .getExecutionException();
-        String screenshotAtTheEnd = getConfig().getScreenshotAtTheEndOfTests();
-
-        return screenshotAtTheEnd.equalsIgnoreCase("true")
-                || (executionException.isPresent()
-                        && screenshotAtTheEnd.equalsIgnoreCase("whenfailure"));
+        boolean isSscreenshot = getConfig().isScreenshot();
+        boolean isSscreenshotWhenFailure = getConfig()
+                .isScreenshotWhenFailure();
+        return isSscreenshot
+                || (executionException.isPresent() && isSscreenshotWhenFailure);
     }
 
-    void makeScreenshot(WebDriver driver, String fileName) {
+    void makeScreenshotIfRequired(WebDriver driver, String fileName) {
         if (isScreenshotRequired() && driver != null && fileName != null) {
             String screenshotFormat = getConfig().getScreenshotFormat();
             switch (screenshotFormat) {

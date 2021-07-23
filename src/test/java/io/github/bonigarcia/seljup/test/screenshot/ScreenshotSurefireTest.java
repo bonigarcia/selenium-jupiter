@@ -24,7 +24,6 @@ import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -33,7 +32,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
-@Disabled("Disable temporary")
 class ScreenshotSurefireTest {
 
     @RegisterExtension
@@ -43,7 +41,7 @@ class ScreenshotSurefireTest {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
         seleniumJupiter.getConfig().useSurefireOutputFolder();
     }
@@ -55,13 +53,14 @@ class ScreenshotSurefireTest {
     }
 
     @Test
-    void screenshotTest(ChromeDriver arg0) {
-        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
+    void screenshotTest(ChromeDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
 
         imageName = new File(
                 "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",
-                "screenshotTest_arg0_ChromeDriver_" + arg0.getSessionId()
+                "screenshotTest_ChromeDriver_" + driver.getSessionId()
                         + ".png");
     }
 

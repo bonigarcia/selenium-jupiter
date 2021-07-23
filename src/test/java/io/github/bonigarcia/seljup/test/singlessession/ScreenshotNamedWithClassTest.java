@@ -29,7 +29,7 @@ class ScreenshotNamedWithClassTest {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig().setScreenshotAtTheEndOfTests("whenfailure");
+        seleniumJupiter.getConfig().enableScreenshotWhenFailure();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
 

@@ -24,7 +24,6 @@ import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -34,7 +33,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @TestInstance(PER_CLASS)
-@Disabled("Disable temporary")
 class GenericWithScreenshotTest {
 
     @RegisterExtension
@@ -44,9 +42,8 @@ class GenericWithScreenshotTest {
 
     @BeforeAll
     void setup() {
-        seleniumJupiter.getConfig().enableScreenshotAtTheEndOfTests();
+        seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
-        // TODO seleniumJupiter.getConfig().setDefaultVersion("91.0");
     }
 
     @AfterAll
@@ -56,12 +53,13 @@ class GenericWithScreenshotTest {
     }
 
     @Test
-    void screenshotGenericTest(WebDriver arg0) {
-        arg0.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(arg0.getTitle()).contains("JUnit 5 extension for Selenium");
+    void screenshotGenericTest(WebDriver driver) {
+        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        assertThat(driver.getTitle())
+                .contains("JUnit 5 extension for Selenium");
 
-        imageFile = new File("screenshotGenericTest_arg0_CHROME_91.0_"
-                + ((RemoteWebDriver) arg0).getSessionId() + ".png");
+        imageFile = new File("screenshotGenericTest_ChromeDriver_"
+                + ((RemoteWebDriver) driver).getSessionId() + ".png");
     }
 
 }
