@@ -19,9 +19,9 @@ package io.github.bonigarcia.seljup.test.advance;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperties;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -30,8 +30,9 @@ import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Sauce Labs credentials required")
-// tag::snippet-in-doc[]
+@EnabledIfSystemProperties({
+        @EnabledIfSystemProperty(named = "sauceLabsUsername", matches = ".*"),
+        @EnabledIfSystemProperty(named = "sauceLabsPassword", matches = ".*") })
 @ExtendWith(SeleniumJupiter.class)
 class SauceLabsJupiterTest {
 
@@ -41,8 +42,10 @@ class SauceLabsJupiterTest {
     @DriverCapabilities
     DesiredCapabilities capabilities = new DesiredCapabilities();
     {
-        capabilities.setCapability("username", "<my-saucelabs-user>");
-        capabilities.setCapability("accessKey", "<my-saucelabs-key>");
+        capabilities.setCapability("username",
+                System.getProperty("sauceLabsUsername"));
+        capabilities.setCapability("accessKey",
+                System.getProperty("sauceLabsPassword"));
         capabilities.setCapability("browserName", "Chrome");
         capabilities.setCapability("platform", "Windows 10");
         capabilities.setCapability("version", "59.0");
