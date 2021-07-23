@@ -131,14 +131,15 @@ public class SeleniumJupiter implements ParameterResolver,
                 .getCapabilities(parameter, testInstance);
 
         // Single session
-        if (isSingleSession(extensionContext)
-                && wdmMap.containsKey(contextId)) {
-            List<WebDriverManager> list = wdmMap.get(contextId);
-            if (index < list.size()) {
-                Object obj = list.get(index).getWebDriver();
-                if (obj != null) {
-                    log.trace("Returning index {}: {}", index, obj);
-                    return obj;
+        Optional<List<WebDriverManager>> wdmList = getValueFromMapStartingWithKey(
+                wdmMap, contextId);
+        if (isSingleSession(extensionContext) && wdmList.isPresent()) {
+            if (wdmList.isPresent() && index < wdmList.get().size()) {
+                WebDriver driver = wdmList.get().get(index).getWebDriver();
+                if (driver != null) {
+                    log.trace("Returning driver at index {}: {}", index,
+                            driver);
+                    return driver;
                 }
             }
         }
@@ -285,11 +286,15 @@ public class SeleniumJupiter implements ParameterResolver,
         String contextId = extensionContext.getUniqueId();
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig());
-        getValueFromMapUsingContextId(wdmMap, contextId).stream()
-                .map(WebDriverManager::getWebDriverList)
-                .forEach(driverList -> screenshotManager
-                        .makeScreenshotIfRequired(screenshotManager,
-                                extensionContext, driverList));
+        Optional<List<WebDriverManager>> mapUsingContextId = getValueFromMapStartingWithKey(
+                wdmMap, contextId);
+        if (mapUsingContextId.isPresent()) {
+            mapUsingContextId.get().stream()
+                    .map(WebDriverManager::getWebDriverList)
+                    .forEach(driverList -> screenshotManager
+                            .makeScreenshotIfRequired(screenshotManager,
+                                    extensionContext, driverList));
+        }
 
         // 2. Quit WebDriver
         if (!isSingleSession(extensionContext)) {
@@ -442,35 +447,30 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private Browser getBrowser(String contextId, int index) {
+        log.trace("Getting browser by contextId {} and index {}", contextId,
+                index);
         Browser browser = null;
-        List<Browser> browserList = getValueFromMapUsingContextId(
+        Optional<List<Browser>> browserList = getValueFromMapStartingWithKey(
                 browserListMap, contextId);
-        if (browserList == null) {
+        if (browserList.isEmpty()) {
             log.warn("Browser list for context id {} not found", contextId);
         } else {
-            if (index >= browserList.size()) {
-                index = browserList.size() - 1;
+            if (index >= browserList.get().size()) {
+                index = browserList.get().size() - 1;
             }
-            browser = browserList.get(index);
+            browser = browserList.get().get(index);
         }
         return browser;
     }
 
-    private <T extends Object> T getValueFromMapUsingContextId(
-            Map<String, T> map, String contextId) {
-        String newContextId = searchContextIdKeyInMap(map, contextId);
-        return map.get(newContextId);
-    }
-
-    private String searchContextIdKeyInMap(Map<String, ?> map,
-            String contextId) {
-        if (!map.containsKey(contextId)) {
-            int i = contextId.lastIndexOf('/');
-            if (i != -1) {
-                contextId = contextId.substring(0, i);
+    private <T extends Object> Optional<T> getValueFromMapStartingWithKey(
+            Map<String, T> map, String searchKey) {
+        for (String key : map.keySet()) {
+            if (key.startsWith(searchKey)) {
+                return Optional.of(map.get(key));
             }
         }
-        return contextId;
+        return Optional.empty();
     }
 
     private ConditionEvaluationResult toResult(
@@ -498,16 +498,12 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private void putManagerInMap(String contextId, WebDriverManager wdm) {
-        String newContextId = searchContextIdKeyInMap(wdmMap, contextId);
-        log.trace("Put manager {} in map (context id {}, new context id {})",
-                wdm, contextId, newContextId);
-        if (wdmMap.containsKey(contextId)) {
-            wdmMap.get(contextId).add(wdm);
+        log.trace("Put manager {} in map (context id {})", wdm, contextId);
+        Optional<List<WebDriverManager>> mapUsingContextId = getValueFromMapStartingWithKey(
+                wdmMap, contextId);
+        if (mapUsingContextId.isPresent()) {
+            mapUsingContextId.get().add(wdm);
             log.trace("Adding {} to existing map (id {})", wdm, contextId);
-        } else if (wdmMap.containsKey(newContextId)) {
-            wdmMap.get(newContextId).add(wdm);
-            log.trace("Adding {} to existing map (new id {})", wdm,
-                    newContextId);
         } else {
             List<WebDriverManager> wdmList = new ArrayList<>();
             wdmList.add(wdm);
@@ -528,9 +524,14 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private void quitWebDriver(String contextId) {
-        getValueFromMapUsingContextId(wdmMap, contextId)
-                .forEach(WebDriverManager::quit);
-        removeManagersFromMap(contextId);
+        Optional<List<WebDriverManager>> mapByContextId = getValueFromMapStartingWithKey(
+                wdmMap, contextId);
+        log.trace("Map by contextId {}: {} (wdmMap={})", contextId,
+                mapByContextId, wdmMap);
+        if (mapByContextId.isPresent()) {
+            mapByContextId.get().forEach(WebDriverManager::quit);
+            removeManagersFromMap(contextId);
+        }
     }
 
 }
