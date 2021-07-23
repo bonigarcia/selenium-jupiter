@@ -132,6 +132,19 @@ public class SeleniumJupiter implements ParameterResolver,
         Optional<Capabilities> caps = annotationsReader
                 .getCapabilities(parameter, testInstance);
 
+        // Single session
+        if (isSingleSession(extensionContext)
+                && wdmMap.containsKey(contextId)) {
+            List<WebDriverManager> list = wdmMap.get(contextId);
+            if (index < list.size()) {
+                Object obj = list.get(index).getWebDriver();
+                if (obj != null) {
+                    log.trace("Returning index {}: {}", index, obj);
+                    return obj;
+                }
+            }
+        }
+
         if (isGeneric && !browserListMap.isEmpty()) {
             // Template
             browser = getBrowser(contextId, index);
@@ -236,14 +249,17 @@ public class SeleniumJupiter implements ParameterResolver,
                                 extensionContext, driverList));
 
         // 2. Quit WebDriver
-        getValueFromMapUsingContextId(wdmMap, contextId)
-                .forEach(WebDriverManager::quit);
-        removeManagersFromMap(contextId);
+        if (!isSingleSession(extensionContext)) {
+            quitWebDriver(contextId);
+        }
     }
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        // TODO
+        String contextId = extensionContext.getUniqueId();
+        if (isSingleSession(extensionContext)) {
+            quitWebDriver(contextId);
+        }
     }
 
     @Override
@@ -455,6 +471,23 @@ public class SeleniumJupiter implements ParameterResolver,
             wdmMap.put(contextId, wdmList);
             log.trace("Adding {} to new map (id {})", wdm, contextId);
         }
+    }
+
+    private boolean isSingleSession(ExtensionContext extensionContext) {
+        boolean singleSession = false;
+        Optional<Class<?>> testClass = extensionContext.getTestClass();
+        if (testClass.isPresent()) {
+            singleSession = testClass.get()
+                    .isAnnotationPresent(SingleSession.class);
+        }
+        log.trace("Single session {}", singleSession);
+        return singleSession;
+    }
+
+    private void quitWebDriver(String contextId) {
+        getValueFromMapUsingContextId(wdmMap, contextId)
+                .forEach(WebDriverManager::quit);
+        removeManagersFromMap(contextId);
     }
 
 }

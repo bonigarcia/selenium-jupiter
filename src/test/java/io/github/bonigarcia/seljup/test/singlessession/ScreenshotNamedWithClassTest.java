@@ -19,7 +19,7 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestInstance(PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SingleSession
-@Disabled("Disable temporary")
+@Disabled("To avoid breaking CI build")
 class ScreenshotNamedWithClassTest {
 
     @RegisterExtension
@@ -41,8 +41,7 @@ class ScreenshotNamedWithClassTest {
     @Test
     void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("AAA");
     }
 
 }
