@@ -42,6 +42,10 @@ public @interface DockerBrowser {
 
     public boolean vnc() default false;
 
+    public String lang() default "";
+
+    public String timezone() default "";
+
     public String volumes() default "";
 
 }

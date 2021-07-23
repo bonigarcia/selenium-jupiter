@@ -220,6 +220,12 @@ public class SeleniumJupiter implements ParameterResolver,
         if (!dockerBrowser.volumes().isBlank()) {
             wdm.dockerVolumes(dockerBrowser.volumes());
         }
+        if (!dockerBrowser.lang().isBlank()) {
+            wdm.dockerLang(dockerBrowser.lang());
+        }
+        if (!dockerBrowser.timezone().isBlank()) {
+            wdm.dockerTimezone(dockerBrowser.timezone());
+        }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
                 parameter, Optional.of(browserType));
         if (capabilities.isPresent()) {

@@ -30,8 +30,9 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerVncJupiterTest {
 
     @Test
-    void test(@DockerBrowser(type = CHROME, vnc = true) WebDriver driver)
-            throws InterruptedException {
+    void test(
+            @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid")
+            WebDriver driver) throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
