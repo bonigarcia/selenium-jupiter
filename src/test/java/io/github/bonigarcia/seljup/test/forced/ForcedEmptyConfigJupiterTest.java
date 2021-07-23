@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
 
@@ -52,9 +52,8 @@ class ForcedEmptyConfigJupiterTest {
     }
 
     @Test
-    void genericTest(WebDriver driver) {
-        assertThrows(NullPointerException.class, () -> driver
-                .get("https://bonigarcia.github.io/selenium-jupiter/"));
+    void test(WebDriver driver) {
+        assertThat(driver).isNotNull();
     }
 
 }
