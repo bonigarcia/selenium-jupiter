@@ -221,7 +221,8 @@ public class SeleniumJupiter implements ParameterResolver,
     public void afterTestExecution(ExtensionContext extensionContext)
             throws Exception {
         String contextId = extensionContext.getUniqueId();
-        wdmMap.get(contextId).forEach(WebDriverManager::quit);
+        getValueFromMapUsingContextId(wdmMap, contextId)
+                .forEach(WebDriverManager::quit);
         removeManagersFromMap(contextId);
     }
 
@@ -368,8 +369,8 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private Browser getBrowser(String contextId, int index) {
         Browser browser = null;
-        List<Browser> browserList = getValueFromContextId(browserListMap,
-                contextId);
+        List<Browser> browserList = getValueFromMapUsingContextId(
+                browserListMap, contextId);
         if (browserList == null) {
             log.warn("Browser list for context id {} not found", contextId);
         } else {
@@ -381,8 +382,8 @@ public class SeleniumJupiter implements ParameterResolver,
         return browser;
     }
 
-    private <T extends Object> T getValueFromContextId(Map<String, T> map,
-            String contextId) {
+    private <T extends Object> T getValueFromMapUsingContextId(
+            Map<String, T> map, String contextId) {
         String newContextId = searchContextIdKeyInMap(map, contextId);
         return map.get(newContextId);
     }
