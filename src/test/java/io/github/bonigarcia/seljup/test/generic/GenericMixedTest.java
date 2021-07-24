@@ -18,6 +18,8 @@ package io.github.bonigarcia.seljup.test.generic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -49,8 +53,10 @@ class GenericMixedTest {
 
     private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        Wait<WebDriver> wait = new WebDriverWait(driver,
+                Duration.ofSeconds(30));
+        wait.until(d -> d.getTitle().contains("JUnit 5"));
+        assertThat(driver.getTitle()).contains("Selenium");
     }
 
 }
