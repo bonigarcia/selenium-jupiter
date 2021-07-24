@@ -17,37 +17,33 @@
 package io.github.bonigarcia.seljup.test.screenshot;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@TestInstance(PER_CLASS)
 class ScreenshotBase64Test {
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    File imageFile;
+    static File imageFile;
 
     @BeforeAll
-    void setup() {
+    static void setup() {
         seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsBase64();
     }
 
     @AfterAll
-    void teardown() {
-        assertTrue(!imageFile.exists());
+    static void teardown() {
+        assertThat(imageFile).doesNotExist();
     }
 
     @Test

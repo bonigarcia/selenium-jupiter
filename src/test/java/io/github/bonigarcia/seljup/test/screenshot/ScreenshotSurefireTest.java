@@ -17,39 +17,35 @@
 package io.github.bonigarcia.seljup.test.screenshot;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@TestInstance(PER_CLASS)
 class ScreenshotSurefireTest {
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    File imageName;
+    static File imageFile;
 
     @BeforeAll
-    void setup() {
+    static void setup() {
         seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
         seleniumJupiter.getConfig().useSurefireOutputFolder();
     }
 
     @AfterAll
-    void teardown() {
-        assertTrue(imageName.exists());
-        imageName.delete();
+    static void teardown() {
+        assertThat(imageFile).exists();
+        imageFile.delete();
     }
 
     @Test
@@ -58,7 +54,7 @@ class ScreenshotSurefireTest {
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 
-        imageName = new File(
+        imageFile = new File(
                 "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",
                 "screenshotTest_ChromeDriver_" + driver.getSessionId()
                         + ".png");
