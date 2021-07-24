@@ -30,6 +30,7 @@ public class BrowserBuilder {
     String version;
     String remoteUrl;
     String[] arguments;
+    Object capabilities;
 
     private BrowserBuilder(String type) {
         this.type = type;
@@ -98,8 +99,13 @@ public class BrowserBuilder {
         return this;
     }
 
+    public BrowserBuilder capabilities(Object capabilities) {
+        this.capabilities = capabilities;
+        return this;
+    }
+
     public Browser build() {
-        return new Browser(type, version, remoteUrl, arguments);
+        return new Browser(type, version, remoteUrl, arguments, capabilities);
     }
 
 }

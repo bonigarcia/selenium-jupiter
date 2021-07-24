@@ -6,7 +6,11 @@
              "arguments" : [
                 "--headless",
                 "--incognito"
-             ]
+             ],
+             "capabilities" : {
+                "cap1": "value1",
+                "cap2": "value2"
+             }
          }
       ]
    ]

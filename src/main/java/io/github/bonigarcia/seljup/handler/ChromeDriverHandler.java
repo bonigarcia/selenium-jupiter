@@ -18,11 +18,15 @@ package io.github.bonigarcia.seljup.handler;
 
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import com.google.gson.internal.LinkedTreeMap;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
@@ -85,6 +89,17 @@ public class ChromeDriverHandler extends DriverHandler {
                                 ChromeOptions.class);
                 if (optionsFromAnnotatedField != null) {
                     options = optionsFromAnnotatedField.merge(options);
+                }
+
+                // Capabilities
+                if (browser.isPresent() && browser.get() != null
+                        && browser.get().getCapabilities() != null) {
+                    @SuppressWarnings("unchecked")
+                    Set<Entry<String, String>> caps = ((LinkedTreeMap<String, String>) browser
+                            .get().getCapabilities()).entrySet();
+                    for (Entry<String, String> entry : caps) {
+                        options.setCapability(entry.getKey(), entry.getValue());
+                    }
                 }
             }
 
