@@ -66,7 +66,6 @@ import com.google.gson.Gson;
 
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
-import io.github.bonigarcia.seljup.handler.DriverHandler;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 
@@ -278,13 +277,13 @@ public class SeleniumJupiter implements ParameterResolver,
     private Optional<Capabilities> getCapabilities(
             ExtensionContext extensionContext, Parameter parameter,
             Optional<BrowserType> browserType, Optional<Browser> browser) {
-        Optional<DriverHandler> driverHandler = DriverHandler.getInstance(
-                browserType, parameter, extensionContext, config,
-                annotationsReader, browser);
-        if (driverHandler.isPresent()) {
-            return Optional.of(driverHandler.get().getCapabilities());
-        }
-        return Optional.empty();
+
+        CapabilitiesHandler capsHandler = new CapabilitiesHandler(config,
+                annotationsReader, parameter, extensionContext, browser,
+                browserType);
+
+        return capsHandler.getCapabilities();
+
     }
 
     @Override
