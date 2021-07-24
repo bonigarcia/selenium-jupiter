@@ -58,7 +58,7 @@ class GenericWithScreenshotTest {
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 
-        imageFile = new File("screenshotGenericTest_ChromeDriver_"
+        imageFile = new File("screenshotGenericTest_"
                 + ((RemoteWebDriver) driver).getSessionId() + ".png");
     }
 
