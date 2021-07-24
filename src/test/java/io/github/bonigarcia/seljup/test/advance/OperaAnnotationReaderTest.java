@@ -35,7 +35,7 @@ import io.github.bonigarcia.seljup.handler.OperaDriverHandler;
 class OperaAnnotationReaderTest {
 
     DriverHandler annotationsReader = new OperaDriverHandler(null, null, null,
-            new AnnotationsReader(), null);
+            new AnnotationsReader(), Optional.empty());
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(OperaWithOptionsJupiterTest.class,

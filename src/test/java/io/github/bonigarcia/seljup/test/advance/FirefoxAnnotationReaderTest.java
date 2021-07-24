@@ -38,7 +38,7 @@ import io.github.bonigarcia.seljup.handler.FirefoxDriverHandler;
 class FirefoxAnnotationReaderTest {
 
     DriverHandler annotationsReader = new FirefoxDriverHandler(null, null, null,
-            new AnnotationsReader(), null);
+            new AnnotationsReader(), Optional.empty());
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(FirefoxWithOptionsJupiterTest.class,
