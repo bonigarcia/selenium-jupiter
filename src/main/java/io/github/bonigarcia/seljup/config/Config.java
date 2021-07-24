@@ -52,6 +52,8 @@ public class Config {
     ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
             "sel.jup.selenium.server.url", String.class);
 
+    ConfigKey<Boolean> vnc = new ConfigKey<>("sel.jup.vnc", Boolean.class);
+
     ConfigKey<Boolean> recording = new ConfigKey<>("sel.jup.recording",
             Boolean.class);
     ConfigKey<Boolean> recordingWhenFailure = new ConfigKey<>(
@@ -162,6 +164,14 @@ public class Config {
         this.outputFolder.setValue(value);
     }
 
+    public boolean isVnc() {
+        return resolve(vnc);
+    }
+
+    public void setVnc(boolean value) {
+        this.vnc.setValue(value);
+    }
+
     public boolean isRecording() {
         return resolve(recording);
     }
@@ -227,6 +237,10 @@ public class Config {
     }
 
     // Readable API methods
+
+    public void enableVnc() {
+        setVnc(true);
+    }
 
     public void enableScreenshot() {
         setScreenshot(true);

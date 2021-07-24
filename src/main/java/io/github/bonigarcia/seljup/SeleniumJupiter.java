@@ -219,7 +219,7 @@ public class SeleniumJupiter implements ParameterResolver,
                     getConfig());
             wdm.recordingPrefix(outputHandler.getPrefix());
         }
-        if (dockerBrowser.vnc()) {
+        if (dockerBrowser.vnc() || config.isVnc()) {
             wdm.enableVnc();
         }
         if (dockerBrowser.volumes().length > 0) {
