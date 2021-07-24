@@ -89,7 +89,6 @@ public class SeleniumJupiter implements ParameterResolver,
     Config config;
     Map<String, List<WebDriverManager>> wdmMap;
     AnnotationsReader annotationsReader;
-    OutputHandler outputHandler;
     List<List<Browser>> browserListList;
     Map<String, List<Browser>> browserListMap;
 
