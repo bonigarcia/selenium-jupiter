@@ -58,7 +58,8 @@ public class ChromeDriverHandler extends DriverHandler {
                     Arrays.stream(arguments.value())
                             .forEach(options::addArguments);
                 }
-                if (browser.isPresent() && browser.get() != null) {
+                if (browser.isPresent() && browser.get() != null
+                        && browser.get().getArguments() != null) {
                     Arrays.stream(browser.get().getArguments())
                             .forEach(options::addArguments);
                 }
