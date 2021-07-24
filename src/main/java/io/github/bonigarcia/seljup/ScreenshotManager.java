@@ -58,9 +58,8 @@ public class ScreenshotManager {
     boolean isScreenshotRequired() {
         Optional<Throwable> executionException = context
                 .getExecutionException();
-        boolean isSscreenshot = getConfig().isScreenshot();
-        boolean isSscreenshotWhenFailure = getConfig()
-                .isScreenshotWhenFailure();
+        boolean isSscreenshot = config.isScreenshot();
+        boolean isSscreenshotWhenFailure = config.isScreenshotWhenFailure();
         return isSscreenshot
                 || (executionException.isPresent() && isSscreenshotWhenFailure);
     }
@@ -93,7 +92,7 @@ public class ScreenshotManager {
 
     void makeScreenshotIfRequired(WebDriver driver, String fileName) {
         if (isScreenshotRequired() && driver != null && fileName != null) {
-            String screenshotFormat = getConfig().getScreenshotFormat();
+            String screenshotFormat = config.getScreenshotFormat();
             switch (screenshotFormat) {
             case "png":
                 logFileScreenshot(driver, fileName);
@@ -130,7 +129,7 @@ public class ScreenshotManager {
             File screenshotFile = ((TakesScreenshot) driver)
                     .getScreenshotAs(FILE);
             String outputFolder = getOutputFolder(context,
-                    getConfig().getOutputFolder());
+                    config.getOutputFolder());
             File destFile = new File(outputFolder, fileName + ".png");
             if (destFile.exists()) {
                 destFile = new File(outputFolder,
@@ -141,10 +140,6 @@ public class ScreenshotManager {
         } catch (Exception e) {
             log.trace("Exception getting screenshot as file", e);
         }
-    }
-
-    Config getConfig() {
-        return config;
     }
 
 }

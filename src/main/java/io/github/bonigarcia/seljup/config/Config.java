@@ -65,13 +65,6 @@ public class Config {
     ConfigKey<String> browserTemplateJsonContent = new ConfigKey<>(
             "sel.jup.browser.template.json.content", String.class);
 
-    ConfigKey<Integer> serverPort = new ConfigKey<>("sel.jup.server.port",
-            Integer.class);
-    ConfigKey<String> serverPath = new ConfigKey<>("sel.jup.server.path",
-            String.class);
-    ConfigKey<Integer> serverTimeoutSec = new ConfigKey<>(
-            "sel.jup.server.timeout.sec", Integer.class);
-
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
         String name = configKey.getName();
@@ -211,33 +204,6 @@ public class Config {
 
     public void setBrowserTemplateJsonContent(String value) {
         this.browserTemplateJsonContent.setValue(value);
-    }
-
-    public int getServerPort() {
-        return resolve(serverPort);
-    }
-
-    public Config setServerPort(int value) {
-        this.serverPort.setValue(value);
-        return this;
-    }
-
-    public String getServerPath() {
-        return resolve(serverPath);
-    }
-
-    public Config setServerPath(String value) {
-        this.serverPath.setValue(value);
-        return this;
-    }
-
-    public int getServerTimeoutSec() {
-        return resolve(serverTimeoutSec);
-    }
-
-    public Config setServerTimeoutSec(int value) {
-        this.serverTimeoutSec.setValue(value);
-        return this;
     }
 
     // Custom values
