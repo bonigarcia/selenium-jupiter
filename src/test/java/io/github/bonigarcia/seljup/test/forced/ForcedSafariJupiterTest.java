@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.forced;
 
-import static org.apache.commons.lang3.SystemUtils.IS_OS_MAC;
+import static org.apache.commons.lang.SystemUtils.IS_OS_MAC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
