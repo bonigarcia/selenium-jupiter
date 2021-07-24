@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.BrowserType;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -55,47 +56,49 @@ public abstract class DriverHandler {
     protected AnnotationsReader annotationsReader;
     protected Parameter parameter;
     protected ExtensionContext extensionContext;
+    protected Optional<Browser> browser;
 
     protected DriverHandler(Parameter parameter,
             ExtensionContext extensionContext, Config config,
-            AnnotationsReader annotationsReader) {
+            AnnotationsReader annotationsReader, Optional<Browser> browser) {
         this.parameter = parameter;
         this.extensionContext = extensionContext;
         this.config = config;
         this.annotationsReader = annotationsReader;
+        this.browser = browser;
     }
 
     public static Optional<DriverHandler> getInstance(
             Optional<BrowserType> browserType, Parameter parameter,
             ExtensionContext extensionContext, Config config,
-            AnnotationsReader annotationsReader) {
+            AnnotationsReader annotationsReader, Optional<Browser> browser) {
         Class<?> type = parameter.getType();
         if (type == ChromeDriver.class || (browserType.isPresent()
                 && browserType.get().isChromeBased())) {
             return Optional.of(new ChromeDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == FirefoxDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.FIREFOX)) {
             return Optional.of(new FirefoxDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == OperaDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.OPERA)) {
             return Optional.of(new OperaDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == EdgeDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.EDGE)) {
             return Optional.of(new EdgeDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == SafariDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.SAFARI)) {
             return Optional.of(new SafariDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == InternetExplorerDriver.class) {
             return Optional.of(new InternetExplorerDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         } else if (type == ChromiumDriver.class) {
             return Optional.of(new ChromiumDriverHandler(parameter,
-                    extensionContext, config, annotationsReader));
+                    extensionContext, config, annotationsReader, browser));
         }
         return Optional.empty();
     }

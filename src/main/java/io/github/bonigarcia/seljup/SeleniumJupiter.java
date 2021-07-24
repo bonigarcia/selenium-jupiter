@@ -195,7 +195,7 @@ public class SeleniumJupiter implements ParameterResolver,
         }
 
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, Optional.empty());
+                parameter, Optional.empty(), Optional.empty());
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -233,7 +233,7 @@ public class SeleniumJupiter implements ParameterResolver,
             wdm.dockerTimezone(dockerBrowser.timezone());
         }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, Optional.of(browserType));
+                parameter, Optional.of(browserType), Optional.empty());
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -245,7 +245,9 @@ public class SeleniumJupiter implements ParameterResolver,
             Browser browser, Optional<URL> url) {
         WebDriverManager wdm;
         Optional<BrowserType> browserType = Optional.empty();
+        Optional<Browser> opBrowser = Optional.empty();
         if (browser != null) {
+            opBrowser = Optional.of(browser);
             browserType = Optional.of(browser.toBrowserType());
             wdm = WebDriverManager
                     .getInstance(browserType.get().toBrowserName())
@@ -260,12 +262,13 @@ public class SeleniumJupiter implements ParameterResolver,
             if (browser.isAndroidBrowser()) {
                 wdm.browserInDockerAndroid();
             }
+
         } else {
             wdm = WebDriverManager.getInstance();
         }
 
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, browserType);
+                parameter, browserType, opBrowser);
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -274,10 +277,10 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private Optional<Capabilities> getCapabilities(
             ExtensionContext extensionContext, Parameter parameter,
-            Optional<BrowserType> browserType) {
+            Optional<BrowserType> browserType, Optional<Browser> browser) {
         Optional<DriverHandler> driverHandler = DriverHandler.getInstance(
                 browserType, parameter, extensionContext, config,
-                annotationsReader);
+                annotationsReader, browser);
         if (driverHandler.isPresent()) {
             return Optional.of(driverHandler.get().getCapabilities());
         }

@@ -16,9 +16,8 @@
  */
 package io.github.bonigarcia.seljup.handler;
 
-import static java.util.Arrays.stream;
-
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -28,6 +27,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.config.Config;
@@ -40,23 +40,27 @@ import io.github.bonigarcia.seljup.config.Config;
  */
 public class ChromeDriverHandler extends DriverHandler {
 
-    public ChromeDriverHandler(Parameter parameter, ExtensionContext extensionContext,
-            Config config, AnnotationsReader annotationsReader) {
-        super(parameter, extensionContext, config, annotationsReader);
+    public ChromeDriverHandler(Parameter parameter,
+            ExtensionContext extensionContext, Config config,
+            AnnotationsReader annotationsReader, Optional<Browser> browser) {
+        super(parameter, extensionContext, config, annotationsReader, browser);
     }
 
     @Override
     public Capabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) {
-
         ChromeOptions options = new ChromeOptions();
-
         try {
             if (parameter != null) {
                 // @Arguments
                 Arguments arguments = parameter.getAnnotation(Arguments.class);
                 if (arguments != null) {
-                    stream(arguments.value()).forEach(options::addArguments);
+                    Arrays.stream(arguments.value())
+                            .forEach(options::addArguments);
+                }
+                if (browser.isPresent() && browser.get() != null) {
+                    Arrays.stream(browser.get().getArguments())
+                            .forEach(options::addArguments);
                 }
 
                 // @Extensions

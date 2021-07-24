@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.handler;
 import static java.util.Arrays.stream;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -30,6 +31,7 @@ import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
 import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.Options;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -41,34 +43,39 @@ import io.github.bonigarcia.seljup.config.Config;
 public class OperaDriverHandler extends DriverHandler {
 
     public OperaDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, AnnotationsReader annotationsReader) {
-        super(parameter, context, config, annotationsReader);
+            Config config, AnnotationsReader annotationsReader,
+            Optional<Browser> browser) {
+        super(parameter, context, config, annotationsReader, browser);
     }
 
     @Override
     public Capabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) {
-        OperaOptions operaOptions = new OperaOptions();
+        OperaOptions options = new OperaOptions();
 
         if (parameter != null) {
             // @Arguments
             Arguments arguments = parameter.getAnnotation(Arguments.class);
             if (arguments != null) {
-                stream(arguments.value()).forEach(operaOptions::addArguments);
+                stream(arguments.value()).forEach(options::addArguments);
+            }
+            if (browser.isPresent() && browser.get() != null) {
+                Arrays.stream(browser.get().getArguments())
+                        .forEach(options::addArguments);
             }
 
             // @Extensions
             Extensions extensions = parameter.getAnnotation(Extensions.class);
             if (extensions != null) {
                 for (String extension : extensions.value()) {
-                    operaOptions.addExtensions(getExtension(extension));
+                    options.addExtensions(getExtension(extension));
                 }
             }
 
             // @Binary
             Binary binary = parameter.getAnnotation(Binary.class);
             if (binary != null) {
-                operaOptions.setBinary(binary.value());
+                options.setBinary(binary.value());
             }
 
             // @Options
@@ -76,11 +83,11 @@ public class OperaDriverHandler extends DriverHandler {
                     .getFromAnnotatedField(testInstance, Options.class,
                             OperaOptions.class);
             if (optionsFromAnnotatedField != null) {
-                operaOptions = optionsFromAnnotatedField.merge(operaOptions);
+                options = optionsFromAnnotatedField.merge(options);
             }
         }
 
-        return operaOptions;
+        return options;
     }
 
 }

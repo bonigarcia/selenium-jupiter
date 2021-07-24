@@ -1,0 +1,13 @@
+{
+   "browsers": [
+      [
+         {
+            "type": "chrome",
+             "arguments" : [
+                "--headless",
+                "--incognito"
+             ]
+         }
+      ]
+   ]
+}

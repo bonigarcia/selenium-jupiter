@@ -29,6 +29,7 @@ public class BrowserBuilder {
     String type;
     String version;
     String remoteUrl;
+    String[] arguments;
 
     private BrowserBuilder(String type) {
         this.type = type;
@@ -92,8 +93,13 @@ public class BrowserBuilder {
         return this;
     }
 
+    public BrowserBuilder arguments(String[] arguments) {
+        this.arguments = arguments;
+        return this;
+    }
+
     public Browser build() {
-        return new Browser(type, version, remoteUrl);
+        return new Browser(type, version, remoteUrl, arguments);
     }
 
 }

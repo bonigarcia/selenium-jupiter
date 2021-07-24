@@ -37,7 +37,7 @@ import io.github.bonigarcia.seljup.handler.SafariDriverHandler;
 class SafariAnnotationReaderTest {
 
     DriverHandler annotationsReader = new SafariDriverHandler(null, null, null,
-            new AnnotationsReader());
+            new AnnotationsReader(), null);
 
     static Stream<Class<?>> testClassProvider() {
         return Stream.of(SafariWithGlobalOptionsJupiterTest.class);

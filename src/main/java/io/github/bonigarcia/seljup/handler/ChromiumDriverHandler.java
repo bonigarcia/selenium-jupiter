@@ -27,6 +27,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -39,8 +40,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class ChromiumDriverHandler extends ChromeDriverHandler {
 
     public ChromiumDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, AnnotationsReader annotationsReader) {
-        super(parameter, context, config, annotationsReader);
+            Config config, AnnotationsReader annotationsReader,
+            Optional<Browser> browser) {
+        super(parameter, context, config, annotationsReader, browser);
     }
 
     @Override

@@ -41,11 +41,14 @@ public class BrowsersTemplate {
         String type;
         String version;
         String remoteUrl;
+        String[] arguments;
 
-        public Browser(String type, String version, String remoteUrl) {
+        public Browser(String type, String version, String remoteUrl,
+                String[] arguments) {
             this.type = type;
             this.version = version;
             this.remoteUrl = remoteUrl;
+            this.arguments = arguments;
         }
 
         public Browser() {
@@ -65,6 +68,14 @@ public class BrowsersTemplate {
 
         public void setRemoteUrl(String url) {
             this.remoteUrl = url;
+        }
+
+        public String[] getArguments() {
+            return arguments;
+        }
+
+        public void setArguments(String[] arguments) {
+            this.arguments = arguments;
         }
 
         public BrowserType toBrowserType() {

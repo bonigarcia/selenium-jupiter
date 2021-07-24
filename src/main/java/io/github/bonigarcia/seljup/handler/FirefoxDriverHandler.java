@@ -18,9 +18,9 @@ package io.github.bonigarcia.seljup.handler;
 
 import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
-import static java.util.Arrays.stream;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +32,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.Preferences;
@@ -46,20 +47,25 @@ import io.github.bonigarcia.seljup.config.Config;
 public class FirefoxDriverHandler extends DriverHandler {
 
     public FirefoxDriverHandler(Parameter parameter, ExtensionContext context,
-            Config config, AnnotationsReader annotationsReader) {
-        super(parameter, context, config, annotationsReader);
+            Config config, AnnotationsReader annotationsReader,
+            Optional<Browser> browser) {
+        super(parameter, context, config, annotationsReader, browser);
     }
 
     @Override
     public Capabilities getOptions(Parameter parameter,
             Optional<Object> testInstance) {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        FirefoxOptions options = new FirefoxOptions();
 
         if (parameter != null) {
             // @Arguments
             Arguments arguments = parameter.getAnnotation(Arguments.class);
             if (arguments != null) {
-                stream(arguments.value()).forEach(firefoxOptions::addArguments);
+                Arrays.stream(arguments.value()).forEach(options::addArguments);
+            }
+            if (browser.isPresent() && browser.get() != null) {
+                Arrays.stream(browser.get().getArguments())
+                        .forEach(options::addArguments);
             }
 
             // @Extensions
@@ -68,30 +74,29 @@ public class FirefoxDriverHandler extends DriverHandler {
                 for (String extension : extensions.value()) {
                     FirefoxProfile firefoxProfile = new FirefoxProfile();
                     firefoxProfile.addExtension(getExtension(extension));
-                    firefoxOptions.setProfile(firefoxProfile);
+                    options.setProfile(firefoxProfile);
                 }
             }
 
             // @Binary
             Binary binary = parameter.getAnnotation(Binary.class);
             if (binary != null) {
-                firefoxOptions.setBinary(binary.value());
+                options.setBinary(binary.value());
             }
 
             // @Preferences
-            managePreferences(parameter, firefoxOptions);
+            managePreferences(parameter, options);
 
             // @Options
             FirefoxOptions optionsFromAnnotatedField = annotationsReader
                     .getFromAnnotatedField(testInstance, Options.class,
                             FirefoxOptions.class);
             if (optionsFromAnnotatedField != null) {
-                firefoxOptions = optionsFromAnnotatedField
-                        .merge(firefoxOptions);
+                options = optionsFromAnnotatedField.merge(options);
             }
         }
 
-        return firefoxOptions;
+        return options;
     }
 
     private void managePreferences(Parameter parameter,

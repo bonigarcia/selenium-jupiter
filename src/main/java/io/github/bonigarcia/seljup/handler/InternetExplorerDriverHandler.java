@@ -25,6 +25,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 
 import io.github.bonigarcia.seljup.AnnotationsReader;
 import io.github.bonigarcia.seljup.Options;
+import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -37,8 +38,8 @@ public class InternetExplorerDriverHandler extends DriverHandler {
 
     public InternetExplorerDriverHandler(Parameter parameter,
             ExtensionContext context, Config config,
-            AnnotationsReader annotationsReader) {
-        super(parameter, context, config, annotationsReader);
+            AnnotationsReader annotationsReader, Optional<Browser> browser) {
+        super(parameter, context, config, annotationsReader, browser);
     }
 
     @Override
