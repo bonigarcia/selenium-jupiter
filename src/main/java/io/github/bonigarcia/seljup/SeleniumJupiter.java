@@ -250,7 +250,7 @@ public class SeleniumJupiter implements ParameterResolver,
             wdm = WebDriverManager
                     .getInstance(browserType.get().toBrowserName())
                     .browserVersion(browser.getVersion())
-                    .remoteAddress(browser.getUrl());
+                    .remoteAddress(browser.getRemoteUrl());
             if (url.isPresent()) {
                 wdm.remoteAddress(url.get().toString());
             }

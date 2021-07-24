@@ -40,15 +40,12 @@ public class BrowsersTemplate {
     public static class Browser {
         String type;
         String version;
-        String url;
-        String[] volumes;
+        String remoteUrl;
 
-        public Browser(String type, String version, String url,
-                String[] volumes) {
+        public Browser(String type, String version, String remoteUrl) {
             this.type = type;
             this.version = version;
-            this.url = url;
-            this.volumes = volumes;
+            this.remoteUrl = remoteUrl;
         }
 
         public Browser() {
@@ -62,12 +59,12 @@ public class BrowsersTemplate {
             return version;
         }
 
-        public String getUrl() {
-            return url;
+        public String getRemoteUrl() {
+            return remoteUrl;
         }
 
-        public void setUrl(String url) {
-            this.url = url;
+        public void setRemoteUrl(String url) {
+            this.remoteUrl = url;
         }
 
         public BrowserType toBrowserType() {
@@ -82,14 +79,6 @@ public class BrowsersTemplate {
 
         public boolean isDockerBrowser() {
             return getType().contains(IN_DOCKER);
-        }
-
-        public String[] getVolumes() {
-            return volumes;
-        }
-
-        public void setVolumes(String[] volumes) {
-            this.volumes = volumes;
         }
 
         @Override

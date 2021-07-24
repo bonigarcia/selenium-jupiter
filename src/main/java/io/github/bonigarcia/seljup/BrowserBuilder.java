@@ -28,11 +28,7 @@ public class BrowserBuilder {
 
     String type;
     String version;
-    String browserName;
-    String deviceName;
-    String url;
-    String cloud;
-    String[] volumes;
+    String remoteUrl;
 
     private BrowserBuilder(String type) {
         this.type = type;
@@ -91,18 +87,13 @@ public class BrowserBuilder {
         return this;
     }
 
-    public BrowserBuilder url(String url) {
-        this.url = url;
-        return this;
-    }
-
-    public BrowserBuilder volumes(String[] volumes) {
-        this.volumes = volumes;
+    public BrowserBuilder remoteUrl(String url) {
+        this.remoteUrl = url;
         return this;
     }
 
     public Browser build() {
-        return new Browser(type, version, url, volumes);
+        return new Browser(type, version, remoteUrl);
     }
 
 }

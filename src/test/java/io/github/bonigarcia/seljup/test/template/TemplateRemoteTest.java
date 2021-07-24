@@ -48,8 +48,8 @@ class TemplateRemoteTest {
 
         // Register Chrome and Firefox in the browser scenario for the template
         String serverUrl = "http://localhost:" + port + "/wd/hub";
-        Browser chrome = BrowserBuilder.chrome().url(serverUrl).build();
-        Browser firefox = BrowserBuilder.firefox().url(serverUrl).build();
+        Browser chrome = BrowserBuilder.chrome().remoteUrl(serverUrl).build();
+        Browser firefox = BrowserBuilder.firefox().remoteUrl(serverUrl).build();
         seleniumJupiter.addBrowsers(chrome);
         seleniumJupiter.addBrowsers(firefox);
     }
