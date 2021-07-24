@@ -89,13 +89,16 @@ public class CapabilitiesHandler {
         Optional<Class<? extends Capabilities>> optionsClass = getOptionsClass();
         if (optionsClass.isPresent()) {
             Capabilities options = getOptions(optionsClass.get());
-            Optional<Object> testInstance = extensionContext.getTestInstance();
-            Optional<Capabilities> capabilities = annotationsReader
-                    .getCapabilities(parameter, testInstance);
-            if (capabilities.isPresent()) {
-                options.merge(capabilities.get());
+            if (options != null) {
+                Optional<Object> testInstance = extensionContext
+                        .getTestInstance();
+                Optional<Capabilities> capabilities = annotationsReader
+                        .getCapabilities(parameter, testInstance);
+                if (capabilities.isPresent()) {
+                    options.merge(capabilities.get());
+                }
+                return Optional.of(options);
             }
-            return Optional.of(options);
         }
         return Optional.empty();
     }
