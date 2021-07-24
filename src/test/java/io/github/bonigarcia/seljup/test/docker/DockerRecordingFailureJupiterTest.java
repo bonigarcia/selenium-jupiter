@@ -45,7 +45,7 @@ class DockerRecordingFailureJupiterTest {
     }
 
     @Test
-    void test(@DockerBrowser(type = CHROME) RemoteWebDriver driver)
+    void recordingTest(@DockerBrowser(type = CHROME) RemoteWebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
         assertThat(driver.getTitle())
@@ -55,7 +55,7 @@ class DockerRecordingFailureJupiterTest {
         // Thread.sleep(5000);
 
         File recordingFile = new File(
-                "chrome_" + driver.getSessionId() + ".mp4");
+                "recordingTest_" + driver.getSessionId() + ".mp4");
         assertThat(recordingFile).doesNotExist();
     }
 

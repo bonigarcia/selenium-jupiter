@@ -40,6 +40,7 @@ public class OutputHandler {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
+    public static final String SEPARATOR = "_";
     public static final String BASE64_KEY = "base64";
     public static final String PNG_KEY = "png";
     public static final String BASE64_AND_PNG_KEY = "base64andpng";
@@ -58,23 +59,31 @@ public class OutputHandler {
         String outputFolder = getOutputFolder();
         String fileName = getOutputFileName(driver);
         File destFile = new File(outputFolder, fileName + "." + PNG_KEY);
+        if (destFile.exists()) {
+            destFile = new File(outputFolder,
+                    fileName + SEPARATOR + System.nanoTime() + ".png");
+        }
         return destFile;
     }
 
-    public String getOutputFileName(WebDriver driver) {
-        String name = "";
+    public String getPrefix() {
+        String prefix = "";
         Optional<Method> testMethod = extensionContext.getTestMethod();
         if (testMethod.isPresent()) {
-            name = testMethod.get().getName() + "_";
+            prefix = testMethod.get().getName();
         } else {
             Optional<Class<?>> testClass = extensionContext.getTestClass();
             if (testClass.isPresent()) {
-                name = testClass.get().getSimpleName() + "_";
+                prefix = testClass.get().getSimpleName();
             }
         }
-        name += driver.getClass().getSimpleName();
+        return prefix;
+    }
+
+    public String getOutputFileName(WebDriver driver) {
+        String name = getPrefix();
         if (RemoteWebDriver.class.isAssignableFrom(driver.getClass())) {
-            name += "_" + ((RemoteWebDriver) driver).getSessionId();
+            name += SEPARATOR + ((RemoteWebDriver) driver).getSessionId();
         }
         return name;
     }

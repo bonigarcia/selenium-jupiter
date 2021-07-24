@@ -23,7 +23,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -37,19 +36,8 @@ class DockerRecordingJupiterTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    File recordingFile;
-
-    @AfterEach
-    void teardown() {
-        if (recordingFile != null) {
-            assertThat(recordingFile).exists();
-            log.info("Deleting recording {} ... {}", recordingFile,
-                    recordingFile.delete());
-        }
-    }
-
     @Test
-    void test(
+    void recordingTest(
             @DockerBrowser(type = CHROME, recording = true) RemoteWebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.github.io/selenium-jupiter/");
@@ -59,7 +47,11 @@ class DockerRecordingJupiterTest {
         // Uncomment this line to get a longer recording
         // Thread.sleep(5000);
 
-        recordingFile = new File("chrome_" + driver.getSessionId() + ".mp4");
+        File recordingFile = new File(
+                "recordingTest_" + driver.getSessionId() + ".mp4");
+        assertThat(recordingFile).exists();
+        log.info("Deleting recording {} ... {}", recordingFile,
+                recordingFile.delete());
     }
 
 }

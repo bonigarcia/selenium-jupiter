@@ -217,6 +217,9 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.recording() || config.isRecording()
                 || config.isRecordingWhenFailure()) {
             wdm.enableRecording();
+            OutputHandler outputHandler = new OutputHandler(extensionContext,
+                    getConfig());
+            wdm.recordingPrefix(outputHandler.getPrefix());
         }
         if (dockerBrowser.vnc()) {
             wdm.enableVnc();
