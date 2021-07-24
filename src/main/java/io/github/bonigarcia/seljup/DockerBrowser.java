@@ -46,6 +46,6 @@ public @interface DockerBrowser {
 
     public String timezone() default "";
 
-    public String volumes() default "";
+    public String[] volumes() default {};
 
 }

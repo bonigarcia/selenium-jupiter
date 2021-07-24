@@ -223,7 +223,7 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.vnc()) {
             wdm.enableVnc();
         }
-        if (!dockerBrowser.volumes().isBlank()) {
+        if (dockerBrowser.volumes().length > 0) {
             wdm.dockerVolumes(dockerBrowser.volumes());
         }
         if (!dockerBrowser.lang().isBlank()) {
