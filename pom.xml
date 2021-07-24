@@ -15,7 +15,6 @@
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.7.2</junit.jupiter.version>
         <selenium.version>4.0.0-beta-4</selenium.version>
-        <javalin.version>3.13.10</javalin.version>
 
         <!-- Test dependencies -->
         <logback.version>1.2.4</logback.version>
@@ -95,12 +94,6 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
-            <version>${javalin.version}</version>
             <scope>provided</scope>
         </dependency>
 
