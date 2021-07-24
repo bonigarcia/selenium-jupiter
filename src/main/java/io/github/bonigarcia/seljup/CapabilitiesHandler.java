@@ -23,6 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -218,34 +219,47 @@ public class CapabilitiesHandler {
     private void handlePreferences(Class<? extends Capabilities> optionsClass,
             Capabilities options) {
         try {
+            Method addPreferenceMethod = optionsClass.getMethod("addPreference",
+                    String.class, Object.class);
+
             Preferences preferences = parameter
                     .getAnnotation(Preferences.class);
             if (preferences != null) {
-                Method addPreferenceMethod = optionsClass
-                        .getMethod("addPreference", String.class, Object.class);
-
-                for (String preference : preferences.value()) {
-                    Optional<List<Object>> keyValue = annotationsReader
-                            .getKeyValue(preference);
-                    if (!keyValue.isPresent()) {
-                        continue;
-                    }
-                    String name = keyValue.get().get(0).toString();
-                    String value = keyValue.get().get(1).toString();
-                    if (annotationsReader.isBoolean(value)) {
-                        addPreferenceMethod.invoke(options, name,
-                                Boolean.valueOf(value));
-                    } else if (annotationsReader.isNumeric(value)) {
-                        addPreferenceMethod.invoke(options, name,
-                                Integer.parseInt(value));
-                    } else {
-                        addPreferenceMethod.invoke(options, name, value);
-                    }
-                }
+                addPreferences(options, preferences.value(),
+                        addPreferenceMethod);
             }
+            if (browser.isPresent() && browser.get() != null
+                    && browser.get().getPreferences() != null) {
+                addPreferences(options, browser.get().getPreferences(),
+                        addPreferenceMethod);
+            }
+
         } catch (Exception e) {
             log.trace("Exception reading preferences of {} ({})", optionsClass,
                     e.getMessage());
+        }
+    }
+
+    private void addPreferences(Capabilities options, String[] preferences,
+            Method addPreferenceMethod)
+            throws IllegalAccessException, InvocationTargetException {
+        for (String preference : preferences) {
+            Optional<List<Object>> keyValue = annotationsReader
+                    .getKeyValue(preference);
+            if (!keyValue.isPresent()) {
+                continue;
+            }
+            String name = keyValue.get().get(0).toString();
+            String value = keyValue.get().get(1).toString();
+            if (annotationsReader.isBoolean(value)) {
+                addPreferenceMethod.invoke(options, name,
+                        Boolean.valueOf(value));
+            } else if (annotationsReader.isNumeric(value)) {
+                addPreferenceMethod.invoke(options, name,
+                        Integer.parseInt(value));
+            } else {
+                addPreferenceMethod.invoke(options, name, value);
+            }
         }
     }
 

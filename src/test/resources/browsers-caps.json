@@ -4,13 +4,22 @@
          {
             "type": "chrome",
              "arguments" : [
-                "--headless",
-                "--incognito"
+                "--use-fake-device-for-media-stream",
+                "--use-fake-ui-for-media-stream"
              ],
              "capabilities" : {
                 "cap1": "value1",
                 "cap2": "value2"
              }
+         }
+      ],
+      [
+         {
+            "type": "firefox",
+             "preferences" : [
+                "media.navigator.permission.disabled=true",
+                "media.navigator.streams.fake=true"
+             ]
          }
       ]
    ]

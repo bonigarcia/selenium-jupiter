@@ -42,14 +42,16 @@ public class BrowsersTemplate {
         String version;
         String remoteUrl;
         String[] arguments;
+        String[] preferences;
         Object capabilities;
 
         public Browser(String type, String version, String remoteUrl,
-                String[] arguments, Object capabilities) {
+                String[] arguments, String[] preferences, Object capabilities) {
             this.type = type;
             this.version = version;
             this.remoteUrl = remoteUrl;
             this.arguments = arguments;
+            this.preferences = preferences;
             this.capabilities = capabilities;
         }
 
@@ -78,6 +80,14 @@ public class BrowsersTemplate {
 
         public void setArguments(String[] arguments) {
             this.arguments = arguments;
+        }
+
+        public String[] getPreferences() {
+            return preferences;
+        }
+
+        public void setPreferences(String[] preferences) {
+            this.preferences = preferences;
         }
 
         public Object getCapabilities() {

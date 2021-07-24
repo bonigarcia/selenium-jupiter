@@ -32,6 +32,7 @@ public class BrowserBuilder {
     String version;
     String remoteUrl;
     String[] arguments;
+    String[] preferences;
     Object capabilities;
 
     private BrowserBuilder(String type) {
@@ -101,6 +102,11 @@ public class BrowserBuilder {
         return this;
     }
 
+    public BrowserBuilder preferences(String[] preferences) {
+        this.preferences = preferences;
+        return this;
+    }
+
     public BrowserBuilder capabilities(
             LinkedTreeMap<String, String> capabilities) {
         this.capabilities = capabilities;
@@ -108,7 +114,8 @@ public class BrowserBuilder {
     }
 
     public Browser build() {
-        return new Browser(type, version, remoteUrl, arguments, capabilities);
+        return new Browser(type, version, remoteUrl, arguments, preferences,
+                capabilities);
     }
 
 }

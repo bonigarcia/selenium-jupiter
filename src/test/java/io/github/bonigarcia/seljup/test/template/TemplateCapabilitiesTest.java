@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -38,9 +39,10 @@ class TemplateCapabilitiesTest {
 
     @TestTemplate
     void templateTest(WebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        driver.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
     }
 
 }
