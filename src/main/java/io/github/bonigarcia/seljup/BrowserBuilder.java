@@ -16,6 +16,8 @@
  */
 package io.github.bonigarcia.seljup;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 
 /**
@@ -99,7 +101,8 @@ public class BrowserBuilder {
         return this;
     }
 
-    public BrowserBuilder capabilities(Object capabilities) {
+    public BrowserBuilder capabilities(
+            LinkedTreeMap<String, String> capabilities) {
         this.capabilities = capabilities;
         return this;
     }
