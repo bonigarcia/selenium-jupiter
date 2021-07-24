@@ -16,8 +16,9 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.SurefireReports.getOutputFolder;
-import static java.lang.System.nanoTime;
+import static io.github.bonigarcia.seljup.OutputHandler.BASE64_AND_PNG_KEY;
+import static io.github.bonigarcia.seljup.OutputHandler.BASE64_KEY;
+import static io.github.bonigarcia.seljup.OutputHandler.PNG_KEY;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.apache.commons.io.FileUtils.copyFile;
 import static org.openqa.selenium.OutputType.BASE64;
@@ -25,20 +26,18 @@ import static org.openqa.selenium.OutputType.FILE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
- * Utilities for screenshots.
+ * Screenshots handler.
  *
  * @author Boni Garcia
  * @since 2.0.0
@@ -47,16 +46,19 @@ public class ScreenshotManager {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    ExtensionContext context;
+    ExtensionContext extensionContext;
     Config config;
+    OutputHandler outputHandler;
 
-    public ScreenshotManager(ExtensionContext context, Config config) {
-        this.context = context;
+    public ScreenshotManager(ExtensionContext extensionContext, Config config,
+            OutputHandler outputHandler) {
+        this.extensionContext = extensionContext;
         this.config = config;
+        this.outputHandler = outputHandler;
     }
 
     boolean isScreenshotRequired() {
-        Optional<Throwable> executionException = context
+        Optional<Throwable> executionException = extensionContext
                 .getExecutionException();
         boolean isSscreenshot = config.isScreenshot();
         boolean isSscreenshotWhenFailure = config.isScreenshotWhenFailure();
@@ -64,45 +66,23 @@ public class ScreenshotManager {
                 || (executionException.isPresent() && isSscreenshotWhenFailure);
     }
 
-    String getName(ExtensionContext extensionContext, WebDriver driver) {
-        String name = "";
-        Optional<Method> testMethod = extensionContext.getTestMethod();
-        if (testMethod.isPresent()) {
-            name = testMethod.get().getName() + "_";
-        } else {
-            Optional<Class<?>> testClass = extensionContext.getTestClass();
-            if (testClass.isPresent()) {
-                name = testClass.get().getSimpleName() + "_";
-            }
-        }
-        name += driver.getClass().getSimpleName();
-        if (RemoteWebDriver.class.isAssignableFrom(driver.getClass())) {
-            name += "_" + ((RemoteWebDriver) driver).getSessionId();
-        }
-        return name;
+    void makeScreenshotIfRequired(List<WebDriver> driverList) {
+        driverList.forEach(this::makeScreenshotIfRequired);
     }
 
-    void makeScreenshotIfRequired(ScreenshotManager screenshotManager,
-            ExtensionContext extensionContext, List<WebDriver> driverList) {
-        driverList.forEach(driver -> {
-            String fileName = getName(extensionContext, driver);
-            screenshotManager.makeScreenshotIfRequired(driver, fileName);
-        });
-    }
-
-    void makeScreenshotIfRequired(WebDriver driver, String fileName) {
-        if (isScreenshotRequired() && driver != null && fileName != null) {
+    void makeScreenshotIfRequired(WebDriver driver) {
+        if (isScreenshotRequired() && driver != null) {
             String screenshotFormat = config.getScreenshotFormat();
             switch (screenshotFormat) {
-            case "png":
-                logFileScreenshot(driver, fileName);
+            case PNG_KEY:
+                logFileScreenshot(driver);
                 break;
-            case "base64":
-                logBase64Screenshot(driver, fileName);
+            case BASE64_KEY:
+                logBase64Screenshot(driver);
                 break;
-            case "base64andpng":
-                logBase64Screenshot(driver, fileName);
-                logFileScreenshot(driver, fileName);
+            case BASE64_AND_PNG_KEY:
+                logBase64Screenshot(driver);
+                logFileScreenshot(driver);
                 break;
             default:
                 log.warn("Invalid screenshot format {}", screenshotFormat);
@@ -111,30 +91,24 @@ public class ScreenshotManager {
         }
     }
 
-    void logBase64Screenshot(WebDriver driver, String fileName) {
+    void logBase64Screenshot(WebDriver driver) {
         try {
             String screenshotBase64 = ((TakesScreenshot) driver)
                     .getScreenshotAs(BASE64);
-            log.info("Screenshot (in Base64) at the end of {} "
+            log.debug("Screenshot (in Base64) at the end of test "
                     + "(copy&paste this string as URL in browser to watch it):\r\n"
-                    + "data:image/png;base64,{}", fileName, screenshotBase64);
+                    + "data:image/png;base64,{}", screenshotBase64);
         } catch (Exception e) {
             log.trace("Exception getting screenshot in Base64", e);
         }
     }
 
-    void logFileScreenshot(WebDriver driver, String fileName) {
-        log.trace("Creating screenshot for {} in {}", driver, fileName);
+    void logFileScreenshot(WebDriver driver) {
         try {
             File screenshotFile = ((TakesScreenshot) driver)
                     .getScreenshotAs(FILE);
-            String outputFolder = getOutputFolder(context,
-                    config.getOutputFolder());
-            File destFile = new File(outputFolder, fileName + ".png");
-            if (destFile.exists()) {
-                destFile = new File(outputFolder,
-                        fileName + "_" + nanoTime() + ".png");
-            }
+            File destFile = outputHandler.getScreenshotFile(driver);
+            log.trace("Creating screenshot for {} in {}", driver, destFile);
             copyFile(screenshotFile, destFile);
 
         } catch (Exception e) {

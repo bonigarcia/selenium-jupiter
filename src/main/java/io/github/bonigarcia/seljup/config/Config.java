@@ -16,6 +16,10 @@
  */
 package io.github.bonigarcia.seljup.config;
 
+import static io.github.bonigarcia.seljup.OutputHandler.BASE64_AND_PNG_KEY;
+import static io.github.bonigarcia.seljup.OutputHandler.BASE64_KEY;
+import static io.github.bonigarcia.seljup.OutputHandler.PNG_KEY;
+import static io.github.bonigarcia.seljup.OutputHandler.SUREFIRE_REPORTS_KEY;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -38,8 +42,6 @@ public class Config {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    static final String HOME = "~";
-
     WebDriverManager manager;
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
@@ -50,6 +52,8 @@ public class Config {
     ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
             "sel.jup.selenium.server.url", String.class);
 
+    ConfigKey<Boolean> recording = new ConfigKey<>("sel.jup.recording",
+            Boolean.class);
     ConfigKey<Boolean> recordingWhenFailure = new ConfigKey<>(
             "sel.jup.recording.when.failure", Boolean.class);
 
@@ -158,6 +162,14 @@ public class Config {
         this.outputFolder.setValue(value);
     }
 
+    public boolean isRecording() {
+        return resolve(recording);
+    }
+
+    public void setRecording(boolean value) {
+        this.recording.setValue(value);
+    }
+
     public boolean isRecordingWhenFailure() {
         return resolve(recordingWhenFailure);
     }
@@ -206,38 +218,46 @@ public class Config {
         this.browserTemplateJsonContent.setValue(value);
     }
 
-    // Custom values
-
-    public void enableScreenshot() {
-        this.screenshot.setValue(true);
-    }
-
-    public void enableScreenshotWhenFailure() {
-        this.screenshotWhenFailure.setValue(true);
-    }
-
-    public void useSurefireOutputFolder() {
-        this.outputFolder.setValue("surefire-reports");
-    }
-
-    public void takeScreenshotAsBase64() {
-        this.screenshotFormat.setValue("base64");
-    }
-
-    public void takeScreenshotAsPng() {
-        this.screenshotFormat.setValue("png");
-    }
-
-    public void takeScreenshotAsBase64AndPng() {
-        this.screenshotFormat.setValue("base64andpng");
-    }
-
     public WebDriverManager getManager() {
         return manager;
     }
 
     public void setManager(WebDriverManager manager) {
         this.manager = manager;
+    }
+
+    // Readable API methods
+
+    public void enableScreenshot() {
+        setScreenshot(true);
+    }
+
+    public void enableRecording() {
+        setRecording(true);
+    }
+
+    public void enableRecordingWhenFailure() {
+        setRecordingWhenFailure(true);
+    }
+
+    public void enableScreenshotWhenFailure() {
+        setScreenshotWhenFailure(true);
+    }
+
+    public void useSurefireOutputFolder() {
+        setOutputFolder(SUREFIRE_REPORTS_KEY);
+    }
+
+    public void takeScreenshotAsBase64() {
+        setScreenshotFormat(BASE64_KEY);
+    }
+
+    public void takeScreenshotAsPng() {
+        setScreenshotFormat(PNG_KEY);
+    }
+
+    public void takeScreenshotAsBase64AndPng() {
+        setScreenshotFormat(BASE64_AND_PNG_KEY);
     }
 
 }

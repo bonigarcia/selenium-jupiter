@@ -34,12 +34,15 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -86,6 +89,7 @@ public class SeleniumJupiter implements ParameterResolver,
     Config config;
     Map<String, List<WebDriverManager>> wdmMap;
     AnnotationsReader annotationsReader;
+    OutputHandler outputHandler;
     List<List<Browser>> browserListList;
     Map<String, List<Browser>> browserListMap;
 
@@ -210,7 +214,8 @@ public class SeleniumJupiter implements ParameterResolver,
         if (browserType == CHROME_MOBILE) {
             wdm.browserInDockerAndroid();
         }
-        if (dockerBrowser.recording()) {
+        if (dockerBrowser.recording() || config.isRecording()
+                || config.isRecordingWhenFailure()) {
             wdm.enableRecording();
         }
         if (dockerBrowser.vnc()) {
@@ -282,21 +287,21 @@ public class SeleniumJupiter implements ParameterResolver,
             throws Exception {
         // 1. Screenshots (if required)
         String contextId = extensionContext.getUniqueId();
+        OutputHandler outputHandler = new OutputHandler(extensionContext,
+                getConfig());
         ScreenshotManager screenshotManager = new ScreenshotManager(
-                extensionContext, getConfig());
+                extensionContext, getConfig(), outputHandler);
         Optional<List<WebDriverManager>> mapUsingContextId = getValueFromMapStartingWithKey(
                 wdmMap, contextId);
         if (mapUsingContextId.isPresent()) {
             mapUsingContextId.get().stream()
                     .map(WebDriverManager::getWebDriverList)
-                    .forEach(driverList -> screenshotManager
-                            .makeScreenshotIfRequired(screenshotManager,
-                                    extensionContext, driverList));
+                    .forEach(screenshotManager::makeScreenshotIfRequired);
         }
 
         // 2. Quit WebDriver
         if (!isSingleSession(extensionContext)) {
-            quitWebDriver(contextId);
+            quitWebDriver(contextId, extensionContext);
         }
     }
 
@@ -304,7 +309,7 @@ public class SeleniumJupiter implements ParameterResolver,
     public void afterAll(ExtensionContext extensionContext) throws Exception {
         String contextId = extensionContext.getUniqueId();
         if (isSingleSession(extensionContext)) {
-            quitWebDriver(contextId);
+            quitWebDriver(contextId, extensionContext);
         }
     }
 
@@ -521,13 +526,41 @@ public class SeleniumJupiter implements ParameterResolver,
         return singleSession;
     }
 
-    private void quitWebDriver(String contextId) {
+    private void quitWebDriver(String contextId,
+            ExtensionContext extensionContext) {
         Optional<List<WebDriverManager>> mapByContextId = getValueFromMapStartingWithKey(
                 wdmMap, contextId);
         log.trace("Map by contextId {}: {} (wdmMap={})", contextId,
                 mapByContextId, wdmMap);
         if (mapByContextId.isPresent()) {
-            mapByContextId.get().forEach(WebDriverManager::quit);
+            Optional<Throwable> executionException = extensionContext
+                    .getExecutionException();
+            mapByContextId.get().forEach(manager -> {
+                // Get recording files (to be deleted after quit)
+                List<Path> recordingList = Collections.emptyList();
+                if (config.isRecordingWhenFailure()
+                        && executionException.isEmpty()) {
+                    recordingList = manager.getWebDriverList().stream()
+                            .map(manager::getDockerRecordingPath)
+                            .collect(Collectors.toList());
+                }
+
+                // Quit manager
+                manager.quit();
+
+                // Delete recordings (if any)
+                recordingList.forEach(path -> {
+                    try {
+                        log.debug("Deleting {} (since test does not fail)",
+                                path);
+                        Files.delete(path);
+                    } catch (Exception e) {
+                        log.warn("Exception trying to delete recording {}",
+                                path);
+                    }
+                });
+            });
+
             removeManagersFromMap(contextId);
         }
     }
