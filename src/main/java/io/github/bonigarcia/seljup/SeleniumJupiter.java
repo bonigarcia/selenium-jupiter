@@ -133,11 +133,9 @@ public class SeleniumJupiter implements ParameterResolver,
                 .getCapabilities(parameter, testInstance);
 
         // Single session
-        Optional<List<WebDriverManager>> wdmList = getValueFromMapStartingWithKey(
-                wdmMap, contextId);
-        if (isSingleSession(extensionContext) && wdmList.isPresent()
-                && index < wdmList.get().size()) {
-            WebDriver driver = wdmList.get().get(index).getWebDriver();
+        if (isSingleSession(extensionContext) && wdmMap.containsKey(contextId)
+                && index < wdmMap.get(contextId).size()) {
+            WebDriver driver = wdmMap.get(contextId).get(index).getWebDriver();
             if (driver != null) {
                 log.trace("Returning driver at index {}: {}", index, driver);
                 return driver;
@@ -306,15 +304,14 @@ public class SeleniumJupiter implements ParameterResolver,
     public void afterTestExecution(ExtensionContext extensionContext)
             throws Exception {
         // 1. Screenshots (if required)
-        String contextId = extensionContext.getUniqueId();
+        String contextId = getContextId(extensionContext);
         OutputHandler outputHandler = new OutputHandler(extensionContext,
                 getConfig());
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig(), outputHandler);
-        Optional<List<WebDriverManager>> mapUsingContextId = getValueFromMapStartingWithKey(
-                wdmMap, contextId);
-        if (mapUsingContextId.isPresent()) {
-            mapUsingContextId.get().stream()
+
+        if (wdmMap.containsKey(contextId)) {
+            wdmMap.get(contextId).stream()
                     .map(WebDriverManager::getWebDriverList)
                     .forEach(screenshotManager::makeScreenshotIfRequired);
         }
@@ -348,7 +345,7 @@ public class SeleniumJupiter implements ParameterResolver,
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
             ExtensionContext extensionContext) {
-        String contextId = extensionContext.getUniqueId();
+        String contextId = getContextId(extensionContext);
         try {
             // 1. By JSON content
             String browserJsonContent = config.getBrowserTemplateJsonContent();
@@ -424,7 +421,7 @@ public class SeleniumJupiter implements ParameterResolver,
                     public Object resolveParameter(
                             ParameterContext parameterContext,
                             ExtensionContext extensionContext) {
-                        String contextId = extensionContext.getUniqueId();
+                        String contextId = getContextId(extensionContext);
                         log.trace("Setting browser list {} for context id {}",
                                 template, contextId);
                         parent.browserListMap.put(contextId, template);
@@ -472,27 +469,18 @@ public class SeleniumJupiter implements ParameterResolver,
         log.trace("Getting browser by contextId {} and index {}", contextId,
                 index);
         Browser browser = null;
-        Optional<List<Browser>> browserList = getValueFromMapStartingWithKey(
-                browserListMap, contextId);
-        if (browserList.isEmpty()) {
+
+        if (!browserListMap.containsKey(contextId)) {
             log.warn("Browser list for context id {} not found", contextId);
         } else {
-            if (index >= browserList.get().size()) {
-                index = browserList.get().size() - 1;
+            List<Browser> browserList = browserListMap.get(contextId);
+
+            if (index >= browserList.size()) {
+                index = browserList.size() - 1;
             }
-            browser = browserList.get().get(index);
+            browser = browserList.get(index);
         }
         return browser;
-    }
-
-    private <T extends Object> Optional<T> getValueFromMapStartingWithKey(
-            Map<String, T> map, String searchKey) {
-        for (Map.Entry<String, T> entry : map.entrySet()) {
-            if (entry.getKey().startsWith(searchKey)) {
-                return Optional.of(entry.getValue());
-            }
-        }
-        return Optional.empty();
     }
 
     private ConditionEvaluationResult toResult(
@@ -521,10 +509,8 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private void putManagerInMap(String contextId, WebDriverManager wdm) {
         log.trace("Put manager {} in map (context id {})", wdm, contextId);
-        Optional<List<WebDriverManager>> mapUsingContextId = getValueFromMapStartingWithKey(
-                wdmMap, contextId);
-        if (mapUsingContextId.isPresent()) {
-            mapUsingContextId.get().add(wdm);
+        if (wdmMap.containsKey(contextId)) {
+            wdmMap.get(contextId).add(wdm);
             log.trace("Adding {} to existing map (id {})", wdm, contextId);
         } else {
             List<WebDriverManager> wdmList = new ArrayList<>();
@@ -547,16 +533,13 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private void quitWebDriver(ExtensionContext extensionContext) {
         String contextId = getContextId(extensionContext);
-        Optional<List<WebDriverManager>> mapByContextId = getValueFromMapStartingWithKey(
-                wdmMap, contextId);
 
-        log.trace("Quitting contextId {}: {} (wdmMap={})", contextId,
-                mapByContextId, wdmMap);
+        log.trace("Quitting contextId {}: (wdmMap={})", contextId, wdmMap);
 
-        if (mapByContextId.isPresent()) {
+        if (wdmMap.containsKey(contextId)) {
             Optional<Throwable> executionException = extensionContext
                     .getExecutionException();
-            mapByContextId.get().forEach(manager -> {
+            wdmMap.get(contextId).forEach(manager -> {
 
                 // Get recording files (to be deleted after quit)
                 List<Path> recordingList = Collections.emptyList();
