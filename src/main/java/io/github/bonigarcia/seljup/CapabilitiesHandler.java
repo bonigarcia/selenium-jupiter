@@ -101,11 +101,6 @@ public class CapabilitiesHandler {
 
     private Optional<Class<? extends Capabilities>> getOptionsClass() {
         Class<?> type = parameter.getType();
-        if (isGeneric) {
-            String defaultBrowser = WebDriverManager.getInstance().config()
-                    .getDefaultBrowser();
-            browserType = Optional.of(Browser.toBrowserType(defaultBrowser));
-        }
         log.trace("Getting capabilities for type={} -- browserType={}", type,
                 browserType);
 
@@ -128,6 +123,10 @@ public class CapabilitiesHandler {
             return Optional.of(InternetExplorerOptions.class);
         } else if (type == ChromiumDriver.class) {
             return Optional.of(ChromiumOptions.class);
+        } else if (isGeneric) {
+            String defaultBrowser = WebDriverManager.getInstance().config()
+                    .getDefaultBrowser();
+            browserType = Optional.of(Browser.toBrowserType(defaultBrowser));
         }
 
         return Optional.empty();
