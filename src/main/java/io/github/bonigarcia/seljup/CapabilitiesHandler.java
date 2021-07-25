@@ -148,16 +148,16 @@ public class CapabilitiesHandler {
         log.trace("Getting options for {}", optionsClass);
 
         // Arguments
-        options = handleArguments(optionsClass, options);
+        handleArguments(optionsClass, options);
 
         // Extensions
-        options = handleExtensions(optionsClass, options);
+        handleExtensions(optionsClass, options);
 
         // Preferences
-        options = handlePreferences(optionsClass, options);
+        handlePreferences(optionsClass, options);
 
         // Binary
-        options = handleBinary(optionsClass, options);
+        handleBinary(optionsClass, options);
 
         // Options
         options = handleOptions(optionsClass, options, testInstance);
@@ -171,8 +171,8 @@ public class CapabilitiesHandler {
 
     }
 
-    private Capabilities handleCapabilities(
-            Class<? extends Capabilities> optionsClass, Capabilities options) {
+    private void handleCapabilities(Class<? extends Capabilities> optionsClass,
+            Capabilities options) {
         try {
             if (browser.isPresent() && browser.get() != null
                     && browser.get().getCapabilities() != null) {
@@ -191,7 +191,6 @@ public class CapabilitiesHandler {
             log.trace("Exception reading capabilities of {} ({})", optionsClass,
                     e.getMessage());
         }
-        return options;
     }
 
     private Capabilities handleOptions(
@@ -211,8 +210,8 @@ public class CapabilitiesHandler {
         return options;
     }
 
-    private Capabilities handleBinary(
-            Class<? extends Capabilities> optionsClass, Capabilities options) {
+    private void handleBinary(Class<? extends Capabilities> optionsClass,
+            Capabilities options) {
         try {
             Method setBinaryMethod = optionsClass.getMethod("setBinary",
                     String.class);
@@ -225,11 +224,10 @@ public class CapabilitiesHandler {
             log.trace("Exception reading binary of {} ({})", optionsClass,
                     e.getMessage());
         }
-        return options;
     }
 
-    private Capabilities handlePreferences(
-            Class<? extends Capabilities> optionsClass, Capabilities options) {
+    private void handlePreferences(Class<? extends Capabilities> optionsClass,
+            Capabilities options) {
         try {
             Method addPreferenceMethod = optionsClass.getMethod("addPreference",
                     String.class, Object.class);
@@ -250,7 +248,6 @@ public class CapabilitiesHandler {
             log.trace("Exception reading preferences of {} ({})", optionsClass,
                     e.getMessage());
         }
-        return options;
     }
 
     private Capabilities addPreferences(Capabilities options,
@@ -306,8 +303,8 @@ public class CapabilitiesHandler {
         return options;
     }
 
-    private Capabilities handleArguments(
-            Class<? extends Capabilities> optionsClass, Capabilities options) {
+    private void handleArguments(Class<? extends Capabilities> optionsClass,
+            Capabilities options) {
         try {
             Method addArgumentsMethod = optionsClass.getMethod("addArguments",
                     List.class);
@@ -325,7 +322,6 @@ public class CapabilitiesHandler {
             log.trace("Exception reading arguments of {} ({})", optionsClass,
                     e.getMessage());
         }
-        return options;
     }
 
     private File getExtension(String fileName) {
