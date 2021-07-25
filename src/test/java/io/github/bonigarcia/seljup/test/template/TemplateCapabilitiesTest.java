@@ -35,14 +35,18 @@ class TemplateCapabilitiesTest {
     static void setup() {
         seleniumJupiter.getConfig()
                 .setBrowserTemplateJsonFile("classpath:browsers-caps.json");
+        seleniumJupiter.getConfig().enableVnc();
+        seleniumJupiter.getConfig().enableRecording();
     }
 
     @TestTemplate
-    void templateTest(WebDriver driver) {
+    void templateTest(WebDriver driver) throws InterruptedException {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
+
+        Thread.sleep(2000);
     }
 
 }

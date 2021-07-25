@@ -40,14 +40,15 @@ class DockerChromeWithOptionsJupiterTest {
     }
 
     @Test
-    void webrtcTest(@DockerBrowser(type = CHROME) WebDriver driver)
+    void webrtcTest(
+            @DockerBrowser(type = CHROME, recording = true) WebDriver driver)
             throws InterruptedException {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
 
-        // Thread.sleep(5000);
+        Thread.sleep(2000);
     }
 
 }

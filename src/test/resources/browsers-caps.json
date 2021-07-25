@@ -2,20 +2,20 @@
    "browsers": [
       [
          {
-            "type": "chrome",
+            "type": "chrome-in-docker",
              "arguments" : [
                 "--use-fake-device-for-media-stream",
                 "--use-fake-ui-for-media-stream"
              ],
              "capabilities" : {
-                "cap1": "value1",
-                "cap2": "value2"
+                "custom-cap-1": "custom-value-1",
+                "custom-cap-2": "custom-value-2"
              }
          }
       ],
       [
          {
-            "type": "firefox",
+            "type": "firefox-in-docker",
              "preferences" : [
                 "media.navigator.permission.disabled=true",
                 "media.navigator.streams.fake=true"
