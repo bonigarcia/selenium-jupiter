@@ -172,12 +172,11 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private String getContextId(ExtensionContext extensionContext) {
         Optional<ExtensionContext> parent = extensionContext.getParent();
-        String contextId = parent.isPresent()
+        return parent.isPresent()
                 && extensionContext.getClass().getCanonicalName().equals(
                         "org.junit.jupiter.engine.descriptor.MethodExtensionContext")
                                 ? parent.get().getUniqueId()
                                 : extensionContext.getUniqueId();
-        return contextId;
     }
 
     private WebDriverManager getManagerForRemote(URL url, Capabilities caps) {
