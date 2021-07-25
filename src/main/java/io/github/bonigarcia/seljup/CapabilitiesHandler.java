@@ -18,7 +18,6 @@ package io.github.bonigarcia.seljup;
 
 import static java.io.File.createTempFile;
 import static java.lang.invoke.MethodHandles.lookup;
-import static java.util.Locale.ROOT;
 import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -94,13 +93,6 @@ public class CapabilitiesHandler {
         if (optionsClass.isPresent()) {
             Capabilities options = getOptions(optionsClass.get());
             if (options != null) {
-                Optional<Object> testInstance = extensionContext
-                        .getTestInstance();
-                Optional<Capabilities> capabilities = annotationsReader
-                        .getCapabilities(parameter, testInstance);
-                if (capabilities.isPresent()) {
-                    options.merge(capabilities.get());
-                }
                 return Optional.of(options);
             }
         }
@@ -156,29 +148,31 @@ public class CapabilitiesHandler {
         log.trace("Getting options for {}", optionsClass);
 
         // Arguments
-        handleArguments(optionsClass, options);
+        options = handleArguments(optionsClass, options);
 
         // Extensions
-        handleExtensions(optionsClass, options);
+        options = handleExtensions(optionsClass, options);
 
         // Preferences
-        handlePreferences(optionsClass, options);
+        options = handlePreferences(optionsClass, options);
 
         // Binary
-        handleBinary(optionsClass, options);
+        options = handleBinary(optionsClass, options);
 
         // Options
-        options = handleOptions(optionsClass, testInstance, options);
+        options = handleOptions(optionsClass, options, testInstance);
 
         // Capabilities
         handleCapabilities(optionsClass, options);
+
+        log.trace("Gathered {}", options);
 
         return options;
 
     }
 
-    private void handleCapabilities(Class<? extends Capabilities> optionsClass,
-            Capabilities options) {
+    private Capabilities handleCapabilities(
+            Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             if (browser.isPresent() && browser.get() != null
                     && browser.get().getCapabilities() != null) {
@@ -197,11 +191,12 @@ public class CapabilitiesHandler {
             log.trace("Exception reading capabilities of {} ({})", optionsClass,
                     e.getMessage());
         }
+        return options;
     }
 
     private Capabilities handleOptions(
-            Class<? extends Capabilities> optionsClass,
-            Optional<Object> testInstance, Capabilities options) {
+            Class<? extends Capabilities> optionsClass, Capabilities options,
+            Optional<Object> testInstance) {
         try {
             Capabilities optionsFromAnnotatedField = annotationsReader
                     .getFromAnnotatedField(testInstance, Options.class,
@@ -216,8 +211,8 @@ public class CapabilitiesHandler {
         return options;
     }
 
-    private void handleBinary(Class<? extends Capabilities> optionsClass,
-            Capabilities options) {
+    private Capabilities handleBinary(
+            Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             Method setBinaryMethod = optionsClass.getMethod("setBinary",
                     String.class);
@@ -230,10 +225,11 @@ public class CapabilitiesHandler {
             log.trace("Exception reading binary of {} ({})", optionsClass,
                     e.getMessage());
         }
+        return options;
     }
 
-    private void handlePreferences(Class<? extends Capabilities> optionsClass,
-            Capabilities options) {
+    private Capabilities handlePreferences(
+            Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             Method addPreferenceMethod = optionsClass.getMethod("addPreference",
                     String.class, Object.class);
@@ -254,10 +250,11 @@ public class CapabilitiesHandler {
             log.trace("Exception reading preferences of {} ({})", optionsClass,
                     e.getMessage());
         }
+        return options;
     }
 
-    private void addPreferences(Capabilities options, String[] preferences,
-            Method addPreferenceMethod)
+    private Capabilities addPreferences(Capabilities options,
+            String[] preferences, Method addPreferenceMethod)
             throws IllegalAccessException, InvocationTargetException {
         for (String preference : preferences) {
             Optional<List<Object>> keyValue = annotationsReader
@@ -277,10 +274,11 @@ public class CapabilitiesHandler {
                 addPreferenceMethod.invoke(options, name, value);
             }
         }
+        return options;
     }
 
-    private void handleExtensions(Class<? extends Capabilities> optionsClass,
-            Capabilities options) {
+    private Capabilities handleExtensions(
+            Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             boolean isFirefox = optionsClass == FirefoxOptions.class;
             Method addExtensionsMethod = isFirefox
@@ -305,10 +303,11 @@ public class CapabilitiesHandler {
             log.trace("Exception reading extensions of {} ({})", optionsClass,
                     e.getMessage());
         }
+        return options;
     }
 
-    private void handleArguments(Class<? extends Capabilities> optionsClass,
-            Capabilities options) {
+    private Capabilities handleArguments(
+            Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             Method addArgumentsMethod = optionsClass.getMethod("addArguments",
                     List.class);
@@ -326,6 +325,7 @@ public class CapabilitiesHandler {
             log.trace("Exception reading arguments of {} ({})", optionsClass,
                     e.getMessage());
         }
+        return options;
     }
 
     private File getExtension(String fileName) {
