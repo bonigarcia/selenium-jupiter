@@ -112,8 +112,7 @@ public class CapabilitiesHandler {
         if (isGeneric) {
             String defaultBrowser = WebDriverManager.getInstance().config()
                     .getDefaultBrowser();
-            browserType = Optional
-                    .of(BrowserType.valueOf(defaultBrowser.toUpperCase(ROOT)));
+            browserType = Optional.of(Browser.toBrowserType(defaultBrowser));
         }
         log.trace("Getting capabilities for type={} -- browserType={}", type,
                 browserType);

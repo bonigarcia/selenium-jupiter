@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
+import static java.util.Locale.ROOT;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -99,9 +100,12 @@ public class BrowsersTemplate {
         }
 
         public BrowserType toBrowserType() {
-            return BrowserType.valueOf(getType().replace(IN_DOCKER, "")
-                    .replace("-", "_").toUpperCase());
+            return toBrowserType(getType());
+        }
 
+        public static BrowserType toBrowserType(String browser) {
+            return BrowserType.valueOf(browser.replace(IN_DOCKER, "")
+                    .replace("-", "_").toUpperCase(ROOT));
         }
 
         public boolean isAndroidBrowser() {
