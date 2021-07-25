@@ -280,7 +280,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
         CapabilitiesHandler capsHandler = new CapabilitiesHandler(config,
                 annotationsReader, parameter, extensionContext, browser,
-                browserType);
+                browserType, isGeneric(parameter.getType()));
 
         return capsHandler.getCapabilities();
 

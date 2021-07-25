@@ -18,6 +18,7 @@ package io.github.bonigarcia.seljup;
 
 import static java.io.File.createTempFile;
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Locale.ROOT;
 import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -55,6 +56,7 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import io.github.bonigarcia.seljup.BrowsersTemplate.Browser;
 import io.github.bonigarcia.seljup.config.Config;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Driver handler.
@@ -72,17 +74,19 @@ public class CapabilitiesHandler {
     ExtensionContext extensionContext;
     Optional<Browser> browser;
     Optional<BrowserType> browserType;
+    boolean isGeneric;
 
     public CapabilitiesHandler(Config config,
             AnnotationsReader annotationsReader, Parameter parameter,
             ExtensionContext extensionContext, Optional<Browser> browser,
-            Optional<BrowserType> browserType) {
+            Optional<BrowserType> browserType, boolean isGeneric) {
         this.config = config;
         this.annotationsReader = annotationsReader;
         this.parameter = parameter;
         this.extensionContext = extensionContext;
         this.browser = browser;
         this.browserType = browserType;
+        this.isGeneric = isGeneric;
     }
 
     public Optional<Capabilities> getCapabilities() {
@@ -105,6 +109,14 @@ public class CapabilitiesHandler {
 
     private Optional<Class<? extends Capabilities>> getOptionsClass() {
         Class<?> type = parameter.getType();
+        if (isGeneric) {
+            String defaultBrowser = WebDriverManager.getInstance().config()
+                    .getDefaultBrowser();
+            browserType = Optional
+                    .of(BrowserType.valueOf(defaultBrowser.toUpperCase(ROOT)));
+        }
+        log.trace("Getting capabilities for type={} -- browserType={}", type,
+                browserType);
 
         if (type == ChromeDriver.class || (browserType.isPresent()
                 && browserType.get().isChromeBased())) {
@@ -141,6 +153,8 @@ public class CapabilitiesHandler {
             log.warn("Exception creating instance of {}", optionsClass);
             return options;
         }
+
+        log.trace("Getting options for {}", optionsClass);
 
         // Arguments
         handleArguments(optionsClass, options);
@@ -190,9 +204,9 @@ public class CapabilitiesHandler {
             Class<? extends Capabilities> optionsClass,
             Optional<Object> testInstance, Capabilities options) {
         try {
-            ChromeOptions optionsFromAnnotatedField = annotationsReader
+            Capabilities optionsFromAnnotatedField = annotationsReader
                     .getFromAnnotatedField(testInstance, Options.class,
-                            ChromeOptions.class);
+                            optionsClass);
             if (optionsFromAnnotatedField != null) {
                 options = optionsFromAnnotatedField.merge(options);
             }
