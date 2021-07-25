@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @ExtendWith(SeleniumJupiter.class)
 class DockerChromeListInConstructorJupiterTest {
 
-    static final int NUM_BROWSERS = 2;
+    static final int NUM_BROWSERS = 1;
 
     List<WebDriver> driverList1;
 

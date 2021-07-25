@@ -36,7 +36,7 @@ public @interface DockerBrowser {
 
     public String version() default "";
 
-    public int size() default 1;
+    public int size() default 0;
 
     public boolean recording() default false;
 

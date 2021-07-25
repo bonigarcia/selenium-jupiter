@@ -111,7 +111,7 @@ public class SeleniumJupiter implements ParameterResolver,
     @Override
     public Object resolveParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
-        String contextId = extensionContext.getUniqueId();
+        String contextId = getContextId(extensionContext);
         Parameter parameter = parameterContext.getParameter();
         int index = parameterContext.getIndex();
         Optional<Object> testInstance = extensionContext.getTestInstance();
@@ -121,7 +121,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
         WebDriverManager wdm = null;
         Browser browser = null;
-        int browserNumber = 1;
+        int browserNumber = 0;
 
         Class<?> type = parameter.getType();
         boolean isGeneric = isGeneric(type);
@@ -153,7 +153,7 @@ public class SeleniumJupiter implements ParameterResolver,
                     url);
 
         } else if (dockerBrowser.isPresent()) { // Docker
-            if (dockerBrowser.get().size() > 1) {
+            if (dockerBrowser.get().size() > 0) {
                 browserNumber = dockerBrowser.get().size();
             }
             wdm = getManagerForDocker(extensionContext, parameter,
@@ -169,7 +169,17 @@ public class SeleniumJupiter implements ParameterResolver,
 
         putManagerInMap(contextId, wdm);
 
-        return browserNumber == 1 ? wdm.create() : wdm.create(browserNumber);
+        return browserNumber == 0 ? wdm.create() : wdm.create(browserNumber);
+    }
+
+    private String getContextId(ExtensionContext extensionContext) {
+        Optional<ExtensionContext> parent = extensionContext.getParent();
+        String contextId = parent.isPresent()
+                && extensionContext.getClass().getCanonicalName().equals(
+                        "org.junit.jupiter.engine.descriptor.MethodExtensionContext")
+                                ? parent.get().getUniqueId()
+                                : extensionContext.getUniqueId();
+        return contextId;
     }
 
     private WebDriverManager getManagerForRemote(URL url, Capabilities caps) {
@@ -311,15 +321,14 @@ public class SeleniumJupiter implements ParameterResolver,
 
         // 2. Quit WebDriver
         if (!isSingleSession(extensionContext)) {
-            quitWebDriver(contextId, extensionContext);
+            quitWebDriver(extensionContext);
         }
     }
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        String contextId = extensionContext.getUniqueId();
         if (isSingleSession(extensionContext)) {
-            quitWebDriver(contextId, extensionContext);
+            quitWebDriver(extensionContext);
         }
     }
 
@@ -536,16 +545,19 @@ public class SeleniumJupiter implements ParameterResolver,
         return singleSession;
     }
 
-    private void quitWebDriver(String contextId,
-            ExtensionContext extensionContext) {
+    private void quitWebDriver(ExtensionContext extensionContext) {
+        String contextId = getContextId(extensionContext);
         Optional<List<WebDriverManager>> mapByContextId = getValueFromMapStartingWithKey(
                 wdmMap, contextId);
-        log.trace("Map by contextId {}: {} (wdmMap={})", contextId,
+
+        log.trace("Quitting contextId {}: {} (wdmMap={})", contextId,
                 mapByContextId, wdmMap);
+
         if (mapByContextId.isPresent()) {
             Optional<Throwable> executionException = extensionContext
                     .getExecutionException();
             mapByContextId.get().forEach(manager -> {
+
                 // Get recording files (to be deleted after quit)
                 List<Path> recordingList = Collections.emptyList();
                 if (config.isRecordingWhenFailure()

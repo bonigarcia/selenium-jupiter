@@ -34,27 +34,23 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @ExtendWith(SeleniumJupiter.class)
 class MixedInConstructorJupiterTest {
 
-    static final int NUM_BROWSERS = 2;
+    static final int NUM_BROWSERS = 1;
 
     WebDriver driver1;
-    RemoteWebDriver driver2;
     List<WebDriver> driverList1;
 
-    MixedInConstructorJupiterTest(WebDriver driver1, RemoteWebDriver driver2,
+    MixedInConstructorJupiterTest(RemoteWebDriver driver1,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
         this.driver1 = driver1;
-        this.driver2 = driver2;
         this.driverList1 = driverList1;
     }
 
     @Test
-    void testGlobalChrome(WebDriver driver3, RemoteWebDriver driver4,
+    void testGlobalChrome(WebDriver driver2,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList2) {
         exercise(driver1);
-        exercise(driver2);
         driverList1.forEach(this::exercise);
-        exercise(driver3);
-        exercise(driver4);
+        exercise(driver2);
         driverList2.forEach(this::exercise);
     }
 
