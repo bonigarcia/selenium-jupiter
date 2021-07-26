@@ -23,7 +23,7 @@
         <!-- Plugins -->
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-asciidoctor-plugin.version>2.2.0</maven-asciidoctor-plugin.version>
+        <maven-asciidoctor-plugin.version>2.2.1</maven-asciidoctor-plugin.version>
         <asciidoctorj-pdf.version>1.6.0</asciidoctorj-pdf.version>
         <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
