@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.DockerBrowser;
@@ -33,11 +33,14 @@ class DockerChromeWithArgumentsJupiterTest {
 
     @Test
     void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
-            "--use-fake-ui-for-media-stream" }) @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
+            "--use-fake-ui-for-media-stream" }) @DockerBrowser(type = CHROME, version = "91", recording = true) WebDriver driver)
+            throws InterruptedException {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
+
+        Thread.sleep(5000);
     }
 
 }
