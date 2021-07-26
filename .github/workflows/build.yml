@@ -33,12 +33,12 @@ jobs:
     - name: Run tests
       run: mvn -B test
     - name: Upload analysis to SonarCloud
-      if: !contains(github.ref, 'pull')
+      if: success() && !contains(github.ref, 'pull')
       run: >
         mvn -B sonar:sonar
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.organization=bonigarcia-github
         -Dsonar.projectKey=io.github.bonigarcia:selenium-jupiter
     - name: Upload coverage to Codecov
-      if: !contains(github.ref, 'pull')
+      if: success() && !contains(github.ref, 'pull')
       uses: codecov/codecov-action@v1
