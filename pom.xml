@@ -172,6 +172,7 @@
                                 <idprefix />
                                 <idseparator>-</idseparator>
                                 <docinfo1>true</docinfo1>
+                                <toclevels>2</toclevels>
                             </attributes>
                         </configuration>
                     </execution>
