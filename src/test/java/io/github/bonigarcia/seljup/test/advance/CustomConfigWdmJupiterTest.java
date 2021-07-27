@@ -41,7 +41,7 @@ class CustomConfigWdmJupiterTest {
 
     @Test
     void multipleConfigTest(WebDriver driver) {
-        String sut = "https://bonigarcia.github.io/selenium-jupiter/";
+        String sut = "https://bonigarcia.org/selenium-jupiter/";
         String title = "JUnit 5 extension for Selenium";
 
         driver.get(sut);

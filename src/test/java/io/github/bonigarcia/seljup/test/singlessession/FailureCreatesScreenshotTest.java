@@ -54,7 +54,7 @@ class FailureCreatesScreenshotTest {
 
     @Test
     void shouldFailAndCreateScreenshotTest() {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("AAAA");
     }
 

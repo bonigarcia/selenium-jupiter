@@ -35,8 +35,8 @@ class DockerVncMixedJupiterTest {
     @Test
     void testHtmlVnc(@DockerBrowser(type = CHROME) WebDriver driver1,
             @DockerBrowser(type = FIREFOX) WebDriver driver2) {
-        driver1.get("https://bonigarcia.github.io/selenium-jupiter/");
-        driver2.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver1.get("https://bonigarcia.org/selenium-jupiter/");
+        driver2.get("https://bonigarcia.org/selenium-jupiter/");
 
         assertThat(driver1.getTitle())
                 .contains("JUnit 5 extension for Selenium");

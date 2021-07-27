@@ -58,7 +58,7 @@ class PerformenceDockerChromeJupiterTest {
                     log.info("Session id {}",
                             ((RemoteWebDriver) driver).getSessionId());
                     driver.get(
-                            "https://bonigarcia.github.io/selenium-jupiter/");
+                            "https://bonigarcia.org/selenium-jupiter/");
                     assertThat(driver.getTitle())
                             .contains("JUnit 5 extension for Selenium");
                 } finally {

@@ -34,7 +34,7 @@ class DockerChromeMobileVncJupiterTest {
     @Test
     void test(@DockerBrowser(type = CHROME_MOBILE, vnc = true) WebDriver driver)
             throws InterruptedException {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 

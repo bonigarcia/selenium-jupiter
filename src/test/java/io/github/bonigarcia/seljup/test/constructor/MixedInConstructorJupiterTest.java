@@ -55,7 +55,7 @@ class MixedInConstructorJupiterTest {
     }
 
     private void exercise(WebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
 
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));

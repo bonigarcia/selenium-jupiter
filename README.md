@@ -317,7 +317,7 @@ Selenium-Jupiter (Copyright &copy; 2017-2021) is a project by [Boni Garcia] lice
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Logo]: https://bonigarcia.github.io/img/selenium-jupiter.png
 [Selenium WebDriver]: https://www.selenium.dev/docs/site/en/webdriver/
-[Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
+[Selenium-Jupiter user guide]: https://bonigarcia.org/selenium-jupiter/
 [Stack Overflow]: https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest
 [test templates]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager

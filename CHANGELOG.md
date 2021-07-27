@@ -323,4 +323,4 @@
 - Rich test suite running on Travis CI
 - AsciiDoc documentation, generated to HTML and PDF with maven-asciidoctor-plugin (mvn site)
 - Reuse tests as examples in documentation (using AsciiDoc tags)
-- Publication of documentation on gh-pages branch (https://bonigarcia.github.io/selenium-jupiter/)
+- Publication of documentation on gh-pages branch (https://bonigarcia.org/selenium-jupiter/)

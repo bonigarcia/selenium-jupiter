@@ -32,7 +32,7 @@ class DockerChromeJupiterTest {
 
     @Test
     void testChrome(@DockerBrowser(type = CHROME) WebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
     }
@@ -40,7 +40,7 @@ class DockerChromeJupiterTest {
     @Test
     void testChromeWithVersion(
             @DockerBrowser(type = CHROME, version = "90.0") WebDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
     }

@@ -34,7 +34,7 @@ class ChromiumJupiterTest {
     @Disabled("Problem with Chromium snap")
     @Test
     void testChromium(ChromiumDriver driver) {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
     }

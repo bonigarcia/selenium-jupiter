@@ -33,7 +33,7 @@ class DockerVncJupiterTest {
     void test(
             @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid")
             WebDriver driver) throws InterruptedException {
-        driver.get("https://bonigarcia.github.io/selenium-jupiter/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle())
                 .contains("JUnit 5 extension for Selenium");
 
