@@ -21,13 +21,14 @@
         <assertj.version>3.20.2</assertj.version>
 
         <!-- Plugins -->
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
         <maven-asciidoctor-plugin.version>2.2.1</maven-asciidoctor-plugin.version>
         <asciidoctorj-pdf.version>1.6.0</asciidoctorj-pdf.version>
-        <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <asciidoctorj-epub3.version>1.5.1</asciidoctorj-epub3.version>
         <maven-site.version>3.9.1</maven-site.version>
         <maven-project-info-reports.version>3.1.2</maven-project-info-reports.version>
 
@@ -39,26 +40,29 @@
         <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- format date -->
+        <maven.build.timestamp.format>dd-MM-yyyy</maven.build.timestamp.format>
     </properties>
 
     <name>selenium-jupiter</name>
     <description>
 		JUnit 5 extension for Selenium WebDriver
 	</description>
-    <url>https://github.com/bonigarcia/selenium-jupiter</url>
+    <url>https://bonigarcia.org/selenium-jupiter</url>
 
     <developers>
         <developer>
             <id>bonigarcia</id>
             <name>Boni Garcia</name>
-            <url>https://bonigarcia.github.io/</url>
+            <url>https://bonigarcia.org/</url>
         </developer>
     </developers>
 
     <licenses>
         <license>
             <name>Apache 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
 
@@ -144,6 +148,11 @@
                         <artifactId>asciidoctorj-pdf</artifactId>
                         <version>${asciidoctorj-pdf.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-epub3</artifactId>
+                        <version>${asciidoctorj-epub3.version}</version>
+                    </dependency>
                 </dependencies>
                 <configuration>
                     <sourceDirectory>src/doc/asciidoc</sourceDirectory>
@@ -162,17 +171,21 @@
                         </goals>
                         <configuration>
                             <backend>html5</backend>
-                            <sourceHighlighter>coderay</sourceHighlighter>
                             <attributes>
+                                <source-highlighter>coderay</source-highlighter>
                                 <stylesheet>css/styles.css</stylesheet>
-                                <imagesdir>./img</imagesdir>
+                                <imagesdir>img</imagesdir>
                                 <toc>left</toc>
                                 <icons>font</icons>
                                 <sectanchors>true</sectanchors>
                                 <idprefix />
                                 <idseparator>-</idseparator>
                                 <docinfo1>true</docinfo1>
-                                <toclevels>2</toclevels>
+                                <toclevels>3</toclevels>
+                                <sectnums></sectnums>
+                                <lang>en</lang>
+                                <docdatetime>${maven.build.timestamp}</docdatetime>
+                                <last-update-label>Released on</last-update-label>
                             </attributes>
                         </configuration>
                     </execution>
@@ -183,67 +196,54 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
+                            <doctype>book</doctype>
                             <backend>pdf</backend>
                             <sourceDirectory>src/doc/asciidoc</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
-                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <outputFile>${project.artifactId}.pdf</outputFile>
                             <attributes>
-                                <imagesdir>./img</imagesdir>
+                                <source-highlighter>coderay</source-highlighter>
+                                <imagesdir>img</imagesdir>
                                 <pagenums />
                                 <toc />
                                 <idprefix />
                                 <idseparator>-</idseparator>
+                                <icons>font</icons>
+                                <sectnums></sectnums>
+                                <lang>en</lang>
+                                <revnumber>${project.version}</revnumber>
+                                <revdate>${maven.build.timestamp}</revdate>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>asciidoc-to-epub</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <doctype>book</doctype>
+                            <backend>epub3</backend>
+                            <sourceDirectory>src/doc/asciidoc</sourceDirectory>
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
+                            <outputFile>${project.artifactId}.epub</outputFile>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                                <imagesdir>img</imagesdir>
+                                <pagenums />
+                                <toc />
+                                <idprefix />
+                                <idseparator>-</idseparator>
+                                <icons>font</icons>
+                                <sectnums></sectnums>
+                                <lang>en</lang>
+                                <revnumber>${project.version}</revnumber>
+                                <revdate>${maven.build.timestamp}</revdate>
                             </attributes>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.coderplus.maven.plugins</groupId>
-                <artifactId>copy-rename-maven-plugin</artifactId>
-                <version>${copy-rename-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>rename-file</id>
-                        <phase>post-site</phase>
-                        <goals>
-                            <goal>rename</goal>
-                        </goals>
-                        <configuration>
-                            <sourceFile>${project.build.directory}/generated-docs/index.pdf</sourceFile>
-                            <destinationFile>${project.build.directory}/generated-docs/selenium-jupiter.pdf</destinationFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/logback.xml</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -19,9 +19,6 @@ package io.github.bonigarcia.seljup.test.basic;
 // tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,21 +29,9 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class ChromeJupiterTest {
 
     @Test
-    void testWithOneChrome(ChromeDriver driver) {
+    void test(ChromeDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
-    }
-
-    // end::snippet-in-doc[]
-    @Disabled("Redudant test for CI suite")
-    // tag::snippet-in-doc[]
-    @Test
-    void testWithTwoChromes(ChromeDriver driver1, ChromeDriver driver2) {
-        driver1.get("http://www.seleniumhq.org/");
-        driver2.get("http://junit.org/junit5/");
-        assertThat(driver1.getTitle()).startsWith("Selenium");
-        assertThat(driver2.getTitle()).isEqualTo("JUnit 5");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
