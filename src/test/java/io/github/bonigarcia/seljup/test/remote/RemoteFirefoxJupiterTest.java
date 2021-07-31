@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.remote;
 
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -38,14 +39,15 @@ class RemoteFirefoxJupiterTest {
         WebDriverManager.firefoxdriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4445" });
+        Main.main(new String[] { "standalone", "--port", "4444" });
     }
 
     @Test
-    void test(@DriverUrl("http://localhost:4445/") @DriverCapabilities({
+    void test(@DriverUrl("http://localhost:4444/") @DriverCapabilities({
             "browserName=firefox", "version=90" }) WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
+//end::snippet-in-doc[]

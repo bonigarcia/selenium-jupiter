@@ -36,7 +36,7 @@ dependencies {
 Selenium-Jupiter provides an extension class for Jupiter tests called `SeleniumJupiter` (available in the package `io.github.bonigarcia.seljup`). This extension class should be used as a parameter in the annotation `@ExtendWith` (or `@RegisterExtension`) of a Jupiter test.
 
 === Local browsers
-At first glance, Selenium-Jupiter allows using of local browsers (e.g., Chrome, Firefox, Edge, etc.) seamlessly. To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) within a test case. Internally, Selenium-Jupiter uses https://bonigarcia.org/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it disposes of the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
+At first glance, Selenium-Jupiter allows using of local browsers (e.g., Chrome, Firefox, Edge, etc.) seamlessly. To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) as a test parameter. Internally, Selenium-Jupiter uses https://bonigarcia.org/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it terminates the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
 
 [source,java]
 ----
@@ -45,7 +45,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/local/ChromeJupiterTes
 
 The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxJupiterTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeJupiterTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariJupiterTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaJupiterTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerJupiterTest.java[example]), and `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumJupiterTest.java[example]).
 
-WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
+WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium WebDriver versions 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
 
 === Conditional tests
 Selenium-Jupiter provides the class-level annotation `@EnabledIfBrowserAvailable` to conditionally skip tests. Thanks to this annotation, a test is skipped when the browser specified as a parameter is not available in the system. This capability allows executing the same test suite in different machines (e.g., a local Mac OS with Safari and a Linux CI server) independently of the browser availability. The following example shows a test that is skipped if Safari is not in the system.
@@ -56,10 +56,25 @@ include::../../test/java/io/github/bonigarcia/seljup/test/local/SafariJupiterTes
 ----
 
 === Remote browsers
+Selenium-Jupiter also allows controlling remote browsers. These browsers are typically provided by a https://www.selenium.dev/documentation/en/grid/[Selenium Grid] infrastructure or a cloud provider (such as https://saucelabs.com/[Sauce Labs], https://www.browserstack.com/[BrowserStack], https://crossbrowsertesting.com/[CrossBrowserTesting], etc.). To this aim, Selenium-Jupiter provides two annotations:
+
+* `@DriverUrl`:  Annotation used to identify the URL of the Selenium Server.
+* `@DriverCapabilities`:  Annotation used to configure the desired capabilities, such as the browser type, version, platform, etc.
+
+Both annotations can be defined at parameter or field-level. The following example shows a test using these annotations at the parameter-level. This example uses Selenium Grid in standalone mode to start a Selenium Server listening to port 4444 and hosting a Firefox browser. Notice that the type of parameter injected in the test is the generic `WebDriver` interface (it could also be `RemoteWebDriver`).
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/remote/RemoteFirefoxJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+You can find an example of an equivalent remote test but defining the remote URL and capabilities at field-level https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeJupiterTest.java[here]. A similar example, but using Sauce Labs is this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/SauceLabsJupiterTest.java[one].
+
 === Docker browsers
 ==== Recordings
 ==== VNC
 ==== Performance tests
+
 === Capabilities
 (options, arguments, preferences, binary, extensions)
 

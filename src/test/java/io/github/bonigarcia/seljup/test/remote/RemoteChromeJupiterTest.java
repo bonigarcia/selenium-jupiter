@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.remote;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +35,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 class RemoteChromeJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4444/wd/hub";
+    String url = "http://localhost:4445/wd/hub";
 
     @DriverCapabilities
     Capabilities capabilities = new ChromeOptions();
@@ -47,7 +46,7 @@ class RemoteChromeJupiterTest {
         WebDriverManager.chromedriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4444" });
+        Main.main(new String[] { "standalone", "--port", "4445" });
     }
 
     @Test
@@ -57,4 +56,3 @@ class RemoteChromeJupiterTest {
     }
 
 }
-//end::snippet-in-doc[]
