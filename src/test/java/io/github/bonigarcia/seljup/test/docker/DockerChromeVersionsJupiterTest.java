@@ -19,7 +19,7 @@ package io.github.bonigarcia.seljup.test.docker;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 
 import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -27,9 +27,9 @@ import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]
 @Disabled("Redudant test, only needed for doc")
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 @ExtendWith(SeleniumJupiter.class)
 class DockerChromeVersionsJupiterTest {
 
@@ -58,4 +58,4 @@ class DockerChromeVersionsJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

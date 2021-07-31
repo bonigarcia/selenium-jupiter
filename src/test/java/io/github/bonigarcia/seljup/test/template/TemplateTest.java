@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.template;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -35,14 +35,14 @@ class TemplateTest {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    // end::snippet-in-doc[]
+    //end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig()
                 .setBrowserTemplateJsonFile("classpath:browsers-docker.json");
     }
 
-    // tag::snippet-in-doc[]
+    //tag::snippet-in-doc[]
     @TestTemplate
     void templateTest(WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
@@ -50,4 +50,4 @@ class TemplateTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

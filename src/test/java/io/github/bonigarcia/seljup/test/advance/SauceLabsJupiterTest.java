@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -59,4 +59,4 @@ class SauceLabsJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.local;
 
+//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.Browser.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,8 +33,9 @@ class SafariJupiterTest {
 
     @Test
     void test(SafariDriver driver) {
-        driver.get("http://www.seleniumhq.org/");
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
+//end::snippet-in-doc[]

@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.advance;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.Browser.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,4 +46,4 @@ class SafariWithGlobalOptionsJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

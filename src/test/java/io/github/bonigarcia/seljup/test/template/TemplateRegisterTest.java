@@ -47,4 +47,4 @@ class TemplateRegisterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

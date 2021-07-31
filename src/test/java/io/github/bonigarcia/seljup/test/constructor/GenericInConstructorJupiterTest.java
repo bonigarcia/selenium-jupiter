@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.constructor;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -41,4 +41,4 @@ class GenericInConstructorJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

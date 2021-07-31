@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-// tag::snippet-in-doc[]
+//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,4 +37,4 @@ class DockerChromeJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]

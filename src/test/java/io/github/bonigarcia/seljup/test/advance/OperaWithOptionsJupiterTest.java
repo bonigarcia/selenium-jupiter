@@ -41,4 +41,4 @@ class OperaWithOptionsJupiterTest {
     }
 
 }
-// end::snippet-in-doc[]
+//end::snippet-in-doc[]
