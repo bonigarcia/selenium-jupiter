@@ -40,7 +40,19 @@ At first glance, Selenium-Jupiter allows using of local browsers (e.g., Chrome, 
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/seljup/test/basic/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/local/ChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxJupiterTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeJupiterTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariJupiterTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaJupiterTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerJupiterTest.java[example]), and `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumJupiterTest.java[example]).
+
+WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
+
+=== Conditional tests
+Selenium-Jupiter provides the class-level annotation `@EnabledIfBrowserAvailable` to conditionally skip tests. Thanks to this annotation, a test is skipped when the browser specified as a parameter is not available in the system. This capability allows executing the same test suite in different machines (e.g., a local Mac OS with Safari and a Linux CI server) independently of the browser availability. The following example shows a test that is skipped if Safari is not in the system.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/local/SafariJupiterTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Remote browsers
@@ -54,7 +66,6 @@ include::../../test/java/io/github/bonigarcia/seljup/test/basic/ChromeJupiterTes
 === Template tests
 === Generic driver
 === Single session
-=== Conditional tests depending on browsers
 === Integration with Jenkins
 
 
