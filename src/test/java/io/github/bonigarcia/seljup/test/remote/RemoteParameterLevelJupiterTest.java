@@ -16,15 +16,12 @@
  */
 package io.github.bonigarcia.seljup.test.remote;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
@@ -33,13 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @ExtendWith(SeleniumJupiter.class)
-class RemoteGlobalOptionsJupiterTest {
-
-    @DriverUrl
-    String url = "http://localhost:4444/wd/hub";
-
-    @DriverCapabilities
-    Capabilities capabilities = new FirefoxOptions();
+class RemoteParameterLevelJupiterTest {
 
     @BeforeAll
     static void setup() throws Exception {
@@ -47,14 +38,14 @@ class RemoteGlobalOptionsJupiterTest {
         WebDriverManager.firefoxdriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4444" });
+        Main.main(new String[] { "standalone", "--port", "4445" });
     }
 
     @Test
-    void test(WebDriver driver) {
+    void test(@DriverUrl("http://localhost:4445/") @DriverCapabilities({
+            "browserName=firefox", "version=90" }) WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-//end::snippet-in-doc[]

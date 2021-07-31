@@ -22,7 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
@@ -34,7 +36,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 class RemoteJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
+    String url = "http://localhost:4444/wd/hub";
+
+    @DriverCapabilities
+    Capabilities capabilities = new ChromeOptions();
 
     @BeforeAll
     static void setup() throws Exception {
@@ -42,12 +47,11 @@ class RemoteJupiterTest {
         WebDriverManager.chromedriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4445" });
+        Main.main(new String[] { "standalone", "--port", "4444" });
     }
 
     @Test
-    void test(
-            @DriverUrl("http://localhost:4445/wd/hub") @DriverCapabilities("browserName=chrome") WebDriver driver) {
+    void test(WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
