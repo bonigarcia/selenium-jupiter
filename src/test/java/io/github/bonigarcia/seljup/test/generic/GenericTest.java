@@ -31,8 +31,7 @@ class GenericTest {
     @Test
     void genericTest(WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

@@ -14,39 +14,27 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.docker;
 
 // tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-// end::snippet-in-doc[]
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.WebDriver;
 
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class FirefoxJupiterTest {
+class DockerChromeBetaJupiterTest {
 
     @Test
-    void testWithOneFirefox(FirefoxDriver driver) {
+    void test(
+            @DockerBrowser(type = CHROME, version = "beta") WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
-    }
-
-    // end::snippet-in-doc[]
-    @Disabled("Redudant test for CI suite")
-    // tag::snippet-in-doc[]
-    @Test
-    void testWithTwoFirefoxs(FirefoxDriver driver1, FirefoxDriver driver2) {
-        driver1.get("http://www.seleniumhq.org/");
-        driver2.get("http://junit.org/junit5/");
-        assertThat(driver1.getTitle()).startsWith("Selenium");
-        assertThat(driver2.getTitle()).isEqualTo("JUnit 5");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

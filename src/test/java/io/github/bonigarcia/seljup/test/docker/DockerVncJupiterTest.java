@@ -31,11 +31,10 @@ class DockerVncJupiterTest {
 
     @Test
     void test(
-            @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid")
-            WebDriver driver) throws InterruptedException {
+            @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid") WebDriver driver)
+            throws InterruptedException {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
         // Uncomment this line to have more time for manually inspection
         // Thread.sleep(30000);

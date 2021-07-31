@@ -59,8 +59,7 @@ class MixedInConstructorJupiterTest {
 
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));
-        wait.until(
-                d -> d.getTitle().contains("JUnit 5 extension for Selenium"));
+        wait.until(d -> d.getTitle().contains("Selenium-Jupiter"));
     }
 
 }

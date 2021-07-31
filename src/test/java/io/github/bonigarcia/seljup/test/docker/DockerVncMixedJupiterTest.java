@@ -38,10 +38,8 @@ class DockerVncMixedJupiterTest {
         driver1.get("https://bonigarcia.org/selenium-jupiter/");
         driver2.get("https://bonigarcia.org/selenium-jupiter/");
 
-        assertThat(driver1.getTitle())
-                .contains("JUnit 5 extension for Selenium");
-        assertThat(driver2.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver1.getTitle()).contains("Selenium-Jupiter");
+        assertThat(driver2.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

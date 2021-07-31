@@ -14,38 +14,26 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.local;
 
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.EDGE;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
-@Disabled("Redudant test, only needed for doc")
-// tag::snippet-in-doc[]
+@EnabledIfBrowserAvailable(EDGE)
 @ExtendWith(SeleniumJupiter.class)
-class ChromeAndFirefoxJupiterTest {
+class EdgeJupiterTest {
 
     @Test
-    void testWithOneChrome(ChromeDriver chromeDriver) {
-        // Use Chrome in this test
-    }
-
-    @Test
-    void testWithFirefox(FirefoxDriver firefoxDriver) {
-        // Use Firefox in this test
-    }
-
-    @Test
-    void testWithChromeAndFirefox(ChromeDriver chromeDriver,
-            FirefoxDriver firefoxDriver) {
-        // Use Chrome and Firefox in this test
+    void test(EdgeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-// end::snippet-in-doc[]

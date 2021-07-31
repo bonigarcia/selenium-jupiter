@@ -34,8 +34,7 @@ class OperaExtensionJupiterTest {
     @Test
     void operaExtensionTest(@Binary("/usr/bin/opera") OperaDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

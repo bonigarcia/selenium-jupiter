@@ -14,29 +14,26 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.local;
 
-//tag::snippet-in-doc[]
-import static io.github.bonigarcia.seljup.Browser.OPERA;
+import static io.github.bonigarcia.seljup.Browser.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(OPERA)
+@EnabledIfBrowserAvailable(SAFARI)
 @ExtendWith(SeleniumJupiter.class)
-class OperaJupiterTest {
+class SafariJupiterTest {
 
     @Test
-    void test(OperaDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+    void test(SafariDriver driver) {
+        driver.get("http://www.seleniumhq.org/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-// end::snippet-in-doc[]

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,38 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.advance;
 
-// tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Internet Explorer is deprecated and thus it should be avoided if possible")
 @ExtendWith(SeleniumJupiter.class)
-class InternetExplorerJupiterTest {
+class NestedJupiterTest {
 
     @Test
-    void internetExplorerTest(InternetExplorerDriver driver) {
+    void test(ChromeDriver driver) {
+        exercise(driver);
+    }
+
+    private void exercise(ChromeDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+    }
+
+    @Nested
+    class MyNestedClass {
+
+        @Test
+        void testWithOtherChrome(ChromeDriver driver) {
+            exercise(driver);
+        }
+
     }
 
 }
-// end::snippet-in-doc[]

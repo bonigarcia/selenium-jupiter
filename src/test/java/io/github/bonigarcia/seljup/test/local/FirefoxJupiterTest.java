@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2020 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,23 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.local;
 
-import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chromium.ChromiumDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(CHROMIUM)
 @ExtendWith(SeleniumJupiter.class)
-class ChromiumJupiterTest {
+class FirefoxJupiterTest {
 
-    @Disabled("Problem with Chromium snap")
     @Test
-    void testChromium(ChromiumDriver driver) {
+    void testFirefox(FirefoxDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

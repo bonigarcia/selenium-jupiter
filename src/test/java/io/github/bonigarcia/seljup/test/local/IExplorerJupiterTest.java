@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,25 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.local;
 
-// tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Redudant test for CI suite")
+@Disabled("Internet Explorer is not available on CI")
 @ExtendWith(SeleniumJupiter.class)
-class SeleniumJupiterTest {
+class IExplorerJupiterTest {
 
     @Test
-    void testWithChrome(ChromeDriver driver) {
+    void test(InternetExplorerDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
-    }
-
-    @Test
-    void testWithChromeAndFirefox(ChromeDriver driver1, FirefoxDriver driver2) {
-        driver1.get("http://www.seleniumhq.org/");
-        driver2.get("http://junit.org/junit5/");
-        assertThat(driver1.getTitle()).startsWith("Selenium");
-        assertThat(driver2.getTitle()).isEqualTo("JUnit 5");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-// end::snippet-in-doc[]

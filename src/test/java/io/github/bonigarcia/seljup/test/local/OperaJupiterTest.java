@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,26 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.basic;
+package io.github.bonigarcia.seljup.test.local;
 
-// tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
-// tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
 
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-// end::snippet-in-doc[]
-@Disabled("Internet Explorer is not available on CI")
-// tag::snippet-in-doc[]
+@EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
-class IExplorerJupiterTest {
+class OperaJupiterTest {
 
     @Test
-    void iExplorerTest(InternetExplorerDriver driver) {
+    void test(OperaDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("JUnit 5 extension for Selenium");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-// end::snippet-in-doc[]
