@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,47 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.docker;
+package io.github.bonigarcia.seljup.test.remote;
 
-import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.grid.Main;
 
-import io.github.bonigarcia.seljup.DockerBrowser;
+import io.github.bonigarcia.seljup.DriverCapabilities;
+import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @ExtendWith(SeleniumJupiter.class)
-class DockerVncJupiterTest {
+class RemoteGlobalOptionsJupiterTest {
+
+    @DriverUrl
+    String url = "http://localhost:4444/wd/hub";
+
+    @DriverCapabilities
+    Capabilities capabilities = new FirefoxOptions();
+
+    @BeforeAll
+    static void setup() throws Exception {
+        // Resolve driver
+        WebDriverManager.firefoxdriver().setup();
+
+        // Start Selenium Grid in standalone mode
+        Main.main(new String[] { "standalone", "--port", "4444" });
+    }
 
     @Test
-    void test(
-            @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid") WebDriver driver)
-            throws Exception {
+    void test(WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-
-        // Uncomment this line to have time for manual inspection
-        // Thread.sleep(30000);
     }
 
 }
+//end::snippet-in-doc[]

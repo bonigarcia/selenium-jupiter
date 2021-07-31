@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.remote;
 
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;

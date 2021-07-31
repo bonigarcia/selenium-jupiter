@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.remote;
 
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,9 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
@@ -33,36 +31,23 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @ExtendWith(SeleniumJupiter.class)
-class RemoteWebDriverJupiterTest {
+class RemoteJupiterTest {
 
     @DriverUrl
-    String url = "http://localhost:4444/wd/hub";
+    String url = "http://localhost:4445/wd/hub";
 
     @BeforeAll
     static void setup() throws Exception {
-        // Resolve drivers
+        // Resolve driver
         WebDriverManager.chromedriver().setup();
-        WebDriverManager.firefoxdriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4444" });
-    }
-
-    @DriverCapabilities
-    Capabilities capabilities = new FirefoxOptions();
-
-    @Test
-    void testWithRemoteFirefox(WebDriver driver) {
-        exercise(driver);
+        Main.main(new String[] { "standalone", "--port", "4445" });
     }
 
     @Test
-    void testWithRemoteChrome(
-            @DriverUrl("http://localhost:4444/wd/hub") @DriverCapabilities("browserName=chrome") WebDriver driver) {
-        exercise(driver);
-    }
-
-    void exercise(WebDriver driver) {
+    void test(
+            @DriverUrl("http://localhost:4445/wd/hub") @DriverCapabilities("browserName=chrome") WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }

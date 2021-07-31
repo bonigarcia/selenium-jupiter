@@ -36,7 +36,7 @@ class TemplateRegisterRemoteTest {
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
+    String url = "http://localhost:4446/wd/hub";
 
     @BeforeAll
     static void setup() throws Exception {
@@ -45,7 +45,7 @@ class TemplateRegisterRemoteTest {
         WebDriverManager.firefoxdriver().setup();
 
         // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4445" });
+        Main.main(new String[] { "standalone", "--port", "4446" });
 
         Browser chrome = BrowserBuilder.chrome().build();
         seleniumJupiter.addBrowsers(chrome);
