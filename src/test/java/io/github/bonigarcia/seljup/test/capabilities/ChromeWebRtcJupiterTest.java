@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,23 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class SeveralOptionsJupiterTest {
+class ChromeWebRtcJupiterTest {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();
@@ -40,26 +39,14 @@ class SeveralOptionsJupiterTest {
                 "--use-fake-ui-for-media-stream");
     }
 
-    @Options
-    FirefoxOptions firefoxOptions = new FirefoxOptions();
-    {
-        firefoxOptions.addPreference("media.navigator.streams.fake", true);
-        firefoxOptions.addPreference("media.navigator.permission.disabled",
-                true);
-    }
-
     @Test
-    void webrtcTest(ChromeDriver chrome, FirefoxDriver firefox) {
-        exercise(chrome, firefox);
-    }
+    void webrtcTest(ChromeDriver driver) throws InterruptedException {
+        driver.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
 
-    void exercise(WebDriver... drivers) {
-        for (WebDriver driver : drivers) {
-            driver.get(
-                    "https://webrtc.github.io/samples/src/content/devices/input-output/");
-            assertThat(driver.findElement(By.id("video")).getTagName())
-                    .isEqualTo("video");
-        }
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
     }
 
 }

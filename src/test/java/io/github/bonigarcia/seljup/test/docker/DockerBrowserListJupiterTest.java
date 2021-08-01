@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -38,7 +37,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class PerformenceDockerChromeJupiterTest {
+class DockerBrowserListJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 
@@ -70,4 +69,3 @@ class PerformenceDockerChromeJupiterTest {
     }
 
 }
-//end::snippet-in-doc[]

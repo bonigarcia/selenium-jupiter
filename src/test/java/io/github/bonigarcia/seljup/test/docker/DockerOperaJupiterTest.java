@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,4 +36,3 @@ class DockerOperaJupiterTest {
     }
 
 }
-//end::snippet-in-doc[]

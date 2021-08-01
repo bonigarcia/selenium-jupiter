@@ -14,25 +14,34 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
-import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.seljup.Binary;
-import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
+import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
-class OperaExtensionJupiterTest {
+class ChromeWithGlobalCapabilitiesJupiterTest {
+
+    @Options
+    ChromeOptions options = new ChromeOptions();
+    {
+        Map<String, String> mobileEmulation = new HashMap<>();
+        mobileEmulation.put("deviceName", "Nexus 5");
+        options.setExperimentalOption("mobileEmulation", mobileEmulation);
+    }
 
     @Test
-    void operaExtensionTest(@Binary("/usr/bin/opera") OperaDriver driver) {
+    void chromeTest(ChromeDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,29 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
+import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.opera.OperaDriver;
 
+import io.github.bonigarcia.seljup.Arguments;
+import io.github.bonigarcia.seljup.Binary;
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
-class NestedJupiterTest {
+class OperaWithOptionsJupiterTest {
 
     @Test
-    void test(ChromeDriver driver) {
-        exercise(driver);
-    }
-
-    private void exercise(ChromeDriver driver) {
+    void operaTest(
+            @Binary("/usr/bin/opera") @Arguments("private") OperaDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-    }
-
-    @Nested
-    class MyNestedClass {
-
-        @Test
-        void testWithOtherChrome(ChromeDriver driver) {
-            exercise(driver);
-        }
-
     }
 
 }

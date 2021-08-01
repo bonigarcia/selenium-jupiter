@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
 import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,8 +33,6 @@ class DockerFirefoxJupiterTest {
     void testLatest(@DockerBrowser(type = FIREFOX) WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-
     }
 
 }
-//end::snippet-in-doc[]

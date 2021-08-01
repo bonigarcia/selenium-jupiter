@@ -34,7 +34,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 class RemoteFirefoxJupiterTest {
 
     @BeforeAll
-    static void setup() throws Exception {
+    static void setup() {
         // Resolve driver
         WebDriverManager.firefoxdriver().setup();
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.constructor;
+package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 
@@ -32,14 +32,14 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class MixedInConstructorJupiterTest {
+class DockerMixedListJupiterTest {
 
     static final int NUM_BROWSERS = 1;
 
     WebDriver driver1;
     List<WebDriver> driverList1;
 
-    MixedInConstructorJupiterTest(RemoteWebDriver driver1,
+    DockerMixedListJupiterTest(RemoteWebDriver driver1,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
         this.driver1 = driver1;
         this.driverList1 = driverList1;

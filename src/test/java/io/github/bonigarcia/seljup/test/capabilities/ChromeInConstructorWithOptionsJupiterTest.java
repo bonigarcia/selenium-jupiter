@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,8 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -25,32 +24,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
-import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class ChromeWithOptionsJupiterTest {
+class ChromeInConstructorWithOptionsJupiterTest {
 
-    @Test
-    void headlessTest(@Arguments("--headless") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+    ChromeDriver driver;
+
+    ChromeInConstructorWithOptionsJupiterTest(
+            @Arguments({ "--use-fake-device-for-media-stream",
+                    "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
+        this.driver = driver;
     }
 
     @Test
-    void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
-            "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
+    void testGlobalChrome() {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
     }
 
-    @Test
-    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-    }
-
 }
-//end::snippet-in-doc[]

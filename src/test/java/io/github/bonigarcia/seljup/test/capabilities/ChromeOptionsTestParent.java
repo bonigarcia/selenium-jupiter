@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 

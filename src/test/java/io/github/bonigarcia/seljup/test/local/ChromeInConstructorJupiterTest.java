@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,29 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.local;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled("Redudant test for CI suite")
 @ExtendWith(SeleniumJupiter.class)
-class OperaWithGlobalOptionsJupiterTest {
+class ChromeInConstructorJupiterTest {
 
-    @Options
-    OperaOptions operaOptions = new OperaOptions();
-    {
-        operaOptions.setBinary("/usr/bin/opera");
+    ChromeDriver driver;
+
+    ChromeInConstructorJupiterTest(ChromeDriver driver) {
+        this.driver = driver;
     }
 
     @Test
-    void operaTest(OperaDriver driver) {
+    void test() {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
-//end::snippet-in-doc[]

@@ -41,7 +41,7 @@ class RemoteChromeJupiterTest {
     Capabilities capabilities = new ChromeOptions();
 
     @BeforeAll
-    static void setup() throws Exception {
+    static void setup() {
         // Resolve driver
         WebDriverManager.chromedriver().setup();
 

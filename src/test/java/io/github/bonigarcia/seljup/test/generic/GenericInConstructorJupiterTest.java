@@ -14,9 +14,8 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.constructor;
+package io.github.bonigarcia.seljup.test.generic;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -41,4 +40,3 @@ class GenericInConstructorJupiterTest {
     }
 
 }
-//end::snippet-in-doc[]

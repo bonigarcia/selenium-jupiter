@@ -14,35 +14,44 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
 //tag::snippet-in-doc[]
-import static io.github.bonigarcia.seljup.Browser.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.safari.SafariOptions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
-import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(SAFARI)
 @ExtendWith(SeleniumJupiter.class)
-class SafariWithGlobalOptionsJupiterTest {
+class FirefoxWebRtcJupiterTest {
 
     @Options
-    SafariOptions safariOptions = new SafariOptions();
+    FirefoxOptions firefoxOptions = new FirefoxOptions();
     {
-        safariOptions.setUseTechnologyPreview(false);
+        // Flag to use fake media for WebRTC user media
+        firefoxOptions.addPreference("media.navigator.streams.fake", true);
+
+        // Flag to avoid granting access to user media
+        firefoxOptions.addPreference("media.navigator.permission.disabled",
+                true);
     }
 
     @Test
-    void safariTest(SafariDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+    void webrtcTest(FirefoxDriver driver) throws InterruptedException {
+        driver.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
+
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
     }
 
 }

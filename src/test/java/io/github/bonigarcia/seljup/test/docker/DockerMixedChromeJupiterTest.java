@@ -38,7 +38,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class MixedDockerChromeJupiterTest {
+class DockerMixedChromeJupiterTest {
 
     static final int NUM_BROWSERS = 3;
 

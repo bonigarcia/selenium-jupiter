@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,24 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.constructor;
+package io.github.bonigarcia.seljup.test.capabilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class ChromeInConstructorWithOptionsJupiterTest {
-
-    ChromeDriver driver;
-
-    ChromeInConstructorWithOptionsJupiterTest(
-            @Arguments({ "--use-fake-device-for-media-stream",
-                    "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
-        this.driver = driver;
-    }
+class ChromeWithGlobalOptionsAndParentJupiterTest
+        extends ChromeOptionsTestParent {
 
     @Test
-    void testGlobalChrome() {
-        driver.get(
-                "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName())
-                .isEqualTo("video");
+    void chromeTest(ChromeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

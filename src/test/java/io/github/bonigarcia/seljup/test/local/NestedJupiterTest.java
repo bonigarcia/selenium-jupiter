@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2019 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,38 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.local;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.Arguments;
-import io.github.bonigarcia.seljup.Extensions;
-import io.github.bonigarcia.seljup.Preferences;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class FirefoxWithOptionsJupiterTest {
+class NestedJupiterTest {
 
     @Test
-    void webrtcTest(@Arguments("-private") @Preferences({
-            "media.navigator.permission.disabled=true",
-            "media.navigator.streams.fake=true" }) FirefoxDriver driver) {
-        driver.get(
-                "https://webrtc.github.io/samples/src/content/devices/input-output/");
-        assertThat(driver.findElement(By.id("video")).getTagName())
-                .isEqualTo("video");
+    void test(ChromeDriver driver) {
+        exercise(driver);
     }
 
-    @Test
-    void extensionTest(@Extensions("hello_world.xpi") FirefoxDriver driver) {
+    private void exercise(ChromeDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
+    @Nested
+    class MyNestedClass {
+
+        @Test
+        void testWithOtherChrome(ChromeDriver driver) {
+            exercise(driver);
+        }
+
+    }
+
 }
-//end::snippet-in-doc[]

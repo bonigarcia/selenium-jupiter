@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.advance;
+package io.github.bonigarcia.seljup.test.capabilities;
 
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,32 +22,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.seljup.Options;
+import io.github.bonigarcia.seljup.Arguments;
+import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class FirefoxWithGlobalOptionsJupiterTest {
+class ChromeWithOptionsJupiterTest {
 
-    @Options
-    FirefoxOptions firefoxOptions = new FirefoxOptions();
-    {
-        // Flag to use fake media for WebRTC user media
-        firefoxOptions.addPreference("media.navigator.streams.fake", true);
-
-        // Flag to avoid granting access to user media
-        firefoxOptions.addPreference("media.navigator.permission.disabled",
-                true);
+    @Test
+    void headlessTest(@Arguments("--headless") ChromeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
     @Test
-    void webrtcTest(FirefoxDriver driver) {
+    void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
+            "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
+    }
+
+    @Test
+    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
