@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2021 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,16 +29,13 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
 @Disabled("Hardware server or virtual machine with nested virtualization support is required to run Chrome Mobile images")
-class DockerChromeMobileVncJupiterTest {
+class DockerChromeMobileJupiterTest {
 
     @Test
-    void test(@DockerBrowser(type = CHROME_MOBILE, vnc = true) WebDriver driver)
+    void testChromeMobile(@DockerBrowser(type = CHROME_MOBILE) WebDriver driver)
             throws InterruptedException {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-
-        // Uncomment this line to have more time for manually inspection
-        // Thread.sleep(30000);
     }
 
 }

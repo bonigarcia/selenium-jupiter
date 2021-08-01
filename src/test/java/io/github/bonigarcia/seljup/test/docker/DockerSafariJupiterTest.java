@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2021 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-import static io.github.bonigarcia.seljup.BrowserType.SAFARI;
+import static io.github.bonigarcia.seljup.BrowserType.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,10 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class DockerFirefoxJupiterTest {
+class DockerSafariJupiterTest {
 
     @Test
-    void testSafari(@DockerBrowser(type = SAFARI) WebDriver driver) {
+    void testOpera(@DockerBrowser(type = OPERA) WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }

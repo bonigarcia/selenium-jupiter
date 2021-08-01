@@ -7,11 +7,11 @@ Version {project-version}
 == Motivation
 https://seleniumhq.github.io/docs/site/en/webdriver/[Selenium WebDriver] is a library that allows controlling web browsers programmatically. It provides a cross-browser API that can be used to drive web browsers (e.g., Chrome, Edge, or Firefox, among others) using different programming languages (e.g., Java, JavaScript, Python, C#, or Ruby). The primary use of Selenium WebDriver is implementing automated tests for web applications. For this reason, it is a common practice to embed the calls to the Selenium WebDriver API in tests implemented using a unit testing framework like JUnit.
 
-https://junit.org/junit5/[JUnit 5] is the next generation of the popular testing framework JUnit. It provides a brand-new programming and extension model called _Jupiter_. The extension model of Jupiter allows to include custom capabilities to the standard programming model.
+https://junit.org/junit5/[JUnit 5] is the next generation of the popular testing framework JUnit. It provides a brand-new programming and extension model called _Jupiter_. The comprehensive nature of Jupiter is very convenient to develop Selenium WebDriver tests on the top of JUnit 5.
 
 .What is Selenium-Jupiter?
 ****
-https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-source Java library that implements a JUnit 5 extension for Selenium WebDriver. Selenium-Jupiter uses several features of the Jupiter extension (such as parameters resolution, test templates, or conditional test execution). Thanks to this, the resulting Selenium-Jupiter tests follow a minimalist approach (i.e., the required boilerplate code for WebDriver is reduced) while providing a wide range of advanced features for end-to-end testing.
+https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-source Java library that implements a JUnit 5 extension for developing Selenium WebDriver tests. Selenium-Jupiter uses several features of the Jupiter extension (such as parameters resolution, test templates, or conditional test execution). Thanks to this, the resulting Selenium-Jupiter tests follow a minimalist approach (i.e., the required boilerplate code for WebDriver is reduced) while providing a wide range of advanced features for end-to-end testing.
 ****
 
 == Setup
@@ -71,6 +71,19 @@ include::../../test/java/io/github/bonigarcia/seljup/test/remote/RemoteFirefoxJu
 You can find an example of an equivalent remote test but defining the remote URL and capabilities at field-level https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeJupiterTest.java[here]. A similar example, but using Sauce Labs is this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/SauceLabsJupiterTest.java[one].
 
 === Docker browsers
+Selenium-Jupiter allows using browsers in Docker containers in an effortless manner. To that aim, we need to associate the `@DockerBrowser` annotation to parameters of the type `WebDriver` or `RemoteWebDriver` in Jupiter tests. Simply with that, Selenium-Jupiter discovers the latest version of the browser in Docker Hub, pulls this image (if necessary), and starts the browser in the Docker container. The following example shows how to use this feature with a Chrome browser in Docker:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The used Docker images by Selenium-Jupiter have been created and maintained by https://aerokube.com/images/latest/[Aerokube]. Therefore, the available browsers to be executed as Docker containers in WebDriverManager are https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeJupiterTest.java[Chrome], https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxJupiterTest.java[Firefox], https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeJupiterTest.java[Edge], https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaJupiterTest.java[Opera], https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerSafariJupiterTest.java[Safari], and https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeMobileJupiterTest.java[Chrome Mobile].
+
+NOTE: The case of Safari is particular since a real Safari browser can only be executed under a Mac OS machine. This way, the Safari Docker containers use the https://webkit.org/[WebKit engine]. This engine is the same used in browser containers, and therefore, from a functional point of view, both browsers (a real Safari and this Docker image) should behave in the same way.
+
+WARNING: Notice that a hardware server or virtual machine with nested virtualization support is required to run Chrome Mobile images.
+
 ==== Recordings
 ==== VNC
 ==== Performance tests
