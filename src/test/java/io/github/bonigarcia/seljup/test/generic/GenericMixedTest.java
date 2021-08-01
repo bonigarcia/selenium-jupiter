@@ -16,8 +16,6 @@
  */
 package io.github.bonigarcia.seljup.test.generic;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterEach;
@@ -55,8 +53,7 @@ class GenericMixedTest {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));
-        wait.until(d -> d.getTitle().contains("JUnit 5"));
-        assertThat(driver.getTitle()).contains("Selenium");
+        wait.until(d -> d.getTitle().contains("Selenium-Jupiter"));
     }
 
 }
