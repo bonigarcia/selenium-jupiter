@@ -179,6 +179,12 @@ public class SeleniumJupiter implements ParameterResolver,
                     isGeneric);
         }
 
+        // Output folder
+        OutputHandler outputHandler = new OutputHandler(extensionContext,
+                getConfig());
+        wdm.recordingPrefix(outputHandler.getPrefix());
+        wdm.recordingOutput(outputHandler.getOutputFolder());
+
         putManagerInMap(contextId, wdm);
 
         return browserNumber == 0 ? wdm.create() : wdm.create(browserNumber);
@@ -236,10 +242,6 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.recording() || config.isRecording()
                 || config.isRecordingWhenFailure()) {
             wdm.enableRecording();
-            OutputHandler outputHandler = new OutputHandler(extensionContext,
-                    getConfig());
-            wdm.recordingPrefix(outputHandler.getPrefix());
-            wdm.recordingOutput(outputHandler.getOutputFolder());
         }
         if (dockerBrowser.vnc() || config.isVnc()) {
             wdm.enableVnc();
