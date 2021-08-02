@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2021 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.screenshot;
+package io.github.bonigarcia.seljup.test.jenkins;
 
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
+import java.time.Duration;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -29,34 +28,24 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-class ScreenshotSurefireTest {
+class JenkinsTest {
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    static File imageFile;
-
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig().enableScreenshot();
-        seleniumJupiter.getConfig().takeScreenshotAsPng();
+        seleniumJupiter.getConfig().enableRecording();
         seleniumJupiter.getConfig().useSurefireOutputFolder();
     }
 
-    @AfterAll
-    static void teardown() {
-        assertThat(imageFile).exists();
-        imageFile.delete();
-    }
-
     @Test
-    void screenshotTest(ChromeDriver driver) {
+    void jenkinsTest(ChromeDriver driver) throws InterruptedException {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
-        imageFile = new File(
-                "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",
-                "screenshotTest_" + driver.getSessionId() + ".png");
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
     }
 
 }
