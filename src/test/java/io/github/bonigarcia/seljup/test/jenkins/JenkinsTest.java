@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.jenkins;
 
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,8 +25,9 @@ import java.time.Duration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class JenkinsTest {
@@ -41,7 +43,8 @@ class JenkinsTest {
     }
 
     @Test
-    void jenkinsTest(ChromeDriver driver) throws InterruptedException {
+    void jenkinsTest(@DockerBrowser(type = CHROME) WebDriver driver)
+            throws InterruptedException {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
