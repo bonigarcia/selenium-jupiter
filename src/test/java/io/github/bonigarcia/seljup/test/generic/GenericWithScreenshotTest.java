@@ -18,21 +18,18 @@ package io.github.bonigarcia.seljup.test.generic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import java.io.File;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@TestInstance(PER_CLASS)
 class GenericWithScreenshotTest {
 
     @RegisterExtension
@@ -41,7 +38,7 @@ class GenericWithScreenshotTest {
     File imageFile;
 
     @BeforeAll
-    void setup() {
+    static void setup() {
         seleniumJupiter.getConfig().enableScreenshot();
         seleniumJupiter.getConfig().takeScreenshotAsPng();
     }
