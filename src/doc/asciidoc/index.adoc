@@ -133,6 +133,8 @@ The following related feature is the recording of the remote session of a docker
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeRecordingTest.java[tags=snippet-in-doc,indent=0]
 ----
 
+WARNING: Notice that the previous example deletes the recording at the end of the test. If you want to keep the recording, omit the line `recordingFile.delete();`.
+
 ==== Browser List
 Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance or load tests seamlessly. To use this feature, we need into account two aspects. First of all, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
 
@@ -316,7 +318,7 @@ io.github.bonigarcia.wdm.config.WebDriverManagerException: Error HTTP 403 execut
     at io.github.bonigarcia.wdm.WebDriverManager.setup(WebDriverManager.java:328)
 ----
 
-To avoid this problem, Selenium-Jupiter can make authenticated requests using a https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token[personal access token]. See the <<advanced-configuration,advanced configuration>> section to discover how to set up this token in Selenium-Jupiter.
+To avoid this problem, WebDriverManager can make authenticated requests using a https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token[personal access token]. Take a look at the https://bonigarcia.org/webdrivermanager/#advanced-configuration[WebDriverManager documentation] to discover how to set up this token.
 
 [discrete]
 ==== Testing localhost
@@ -338,10 +340,10 @@ When the host is Mac OS or Windows, we can use the DNS name `host.docker.interna
 There is an https://bugs.chromium.org/p/chromedriver/issues/detail?id=3857[open issue] with Chrome 92+ and Docker at the time of this writing. The problem can be solved to some extent by using the argument `--disable-gpu` in Chrome and Edge. This argument is used by Selenium-Jupiter 5 to avoid the issue. Nevertheless, some situations are still impossible to fix (e.g., when using https://hub.docker.com/r/bonigarcia/selenium-jupiter[Selenium-Jupiter in Docker] as CLI or Server).
 
 == Community
-There are two ways to try to get community support related to Selenium-Jupiter. First, questions about it can be discussed in https://stackoverflow.com/questions/tagged/selenium-jupiter_java[StackOverflow], using the tag _selenium-jupiter_. In addition, comments, suggestions, and bug-reporting should be made using the https://github.com/bonigarcia/selenium-jupiter/issues[GitHub issues]. Finally, if you think Selenium-Jupiter can be enhanced, consider contributing to the project through a  https://github.com/bonigarcia/selenium-jupiter/pulls[pull request].
+There are two ways to try to get community support related to Selenium-Jupiter. First, questions about it can be discussed in https://stackoverflow.com/questions/tagged/selenium-jupiter[StackOverflow], using the tag _selenium-jupiter_. In addition, comments, suggestions, and bug-reporting should be made using the https://github.com/bonigarcia/selenium-jupiter/issues[GitHub issues]. Finally, if you think Selenium-Jupiter can be enhanced, consider contributing to the project through a  https://github.com/bonigarcia/selenium-jupiter/pulls[pull request].
 
 == Support
-https://opencollective.com/selenium-jupiter[Selenium-Jupiter] is part of https://opencollective.com/bonigarcia[OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal https://opencollective.com/selenium-jupiter/donate[donation] or https://opencollective.com/selenium-jupiter/contribute/backer-8132/checkout[recurring contribution]) or as a https://opencollective.com/selenium-jupiter/contribute/sponsor-8133/checkout[sponsor] (i.e., a recurring contribution by a company).
+https://opencollective.com/selenium-jupiter[Selenium-Jupiter] is part of https://opencollective.com/bonigarcia[OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal https://opencollective.com/selenium-jupiter/donate[donation] or https://opencollective.com/selenium-jupiter/contribute/backer-10377/checkout[recurring contribution]) or as a https://opencollective.com/selenium-jupiter/contribute/sponsor-10378/checkout[sponsor] (i.e., a recurring contribution by a company).
 
 ifndef::backend-pdf[]
 ifndef::backend-epub3[]

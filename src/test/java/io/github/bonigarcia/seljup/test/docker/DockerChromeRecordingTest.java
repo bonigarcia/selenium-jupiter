@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
+import java.time.Duration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +45,7 @@ class DockerChromeRecordingTest {
     void teardown() {
         if (recordingFile != null) {
             assertThat(recordingFile).exists();
-            log.info("Deleting recording {} ... {}", recordingFile,
-                    recordingFile.delete());
+            recordingFile.delete();
         }
     }
 
@@ -56,8 +56,7 @@ class DockerChromeRecordingTest {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
-        // Uncomment this line to get a longer recording
-        // Thread.sleep(5000);
+        Thread.sleep(Duration.ofMillis(5).toSeconds());
 
         recordingFile = new File(
                 "recordingTest_" + driver.getSessionId() + ".mp4");
