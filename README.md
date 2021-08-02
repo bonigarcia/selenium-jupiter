@@ -2,322 +2,181 @@
 [![Build Status](https://github.com/bonigarcia/selenium-jupiter/workflows/build/badge.svg)](https://github.com/bonigarcia/selenium-jupiter/actions)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.bonigarcia:selenium-jupiter&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.github.bonigarcia:selenium-jupiter)
 [![codecov](https://codecov.io/gh/bonigarcia/selenium-jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/bonigarcia/selenium-jupiter)
-[![badge-jdk](https://img.shields.io/badge/jdk-8-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
+[![badge-jdk](https://img.shields.io/badge/jdk-11-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Backers on Open Collective](https://opencollective.com/selenium-jupiter/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/selenium-jupiter/sponsors/badge.svg)](#sponsors)
 [![Support badge](https://img.shields.io/badge/stackoverflow-selenium_jupiter-green.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest)
 [![Twitter Follow](https://img.shields.io/twitter/follow/boni_gg.svg?style=social)](https://twitter.com/boni_gg)
 
-# Selenium-Jupiter [![][Logo]][GitHub Repository]
+# [![][Logo]][Selenium-Jupiter]
 
-*Selenium-Jupiter* is a [JUnit 5] extension aimed to ease the use of [Selenium WebDriver] in JUnit 5 tests. This library is open source, released under the terms of [Apache 2.0 License].
+[Selenium-Jupiter] is an open-source Java library that implements a [JUnit 5] extension for developing [Selenium WebDriver] tests. Selenium-Jupiter uses several features of the Jupiter extension (such as parameters resolution, test templates, or conditional test execution). Thanks to this, the resulting Selenium-Jupiter tests follow a minimalist approach (i.e., the required boilerplate code for WebDriver is reduced) while providing a wide range of advanced features for end-to-end testing.
 
-## Table of contents
+## Documentation
+You can find the complete documentation of Selenium-Jupiter [here][Selenium-Jupiter]. This site contains all the features, examples, and configuration capabilities of Selenium-Jupiter.
 
-1. [Motivation](#motivation)
-2. [Selenium-Jupiter as Java dependency](#selenium-jupiter-as-java-dependency)
-   1. [Local browsers](#local-browsers)
-   2. [Remote browsers](#remote-browsers)
-   3. [Docker browsers](#docker-browsers)
-   4. [Appium](#appium)
-3. [Selenium-Jupiter CLI](#selenium-jupiter-cli)
-4. [Selenium-Jupiter server](#selenium-jupiter-server)
-5. [Documentation](#documentation)
-6. [Help](#help)
-7. [About](#about)
-
-## Motivation
-
-*Selenium-Jupiter* allows to use [Selenium WebDriver] from [JUnit 5] tests in an easy way. To do that, *Selenium-Jupiter* makes the most of several JUnit 5 features, such as [dependency injection for constructors and methods], or [test templates]. Moreover, *Selenium-Jupiter* provides seamless integration with [Docker], allowing to use different browsers (Chrome, Firefox, Edge, Opera, and even browsers in Android devices) in Docker containers in an effortless manner.
-
-
-## Selenium-Jupiter as Java dependency
-
-In order to include *Selenium-Jupiter* in a Maven project, first add the following dependency to your `pom.xml` (Java 8 required):
-
-```xml
-<dependency>
-    <groupId>io.github.bonigarcia</groupId>
-    <artifactId>selenium-jupiter</artifactId>
-    <version>3.4.0</version>
-    <scope>test</scope>
-</dependency>
-```
-
-... or in Gradle project:
-
-```
-dependencies {
-    testImplementation("io.github.bonigarcia:selenium-jupiter:3.4.0")
-}
-```
-
-*Selenium-Jupiter* is typically used by tests. For that reason, the scope of the dependency has been defined as `test` in Maven and `testImplementation` in Gradle.
-
-### Local browsers
-
-Once we have included this dependency, *Selenium-Jupiter* can be used to control local browsers programmatically using Selenium WebDriver. To do that, we simply need to specify the flavor of the browser to be used by declaring `WebDriver` parameters in tests or constructors. For instance, we declare a `ChromeDriver` parameter to use Chrome, `FirefoxDriver` for Firefox, and so on. For instance:  
+## Local browsers
+Selenium-Jupiter can be used to control local browsers programmatically using Selenium WebDriver. To do that, we need to specify the flavor of the browser to be used by declaring `WebDriver` parameters in tests or constructors. For instance, we declare a `ChromeDriver` parameter to use Chrome, `FirefoxDriver` for Firefox, and so on. For instance:  
 
 ```java
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class SeleniumJupiterLocalTest {
+class ChromeTest {
 
     @Test
-    void testLocalChrome(ChromeDriver driver) {
-        // use local Chrome in this test
-    }
-
-    @Test
-    void testLocalFirefox(FirefoxDriver driver) {
-        // use local Firefox in this test
+    void test(ChromeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
 ```
 
-Internally, *Selenium-Jupiter* uses [WebDriverManager] to manage the WebDriver binaries (i.e. *chromedriver*, *geckodriver*,  *operadriver*, and so on) required to use local browsers.
+Internally, Selenium-Jupiter uses [WebDriverManager] to manage the WebDriver binaries (i.e., chromedriver, geckodriver,  etc.) required to use local browsers.
 
-### Remote browsers
-
-*Selenium-Jupiter* can also be used to control remote browsers programmatically. To do that, a couple of custom annotations can be used (parameter-level or field-level): `DriverUrl` (to identify the Selenium Server URL) and `DriverCapabilities` (to configure the desired capabilities). For instance:
-
-```java
-import static org.openqa.selenium.remote.DesiredCapabilities.firefox;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
-import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.DriverUrl;
-import io.github.bonigarcia.seljup.SeleniumJupiter;
-
-@ExtendWith(SeleniumJupiter.class)
-class SeleniumJupiterRemoteTest {
-
-    @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
-
-    @DriverCapabilities
-    Capabilities capabilities = firefox();
-
-    @Test
-    void testWithRemoteChrome(@DriverUrl("http://localhost:4444/wd/hub")
-            @DriverCapabilities("browserName=chrome") RemoteWebDriver driver) {
-        // use remote Chrome in this test
-    }
-
-    @Test
-    void testWithRemoteFirefox(RemoteWebDriver driver) {
-        // use remote Firefox in this test
-    }
-
-
-}
-```
-
-### Docker browsers
-
-As of version 2, *Selenium-Jupiter* allows to use browsers in [Docker] containers. The only requirement is to get installed [Docker Engine] in the machine running the tests. A simple example using this feature is the following:
+### Browsers in Docker containers
+Selenium-Jupiter allows using browsers in [Docker] containers very easily. The only requirement is to get installed [Docker Engine] in the machine running the tests. The following example shows a test using this feature. Internally, it pulls the image from [Docker Hub], starts the container, and instantiates the WebDriver object to use it. This example also enables the recording of the browser session and remote access using [noVNC]:
 
 ```java
-import static io.github.bonigarcia.seljup.BrowserType.ANDROID;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class SeleniumJupiterDockerTest {
+class DockerChromeTest {
 
     @Test
-    void testChrome(
-            @DockerBrowser(type = CHROME) RemoteWebDriver driver) {
-        // use Chrome (latest version, discovered at runtime) in a Docker container in this test
-    }
-
-    @Test
-    void testFirefox(
-            @DockerBrowser(type = FIREFOX, version = "66.0") RemoteWebDriver driver) {
-        // use Firefox (version 66.0) in a Docker container in this test
-    }
-
-    @Test
-    void testAndroid(
-            @DockerBrowser(type = ANDROID, version = "9.0") RemoteWebDriver driver) {
-        // use Android (version 9.0) in a Docker container in this test
+    void testChrome(@DockerBrowser(type = CHROME, recording = true, vnc = true) WebDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
 ```
 
-### Appium
-
-*Selenium-Jupiter* also allows to control mobile devices using [Appium]. The following snippet shows an example. This test uses the annotation `@DriverCapabilities` at parameter-level to set the required capabilities and `@DriverUrl` to set the Appium Server URL:
+### Conditional tests
+Selenium-Jupiter provides the class-level annotation @EnabledIfBrowserAvailable to skip tests conditionally depending on the availability of local browsers. For example:
 
 ```java
+import static io.github.bonigarcia.seljup.Browser.SAFARI;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.safari.SafariDriver;
 
-import io.appium.java_client.AppiumDriver;
-import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.DriverUrl;
+import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
+
+@EnabledIfBrowserAvailable(SAFARI)
+@ExtendWith(SeleniumJupiter.class)
+class SafariTest {
+
+    @Test
+    void test(SafariDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+    }
+
+}
+
+```
+
+### Test templates
+Test templates are a special kind of test in which the same test logic is executed several times according to some custom data. In Selenium-Jupiter, the data to feed a test template is referred to as the _browser scenario_ (a JSON file by default).
+
+```java
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
+
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class AppiumJupiterTest {
+class TemplateTest {
 
-    @Test
-    void testAppium(@DriverUrl("http://localhost:4723/wd/hub")
-            @DriverCapabilities({ "browserName=chrome",
-                    "deviceName=Android" }) AppiumDriver<WebElement> driver) {
-        // use Chrome in Android device through Appium in this test
+    @TestTemplate
+    void templateTest(WebDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
 ```
 
+... and the browser scenario is:
 
-## Selenium-Jupiter CLI
-
-As of version 2.2.0, Selenium-Jupiter can used interactively from the Command Line Interface (CLI), i.e. the shell, to get VNC sessions of Docker browsers (Chrome, Firefox, Opera, Edge, Android). There are two ways of using this feature:
-
-* Directly from the source code, using Maven. The command to be used is ``mvn exec:java -Dexec.args="browserName"``. For instance:
-
-```
-> mvn exec:java -Dexec.args="chrome"
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.4.0
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
-[INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[INFO] Using CHROME version 76.0 (latest)
-[INFO] Starting Docker container aerokube/selenoid:1.8.4
-[DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32782/wd/hub
-Jan 07, 2019 6:54:19 PM org.openqa.selenium.remote.ProtocolHandshake createSession
-INFO: Detected dialect: OSS
-[INFO] Starting Docker container psharkey/novnc:3.3-t6
-[INFO] Session id fe492bee1ecebceb645cf58275a63bd6
-[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
-[INFO] http://172.17.0.1:32783/vnc.html?host=172.17.0.1&port=32782&path=vnc/fe492bee1ecebceb645cf58275a63bd6&resize=scale&autoconnect=true&password=selenoid
-[INFO] Press ENTER to exit
-
-[INFO] Stopping Docker container aerokube/selenoid:1.8.4
-[INFO] Stopping Docker container psharkey/novnc:3.3-t6
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 21.240 s
-[INFO] Finished at: 2019-01-07T16:26:47+01:00
-[INFO] Final Memory: 33M/453M
-[INFO] ------------------------------------------------------------------------
+```yaml
+{
+   "browsers": [
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "latest"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "latest-1"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "beta"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-docker",
+            "version": "dev"
+         }
+      ]
+   ]
+}
 ```
 
-* Using Selenium-Jupiter as a *fat-jar* (i.e. Selenium-Jupiter with all its dependencies in a single executable JAR file). This JAR file can downloaded from [here](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.4.0/selenium-jupiter-3.4.0-fat.jar) and also it can be created using the command ``mvn compile assembly:single`` from the source code. Once you get the *fat-jar*, you simply need to use the command ``java -jar selenium-jupiter-3.4.0-fat.jar browserName``, for instance:
-
-```
-> java -jar selenium-jupiter-3.4.0-fat.jar chrome
-[INFO] Using SeleniumJupiter to execute chrome (latest) in Docker
-[INFO] Using CHROME version 76.0 (latest)
-[INFO] Starting Docker container aerokube/selenoid:1.8.4
-[DEBUG] Creating WebDriver for CHROME at http://172.17.0.1:32784/wd/hub
-Jan 07, 2019 6:55:17 PM org.openqa.selenium.remote.ProtocolHandshake createSession
-INFO: Detected dialect: OSS
-[INFO] Starting Docker container psharkey/novnc:3.3-t6
-[INFO] Session id 8edd28c130bb2bc62f8e4467c20f4dc0
-[INFO] VNC URL (copy and paste in a browser navigation bar to interact with remote session)
-[INFO] http://172.17.0.1:32785/vnc.html?host=172.17.0.1&port=32784&path=vnc/8edd28c130bb2bc62f8e4467c20f4dc0&resize=scale&autoconnect=true&password=selenoid
-[INFO] Press ENTER to exit
-
-[INFO] Stopping Docker container aerokube/selenoid:1.8.4
-[INFO] Stopping Docker container psharkey/novnc:3.3-t6
-```
-
-## Selenium-Jupiter Server
-
-As of version 3.0.0, Selenium-Jupiter can used as a server. To start this mode, the shell is used. Once again, two options are allowed:
-
-* Directly from the source code and Maven. The command to be used is ``mvn exec:java -Dexec.args="server <port>"``. If the second argument is not specified, the default port will be used (4042):
-
-```
-$ mvn exec:java -Dexec.args="server"
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building Selenium-Jupiter 3.4.0
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- exec-maven-plugin:1.6.0:java (default-cli) @ selenium-jupiter ---
-[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
-```
-
-* Using Selenium-Jupiter as a [fat-jar](https://github.com/bonigarcia/selenium-jupiter/releases/download/selenium-jupiter-3.4.0/selenium-jupiter-3.4.0-fat.jar). For instance:
-
-```
-> java -jar selenium-jupiter-3.4.0-fat.jar server
-[INFO] Selenium-Jupiter server listening on http://localhost:4042/wd/hub
-```
-
-When the Selenium-Jupiter server is up and running, it acts as a regular Selenium Server for Docker browsers (Chrome, Firefox,. Opera, Android), and its URL can be used in tests using regular Selenium's ``RemoteWebDriver`` objects.
-
-
-## Documentation
-
-You can find more features, details, and examples on the [Selenium-Jupiter user guide].
-
-
-## Help
-
-If you have questions on how to use *Selenium-Jupiter* properly with a special configuration or suchlike, please consider asking a question on [Stack Overflow] and tag it with  *selenium-jupiter*.
-
+## Support
+Selenium-Jupiter is part of [OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal [donation] or [recurring contribution]) or as a [sponsor] (i.e., a recurring contribution by a company).
 
 ## Backers
-
-Thank you to all our backers! [[Become a backer](https://opencollective.com/selenium-jupiter#backer)]
-
 <a href="https://opencollective.com/selenium-jupiter#backers" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
 
 ## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/selenium-jupiter#sponsor)]
-
 <a href="https://opencollective.com/selenium-jupiter/sponsor/0/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/0/avatar.svg"></a>
 
-
 ## About
+Selenium-Jupiter (Copyright &copy; 2017-2021) is a project created and maintained by [Boni García] and licensed under the terms of the [Apache 2.0 License].
 
-Selenium-Jupiter (Copyright &copy; 2017-2021) is a project by [Boni Garcia] licensed under [Apache 2.0 License].
-
-[Apache 2.0 License]: https://www.apache.org/licenses/LICENSE-2.0
-[Appium]: https://appium.io/
-[Boni Garcia]: https://bonigarcia.github.io/
-[dependency injection for constructors and methods]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-dependency-injection
+[Logo]: https://bonigarcia.github.io/img/seljup.png
+[Selenium-Jupiter]: https://bonigarcia.org/selenium-jupiter/
+[JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
+[Selenium WebDriver]: https://www.selenium.dev/docs/site/en/webdriver/
+[WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
 [Docker]: https://www.docker.com/
 [Docker Engine]: https://www.docker.com/get-docker
-[GitHub Repository]: https://github.com/bonigarcia/selenium-jupiter
-[JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
-[Logo]: https://bonigarcia.github.io/img/selenium-jupiter.png
-[Selenium WebDriver]: https://www.selenium.dev/docs/site/en/webdriver/
-[Selenium-Jupiter user guide]: https://bonigarcia.github.io/selenium-jupiter/
-[Stack Overflow]: https://stackoverflow.com/questions/tagged/selenium-jupiter?sort=newest
-[test templates]: https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates
-[WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
+[Docker Hub]: https://hub.docker.com/
+[noVNC]: https://novnc.com/
+[OpenCollective]: https://opencollective.com/selenium-jupiter
+[donation]: https://opencollective.com/selenium-jupiter/donate
+[recurring contribution]: https://opencollective.com/selenium-jupiter/contribute/backer-8132/checkout
+[sponsor]: https://opencollective.com/selenium-jupiter/contribute/sponsor-8133/checkout
+[Boni Garcia]: https://bonigarcia.github.io/
+[Apache 2.0 License]: https://www.apache.org/licenses/LICENSE-2.0
