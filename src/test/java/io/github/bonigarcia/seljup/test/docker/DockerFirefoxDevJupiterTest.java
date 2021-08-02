@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018 Boni Garcia (http://bonigarcia.github.io/)
+ * (C) Copyright 2021 Boni Garcia (http://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,26 +27,13 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class DockerChromeListInConstructorJupiterTest {
-
-    static final int NUM_BROWSERS = 1;
-
-    List<WebDriver> driverList1;
-
-    DockerChromeListInConstructorJupiterTest(
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
-        this.driverList1 = driverList1;
-    }
+class DockerFirefoxDevJupiterTest {
 
     @Test
-    void test() {
-        driverList1.forEach(this::exercise);
-    }
-
-    private void exercise(WebDriver driver) {
+    void test(
+            @DockerBrowser(type = FIREFOX, version = "dev") WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle())
-                .contains("Selenium-Jupiter");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }

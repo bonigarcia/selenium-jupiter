@@ -17,16 +17,22 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
+import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.slf4j.LoggerFactory.getLogger;
 
-import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -34,32 +40,45 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @ExtendWith(SeleniumJupiter.class)
 class DockerMixedListJupiterTest {
 
-    static final int NUM_BROWSERS = 1;
+    static final int NUM_BROWSERS = 3;
 
-    WebDriver driver1;
-    List<WebDriver> driverList1;
-
-    DockerMixedListJupiterTest(RemoteWebDriver driver1,
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
-        this.driver1 = driver1;
-        this.driverList1 = driverList1;
-    }
+    final Logger log = getLogger(lookup().lookupClass());
 
     @Test
-    void testGlobalChrome(WebDriver driver2,
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList2) {
-        exercise(driver1);
-        driverList1.forEach(this::exercise);
-        exercise(driver2);
-        driverList2.forEach(this::exercise);
+    void testMixed(@DockerBrowser(type = CHROME) WebDriver chrome,
+            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList,
+            @DockerBrowser(type = FIREFOX) WebDriver firefox)
+            throws InterruptedException {
+
+        ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS + 2);
+        CountDownLatch latch = new CountDownLatch(NUM_BROWSERS + 2);
+
+        driverList.forEach((driver) -> {
+            exercise(executorService, latch, driver);
+        });
+        exercise(executorService, latch, chrome);
+        exercise(executorService, latch, firefox);
+
+        latch.await(50, SECONDS);
+
+        // Thread.sleep(30000);
+
+        executorService.shutdown();
     }
 
-    private void exercise(WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
+    private void exercise(ExecutorService executorService, CountDownLatch latch,
+            WebDriver driver) {
+        executorService.submit(() -> {
+            try {
+                log.info("Session id {}",
+                        ((RemoteWebDriver) driver).getSessionId());
+                driver.get("https://bonigarcia.org/selenium-jupiter/");
+                assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
-        Wait<WebDriver> wait = new WebDriverWait(driver,
-                Duration.ofSeconds(30));
-        wait.until(d -> d.getTitle().contains("Selenium-Jupiter"));
+            } finally {
+                latch.countDown();
+            }
+        });
     }
 
 }
