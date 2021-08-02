@@ -237,14 +237,14 @@ include::../../test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotP
 WARNING: Notice that the previous example deletes the image at the end of the test. If you want to keep the picture, omit the line `imageFile.delete();`.
 
 === Integration with Jenkins
-Selenium-Jupiter seamlessly integrates with Jenkins through one of its plugins: the https://plugins.jenkins.io/junit-attachments/[Jenkins attachment plugin]. The aim is to attach output files (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution. This is done in Selenium-Jupiter setting the configuration key `sel.jup.output.folder` to a particular value: `surefire-reports` (see <<advanced-configuration,advanced configuration>>>). This way, Selenium-Jupiter stores the generated files in the proper folder so that the Jenkins attachment plugin can find those files and export them in the Jenkins GUI. For instance, consider the following test:
+Selenium-Jupiter seamlessly integrates with Jenkins through the https://plugins.jenkins.io/junit-attachments/[Jenkins attachment plugin]. This integration allows to attach output files of Selenium-Jupiter (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution in Jenkins. This is done using the method `useSurefireOutputFolder()` (or its equivalence configuration key `sel.jup.output.folder`) in Selenium-Jupiter (see <<advanced-configuration,advanced configuration>>). For instance:
 
 [source,java]
 ----
-include::../../test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotSurefireTest.java[tags=snippet-in-doc,indent=0]
+include::../../test/java/io/github/bonigarcia/seljup/test/jenkins/JenkinsTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-If we run this test in Jenkins in which is already installed the attachment plugin, at the end of the execution, a recording in MP4 and a PNG screenshot are attached to the Jenkins job, as shown in the following picture:
+If we run this test in Jenkins in which is already installed and configured the attachment plugin, at the end of the execution, a recording in MP4 and a PNG screenshot are attached to the Jenkins job, as shown in the following picture:
 
 [.thumb]
 .Example of test execution through Jenkins with attachments
@@ -278,14 +278,14 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 [options="header"]
 |=======
 |Java API|Configuration key|Default value|Description
-|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `"surefire-reports"` for the <<integration-with-jenkins,integration with Jenkins>>
+|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `surefire-reports` for the <<integration-with-jenkins,integration with Jenkins>>
 |`setScreenshot(boolean)` `enableScreenshot()`|`sel.jup.screenshot`|`false`|Enable screenshots at the end of the test
 |`setScreenshotWhenFailure(boolean)` `enableScreenshotWhenFailure()`|`sel.jup.screenshot.when.failure`|`false`|Enable screenshots at the end of the test only if the test fails
 |`setScreenshotFormat(String)` `takeScreenshotAsPng()` `takeScreenshotAsBase64()` `takeScreenshotAsBase64AndPng()`|`sel.jup.screenshot.format`|`png`|Configure screenshot format (accepted values: `png`, `base`, and `base64andpng`)
 |`setRecording(boolean)` `enableRecording()`|`sel.jup.recording`|`false`|Enable recording of Docker browsers
 |`setRecordingWhenFailure(true)` `enableRecordingWhenFailure()`|`sel.jup.recording.when.failure`|`false`|Enable recording of Docker browsers only if test fails
 |`setVnc(boolean)` `enableVnc()`|`sel.jup.vnc`|`false`|Enable the remote access in Docker browsers
-|`setBrowserTemplateJsonFile` `(String)`|`sel.jup.browser.template.` `json.file`|`classpath:browsers.json`|Location of the JSON browser scenario. If this value do not start with the word `classpath:`, the JSON file will be searched using the specified path 
+|`setBrowserTemplateJsonFile` `(String)`|`sel.jup.browser.template.` `json.file`|`classpath:browsers.json`|Location of the JSON browser scenario. If this value do not start with the word `classpath:`, the JSON file willbe searched using the specified path 
 |`setBrowserTemplateJsonContent` `(String)`|`sel.jup.browser.template.` `json.content`|`""`|Content of JSON browsers scenario
 |`setProperties(String)`|`sel.jup.properties`|`selenium-jupiter.` `properties`|Properties file (in the project classpath) for default configuration values
 |`setSeleniumServerUrl(String)`|`sel.jup.selenium.server.url`|`""`|Remote URL used for remote (or template) tests
