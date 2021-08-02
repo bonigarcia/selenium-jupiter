@@ -91,7 +91,7 @@ WARNING: Notice you will need hardware virtualization (hypervisor) or a virtual 
 ==== Browser Versions
 A significant aspect of the Docker containers for browsers is that the latest version available on Docker Hub is used when the browser version is not specified (like the examples explained before). This way, these _dockerized_ browsers are auto-maintained, in the sense that these tests use the latest version available without any additional effort.
 
-Nevertheless, we can use a browser version in Docker using the element `version()` of the `@DockerBrowser` annotation. This element accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
+Nevertheless, we can use a browser version in Docker using the attribute`version()` of the `@DockerBrowser` annotation. This attribute accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
 
 * `"latest"` : To specify the latest version explicitly (default option).
 * `"latest-N"` : Where `N` is an integer value to be subtracted from the current stable version. For example, if we specify `latest-1` (i.e., _latest version minus one_), the previous version to the stable release will be used (see an example https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeLatestMinusOneTest.java[here]).
@@ -106,7 +106,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeBet
 ----
 
 ==== Remote Desktop
-A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. To improve this situation, Selenium-Jupiter allows connecting to the remote desktop session of a browser simply setting to `true` the element `vnc` of the `@DockerBrowser` annotation. When using this option, two different technologies are used internally:
+A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. To improve this situation, Selenium-Jupiter allows connecting to the remote desktop session of a browser simply setting to `true` the attribute `vnc` of the `@DockerBrowser` annotation. When using this option, two different technologies are used internally:
 
 * Virtual Network Computing (https://en.wikipedia.org/wiki/Virtual_Network_Computing[VNC]), a graphical desktop sharing system. In WebDriverManager, a VNC server is started in the browser container.
 * https://novnc.com/[noVNC], a open-source web-based VNC client. In Selenium-Jupiter, a custom https://github.com/bonigarcia/novnc[noVNC Docker image] is used to connect through noVNC.
@@ -118,7 +118,7 @@ The following example shows a test that enables this feature. We can see the noV
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeVncTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-TIP: Notice that the previous example also uses the elements `lang` and `timezone` to change the https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes[language] and https://en.wikipedia.org/wiki/List_of_tz_database_time_zones[timezone] of the browser container.
+TIP: Notice that the previous example also uses the attributes `lang` and `timezone` to change the https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes[language] and https://en.wikipedia.org/wiki/List_of_tz_database_time_zones[timezone] of the browser container.
 
 [[vnc]]
 [.thumb]
@@ -126,11 +126,19 @@ TIP: Notice that the previous example also uses the elements `lang` and `timezon
 image::seljup-vnc.png[scaledwidth=100%]
 
 ==== Recordings
-The following related feature is the recording of the remote session of a dockerized browser. We need to set to `true` the element `recording` of `@DockerBrowser` to enable it. Internally, Selenium-Jupiter starts another Docker container using https://ffmpeg.org/[FFmpeg] to record the browser session. At the end of the test, we can find the recording in MP4, by default, in the same folder of the project root. The following example shows a simple using this feature.
+The following related feature is the recording of the remote session of a dockerized browser. We need to set to `true` the attribute `recording` of `@DockerBrowser` to enable it. Internally, Selenium-Jupiter starts another Docker container using https://ffmpeg.org/[FFmpeg] to record the browser session. At the end of the test, we can find the recording in MP4, by default, in the same folder of the project root. The following example shows a simple using this feature.
 
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeRecordingTest.java[tags=snippet-in-doc,indent=0]
+----
+
+==== Browser List
+Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance tests seamlessly. To use this feature, we need into account two aspects. First of all, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerListTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Capabilities
