@@ -291,6 +291,10 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 |`setSeleniumServerUrl(String)`|`sel.jup.selenium.server.url`|`""`|Remote URL used for remote (or template) tests
 |=======
 
+[discrete]
+=== Tuning WebDriverManager
+Selenium-Jupiter relies on https://bonigarcia.org/webdrivermanager[WebDriverManager] for driver resolution (e.g., chromedriver, geckodriver, etc.) and `WebDriver` instantiation (including browsers in Docker). For this reason, the configuration key `wdm.defaultBrowser` is inherited from WebDriverManager to set up the default browser in the <<generic-driver,generic driver>>. If you need to customize WebDriverManager, the Selenium-Jupiter Java configurator provides the method `setManager(WebDriverManager)` to specify a custom WebDriverManager instance (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerCustomWdmTest.java[example]).
+
 == Known Issues
 [discrete]
 ==== HTTP response code 403

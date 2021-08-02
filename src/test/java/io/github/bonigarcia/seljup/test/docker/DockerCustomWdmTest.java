@@ -19,7 +19,6 @@ package io.github.bonigarcia.seljup.test.docker;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-//tag::snippet-in-doc[]
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -40,7 +39,7 @@ class DockerCustomWdmTest {
     }
 
     @Test
-    void multipleConfigTest(WebDriver driver) {
+    void customWdmTest(WebDriver driver) {
         String sut = "https://bonigarcia.org/selenium-jupiter/";
         String title = "Selenium-Jupiter";
 
