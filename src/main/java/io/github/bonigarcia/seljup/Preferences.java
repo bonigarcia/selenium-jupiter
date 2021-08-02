@@ -23,7 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * WebDriver options (preferences).
+ * Firefox arguments.
  *
  * @author Boni Garcia
  * @since 2.0.0

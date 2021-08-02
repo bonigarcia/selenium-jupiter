@@ -19,30 +19,15 @@ package io.github.bonigarcia.seljup.test.template;
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-//end::snippet-in-doc[]
-@Disabled("Redudant test, only needed for doc")
-//tag::snippet-in-doc[]
+@ExtendWith(SeleniumJupiter.class)
 class TemplateTest {
 
-    @RegisterExtension
-    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
-
-    //end::snippet-in-doc[]
-    @BeforeAll
-    static void setup() {
-        seleniumJupiter.getConfig()
-                .setBrowserTemplateJsonFile("classpath:browsers-docker.json");
-    }
-
-    //tag::snippet-in-doc[]
     @TestTemplate
     void templateTest(WebDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");

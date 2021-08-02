@@ -16,11 +16,9 @@
  */
 package io.github.bonigarcia.seljup.test.template;
 
-//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
-//tag::snippet-in-doc[]
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
@@ -32,14 +30,12 @@ class TemplateTwoBrowsersTest {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    //end::snippet-in-doc[]
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig().setBrowserTemplateJsonFile(
                 "./src/test/resources/browsers-two.json");
     }
 
-    //tag::snippet-in-doc[]
     @TestTemplate
     void templateTest(WebDriver driver1, WebDriver driver2) {
         driver1.get("https://bonigarcia.org/selenium-jupiter/");
@@ -49,4 +45,3 @@ class TemplateTwoBrowsersTest {
     }
 
 }
-//end::snippet-in-doc[]

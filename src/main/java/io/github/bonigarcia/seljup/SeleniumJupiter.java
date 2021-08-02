@@ -360,17 +360,23 @@ public class SeleniumJupiter implements ParameterResolver,
             ExtensionContext extensionContext) {
         String contextId = getContextId(extensionContext);
         try {
-            // 1. By JSON content
+            // Registered browsers
+            if (!browserListList.isEmpty()) {
+                return browserListList.stream()
+                        .map(b -> invocationContext(b, this));
+            }
+
+            // Browser scenario by content
             String browserJsonContent = config.getBrowserTemplateJsonContent();
             if (browserJsonContent.isEmpty()) {
-                // 2. By JSON file
+
+                // Browser scenario by JSON file
                 String browserJsonFile = config.getBrowserTemplateJsonFile();
                 if (browserJsonFile.startsWith(CLASSPATH_PREFIX)) {
                     String browserJsonInClasspath = browserJsonFile
                             .substring(CLASSPATH_PREFIX.length());
                     InputStream resourceAsStream = this.getClass()
                             .getResourceAsStream("/" + browserJsonInClasspath);
-
                     if (resourceAsStream != null) {
                         browserJsonContent = IOUtils.toString(resourceAsStream,
                                 defaultCharset());
@@ -381,17 +387,13 @@ public class SeleniumJupiter implements ParameterResolver,
                             readAllBytes(get(browserJsonFile)));
                 }
             }
+
             if (!browserJsonContent.isEmpty()) {
                 return new Gson()
                         .fromJson(browserJsonContent, BrowsersTemplate.class)
                         .getStream().map(b -> invocationContext(b, this));
             }
 
-            // 3. By setter
-            if (!browserListList.isEmpty()) {
-                return browserListList.stream()
-                        .map(b -> invocationContext(b, this));
-            }
             if (browserListMap != null) {
                 List<Browser> browsers = browserListMap.get(contextId);
                 if (browsers != null) {

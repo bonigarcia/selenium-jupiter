@@ -49,7 +49,7 @@ The possible `WebDriver` types we can specify as test parameters are `FirefoxDri
 
 WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium WebDriver versions 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
 
-TIP: Although not mandatory, it is highly recommended to use a logger library to trace your application and tests. In the case of WebDriverManager, you will see the relevant steps of the driver management following its traces. See for example the following https://www.stubbornjava.com/posts/logging-in-java-with-slf4j-and-logback)[tutorial] to use http://www.slf4j.org/[SLF4J ] and http://logback.qos.ch/[Logback]. Also, you can see an example of a Selenium-Jupiter test using logging https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/firefox/FirefoxTest.java[here] (this example uses this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/main/resources/logback.xml[configuration file]).
+TIP: Although not mandatory, it is highly recommended to use a logger library to trace your application and tests. In the case of WebDriverManager, you will see the relevant steps of the driver management following its traces. See for example the following https://www.stubbornjava.com/posts/logging-in-java-with-slf4j-and-logback)[tutorial] to use http://www.slf4j.org/[SLF4J ] and http://logback.qos.ch/[Logback]. Also, you can see an example of a Selenium-Jupiter test using logging https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java[here] (this example uses this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/resources/logback-test.xml[configuration file]).
 
 === Conditional tests
 Selenium-Jupiter provides the class-level annotation `@EnabledIfBrowserAvailable` to conditionally skip tests. Thanks to this annotation, a test is skipped when the browser specified as a parameter is not available in the system. This capability allows executing the same test suite in different machines (e.g., a local Mac OS with Safari and a Linux CI server) independently of the browser availability. The following example shows a test that is skipped if Safari is not in the system.
@@ -149,11 +149,11 @@ Selenium-Jupiter provides different annotations aimed to specify browser-specifi
 [options="header"]
 |=======
 |Anotation|Level|Description
-|`@Options`|Field-level|To configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoxOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
+|`@Options`|Field-level|To configure browsre options (e.g. `ChromeOptions` for Chrome, `FirefoxOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari)
 |`@Arguments`|Parameter-level|To specify browser arguments (e.g., `--headless`, `--incognito`, etc.)
+|`@Preferences`|Parameter-level|To specify Firefox arguments (e.g., `media.navigator.streams.fake=true`, etc.)
 |`@Binary`|Parameter-level|To set the location of the browser binary
 |`@Extensions`|Parameter-level|To add browser extensions (_plugins_)
-|``||
 |=======
 
 NOTE: The annotations marked as _parameter-level_ are applied to a single _WebDriver_ parameter. The annotations marked as _field-level_ are applied globally in a test class.
@@ -165,11 +165,44 @@ The following example shows how to specify options for Chrome. In the first test
 include::../../test/java/io/github/bonigarcia/seljup/test/capabilities/ChromeOptionsTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-You can find plenty of examples using the annotations presented in [[seljup_caps]] in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/capabilities[Selenium-Jupiter tests].
+You can find plenty of examples using the annotations presented in <<seljup_caps>> in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/capabilities[Selenium-Jupiter tests].
 
-TIP: You can use the capabilities annotations also for browsers in Docker (see https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeWebRtcTest[example]).
+TIP: You can use the capabilities annotations also for browsers in Docker (see https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeWebRtcTest.java[example]).
 
 === Template tests
+Selenium-Jupiter uses a standard feature of JUnit 5 called http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates[test templates]. Test templates are a special kind of test in which the same test logic is executed several times according to some custom data. In Selenium-Jupiter, the data to feed a test template is known as _browser scenario_.
+
+The following example shows a test using this feature. 
+Notice that instead of declaring the method with the usual `@Test` annotation, we use the JUnit 5's annotation `@TestTemplate`. Then, the parameter type of the test template method is `WebDriver`. This type is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver,` `FirefoxDriver,` `RemoteWebDriver,` etc.) is determined by Selenium-Jupiter in runtime.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/template/TemplateTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The next piece we need to execute this test template is the browser scenario. By default, a browser scenario is defined using a custom JSON notation (see below for details about this notation) called `browsers.json` and located in the project classpath (see <<advanced-configuration,advanced configuration>> section for other possibilities). For example:
+
+[source,json]
+----
+include::../../test/resources/browsers.json[indent=0]
+----
+
+When we run the template test using this browser scenario, we will execute four tests using Chrome in Docker: the first using the stable (_latest_) version, the second using the previous to the stable version(`latest-1`), the third using the beta version (`beta`), and the last one using the development version (`dev`). If we run the test in Eclipse, for example, we will get the following output:
+
+[.thumb]
+.Example of test template execution in Eclipse
+image::test-template.png[scaledwidth=100%]
+
+The fields accepted in the JSON notation are the following:
+
+* `type`: Type of browsers. It can be local (`chrome` , `firefox` , `edge` , ``opera , `safari` , `chromium` , or `iexplorer`) or in Docker (`chrome-in-docker`, `firefox-in-docker`, `edge-in-docker`, `opera-in-docker`, `safari-in-docker`, or `chrome-mobile`).
+* `version`: Optional value for the version. Concrete versions (e.g., `63.0`, `58.0`, etc.) and wildcards (`latest`, `latest-N`, `beta`, and `dev`) are accepted.
+* `arguments`: Arguments passed to the browser (e.g., `--headless`, `--incognito`,  etc.)
+* `preferences`: Arguments for Firefox (e.g., `media.navigator.streams.fake=true`).
+* `capabilities`: Custom capabilities _key-value_. See https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/resources/browsers-caps.json[example].
+
+You can find different examples of test examples in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/template[Selenium-Jupiter tests]. For instance: a test https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateRegisterTest.java[registering browser] in the scenario programmatically (instead of JSON), a test to use a https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateCapabilitiesTest.java[custom JSON browser scenario], or another test using https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateTwoBrowsersTest.java[two browsers] in the same test.
+
 === Generic driver
 === Single session
 === Integration with Jenkins
