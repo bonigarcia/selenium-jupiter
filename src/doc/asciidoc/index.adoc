@@ -226,12 +226,25 @@ include::../../test/java/io/github/bonigarcia/seljup/test/singlessession/Ordered
 ----
 
 === Integration with Jenkins
-=== Advanced Settings
+Selenium-Jupiter seamlessly integrates with Jenkins through one of its plugins: the https://plugins.jenkins.io/junit-attachments/[Jenkins attachment plugin]. The aim is to attach output files (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution. This is done in Selenium-Jupiter setting the configuration key `sel.jup.output.folder` to a particular value: `surefire-reports` (see <<advanced-configuration,advanced configuration>>>). This way, Selenium-Jupiter stores the generated files in the proper folder so that the Jenkins attachment plugin can find those files and export them in the Jenkins GUI. For instance, consider the following test:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotSurefireTest.java[tags=snippet-in-doc,indent=0]
+----
+
+If we run this test in Jenkins in which is already installed the attachment plugin, at the end of the execution, a recording in MP4 and a PNG screenshot are attached to the Jenkins job, as shown in the following picture:
+
+[.thumb]
+.Example of test execution through Jenkins with attachments
+image::jenkins-attachements-test.png[scaledwidth=100%]
 
 == Examples
-The following repositories contain different examples using Selenium-Jupiter:
+All the examples presented in this documentation are available in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/[Selenium-Jupiter tests]. Moreover, different public repositories contain test examples using Selenium-Jupiter, such as:
 
 * https://github.com/bonigarcia/selenium-jupiter-examples[Selenium-Jupiter Examples]: Different examples with JUnit 5, Selenium WebDriver, and Selenium-Jupiter.
+* https://github.com/bonigarcia/selenium-jupiter-webrtc[Selenium-Jupiter WebRTC]: Tests aimed to assess https://webrtc.org/[WebRTC] video conference applications with Selenium-Jupiter.
+* https://github.com/bonigarcia/selenium-webdriver-java[Selenium WebDriver with Java]: A comprehensive collection of examples of Selenium WebDriver 4 using Java as language binding.
 
 == Advanced Configuration
 Selenium-Jupiter provides different ways of configuration. First, by using its _Java API_. 

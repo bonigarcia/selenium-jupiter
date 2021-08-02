@@ -28,6 +28,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+//tag::snippet-in-doc[]
 class ScreenshotSurefireTest {
 
     @RegisterExtension
@@ -59,3 +60,4 @@ class ScreenshotSurefireTest {
     }
 
 }
+//end::snippet-in-doc[]
