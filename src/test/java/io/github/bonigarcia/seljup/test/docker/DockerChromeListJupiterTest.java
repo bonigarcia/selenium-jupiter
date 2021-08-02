@@ -29,7 +29,6 @@ import java.util.concurrent.ExecutorService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -37,15 +36,15 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class DockerBrowserListJupiterTest {
+class DockerChromeListJupiterTest {
 
-    static final int NUM_BROWSERS = 3;
+    static final int NUM_BROWSERS = 2;
 
     final Logger log = getLogger(lookup().lookupClass());
 
     @Test
     void testPerformance(
-            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList)
+            @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<RemoteWebDriver> driverList)
             throws InterruptedException {
 
         ExecutorService executorService = newFixedThreadPool(NUM_BROWSERS);
@@ -54,8 +53,7 @@ class DockerBrowserListJupiterTest {
         driverList.forEach((driver) -> {
             executorService.submit(() -> {
                 try {
-                    log.info("Session id {}",
-                            ((RemoteWebDriver) driver).getSessionId());
+                    log.info("Session id {}", driver.getSessionId());
                     driver.get("https://bonigarcia.org/selenium-jupiter/");
                     assertThat(driver.getTitle()).contains("Selenium-Jupiter");
                 } finally {

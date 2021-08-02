@@ -28,7 +28,7 @@ import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-@Disabled("Hardware server or virtual machine with nested virtualization support is required to run Chrome Mobile images")
+@Disabled("Hardware virtualization (hypervisor) or a VM with nested virtualization are required")
 class DockerChromeMobileJupiterTest {
 
     @Test

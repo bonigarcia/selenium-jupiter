@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -102,9 +104,21 @@ public class SeleniumJupiter implements ParameterResolver,
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
             ExtensionContext extensionContext) {
-        Class<?> type = parameterContext.getParameter().getType();
+        Parameter parameter = parameterContext.getParameter();
+        Class<?> type = parameter.getType();
+        Type parameterizedType = parameter.getParameterizedType();
+        String parameterizedTypeName = "";
+        if (ParameterizedType.class
+                .isAssignableFrom(parameterizedType.getClass())) {
+            parameterizedTypeName = ((ParameterizedType) parameterizedType)
+                    .getActualTypeArguments()[0].getTypeName();
+        }
+        Optional<DockerBrowser> dockerBrowser = annotationsReader
+                .getDocker(parameter);
+
         return (WebDriver.class.isAssignableFrom(type)
-                || type.equals(List.class))
+                || (type.equals(List.class) && dockerBrowser.isPresent()
+                        && isGeneric(parameterizedTypeName)))
                 && !isTestTemplate(extensionContext);
     }
 
@@ -460,8 +474,12 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private boolean isGeneric(Class<?> type) {
-        return type.equals(RemoteWebDriver.class)
-                || type.equals(WebDriver.class);
+        return isGeneric(type.getCanonicalName());
+    }
+
+    private boolean isGeneric(String type) {
+        return type.equals("org.openqa.selenium.remote.RemoteWebDriver")
+                || type.equals("org.openqa.selenium.WebDriver");
     }
 
     private Browser getBrowser(String contextId, int index) {
