@@ -28,9 +28,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -39,13 +39,13 @@ import io.github.bonigarcia.seljup.SingleSession;
 @ExtendWith(SeleniumJupiter.class)
 @TestMethodOrder(OrderAnnotation.class)
 @SingleSession
-class OrderedJupiterTest {
+class OrderedTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    RemoteWebDriver driver;
+    WebDriver driver;
 
-    OrderedJupiterTest(ChromeDriver driver) {
+    OrderedTest(ChromeDriver driver) {
         this.driver = driver;
     }
 
