@@ -35,7 +35,7 @@ class GenericWithScreenshotTest {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    File imageFile;
+    static File imageFile;
 
     @BeforeAll
     static void setup() {
@@ -44,7 +44,7 @@ class GenericWithScreenshotTest {
     }
 
     @AfterAll
-    void teardown() {
+    static void teardown() {
         assertTrue(imageFile.exists());
         imageFile.delete();
     }
