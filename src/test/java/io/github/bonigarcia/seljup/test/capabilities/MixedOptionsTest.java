@@ -31,7 +31,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class SeveralOptionsTest {
+class MixedOptionsTest {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();

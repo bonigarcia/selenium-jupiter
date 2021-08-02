@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @EnabledIfBrowserAvailable(SAFARI)
 @ExtendWith(SeleniumJupiter.class)
-class SafariWithGlobalOptionsTest {
+class SafariGlobalOptionsTest {
 
     @Options
     SafariOptions safariOptions = new SafariOptions();

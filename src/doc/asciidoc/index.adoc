@@ -91,7 +91,7 @@ WARNING: Notice you will need hardware virtualization (hypervisor) or a virtual 
 ==== Browser Versions
 A significant aspect of the Docker containers for browsers is that the latest version available on Docker Hub is used when the browser version is not specified (like the examples explained before). This way, these _dockerized_ browsers are auto-maintained, in the sense that these tests use the latest version available without any additional effort.
 
-Nevertheless, we can use a browser version in Docker using the attribute`version()` of the `@DockerBrowser` annotation. This attribute accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
+Nevertheless, we can use a browser version in Docker using the attribute `version()` of the `@DockerBrowser` annotation. This attribute accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
 
 * `"latest"` : To specify the latest version explicitly (default option).
 * `"latest-N"` : Where `N` is an integer value to be subtracted from the current stable version. For example, if we specify `latest-1` (i.e., _latest version minus one_), the previous version to the stable release will be used (see an example https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeLatestMinusOneTest.java[here]).
@@ -134,7 +134,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeRec
 ----
 
 ==== Browser List
-Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance tests seamlessly. To use this feature, we need into account two aspects. First of all, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
+Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance or load tests seamlessly. To use this feature, we need into account two aspects. First of all, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
 
 [source,java]
 ----
@@ -142,7 +142,32 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerListTest.
 ----
 
 === Capabilities
-(options, arguments, preferences, binary, extensions)
+Selenium-Jupiter provides different annotations aimed to specify browser-specific capabilities for the `WebDriver` objects to be created. These annotations are the following:
+
+[[seljup_caps]]
+.Selenium-Jupiter annotations for specifying capabilities
+[options="header"]
+|=======
+|Anotation|Level|Description
+|`@Options`|Field-level|To configure _options_ (e.g. `ChromeOptions` for Chrome, `FirefoxOptions` for Firefox, `EdgeOptions` for Edge, `OperaOptions` for Opera, and `SafariOptions` for Safari). 
+|`@Arguments`|Parameter-level|To specify browser arguments (e.g., `--headless`, `--incognito`, etc.)
+|`@Binary`|Parameter-level|To set the location of the browser binary
+|`@Extensions`|Parameter-level|To add browser extensions (_plugins_)
+|``||
+|=======
+
+NOTE: The annotations marked as _parameter-level_ are applied to a single _WebDriver_ parameter. The annotations marked as _field-level_ are applied globally in a test class.
+
+The following example shows how to specify options for Chrome. In the first test (called `headlessTest`), we set the argument `--headless`, used for headless Chrome (i.e., without GUI). In the second test (`webrtcTest`), we use two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e., camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we add an extension to Chrome using the `@Extensions` annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/capabilities/ChromeOptionsTest.java[tags=snippet-in-doc,indent=0]
+----
+
+You can find plenty of examples using the annotations presented in [[seljup_caps]] in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/capabilities[Selenium-Jupiter tests].
+
+TIP: You can use the capabilities annotations also for browsers in Docker (see https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeWebRtcTest[example]).
 
 === Template tests
 === Generic driver

@@ -18,18 +18,27 @@ package io.github.bonigarcia.seljup.test.capabilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 
+import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@Disabled("Redudant test for CI suite")
 @ExtendWith(SeleniumJupiter.class)
-class ChromeWithGlobalOptionsAndParentTest
-        extends ChromeOptionsTestParent {
+class OperaGlobalOptionsTest {
+
+    @Options
+    OperaOptions operaOptions = new OperaOptions();
+    {
+        operaOptions.setBinary("/usr/bin/opera");
+    }
 
     @Test
-    void chromeTest(ChromeDriver driver) {
+    void operaTest(OperaDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }

@@ -14,43 +14,37 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.capabilities;
+package io.github.bonigarcia.seljup.test.docker;
 
-//tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
-import io.github.bonigarcia.seljup.Extensions;
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class ChromeWithOptionsTest {
+class DockerChromeWebRtcTest {
 
     @Test
-    void headlessTest(@Arguments("--headless") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
-    }
-
-    @Test
-    void webrtcTest(@Arguments({ "--use-fake-device-for-media-stream",
-            "--use-fake-ui-for-media-stream" }) ChromeDriver driver) {
+    void webrtcTest(
+            @DockerBrowser(type = CHROME, vnc = true) @Arguments({
+                    "--use-fake-device-for-media-stream",
+                    "--use-fake-ui-for-media-stream" }) WebDriver driver)
+            throws InterruptedException {
         driver.get(
                 "https://webrtc.github.io/samples/src/content/devices/input-output/");
         assertThat(driver.findElement(By.id("video")).getTagName())
                 .isEqualTo("video");
-    }
 
-    @Test
-    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
     }
 
 }
-//end::snippet-in-doc[]

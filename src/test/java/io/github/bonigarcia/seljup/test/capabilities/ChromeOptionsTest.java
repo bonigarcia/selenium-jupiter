@@ -16,34 +16,47 @@
  */
 package io.github.bonigarcia.seljup.test.capabilities;
 
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.seljup.Options;
+import io.github.bonigarcia.seljup.Arguments;
+import io.github.bonigarcia.seljup.Extensions;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
-class ChromeWithGlobalCapabilitiesTest {
+class ChromeOptionsTest {
 
-    @Options
-    ChromeOptions options = new ChromeOptions();
-    {
-        Map<String, String> mobileEmulation = new HashMap<>();
-        mobileEmulation.put("deviceName", "Nexus 5");
-        options.setExperimentalOption("mobileEmulation", mobileEmulation);
+    @Test
+    void headlessTest(@Arguments("--headless") ChromeDriver driver) {
+        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
     @Test
-    void chromeTest(ChromeDriver driver) {
+    void webrtcTest(
+            @Arguments({ "--use-fake-device-for-media-stream",
+                    "--use-fake-ui-for-media-stream" }) ChromeDriver driver)
+            throws InterruptedException {
+        driver.get(
+                "https://webrtc.github.io/samples/src/content/devices/input-output/");
+        assertThat(driver.findElement(By.id("video")).getTagName())
+                .isEqualTo("video");
+
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+    }
+
+    @Test
+    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
     }
 
 }
+//end::snippet-in-doc[]

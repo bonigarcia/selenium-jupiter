@@ -23,7 +23,7 @@ import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.seljup.Options;
 
-class ClassWithMultipleOptions {
+class ClassMultipleOptions {
 
     @Options
     Object options = new Object();

@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @EnabledIfBrowserAvailable(OPERA)
 @ExtendWith(SeleniumJupiter.class)
-class OperaWithOptionsTest {
+class OperaOptionsTest {
 
     @Test
     void operaTest(
