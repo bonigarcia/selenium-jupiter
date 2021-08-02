@@ -200,6 +200,7 @@ The fields accepted in the JSON notation are the following:
 * `arguments`: Arguments passed to the browser (e.g., `--headless`, `--incognito`,  etc.)
 * `preferences`: Arguments for Firefox (e.g., `media.navigator.streams.fake=true`).
 * `capabilities`: Custom key-value browser capabilities. See https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/resources/browsers-caps.json[example].
+* `remoteUrl`: Selenium Server URL (for remote tests).
 
 You can find different examples in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/template[Selenium-Jupiter tests]. For instance: a test https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateRegisterTest.java[registering browser] in the scenario programmatically (instead of JSON), a test to use a https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateCapabilitiesTest.java[custom JSON browser scenario] (and capabilities), or another test using https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateTwoBrowsersTest.java[two browsers] in the same test.
 
@@ -254,37 +255,40 @@ All the examples presented in this documentation are available in the https://gi
 
 * https://github.com/bonigarcia/selenium-jupiter-examples[Selenium-Jupiter Examples]: Different examples with JUnit 5, Selenium WebDriver, and Selenium-Jupiter.
 * https://github.com/bonigarcia/selenium-jupiter-webrtc[Selenium-Jupiter WebRTC]: Tests aimed to assess https://webrtc.org/[WebRTC] video conference applications with Selenium-Jupiter.
-* https://github.com/bonigarcia/selenium-webdriver-java[Selenium WebDriver with Java]: A comprehensive collection of examples of Selenium WebDriver 4 using Java as language binding.
+* https://github.com/bonigarcia/selenium-webdriver-java[Selenium WebDriver with Java]: A comprehensive collection of Selenium WebDriver 4 examples using Java as language binding.
 
 == Advanced Configuration
-Selenium-Jupiter provides different ways of configuration. First, by using its _Java API_. 
+Selenium-Jupiter provides different ways of configuration. First, by using its _Java configurator_. This capability is accessible by getting an instance of Selenium-Jupiter using the JUnit 5 annotation `@RegisterExtension` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotPngTest.java[example]).
 
-The second alternative to tune Selenium-Jupiter is using _Java system properties_.  In this method, each Selenium-Jupiter API method has its equivalence of one of a unique _configuration key_. For instance, the API method `cachePath()` (used to specify the driver cache folder) is equivalent to the configuration key `wdm.cachePath`. These types of configuration keys can be passed when executing the tests, for example, using Maven:
-
-[source,shell]
-----
-mvn test -Dwdm.cachePath=/custom/path/to/driver/cache
-----
-
-The third way to configure Selenium-Jupiter is using _environmental variables_. The names for these variables are made from converting each configuration key name (e.g., `wdm.cachePath`) to uppercase and replacing the symbol `.` with `_` (e.g., `WDM_CACHEPATH`). These variables can be helpful to global setup parameters at the operating system level. Also, it allows specifying a custom setup when using Selenium-Jupiter as a Docker container. For example:
+The second alternative to tune Selenium-Jupiter is using _Java system properties_.  This way, each Java configurator method has its equivalence of a unique _configuration key_. For instance, the method `setOutputFolder()` (used to specify the output folder for screenshots and recordings) is equivalent to the configuration key `sel.jup.output.folder`. These types of configuration keys can be passed when executing the tests, for example, using Maven:
 
 [source,shell]
 ----
-docker run --rm -v ${PWD}:/wdm -e ARGS="resolveDriverFor=chrome" -e WDM_CHROMEVERSION=84 bonigarcia/selenium-jupiter:4.0.0
+mvn test -Dsel.jup.output.folder=/custom/path/to/output/folder
 ----
 
-NOTE: The preference order of these configuration alternatives is (in case of overlapping) is: 1) Environmental Variables. 2) Java system properties. 3) Java API.
+The third way to configure Selenium-Jupiter is using _environmental variables_. The names for these variables are made from converting each configuration key name (e.g., `sel.jup.output.folder`) to uppercase and replacing the symbol `.` with `_` (e.g., `SEL_JUP_OUTPUT_FOLDER`). These variables can be helpful to global setup parameters at the operating system level.
 
-The remainder of this section describes all the possible Java methods in the Selenium-Jupiter API and its equivalent configuration keys in three groups of capabilities: driver management, browsers in Docker, and Selenium-Jupiter Server.
+NOTE: The preference order of these configuration alternatives is (in case of overlapping) is: 1) Environmental Variables. 2) Java system properties. 3) Java configuration.
+
+The following table describes all the possible Java methods in the Selenium-Jupiter configurator and its equivalent configuration keys.
 
 [[server_config]]
-.Configuration capabilities for Selenium-Jupiter Server
+.Configuration capabilities for Selenium-Jupiter
 [options="header"]
 |=======
-|API method|Configuration key|Default value|Description
-|`serverPort(int)`|`wdm.serverPort`|`4444`|Port of Selenium-Jupiter Server
-|`serverPath(String)`|`wdm.serverPath`|`/`|Path of Selenium-Jupiter Server
-|`serverTimeoutSec(int)`|`wdm.serverTimeoutSec`|`60`|Timeout (in seconds) for Selenium-Jupiter server
+|Java API|Configuration key|Default value|Description
+|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `"surefire-reports"` for the <<integration-with-jenkins,integration with Jenkins>>
+|`setScreenshot(boolean)` `enableScreenshot()`|`sel.jup.screenshot`|`false`|Enable screenshots at the end of the test
+|`setScreenshotWhenFailure(boolean)` `enableScreenshotWhenFailure()`|`sel.jup.screenshot.when.failure`|`false`|Enable screenshots at the end of the test only if the test fails
+|`setScreenshotFormat(String)` `takeScreenshotAsPng()` `takeScreenshotAsBase64()` `takeScreenshotAsBase64AndPng()`|`sel.jup.screenshot.format`|`png`|Configure screenshot format (accepted values: `png`, `base`, and `base64andpng`)
+|`setRecording(boolean)` `enableRecording()`|`sel.jup.recording`|`false`|Enable recording of Docker browsers
+|`setRecordingWhenFailure(true)` `enableRecordingWhenFailure()`|`sel.jup.recording.when.failure`|`false`|Enable recording of Docker browsers only if test fails
+|`setVnc(boolean)` `enableVnc()`|`sel.jup.vnc`|`false`|Enable the remote access in Docker browsers
+|`setBrowserTemplateJsonFile` `(String)`|`sel.jup.browser.template.` `json.file`|`classpath:browsers.json`|Location of the JSON browser scenario. If this value do not start with the word `classpath:`, the JSON file will be searched using the specified path 
+|`setBrowserTemplateJsonContent` `(String)`|`sel.jup.browser.template.` `json.content`|`""`|Content of JSON browsers scenario
+|`setProperties(String)`|`sel.jup.properties`|`selenium-jupiter.` `properties`|Properties file (in the project classpath) for default configuration values
+|`setSeleniumServerUrl(String)`|`sel.jup.selenium.server.url`|`""`|Remote URL used for remote (or template) tests
 |=======
 
 == Known Issues
