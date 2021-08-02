@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.screenshot;
 
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
@@ -57,3 +58,4 @@ class ScreenshotPngTest {
     }
 
 }
+//end::snippet-in-doc[]

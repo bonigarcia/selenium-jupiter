@@ -141,8 +141,8 @@ Another important new feature of browsers in Docker is the possibility of asking
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerListTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-=== Capabilities
-Selenium-Jupiter provides different annotations aimed to specify browser-specific capabilities for the `WebDriver` objects to be created. These annotations are the following:
+=== Browser Capabilities
+Selenium-Jupiter provides different annotations to specify browser-specific capabilities (e.g., options, arguments, etc.) for the `WebDriver` objects to be created. These annotations are the following:
 
 [[seljup_caps]]
 .Selenium-Jupiter annotations for specifying capabilities
@@ -224,6 +224,16 @@ The following test shows an example of this feature. As you can see, this test u
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/singlessession/OrderedTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+=== Screenshots
+Selenium-Jupiter allows making screenshots for each of the browser sessions at the end of the test. These screenshots can be encoded as Base64 or stored as PNG images. The following test shows an example. Notice that this feature can be enabled using the Java configuration (method `config()` of the Selenium-Jupiter instance. This instance can be obtained using the JUnit 5 annotation `@RegisterExtension` (see <<advanced-configuration,advanced configuration>> section for more information about configuration). The default image name is composed of the test name plus the `WebDriver` _sessionId_.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotPngTest.java[tags=snippet-in-doc,indent=0]
+----
+
+WARNING: Notice that the previous example deletes the image at the end of the test. If you want to keep the picture, omit the line `imageFile.delete();`.
 
 === Integration with Jenkins
 Selenium-Jupiter seamlessly integrates with Jenkins through one of its plugins: the https://plugins.jenkins.io/junit-attachments/[Jenkins attachment plugin]. The aim is to attach output files (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution. This is done in Selenium-Jupiter setting the configuration key `sel.jup.output.folder` to a particular value: `surefire-reports` (see <<advanced-configuration,advanced configuration>>>). This way, Selenium-Jupiter stores the generated files in the proper folder so that the Jenkins attachment plugin can find those files and export them in the Jenkins GUI. For instance, consider the following test:
