@@ -38,7 +38,7 @@ WARNING: As of version 4, Selenium-Jupiter does not include Selenium WebDriver a
 Selenium-Jupiter provides an extension class for Jupiter tests called `SeleniumJupiter` (available in the package `io.github.bonigarcia.seljup`). This extension class should be used as a parameter in the annotation `@ExtendWith` (or `@RegisterExtension`) of a Jupiter test.
 
 === Local browsers
-At first glance, Selenium-Jupiter allows using of local browsers (e.g., Chrome, Firefox, Edge, etc.) seamlessly. To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) as a test parameter. Internally, Selenium-Jupiter uses https://bonigarcia.org/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it terminates the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
+At first glance, Selenium-Jupiter seamlessly uses local browsers (e.g., Chrome, Firefox, Edge, etc.). To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) as a test parameter. Internally, Selenium-Jupiter uses https://bonigarcia.org/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it terminates the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
 
 [source,java]
 ----
@@ -89,7 +89,7 @@ NOTE: The case of Safari is particular since a real Safari browser can only be e
 WARNING: Notice you will need hardware virtualization (hypervisor) or a virtual machine with nested virtualization support to run Chrome Mobile images.
 
 ==== Browser Versions
-A significant aspect of the Docker containers for browsers is that the latest version available on Docker Hub is used when the browser version is not specified (like the examples explained before). This way, these _dockerized_ browsers are auto-maintained, in the sense that these tests use the latest version available without any additional effort.
+A significant aspect of the Docker containers for browsers is that the latest version on Docker Hub is used when the browser version is not specified (like the examples explained before). This way, these _dockerized_ browsers are auto-maintained, in the sense that these tests use the latest version available without any additional effort.
 
 Nevertheless, we can use a browser version in Docker using the attribute `version()` of the `@DockerBrowser` annotation. This attribute accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
 
@@ -106,7 +106,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeBet
 ----
 
 ==== Remote Desktop
-A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. To improve this situation, Selenium-Jupiter allows connecting to the remote desktop session of a browser simply setting to `true` the attribute `vnc` of the `@DockerBrowser` annotation. When using this option, two different technologies are used internally:
+A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. To improve this situation, Selenium-Jupiter allows connecting to the remote desktop session simply setting to `true` the attribute `vnc` of the `@DockerBrowser` annotation. When using this option, two different technologies are used internally:
 
 * Virtual Network Computing (https://en.wikipedia.org/wiki/Virtual_Network_Computing[VNC]), a graphical desktop sharing system. In WebDriverManager, a VNC server is started in the browser container.
 * https://novnc.com/[noVNC], a open-source web-based VNC client. In Selenium-Jupiter, a custom https://github.com/bonigarcia/novnc[noVNC Docker image] is used to connect through noVNC.
@@ -126,17 +126,17 @@ TIP: Notice that the previous example also uses the attributes `lang` and `timez
 image::seljup-vnc.png[scaledwidth=100%]
 
 ==== Recordings
-The following related feature is the recording of the remote session of a dockerized browser. We need to set to `true` the attribute `recording` of `@DockerBrowser` to enable it. Internally, Selenium-Jupiter starts another Docker container using https://ffmpeg.org/[FFmpeg] to record the browser session. At the end of the test, we can find the recording in MP4, by default, in the same folder of the project root. The following example shows a simple using this feature.
+The following related feature is the recording of the remote session of a dockerized browser. To enable it, we need to set to `true` the attribute `recording` of `@DockerBrowser`. Internally, Selenium-Jupiter starts another Docker container using https://ffmpeg.org/[FFmpeg] to record the browser session. At the end of the test, we can find the recording in MP4, by default, in the same folder of the project root. The following example shows a simple using this feature.
 
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeRecordingTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-WARNING: Notice that the previous example deletes the recording at the end of the test. If you want to keep the recording, omit the line `recordingFile.delete();`.
+WARNING: Notice that the previous example deletes the recording at the end of the test. If you want to keep the recording, omit the line `recordingFile.delete();`. The recording filename comprises the test name, parameter number, browser name, and session id (using the underscore symbol to separate these parts).
 
 ==== Browser List
-Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance or load tests seamlessly. To use this feature, we need into account two aspects. First of all, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
+Another important new feature of browsers in Docker is the possibility of asking for _many_ of them by the same test. This feature can be used to implement performance or load tests seamlessly. To use this feature, we need into account two aspects. First, you need to declare the attribute `size` of the annotation `@DockerBrowser`. This numeric value sets the number of browsers demanded by the test. Second, the test should declare a `List<RemoteWebDriver>` (or `List<WebDriver>`) parameter. For example, as follows:
 
 [source,java]
 ----
@@ -175,7 +175,7 @@ TIP: You can use the capabilities annotations also for browsers in Docker (see h
 Selenium-Jupiter uses a standard feature of JUnit 5 called http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates[test templates]. Test templates are a special kind of test in which the same test logic is executed several times according to some custom data. In Selenium-Jupiter, the data to feed a test template is known as _browser scenario_.
 
 The following example shows a test using this feature. 
-Notice that instead of declaring the method with the usual `@Test` annotation, we use the JUnit 5's annotation `@TestTemplate`. Then, the parameter type of the test template method is `WebDriver`. This type is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver,` `FirefoxDriver,` `RemoteWebDriver,` etc.) is determined by Selenium-Jupiter in runtime.
+Notice that instead of declaring the method with the usual `@Test` annotation, we use the JUnit 5's `@TestTemplate`. Then, the parameter type of the test template method is `WebDriver`. This type is the generic interface of Selenium WebDriver, and the concise type (i.e. `ChromeDriver,` `FirefoxDriver,` etc.) is determined by Selenium-Jupiter in runtime.
 
 [source,java]
 ----
@@ -236,7 +236,7 @@ Selenium-Jupiter allows making screenshots for each of the browser sessions at t
 include::../../test/java/io/github/bonigarcia/seljup/test/screenshot/ScreenshotPngTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-WARNING: Notice that the previous example deletes the image at the end of the test. If you want to keep the picture, omit the line `imageFile.delete();`.
+WARNING: Notice that the previous example deletes the image at the end of the test. If you want to keep the picture, omit the line `imageFile.delete();`. The screenshot filename follows the same convention as the recordings.
 
 === Integration with Jenkins
 Selenium-Jupiter seamlessly integrates with Jenkins through the https://plugins.jenkins.io/junit-attachments/[Jenkins attachment plugin]. This integration allows to attach output files of Selenium-Jupiter (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution in Jenkins. This is done using the method `useSurefireOutputFolder()` (or its equivalence configuration key `sel.jup.output.folder`) in Selenium-Jupiter (see <<advanced-configuration,advanced configuration>>). For instance:
@@ -337,7 +337,7 @@ When the host is Mac OS or Windows, we can use the DNS name `host.docker.interna
 
 [discrete]
 ==== Chrome 92+ in Docker
-There is an https://bugs.chromium.org/p/chromedriver/issues/detail?id=3857[open issue] with Chrome 92+ and Docker at the time of this writing. The problem can be solved to some extent by using the argument `--disable-gpu` in Chrome and Edge. This argument is used by Selenium-Jupiter 5 to avoid the issue. Nevertheless, some situations are still impossible to fix (e.g., when using https://hub.docker.com/r/bonigarcia/selenium-jupiter[Selenium-Jupiter in Docker] as CLI or Server).
+There is an https://bugs.chromium.org/p/chromedriver/issues/detail?id=3857[open issue] with Chrome 92+ and Docker at the time of this writing. The problem can be solved by using the argument `--disable-gpu` in Chrome and Edge. This argument is used by Selenium-Jupiter 5 to avoid the issue. Nevertheless, some situations are still impossible to fix (e.g., when using https://hub.docker.com/r/bonigarcia/selenium-jupiter[Selenium-Jupiter in Docker] as CLI or Server).
 
 == Community
 There are two ways to try to get community support related to Selenium-Jupiter. First, questions about it can be discussed in https://stackoverflow.com/questions/tagged/selenium-jupiter[StackOverflow], using the tag _selenium-jupiter_. In addition, comments, suggestions, and bug-reporting should be made using the https://github.com/bonigarcia/selenium-jupiter/issues[GitHub issues]. Finally, if you think Selenium-Jupiter can be enhanced, consider contributing to the project through a  https://github.com/bonigarcia/selenium-jupiter/pulls[pull request].
