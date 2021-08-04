@@ -60,8 +60,8 @@ class FailureCreatesScreenshotTest {
 
     @Test
     void notFailAndNotCreateScreenshotTest() {
-        driver.get("https://bonigarcia.github.io/");
-        assertThat(driver.getTitle()).contains("Boni");
+        driver.get("https://bonigarcia.org/webdrivermanager/");
+        assertThat(driver.getTitle()).contains("WebDriverManager");
     }
 
 }

@@ -56,8 +56,7 @@ class ScreenshotSurefireTest {
 
         imageFile = new File(
                 "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",
-                "screenshotTest_arg0_ChromeDriver_" + driver.getSessionId()
-                        + ".png");
+                "screenshotTest_arg0_chrome_" + driver.getSessionId() + ".png");
     }
 
 }

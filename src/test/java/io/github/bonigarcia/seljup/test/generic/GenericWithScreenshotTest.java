@@ -54,7 +54,7 @@ class GenericWithScreenshotTest {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
-        imageFile = new File("screenshotGenericTest_"
+        imageFile = new File("screenshotGenericTest_arg0_chrome_"
                 + ((RemoteWebDriver) driver).getSessionId() + ".png");
     }
 
