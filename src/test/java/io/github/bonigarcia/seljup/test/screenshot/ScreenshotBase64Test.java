@@ -51,8 +51,8 @@ class ScreenshotBase64Test {
         driver.get("https://bonigarcia.org/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("Selenium-Jupiter");
 
-        imageFile = new File(
-                "screenshotTest_" + driver.getSessionId() + ".png");
+        imageFile = new File("screenshotTest_arg0_ChromeDriver_"
+                + driver.getSessionId() + ".png");
     }
 
 }

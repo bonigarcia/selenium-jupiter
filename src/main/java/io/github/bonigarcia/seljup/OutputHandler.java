@@ -17,10 +17,12 @@
 package io.github.bonigarcia.seljup;
 
 import static java.lang.invoke.MethodHandles.lookup;
+import static java.util.Locale.ROOT;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -49,41 +51,43 @@ public class OutputHandler {
 
     ExtensionContext extensionContext;
     Config config;
+    Parameter parameter;
 
-    public OutputHandler(ExtensionContext extensionContext, Config config) {
+    public OutputHandler(ExtensionContext extensionContext, Config config,
+            Parameter parameter) {
         this.extensionContext = extensionContext;
         this.config = config;
+        this.parameter = parameter;
     }
 
     public File getScreenshotFile(WebDriver driver) {
         String outputFolder = getOutputFolder();
         String fileName = getOutputFileName(driver);
-        File destFile = new File(outputFolder, fileName + "." + PNG_KEY);
-        if (destFile.exists()) {
-            destFile = new File(outputFolder,
-                    fileName + SEPARATOR + System.nanoTime() + ".png");
-        }
-        return destFile;
+        return new File(outputFolder, fileName + "." + PNG_KEY);
     }
 
     public String getPrefix() {
         String prefix = "";
         Optional<Method> testMethod = extensionContext.getTestMethod();
         if (testMethod.isPresent()) {
-            prefix = testMethod.get().getName();
+            prefix = testMethod.get().getName() + SEPARATOR;
         } else {
             Optional<Class<?>> testClass = extensionContext.getTestClass();
             if (testClass.isPresent()) {
-                prefix = testClass.get().getSimpleName();
+                prefix = testClass.get().getSimpleName() + SEPARATOR;
             }
         }
+        prefix += parameter.getName() + SEPARATOR;
         return prefix;
     }
 
     public String getOutputFileName(WebDriver driver) {
         String name = getPrefix();
-        if (RemoteWebDriver.class.isAssignableFrom(driver.getClass())) {
-            name += SEPARATOR + ((RemoteWebDriver) driver).getSessionId();
+        Class<? extends WebDriver> driverClass = driver.getClass();
+        if (RemoteWebDriver.class.isAssignableFrom(driverClass)) {
+            name += ((RemoteWebDriver) driver).getCapabilities()
+                    .getBrowserName().toLowerCase(ROOT) + SEPARATOR
+                    + ((RemoteWebDriver) driver).getSessionId();
         }
         return name;
     }

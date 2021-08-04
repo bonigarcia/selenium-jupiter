@@ -59,7 +59,7 @@ class DockerChromeRecordingTest {
         Thread.sleep(Duration.ofMillis(5).toSeconds());
 
         recordingFile = new File(
-                "recordingTest_" + driver.getSessionId() + ".mp4");
+                "recordingTest_arg0_chrome_" + driver.getSessionId() + ".mp4");
     }
 
 }

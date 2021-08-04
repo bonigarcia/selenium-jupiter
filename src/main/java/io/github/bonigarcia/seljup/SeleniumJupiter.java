@@ -92,6 +92,7 @@ public class SeleniumJupiter implements ParameterResolver,
     AnnotationsReader annotationsReader;
     List<List<Browser>> browserListList;
     Map<String, List<Browser>> browserListMap;
+    OutputHandler outputHandler;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -180,8 +181,8 @@ public class SeleniumJupiter implements ParameterResolver,
         }
 
         // Output folder
-        OutputHandler outputHandler = new OutputHandler(extensionContext,
-                getConfig());
+        outputHandler = new OutputHandler(extensionContext, getConfig(),
+                parameter);
         wdm.recordingPrefix(outputHandler.getPrefix());
         wdm.recordingOutput(outputHandler.getOutputFolder());
 
@@ -321,8 +322,7 @@ public class SeleniumJupiter implements ParameterResolver,
             throws Exception {
         // 1. Screenshots (if required)
         String contextId = getContextId(extensionContext);
-        OutputHandler outputHandler = new OutputHandler(extensionContext,
-                getConfig());
+
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig(), outputHandler);
 
