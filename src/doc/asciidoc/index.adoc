@@ -15,22 +15,26 @@ https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-sour
 ****
 
 == Setup
-Selenium-Jupiter should be used as a Java dependency. We typically use a _build tool_ (such as https://maven.apache.org/[Maven] or https://gradle.org/[Gradle]) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the `test` scope, since it is typically used in tests clasess):
+Selenium-Jupiter should be used as a Java dependency. We typically use a _build tool_ (such as https://maven.apache.org/[Maven] or https://gradle.org/[Gradle]) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the `test` scope since it is typically used in tests classes):
 
-[source,xml]
+[source,xml,subs="attributes+"]
+----
 <dependency>
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>4.0.0</version>
+    <version>{project-version}</version>
     <scope>test</scope>
 </dependency>
+----
 
 In the case of a Gradle project, we can declare Selenium-Jupiter as follows (again, for tests):
 
-[source,json]
+[source,json,subs="attributes+"]
+----
 dependencies {
-    testImplementation("io.github.bonigarcia:selenium-jupiter:4.0.0")
+    testImplementation("io.github.bonigarcia:selenium-jupiter:{project-version}")
 }
+----
 
 WARNING: As of version 4, Selenium-Jupiter does not include Selenium WebDriver as a transitive dependency.
 
