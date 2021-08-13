@@ -38,7 +38,7 @@ WARNING: As of version 4, Selenium-Jupiter does not include Selenium WebDriver a
 Selenium-Jupiter provides an extension class for Jupiter tests called `SeleniumJupiter` (available in the package `io.github.bonigarcia.seljup`). This extension class should be used as a parameter in the annotation `@ExtendWith` (or `@RegisterExtension`) of a Jupiter test.
 
 === Local browsers
-At first glance, Selenium-Jupiter seamlessly uses local browsers (e.g., Chrome, Firefox, Edge, etc.). To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) as a test parameter. Internally, Selenium-Jupiter uses https://bonigarcia.org/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it terminates the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
+At first glance, Selenium-Jupiter seamlessly uses local browsers (e.g., Chrome, Firefox, Edge, etc.). To that aim, Selenium-Jupiter uses the _parameter resolution_ mechanism provided by Jupiter. This way, we simply need to declare a parameter of the `WebDriver` hierarchy (e.g., `ChromeDriver` to control Chrome, `FirefoxDriver` to control Firefox, etc.) as a test parameter. Internally, Selenium-Jupiter uses https://bonigarcia.dev/webdrivermanager/[WebDriverManager] to manage the required driver (e.g., chromedriver for Chrome) before starting the test. Then, it instantiates the `WebDriver` object and injects it into the test. Finally, it terminates the browser gracefully. All in all, the required boilerplate of a test using Selenium WebDriver and Selenium-Jupiter is reduced to the minimum. The following test shows a basic example of this feature:
 
 [source,java]
 ----
@@ -106,7 +106,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeBet
 ----
 
 ==== Remote Desktop
-A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. To improve this situation, Selenium-Jupiter allows connecting to the remote desktop session simply setting to `true` the attribute `vnc` of the `@DockerBrowser` annotation. When using this option, two different technologies are used internally:
+A possible inconvenience of using browsers in Docker is that we cannot see what is happening inside the container by default. Selenium-Jupiter allows connecting to the remote desktop session by simply setting to `true` the attribute `vnc` of the `@DockerBrowser` annotation to improve this situation. When using this option, two different technologies are used internally:
 
 * Virtual Network Computing (https://en.wikipedia.org/wiki/Virtual_Network_Computing[VNC]), a graphical desktop sharing system. In WebDriverManager, a VNC server is started in the browser container.
 * https://novnc.com/[noVNC], a open-source web-based VNC client. In Selenium-Jupiter, a custom https://github.com/bonigarcia/novnc[noVNC Docker image] is used to connect through noVNC.
@@ -295,7 +295,7 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 
 [discrete]
 === Tuning WebDriverManager
-Selenium-Jupiter relies on https://bonigarcia.org/webdrivermanager[WebDriverManager] for driver resolution (e.g., chromedriver, geckodriver, etc.) and `WebDriver` instantiation (including browsers in Docker). For this reason, the configuration key `wdm.defaultBrowser` is inherited from WebDriverManager to set up the default browser in the <<generic-driver,generic driver>>. If you need to customize WebDriverManager, the Selenium-Jupiter Java configurator provides the method `setManager(WebDriverManager)` to specify a custom WebDriverManager instance (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerCustomWdmTest.java[example]).
+Selenium-Jupiter relies on https://bonigarcia.dev/webdrivermanager[WebDriverManager] for driver resolution (e.g., chromedriver, geckodriver, etc.) and `WebDriver` instantiation (including browsers in Docker). For this reason, the configuration key `wdm.defaultBrowser` is inherited from WebDriverManager to set up the default browser in the <<generic-driver,generic driver>>. If you need to customize WebDriverManager, the Selenium-Jupiter Java configurator provides the method `setManager(WebDriverManager)` to specify a custom WebDriverManager instance (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerCustomWdmTest.java[example]).
 
 == Known Issues
 [discrete]
@@ -318,7 +318,7 @@ io.github.bonigarcia.wdm.config.WebDriverManagerException: Error HTTP 403 execut
     at io.github.bonigarcia.wdm.WebDriverManager.setup(WebDriverManager.java:328)
 ----
 
-To avoid this problem, WebDriverManager can make authenticated requests using a https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token[personal access token]. Take a look at the https://bonigarcia.org/webdrivermanager/#advanced-configuration[WebDriverManager documentation] to discover how to set up this token.
+To avoid this problem, WebDriverManager can make authenticated requests using a https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token[personal access token]. Take a look at the https://bonigarcia.dev/webdrivermanager/#advanced-configuration[WebDriverManager documentation] to discover how to set up this token.
 
 [discrete]
 ==== Testing localhost
@@ -376,4 +376,4 @@ Or the following book:
 * García, Boni. https://www.amazon.com/Mastering-Software-Testing-JUnit-Comprehensive-ebook/dp/B076ZQCK5Q/[Mastering Software Testing with JUnit 5]. _Packt Publishing Ltd_, 2017.
 
 == About
-Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by https://bonigarcia.org/[Boni García] (https://twitter.com/boni_gg[@boni_gg]), licensed under the terms of https://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation (also available in link:selenium-jupiter.pdf[PDF] and link:selenium-jupiter.epub[EPUB]) is released under the terms of https://creativecommons.org/licenses/by-nc-sa/2.0/[CC BY-NC-SA 2.0].
+Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by https://bonigarcia.dev/[Boni García] (https://twitter.com/boni_gg[@boni_gg]), licensed under the terms of https://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation (also available in link:selenium-jupiter.pdf[PDF] and link:selenium-jupiter.epub[EPUB]) is released under the terms of https://creativecommons.org/licenses/by-nc-sa/2.0/[CC BY-NC-SA 2.0].
