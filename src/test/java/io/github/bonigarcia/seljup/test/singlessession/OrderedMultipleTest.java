@@ -72,8 +72,8 @@ class OrderedMultipleTest {
 
     private void step2(RemoteWebDriver driver) {
         WebElement form = driver.findElement(By.partialLinkText("form"));
-        form.click();
         assertTrue(form.isDisplayed());
+        form.click();
     }
 
 }
