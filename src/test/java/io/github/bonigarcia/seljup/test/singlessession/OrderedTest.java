@@ -62,9 +62,9 @@ class OrderedTest {
     @Order(2)
     void testStep2() {
         log.debug("Step 2: {}", driver);
-        WebElement about = driver.findElement(By.partialLinkText("About"));
-        assertTrue(about.isDisplayed());
-        about.click();
+        WebElement form = driver.findElement(By.partialLinkText("form"));
+        assertTrue(form.isDisplayed());
+        form.click();
     }
 
 }

@@ -34,7 +34,7 @@ class FirefoxTest {
 
     @Test
     void testFirefox(FirefoxDriver driver) {
-        String sutUrl = "https://bonigarcia.dev/selenium-jupiter";
+        String sutUrl = "https://bonigarcia.dev/selenium-webdriver-java/";
         driver.get(sutUrl);
         String title = driver.getTitle();
         log.debug("The title of {} is {}", sutUrl, title);
