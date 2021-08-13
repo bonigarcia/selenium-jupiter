@@ -48,7 +48,7 @@ class ScreenshotBase64Test {
 
     @Test
     void screenshotTest(ChromeDriver driver) {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
         imageFile = new File("screenshotTest_arg0_ChromeDriver_"

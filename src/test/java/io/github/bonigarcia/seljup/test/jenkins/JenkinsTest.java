@@ -45,7 +45,7 @@ class JenkinsTest {
     @Test
     void jenkinsTest(@DockerBrowser(type = CHROME) WebDriver driver)
             throws InterruptedException {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
         Thread.sleep(Duration.ofSeconds(5).toMillis());

@@ -55,7 +55,7 @@ class DockerMixedListInConstructorTest {
     }
 
     private void exercise(WebDriver driver) {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
 
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));

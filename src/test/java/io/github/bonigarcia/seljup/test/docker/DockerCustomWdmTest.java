@@ -40,7 +40,7 @@ class DockerCustomWdmTest {
 
     @Test
     void customWdmTest(WebDriver driver) {
-        String sut = "https://bonigarcia.dev/selenium-jupiter/";
+        String sut = "https://bonigarcia.dev/selenium-webdriver-java/";
         String title = "Selenium WebDriver";
 
         driver.get(sut);

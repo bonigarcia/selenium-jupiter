@@ -72,7 +72,7 @@ class DockerMixedListTest {
             try {
                 log.info("Session id {}",
                         ((RemoteWebDriver) driver).getSessionId());
-                driver.get("https://bonigarcia.dev/selenium-jupiter/");
+                driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
                 assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
             } finally {

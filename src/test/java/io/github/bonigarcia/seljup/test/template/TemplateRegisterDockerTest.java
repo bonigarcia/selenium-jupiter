@@ -48,7 +48,7 @@ class TemplateRegisterDockerTest {
 
     @TestTemplate
     void templateTest(WebDriver driver) {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 

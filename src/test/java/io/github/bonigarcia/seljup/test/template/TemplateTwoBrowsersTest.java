@@ -38,8 +38,8 @@ class TemplateTwoBrowsersTest {
 
     @TestTemplate
     void templateTest(WebDriver driver1, WebDriver driver2) {
-        driver1.get("https://bonigarcia.dev/selenium-jupiter/");
-        driver2.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver1.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        driver2.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver1.getTitle()).contains("Selenium WebDriver");
         assertThat(driver2.getTitle()).contains("Selenium WebDriver");
     }

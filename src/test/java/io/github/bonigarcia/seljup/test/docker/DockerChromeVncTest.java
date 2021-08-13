@@ -34,7 +34,7 @@ class DockerChromeVncTest {
     void test(
             @DockerBrowser(type = CHROME, vnc = true, lang = "ES", timezone = "Europe/Madrid") WebDriver driver)
             throws Exception {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
         // Uncomment this line to have time for manual inspection

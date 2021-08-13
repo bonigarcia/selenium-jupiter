@@ -39,7 +39,7 @@ class OperaGlobalOptionsTest {
 
     @Test
     void operaTest(OperaDriver driver) {
-        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 

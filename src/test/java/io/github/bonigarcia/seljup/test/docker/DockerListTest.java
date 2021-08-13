@@ -55,7 +55,7 @@ class DockerListTest {
             executorService.submit(() -> {
                 try {
                     log.info("Session id {}", driver.getSessionId());
-                    driver.get("https://bonigarcia.dev/selenium-jupiter/");
+                    driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
                     assertThat(driver.getTitle()).contains("Selenium WebDriver");
                 } finally {
                     latch.countDown();
