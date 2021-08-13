@@ -51,8 +51,8 @@ class ScreenshotSurefireTest {
 
     @Test
     void screenshotTest(ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
         imageFile = new File(
                 "./target/surefire-reports/io.github.bonigarcia.seljup.test.screenshot.ScreenshotSurefireTest",

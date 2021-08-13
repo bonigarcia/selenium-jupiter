@@ -34,8 +34,8 @@ class DockerChromeMobileTest {
     @Test
     void testChromeMobile(@DockerBrowser(type = CHROME_MOBILE) WebDriver driver)
             throws InterruptedException {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

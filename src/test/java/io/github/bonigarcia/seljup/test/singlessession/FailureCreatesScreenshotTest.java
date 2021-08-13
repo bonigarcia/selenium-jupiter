@@ -54,14 +54,14 @@ class FailureCreatesScreenshotTest {
 
     @Test
     void shouldFailAndCreateScreenshotTest() {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("AAAA");
     }
 
     @Test
     void notFailAndNotCreateScreenshotTest() {
-        driver.get("https://bonigarcia.org/webdrivermanager/");
-        assertThat(driver.getTitle()).contains("WebDriverManager");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

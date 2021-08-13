@@ -46,9 +46,9 @@ class DockerListInConstructorTest {
     }
 
     private void exercise(WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
         assertThat(driver.getTitle())
-                .contains("Selenium-Jupiter");
+                .contains("Selenium WebDriver");
     }
 
 }

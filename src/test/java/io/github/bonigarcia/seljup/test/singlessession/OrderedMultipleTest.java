@@ -66,8 +66,8 @@ class OrderedMultipleTest {
     }
 
     private void step1(RemoteWebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
     private void step2(RemoteWebDriver driver) {

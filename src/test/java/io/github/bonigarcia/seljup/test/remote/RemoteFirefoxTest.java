@@ -45,8 +45,8 @@ class RemoteFirefoxTest {
     @Test
     void test(@DriverUrl("http://localhost:4444/") @DriverCapabilities({
             "browserName=firefox" }) WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

@@ -35,8 +35,8 @@ class ChromeOptionsTest {
 
     @Test
     void headlessTest(@Arguments("--headless") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
     @Test
@@ -54,8 +54,8 @@ class ChromeOptionsTest {
 
     @Test
     void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

@@ -33,8 +33,8 @@ class OperaBinaryTest {
 
     @Test
     void operaExtensionTest(@Binary("/usr/bin/opera") OperaDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

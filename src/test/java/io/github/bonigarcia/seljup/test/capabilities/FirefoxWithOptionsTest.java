@@ -44,8 +44,8 @@ class FirefoxWithOptionsTest {
 
     @Test
     void extensionTest(@Extensions("hello_world.xpi") FirefoxDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

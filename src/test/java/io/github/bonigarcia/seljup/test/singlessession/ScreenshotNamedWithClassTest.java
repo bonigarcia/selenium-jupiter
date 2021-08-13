@@ -40,7 +40,7 @@ class ScreenshotNamedWithClassTest {
 
     @Test
     void shouldFailAndCreateScreenshotTest() {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
         assertThat(driver.getTitle()).contains("AAA");
     }
 

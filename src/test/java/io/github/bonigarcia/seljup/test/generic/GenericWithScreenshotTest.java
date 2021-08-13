@@ -51,8 +51,8 @@ class GenericWithScreenshotTest {
 
     @Test
     void screenshotGenericTest(WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
         imageFile = new File("screenshotGenericTest_arg0_chrome_"
                 + ((RemoteWebDriver) driver).getSessionId() + ".png");

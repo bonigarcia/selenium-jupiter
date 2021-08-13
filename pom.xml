@@ -49,13 +49,13 @@
     <description>
 		JUnit 5 extension for Selenium WebDriver
 	</description>
-    <url>https://bonigarcia.org/selenium-jupiter</url>
+    <url>https://bonigarcia.dev/selenium-jupiter</url>
 
     <developers>
         <developer>
             <id>bonigarcia</id>
             <name>Boni Garcia</name>
-            <url>https://bonigarcia.org/</url>
+            <url>https://bonigarcia.dev/</url>
         </developer>
     </developers>
 

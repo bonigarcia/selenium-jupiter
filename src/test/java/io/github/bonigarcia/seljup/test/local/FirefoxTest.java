@@ -34,12 +34,12 @@ class FirefoxTest {
 
     @Test
     void testFirefox(FirefoxDriver driver) {
-        String sutUrl = "https://bonigarcia.org/selenium-jupiter";
+        String sutUrl = "https://bonigarcia.dev/selenium-jupiter";
         driver.get(sutUrl);
         String title = driver.getTitle();
         log.debug("The title of {} is {}", sutUrl, title);
 
-        assertThat(title).contains("Selenium-Jupiter");
+        assertThat(title).contains("Selenium WebDriver");
     }
 
 }

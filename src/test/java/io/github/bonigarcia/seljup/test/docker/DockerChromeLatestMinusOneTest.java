@@ -32,8 +32,8 @@ class DockerChromeLatestMinusOneTest {
     @Test
     void test(
             @DockerBrowser(type = CHROME, version = "latest-1") WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-jupiter/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }

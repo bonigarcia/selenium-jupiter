@@ -40,8 +40,8 @@ class DockerCustomWdmTest {
 
     @Test
     void customWdmTest(WebDriver driver) {
-        String sut = "https://bonigarcia.org/selenium-jupiter/";
-        String title = "Selenium-Jupiter";
+        String sut = "https://bonigarcia.dev/selenium-jupiter/";
+        String title = "Selenium WebDriver";
 
         driver.get(sut);
         assertThat(driver.getTitle()).contains(title);
