@@ -44,21 +44,6 @@ class AnnotationsReaderTest {
     }
 
     @Test
-    void testGetsNullOptionsIfEmptyTestInstance() throws Exception {
-        Object options = annotationsReader
-                .getOptionsFromAnnotatedField(Optional.empty(), Options.class);
-        assertThat(options).isNull();
-    }
-
-    @Test
-    void testGetsFirstDeclaredOptionsFromAnnotatedFieldWithoutTypeSpecied()
-            throws Exception {
-        Object options = annotationsReader
-                .getOptionsFromAnnotatedField(testInstance, Options.class);
-        assertThat(options).isInstanceOf(Integer.class);
-    }
-
-    @Test
     void testGetsNullOptionsFromAnnotatedFieldIfSpeciedTypeNotFound()
             throws Exception {
         Capabilities options = annotationsReader.getFromAnnotatedField(
