@@ -329,6 +329,8 @@ public class SeleniumJupiter implements ParameterResolver,
             wdmMap.get(contextId).stream()
                     .map(WebDriverManager::getWebDriverList)
                     .forEach(screenshotManager::makeScreenshotIfRequired);
+            wdmMap.get(contextId).stream()
+                    .forEach(WebDriverManager::stopDockerRecording);
         }
     }
 
