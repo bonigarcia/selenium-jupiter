@@ -50,6 +50,7 @@ import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
@@ -78,7 +79,7 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;
  * @since 1.0.0
  */
 public class SeleniumJupiter implements ParameterResolver,
-        AfterTestExecutionCallback, AfterAllCallback,
+        AfterTestExecutionCallback, AfterEachCallback, AfterAllCallback,
         TestTemplateInvocationContextProvider, ExecutionCondition {
 
     final Logger log = getLogger(lookup().lookupClass());
@@ -320,9 +321,7 @@ public class SeleniumJupiter implements ParameterResolver,
     @Override
     public void afterTestExecution(ExtensionContext extensionContext)
             throws Exception {
-        // 1. Screenshots (if required)
         String contextId = getContextId(extensionContext);
-
         ScreenshotManager screenshotManager = new ScreenshotManager(
                 extensionContext, getConfig(), outputHandler);
 
@@ -331,8 +330,10 @@ public class SeleniumJupiter implements ParameterResolver,
                     .map(WebDriverManager::getWebDriverList)
                     .forEach(screenshotManager::makeScreenshotIfRequired);
         }
+    }
 
-        // 2. Quit WebDriver
+    @Override
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
         if (!isSingleSession(extensionContext)) {
             quitWebDriver(extensionContext);
         }
