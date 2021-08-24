@@ -25,7 +25,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.io.File;
 import java.time.Duration;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -39,10 +39,10 @@ class DockerChromeRecordingTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
-    File recordingFile;
+    static File recordingFile;
 
-    @AfterEach
-    void teardown() {
+    @AfterAll
+    static void teardown() {
         if (recordingFile != null) {
             assertThat(recordingFile).exists();
             recordingFile.delete();
