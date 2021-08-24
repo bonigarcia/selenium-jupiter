@@ -128,17 +128,6 @@ public class AnnotationsReader {
         return numeric;
     }
 
-    public Object getOptionsFromAnnotatedField(Optional<Object> testInstance,
-            Class<Options> annotationClass) {
-        Object out = null;
-        Optional<Object> annotatedField = seekFieldAnnotatedWith(testInstance,
-                annotationClass, null);
-        if (annotatedField.isPresent()) {
-            out = annotatedField.get();
-        }
-        return out;
-    }
-
     public <T> T getFromAnnotatedField(Optional<Object> testInstance,
             Class<? extends Annotation> annotationClass,
             Class<T> capabilitiesClass) {
@@ -195,7 +184,7 @@ public class AnnotationsReader {
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
             if (field.isAnnotationPresent(annotation) && (annotatedType == null
-                    || annotatedType == field.getType())) {
+                    || annotatedType.isAssignableFrom(field.getType()))) {
                 field.setAccessible(true);
                 if (annotatedType != null) {
                     return of(annotatedType.cast(field.get(object)));
