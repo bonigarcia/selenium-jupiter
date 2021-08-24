@@ -44,11 +44,10 @@ class AnnotationsReaderTest {
     }
 
     @Test
-    void testGetsNullOptionsFromAnnotatedFieldIfSpeciedTypeNotFound()
-            throws Exception {
+    void testGetOptionsFromAnnotatedField() throws Exception {
         Capabilities options = annotationsReader.getFromAnnotatedField(
                 testInstance, Options.class, Capabilities.class);
-        assertThat(options).isNull();
+        assertThat(options).isNotNull();
     }
 
     @Test
