@@ -33,8 +33,8 @@ class ChromeTest {
 
     @Test
     void test(ChromeDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }
@@ -60,9 +60,9 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerChromeTest {
 
     @Test
-    void testChrome(@DockerBrowser(type = CHROME, recording = true, vnc = true) WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+    void testChrome(@DockerBrowser(type = CHROME) WebDriver driver) {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }
@@ -88,8 +88,8 @@ class SafariTest {
 
     @Test
     void test(SafariDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }
@@ -113,8 +113,8 @@ class TemplateTest {
 
     @TestTemplate
     void templateTest(WebDriver driver) {
-        driver.get("https://bonigarcia.org/selenium-jupiter/");
-        assertThat(driver.getTitle()).contains("Selenium-Jupiter");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }
@@ -165,8 +165,8 @@ Selenium-Jupiter is part of [OpenCollective], an online funding platform for ope
 ## About
 Selenium-Jupiter (Copyright &copy; 2017-2021) is a project created and maintained by [Boni García] and licensed under the terms of the [Apache 2.0 License].
 
-[Logo]: https://bonigarcia.github.io/img/seljup.png
-[Selenium-Jupiter]: https://bonigarcia.org/selenium-jupiter/
+[Logo]: https://bonigarcia.dev/img/seljup.png
+[Selenium-Jupiter]: https://bonigarcia.dev/selenium-jupiter/
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
 [Selenium WebDriver]: https://www.selenium.dev/docs/site/en/webdriver/
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
@@ -178,5 +178,5 @@ Selenium-Jupiter (Copyright &copy; 2017-2021) is a project created and maintaine
 [donation]: https://opencollective.com/selenium-jupiter/donate
 [recurring contribution]: https://opencollective.com/selenium-jupiter/contribute/backer-8132/checkout
 [sponsor]: https://opencollective.com/selenium-jupiter/contribute/sponsor-8133/checkout
-[Boni Garcia]: https://bonigarcia.github.io/
+[Boni Garcia]: https://bonigarcia.dev/
 [Apache 2.0 License]: https://www.apache.org/licenses/LICENSE-2.0
