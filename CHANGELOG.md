@@ -1,5 +1,34 @@
 # Changelog
 
+## [4.0.0] - 2021-08-31
+### Added
+- New documentation: https://bonigarcia.dev/selenium-jupiter/ (sources: AsciiDoc, generated: HTML, PDF, EPUB)
+- Include @EnabledIfBrowserAvailable annotation to disable tests conditionally
+- Use WebDriverManager 5 for managing browsers in Docker containers
+- Allow to specify language and timezone using @DockerBrowser annotation
+- Enhance test template support (issue #45)
+- Include support for Safari as dockerized browser (WebKit engine)
+- Make screenshots and recordings in AfterTestExecutionCallback and quit browser in AfterEachCallback/AfterAllCallback (issue #61)
+- Allow making recordings when test failure
+
+### Changed
+- Use selenium-java as provided dependency
+- Use Java 11
+- Use Selenium 4 in tests
+- Use AssertJ for assertions in tests
+
+### Fixed
+- Improve support for parallel execution (issue #80)
+- Improve support for single session (issue #181)
+
+### Removed
+- Remove support for phantomjsdriver, selenide, htmlunit-driver, and Appium java-client (not compatible with Selenium 4)
+- Remove support to Genymotion
+- Remove support for docker-android (use chrome-mobile instead)
+- Remove all configuration keys (and API methods) related to custom Docker management
+- Remove support for CLI and server modes (moved features to WebDriverManager)
+
+
 ## [3.4.0] - 2021-01-26
 ### Added
 - Support for Edge (for Linux) in Docker containers (pulled from Docker Hub)
