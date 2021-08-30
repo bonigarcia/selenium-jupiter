@@ -53,7 +53,7 @@ class ChromeOptionsTest {
     }
 
     @Test
-    void extensionTest(@Extensions("hello_world.crx") ChromeDriver driver) {
+    void extensionTest(@Extensions("dark-bg.crx") ChromeDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
