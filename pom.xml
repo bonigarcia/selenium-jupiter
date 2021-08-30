@@ -31,6 +31,7 @@
         <asciidoctorj-epub3.version>1.5.1</asciidoctorj-epub3.version>
         <maven-site.version>3.9.1</maven-site.version>
         <maven-project-info-reports.version>3.1.2</maven-project-info-reports.version>
+        <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
 
         <!-- Java -->
         <java.version>11</java.version>
@@ -207,7 +208,7 @@
                                 <idseparator>-</idseparator>
                                 <docinfo1>true</docinfo1>
                                 <toclevels>3</toclevels>
-                                <sectnums></sectnums>
+                                <sectnums />
                                 <lang>en</lang>
                                 <docdatetime>${maven.build.timestamp}</docdatetime>
                                 <last-update-label>Updated on</last-update-label>
@@ -234,7 +235,7 @@
                                 <idprefix />
                                 <idseparator>-</idseparator>
                                 <icons>font</icons>
-                                <sectnums></sectnums>
+                                <sectnums />
                                 <lang>en</lang>
                                 <revnumber>${project.version}</revnumber>
                                 <revdate>${maven.build.timestamp}</revdate>
@@ -261,7 +262,7 @@
                                 <idprefix />
                                 <idseparator>-</idseparator>
                                 <icons>font</icons>
-                                <sectnums></sectnums>
+                                <sectnums />
                                 <lang>en</lang>
                                 <revnumber>${project.version}</revnumber>
                                 <revdate>${maven.build.timestamp}</revdate>
@@ -279,6 +280,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>${maven-project-info-reports.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>8</source>
+                </configuration>
             </plugin>
         </plugins>
     </build>
