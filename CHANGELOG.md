@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.1] - 2021-08-31
+### Changed
+- Downgrade to Java 8
+
+
 ## [4.0.0] - 2021-08-31
 ### Added
 - New documentation: https://bonigarcia.dev/selenium-jupiter/ (sources: AsciiDoc, generated: HTML, PDF, EPUB)
