@@ -251,10 +251,10 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.volumes().length > 0) {
             wdm.dockerVolumes(dockerBrowser.volumes());
         }
-        if (!dockerBrowser.lang().isBlank()) {
+        if (!dockerBrowser.lang().isEmpty()) {
             wdm.dockerLang(dockerBrowser.lang());
         }
-        if (!dockerBrowser.timezone().isBlank()) {
+        if (!dockerBrowser.timezone().isEmpty()) {
             wdm.dockerTimezone(dockerBrowser.timezone());
         }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
@@ -517,7 +517,7 @@ public class SeleniumJupiter implements ParameterResolver,
             Optional<Path> browserPath = WebDriverManager
                     .getInstance(driverManagerType).getBrowserPath();
 
-            if (browserPath.isEmpty()) {
+            if (!browserPath.isPresent()) {
                 return ConditionEvaluationResult
                         .disabled(browser + " is not installed in the system");
             }
@@ -569,7 +569,7 @@ public class SeleniumJupiter implements ParameterResolver,
                 // Get recording files (to be deleted after quit)
                 List<Path> recordingList = Collections.emptyList();
                 if (config.isRecordingWhenFailure()
-                        && executionException.isEmpty()) {
+                        && !executionException.isPresent()) {
                     recordingList = manager.getWebDriverList().stream()
                             .map(manager::getDockerRecordingPath)
                             .collect(Collectors.toList());

@@ -56,7 +56,7 @@ class DockerChromeRecordingTest {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
-        Thread.sleep(Duration.ofMillis(5).toSeconds());
+        Thread.sleep(Duration.ofSeconds(3).toMillis());
 
         recordingFile = new File(
                 "recordingTest_arg0_chrome_" + driver.getSessionId() + ".mp4");
