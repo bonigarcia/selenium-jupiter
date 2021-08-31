@@ -15,7 +15,7 @@ https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-sour
 ****
 
 == Setup
-Selenium-Jupiter should be used as a Java dependency. We typically use a _build tool_ (such as https://maven.apache.org/[Maven] or https://gradle.org/[Gradle]) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the `test` scope since it is typically used in tests classes):
+Selenium-Jupiter should be used as a Java dependency (JDK 8+ required). We typically use a _build tool_ (such as https://maven.apache.org/[Maven] or https://gradle.org/[Gradle]) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the `test` scope since it is typically used in tests classes):
 
 [source,xml,subs="attributes+"]
 ----
