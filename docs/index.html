@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.0.0</span>
+<span id="revdate">Version 4.0.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -845,14 +845,14 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="setup"><a class="anchor" href="#setup"></a>2. Setup</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Selenium-Jupiter should be used as a Java dependency. We typically use a <em>build tool</em> (such as <a href="https://maven.apache.org/">Maven</a> or <a href="https://gradle.org/">Gradle</a>) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the <code>test</code> scope since it is typically used in tests classes):</p>
+<p>Selenium-Jupiter should be used as a Java dependency (JDK 8+ required). We typically use a <em>build tool</em> (such as <a href="https://maven.apache.org/">Maven</a> or <a href="https://gradle.org/">Gradle</a>) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the <code>test</code> scope since it is typically used in tests classes):</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.0.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.0.1<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -863,7 +863,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.0.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.0.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1253,7 +1253,7 @@ Notice that the previous example also uses the attributes <code>lang</code> and 
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
 
-        <span class="predefined-type">Thread</span>.sleep(<span class="predefined-type">Duration</span>.ofMillis(<span class="integer">5</span>).toSeconds());
+        <span class="predefined-type">Thread</span>.sleep(<span class="predefined-type">Duration</span>.ofSeconds(<span class="integer">3</span>).toMillis());
 
         recordingFile = <span class="keyword">new</span> <span class="predefined-type">File</span>(
                 <span class="string"><span class="delimiter">&quot;</span><span class="content">recordingTest_arg0_chrome_</span><span class="delimiter">&quot;</span></span> + driver.getSessionId() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.mp4</span><span class="delimiter">&quot;</span></span>);
@@ -2053,8 +2053,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.0.0<br>
-Updated on 30-08-2021
+Version 4.0.1<br>
+Updated on 31-08-2021
 </div>
 </div>
 </body>
