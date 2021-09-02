@@ -12,7 +12,7 @@
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.7.2</junit.jupiter.version>
-        <selenium.version>4.0.0-beta-4</selenium.version>
+        <selenium.version>4.0.0-rc-1</selenium.version>
 
         <!-- Test dependencies -->
         <logback.version>1.2.5</logback.version>
