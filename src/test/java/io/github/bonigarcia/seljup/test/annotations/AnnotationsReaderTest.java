@@ -83,6 +83,8 @@ class AnnotationsReaderTest {
 
     private static class CapabilitiesA extends AbstractCapabilities {
 
+        private static final long serialVersionUID = 5630780672421844735L;
+
         CapabilitiesA(String id) {
             super(id);
         }
@@ -90,12 +92,16 @@ class AnnotationsReaderTest {
 
     private static class CapabilitiesB extends AbstractCapabilities {
 
+        private static final long serialVersionUID = 8552813732742480499L;
+
         CapabilitiesB(String id) {
             super(id);
         }
     }
 
     private static abstract class AbstractCapabilities implements Capabilities {
+
+        private static final long serialVersionUID = -2199141902686348117L;
 
         private static final Map<String, Object> capabilities = new HashMap<>();
 
