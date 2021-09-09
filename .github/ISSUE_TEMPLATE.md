@@ -10,7 +10,8 @@
 
 **Selenium-Jupiter use**: <!-- Copy here your code in which you use Selenium-Jupiter. -->
 
-**Selenium-Jupiter traces**: <!-- Copy the Selenium-Jupiter and WebDriverManager traces here. This information is very important to analyze your issue, so please do not skip this part. If you are not using a logger in your project (logback, log4j, etc), please consider using one before creating this issue (see a tutorial here https://www.stubbornjava.com/posts/logging-in-java-with-slf4j-and-logback). The information you should report is like the following:
+**Selenium-Jupiter traces**:
+<!-- Copy the Selenium-Jupiter and WebDriverManager traces here. This information is very important to analyze your issue, so please do not skip this part. If you are not using a logger in your project (logback, log4j, etc), please consider using one before creating this issue (see a tutorial here https://www.stubbornjava.com/posts/logging-in-java-with-slf4j-and-logback). The information you should report is like the following: 
 2021-08-02 16:48:47 [main] DEBUG i.g.b.wdm.cache.ResolutionCache.checkKeyInResolutionCache(193) -- Resolution chrome=92 in cache (valid until 17:01:51 02/08/2021 CEST)
 2021-08-02 16:48:47 [main] DEBUG i.g.b.wdm.cache.ResolutionCache.checkKeyInResolutionCache(193) -- Resolution chrome92=92.0.4515.107 in cache (valid until 01:26:23 03/08/2021 CEST)
 2021-08-02 16:48:47 [main] INFO  i.g.bonigarcia.wdm.WebDriverManager.resolveDriverVersion(930) -- Using chromedriver 92.0.4515.107 (resolved driver for Chrome 92)
