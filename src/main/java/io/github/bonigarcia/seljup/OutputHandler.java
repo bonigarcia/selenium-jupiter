@@ -23,6 +23,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -43,6 +45,7 @@ public class OutputHandler {
     static final Logger log = getLogger(lookup().lookupClass());
 
     public static final String SEPARATOR = "_";
+    public static final String DATE_FORMAT = "yyyy.MM.dd_HH.mm.ss.SSS";
     public static final String BASE64_KEY = "base64";
     public static final String PNG_KEY = "png";
     public static final String BASE64_AND_PNG_KEY = "base64andpng";
@@ -77,7 +80,10 @@ public class OutputHandler {
                 prefix = testClass.get().getSimpleName() + SEPARATOR;
             }
         }
-        prefix += parameter.getName() + SEPARATOR;
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        prefix += parameter.getName() + SEPARATOR + dateFormat.format(now)
+                + SEPARATOR;
         return prefix;
     }
 

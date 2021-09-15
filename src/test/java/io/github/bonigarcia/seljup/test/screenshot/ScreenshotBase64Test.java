@@ -19,12 +19,15 @@ package io.github.bonigarcia.seljup.test.screenshot;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.SessionId;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -33,7 +36,7 @@ class ScreenshotBase64Test {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    static File imageFile;
+    SessionId sessionId;
 
     @BeforeAll
     static void setup() {
@@ -41,9 +44,13 @@ class ScreenshotBase64Test {
         seleniumJupiter.getConfig().takeScreenshotAsBase64();
     }
 
-    @AfterAll
-    static void teardown() {
-        assertThat(imageFile).doesNotExist();
+    @AfterEach
+    void teardown() {
+        File[] files = new File(".").listFiles();
+        Optional<File> screenshot = Arrays.stream(files).filter(
+                f -> f.getName().endsWith(sessionId.toString() + ".png"))
+                .findFirst();
+        assertThat(screenshot).isEmpty();
     }
 
     @Test
@@ -51,8 +58,7 @@ class ScreenshotBase64Test {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
-        imageFile = new File("screenshotTest_arg0_ChromeDriver_"
-                + driver.getSessionId() + ".png");
+        sessionId = driver.getSessionId();
     }
 
 }
