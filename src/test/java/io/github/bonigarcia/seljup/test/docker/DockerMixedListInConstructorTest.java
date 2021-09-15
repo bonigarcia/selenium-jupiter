@@ -21,8 +21,9 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import java.time.Duration;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Wait;
@@ -31,13 +32,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumJupiter.class)
 class DockerMixedListInConstructorTest {
+
+    @RegisterExtension
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     static final int NUM_BROWSERS = 1;
 
     WebDriver driver1;
     List<WebDriver> driverList1;
+
+    @BeforeAll
+    static void setup() {
+        seleniumJupiter.getConfig().enableScreenshotWhenFailure();
+        seleniumJupiter.getConfig().takeScreenshotAsBase64();
+    }
 
     DockerMixedListInConstructorTest(RemoteWebDriver driver1,
             @DockerBrowser(type = CHROME, size = NUM_BROWSERS) List<WebDriver> driverList1) {
@@ -56,6 +65,7 @@ class DockerMixedListInConstructorTest {
 
     private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        driver.navigate().refresh();
 
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));

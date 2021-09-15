@@ -19,9 +19,10 @@ package io.github.bonigarcia.seljup.test.generic;
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -30,8 +31,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@ExtendWith(SeleniumJupiter.class)
 class GenericMixedTest {
+
+    @RegisterExtension
+    static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
+
+    @BeforeAll
+    static void setupClass() {
+        seleniumJupiter.getConfig().enableScreenshotWhenFailure();
+        seleniumJupiter.getConfig().takeScreenshotAsBase64();
+    }
 
     @BeforeEach
     void setup() {
@@ -51,6 +60,7 @@ class GenericMixedTest {
 
     private void exercise(WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        driver.navigate().refresh();
         Wait<WebDriver> wait = new WebDriverWait(driver,
                 Duration.ofSeconds(30));
         wait.until(d -> d.getTitle().contains("Selenium WebDriver"));
