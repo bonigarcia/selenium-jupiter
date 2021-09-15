@@ -22,11 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
@@ -39,9 +44,20 @@ class DockerChromeRecordingFailureTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    static SessionId sessionId;
+
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig().enableRecordingWhenFailure();
+    }
+
+    @AfterAll
+    static void teardown() {
+        File[] files = new File(".").listFiles();
+        Optional<File> recording = Arrays.stream(files).filter(
+                f -> f.getName().endsWith(sessionId.toString() + ".mp4"))
+                .findFirst();
+        assertThat(recording).isEmpty();
     }
 
     @Test
@@ -50,12 +66,9 @@ class DockerChromeRecordingFailureTest {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
-        // Uncomment this line to get a longer recording
-        // Thread.sleep(5000);
+        Thread.sleep(Duration.ofSeconds(3).toMillis());
 
-        File recordingFile = new File(
-                "recordingTest_" + driver.getSessionId() + ".mp4");
-        assertThat(recordingFile).doesNotExist();
+        sessionId = driver.getSessionId();
     }
 
 }

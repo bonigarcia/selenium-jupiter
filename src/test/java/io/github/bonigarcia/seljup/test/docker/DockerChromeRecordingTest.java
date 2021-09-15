@@ -25,15 +25,29 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
 class DockerChromeRecordingTest {
+
+    static SessionId sessionId;
+
+    @AfterEach
+    static void teardown() {
+        File[] files = new File(".").listFiles();
+        Optional<File> recording = Arrays.stream(files).filter(
+                f -> f.getName().endsWith(sessionId.toString() + ".mp4"))
+                .findFirst();
+        assertThat(recording).isNotEmpty();
+        recording.get().delete();
+    }
 
     @Test
     void recordingTest(
@@ -44,12 +58,7 @@ class DockerChromeRecordingTest {
 
         Thread.sleep(Duration.ofSeconds(3).toMillis());
 
-        File[] files = new File(".").listFiles();
-        Optional<File> recording = Arrays.stream(files).filter(
-                f -> f.getName().endsWith(driver.getSessionId() + ".mp4"))
-                .findFirst();
-        assertThat(recording).isNotEmpty();
-        recording.get().delete();
+        sessionId = driver.getSessionId();
     }
 
 }
