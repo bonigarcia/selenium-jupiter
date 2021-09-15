@@ -17,18 +17,17 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -38,22 +37,9 @@ class DockerChromeRecordingConfigTest {
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    final Logger log = getLogger(lookup().lookupClass());
-
-    File recordingFile;
-
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig().enableRecording();
-    }
-
-    @AfterEach
-    void teardown() {
-        if (recordingFile != null) {
-            assertThat(recordingFile).exists();
-            log.info("Deleting recording {} ... {}", recordingFile,
-                    recordingFile.delete());
-        }
     }
 
     @Test
@@ -62,11 +48,14 @@ class DockerChromeRecordingConfigTest {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
 
-        // Uncomment this line to get a longer recording
-        // Thread.sleep(5000);
+        Thread.sleep(Duration.ofSeconds(3).toMillis());
 
-        recordingFile = new File(
-                "recordingTest_arg0_chrome_" + driver.getSessionId() + ".mp4");
+        File[] files = new File(".").listFiles();
+        Optional<File> recording = Arrays.stream(files).filter(
+                f -> f.getName().endsWith(driver.getSessionId() + ".mp4"))
+                .findFirst();
+        assertThat(recording).isNotEmpty();
+        recording.get().delete();
     }
 
 }
