@@ -25,7 +25,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -39,7 +39,7 @@ class DockerChromeRecordingTest {
 
     static SessionId sessionId;
 
-    @AfterEach
+    @AfterAll
     static void teardown() {
         File[] files = new File(".").listFiles();
         Optional<File> recording = Arrays.stream(files).filter(
