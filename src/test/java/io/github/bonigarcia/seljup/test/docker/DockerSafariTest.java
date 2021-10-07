@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-import static io.github.bonigarcia.seljup.BrowserType.OPERA;
+import static io.github.bonigarcia.seljup.BrowserType.SAFARI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -30,8 +30,8 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerSafariTest {
 
     @Test
-    void testOpera(@DockerBrowser(type = OPERA) WebDriver driver) {
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+    void testSafari(@DockerBrowser(type = SAFARI) WebDriver driver) {
+        driver.get("https://github.com/bonigarcia/selenium-webdriver-java");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
