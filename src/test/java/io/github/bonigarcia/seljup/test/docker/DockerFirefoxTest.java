@@ -16,7 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.docker;
 
-import static io.github.bonigarcia.seljup.BrowserType.SAFARI;
+import static io.github.bonigarcia.seljup.BrowserType.FIREFOX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class DockerFirefoxTest {
 
     @Test
-    void testSafari(@DockerBrowser(type = SAFARI) WebDriver driver) {
+    void testFirefox(@DockerBrowser(type = FIREFOX) WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
