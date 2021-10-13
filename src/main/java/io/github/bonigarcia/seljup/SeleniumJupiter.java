@@ -40,6 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -97,7 +98,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
     public SeleniumJupiter() {
         config = new Config();
-        wdmMap = new ConcurrentHashMap<>();
+        wdmMap = Collections.synchronizedMap(new LinkedHashMap<>());
         annotationsReader = new AnnotationsReader();
         browserListList = new ArrayList<>();
         browserListMap = new ConcurrentHashMap<>();
@@ -593,6 +594,32 @@ public class SeleniumJupiter implements ParameterResolver,
 
             removeManagersFromMap(contextId);
         }
+    }
+
+    public URL getDockerNoVncUrl() {
+        URL url = null;
+        if (!wdmMap.isEmpty()) {
+            List<WebDriverManager> wdmList = wdmMap.entrySet().iterator().next()
+                    .getValue();
+            return wdmList.get(0).getDockerNoVncUrl();
+        }
+        return url;
+    }
+
+    public URL getDockerNoVncUrl(WebDriver driver) {
+        final URL[] url = new URL[1];
+        url[0] = null;
+        if (!wdmMap.isEmpty()) {
+            List<WebDriverManager> wdmList = wdmMap.entrySet().iterator().next()
+                    .getValue();
+            wdmList.forEach(wdm -> {
+                URL dockerNoVncUrl = wdm.getDockerNoVncUrl();
+                if (dockerNoVncUrl != null) {
+                    url[0] = dockerNoVncUrl;
+                }
+            });
+        }
+        return url[0];
     }
 
 }
