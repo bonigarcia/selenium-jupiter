@@ -607,19 +607,18 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     public URL getDockerNoVncUrl(WebDriver driver) {
-        final URL[] url = new URL[1];
-        url[0] = null;
+        URL dockerNoVncUrl = null;
         if (!wdmMap.isEmpty()) {
-            List<WebDriverManager> wdmList = wdmMap.entrySet().iterator().next()
-                    .getValue();
-            wdmList.forEach(wdm -> {
-                URL dockerNoVncUrl = wdm.getDockerNoVncUrl();
-                if (dockerNoVncUrl != null) {
-                    url[0] = dockerNoVncUrl;
+            for (List<WebDriverManager> wdmList : wdmMap.values()) {
+                for (WebDriverManager wdm : wdmList) {
+                    dockerNoVncUrl = wdm.getDockerNoVncUrl(driver);
+                    if (dockerNoVncUrl != null) {
+                        return dockerNoVncUrl;
+                    }
                 }
-            });
+            }
         }
-        return url[0];
+        return dockerNoVncUrl;
     }
 
 }
