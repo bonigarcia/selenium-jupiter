@@ -156,10 +156,10 @@ class TemplateTest {
 ## Support
 Selenium-Jupiter is part of [OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal [donation] or [recurring contribution]) or as a [sponsor] (i.e., a recurring contribution by a company).
 
-## Backers
+### Backers
 <a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
 
-## Sponsors
+### Sponsors
 <a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsors.svg?width=890"></a>
 
 ## About
