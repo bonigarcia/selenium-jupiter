@@ -157,10 +157,10 @@ class TemplateTest {
 Selenium-Jupiter is part of [OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal [donation] or [recurring contribution]) or as a [sponsor] (i.e., a recurring contribution by a company).
 
 ## Backers
-<a href="https://opencollective.com/selenium-jupiter#backers" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
+<a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
 
 ## Sponsors
-<a href="https://opencollective.com/selenium-jupiter/sponsor/0/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsors.svg?width=890"></a>
 
 ## About
 Selenium-Jupiter (Copyright &copy; 2017-2021) is a project created and maintained by [Boni García] and licensed under the terms of the [Apache 2.0 License].
