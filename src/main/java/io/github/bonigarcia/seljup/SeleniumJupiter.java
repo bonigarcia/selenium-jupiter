@@ -502,7 +502,11 @@ public class SeleniumJupiter implements ParameterResolver,
         return findAnnotation(element, EnabledIfBrowserAvailable.class)
                 .map(this::toBrowserResult)
                 .orElse(findAnnotation(element, EnabledIfDriverUrlOnline.class)
-                        .map(this::toUrlResult).orElse(ENABLED));
+                        .map(this::toUrlResult)
+                        .orElse(findAnnotation(element,
+                                EnabledIfDockerAvailable.class)
+                                        .map(this::toDockerResult)
+                                        .orElse(ENABLED)));
     }
 
     public Config getConfig() {
@@ -548,6 +552,15 @@ public class SeleniumJupiter implements ParameterResolver,
             browser = browserList.get(index);
         }
         return browser;
+    }
+
+    private ConditionEvaluationResult toDockerResult(
+            EnabledIfDockerAvailable annotation) {
+        if (!WebDriverManager.isDockerAvailable()) {
+            return ConditionEvaluationResult
+                    .disabled("Docker is not installed in the system");
+        }
+        return ENABLED;
     }
 
     private ConditionEvaluationResult toBrowserResult(
