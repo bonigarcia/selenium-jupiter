@@ -89,19 +89,19 @@ public class AnnotationsReader {
             if (seleniumServerUrl != null && !seleniumServerUrl.isEmpty()) {
                 out = of(new URL(seleniumServerUrl));
             } else {
-                String urlValue = null;
+                Object urlValue = null;
                 DriverUrl driverUrl = parameter.getAnnotation(DriverUrl.class);
                 if (driverUrl != null) {
                     // Search first DriverUrl annotation in parameter
                     urlValue = driverUrl.value();
-                    out = of(new URL(urlValue));
+                    out = of(new URL(urlValue.toString()));
                 } else {
                     // If not, search DriverUrl in any field
                     Optional<Object> annotatedField = seekFieldAnnotatedWith(
                             testInstance, DriverUrl.class);
                     if (annotatedField.isPresent()) {
-                        urlValue = (String) annotatedField.get();
-                        out = of(new URL(urlValue));
+                        urlValue = annotatedField.get();
+                        out = of(new URL(urlValue.toString()));
                     }
                 }
             }
