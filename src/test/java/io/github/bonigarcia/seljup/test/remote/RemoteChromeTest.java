@@ -18,36 +18,23 @@ package io.github.bonigarcia.seljup.test.remote;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.grid.Main;
 
 import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.DriverUrl;
+import io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
+//tag::snippet-in-doc[]
+@EnabledIfDriverUrlOnline("http://localhost:4444/")
 @ExtendWith(SeleniumJupiter.class)
 class RemoteChromeTest {
 
-    @DriverUrl
-    String url = "http://localhost:4445/wd/hub";
-
     @DriverCapabilities
     Capabilities capabilities = new ChromeOptions();
-
-    @BeforeAll
-    static void setup() {
-        // Resolve driver
-        WebDriverManager.chromedriver().setup();
-
-        // Start Selenium Grid in standalone mode
-        Main.main(new String[] { "standalone", "--port", "4445" });
-    }
 
     @Test
     void test(WebDriver driver) {
@@ -56,3 +43,4 @@ class RemoteChromeTest {
     }
 
 }
+//end::snippet-in-doc[]

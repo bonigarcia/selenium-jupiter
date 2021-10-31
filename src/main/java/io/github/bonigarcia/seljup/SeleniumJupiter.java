@@ -17,6 +17,7 @@
 package io.github.bonigarcia.seljup;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
+import static io.github.bonigarcia.wdm.WebDriverManager.isOnline;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.readAllBytes;
@@ -35,6 +36,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -89,7 +91,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
     static final String CLASSPATH_PREFIX = "classpath:";
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
-            .enabled("Browser(s) available in the system");
+            .enabled("Test enabled");
 
     Config config;
     Map<String, List<WebDriverManager>> wdmMap;
@@ -98,6 +100,7 @@ public class SeleniumJupiter implements ParameterResolver,
     List<List<Browser>> browserListList;
     Map<String, List<Browser>> browserListMap;
     OutputHandler outputHandler;
+    URL urlFromAnnotation;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -168,8 +171,14 @@ public class SeleniumJupiter implements ParameterResolver,
         boolean isGeneric = isGeneric(type);
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
-        Optional<URL> url = annotationsReader.getUrl(parameter, testInstance,
-                config.getSeleniumServerUrl());
+
+        Optional<URL> url;
+        if (urlFromAnnotation != null) {
+            url = Optional.of(urlFromAnnotation);
+        } else {
+            url = annotationsReader.getUrl(parameter, testInstance,
+                    config.getSeleniumServerUrl());
+        }
         Optional<Capabilities> caps = annotationsReader
                 .getCapabilities(parameter, testInstance);
 
@@ -486,8 +495,11 @@ public class SeleniumJupiter implements ParameterResolver,
     public ConditionEvaluationResult evaluateExecutionCondition(
             ExtensionContext context) {
         AnnotatedElement element = context.getElement().orElse(null);
+
         return findAnnotation(element, EnabledIfBrowserAvailable.class)
-                .map(this::toResult).orElse(ENABLED);
+                .map(this::toBrowserResult)
+                .orElse(findAnnotation(element, EnabledIfDriverUrlOnline.class)
+                        .map(this::toUrlResult).orElse(ENABLED));
     }
 
     public Config getConfig() {
@@ -535,7 +547,7 @@ public class SeleniumJupiter implements ParameterResolver,
         return browser;
     }
 
-    private ConditionEvaluationResult toResult(
+    private ConditionEvaluationResult toBrowserResult(
             EnabledIfBrowserAvailable annotation) {
         io.github.bonigarcia.seljup.Browser[] browsers = annotation.value();
         for (io.github.bonigarcia.seljup.Browser browser : browsers) {
@@ -548,6 +560,23 @@ public class SeleniumJupiter implements ParameterResolver,
                 return ConditionEvaluationResult
                         .disabled(browser + " is not installed in the system");
             }
+        }
+        return ENABLED;
+    }
+
+    private ConditionEvaluationResult toUrlResult(
+            EnabledIfDriverUrlOnline annotation) {
+        String urlValue = annotation.value();
+        ConditionEvaluationResult disabled = ConditionEvaluationResult
+                .disabled(urlValue + " is not online");
+        try {
+            URL url = new URL(urlValue);
+            if (!isOnline(url)) {
+                return disabled;
+            }
+            urlFromAnnotation = url;
+        } catch (MalformedURLException e) {
+            return disabled;
         }
         return ENABLED;
     }
