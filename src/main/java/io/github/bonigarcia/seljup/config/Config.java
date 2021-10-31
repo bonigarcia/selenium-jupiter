@@ -138,6 +138,10 @@ public class Config {
         }
     }
 
+    public static boolean isNullOrEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
     // Getters and setters
 
     public String getProperties() {
@@ -149,7 +153,11 @@ public class Config {
     }
 
     public String getSeleniumServerUrl() {
-        return resolve(seleniumServerUrl);
+        String url = resolve(seleniumServerUrl);
+        if (isNullOrEmpty(url)) {
+            url = System.getProperty("webdriver.remote.server");
+        }
+        return url;
     }
 
     public void setSeleniumServerUrl(String value) {
