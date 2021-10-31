@@ -209,6 +209,7 @@ public class SeleniumJupiter implements ParameterResolver,
         return wdm;
     }
 
+    @SuppressWarnings("unchecked")
     private WebDriverManager getManagerForLocal(
             ExtensionContext extensionContext, Parameter parameter,
             Class<?> type, boolean isGeneric) {
@@ -220,7 +221,8 @@ public class SeleniumJupiter implements ParameterResolver,
         if (isGeneric) {
             wdm = WebDriverManager.getInstance();
         } else {
-            wdm = WebDriverManager.getInstance(type);
+            Class<? extends WebDriver> webdriverClass = (Class<? extends WebDriver>) type;
+            wdm = WebDriverManager.getInstance(webdriverClass);
         }
 
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
