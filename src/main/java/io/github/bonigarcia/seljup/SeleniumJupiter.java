@@ -63,6 +63,8 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
@@ -91,6 +93,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
     Config config;
     Map<String, List<WebDriverManager>> wdmMap;
+    List<DevTools> devToolsList;
     AnnotationsReader annotationsReader;
     List<List<Browser>> browserListList;
     Map<String, List<Browser>> browserListMap;
@@ -102,6 +105,7 @@ public class SeleniumJupiter implements ParameterResolver,
         annotationsReader = new AnnotationsReader();
         browserListList = new ArrayList<>();
         browserListMap = new ConcurrentHashMap<>();
+        devToolsList = new ArrayList<>();
     }
 
     @Override
@@ -119,10 +123,12 @@ public class SeleniumJupiter implements ParameterResolver,
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
-        return (WebDriver.class.isAssignableFrom(type)
+        boolean supports = (WebDriver.class.isAssignableFrom(type)
+                || type.equals(DevTools.class)
                 || (type.equals(List.class) && dockerBrowser.isPresent()
                         && isGeneric(parameterizedTypeName)))
                 && !isTestTemplate(extensionContext);
+        return supports;
     }
 
     @Override
@@ -136,11 +142,29 @@ public class SeleniumJupiter implements ParameterResolver,
         log.trace("Resolving parameter {} (contextId {}, index {})", parameter,
                 contextId, index);
 
+        // DevTools
+        Class<?> type = parameter.getType();
+        if (type.equals(DevTools.class)) {
+            if (wdmMap != null && wdmMap.get(contextId) != null
+                    && wdmMap.get(contextId).size() >= index) {
+                WebDriver driver = wdmMap.get(contextId).get(index - 1)
+                        .getWebDriver();
+                log.debug("Opening DevTools for {}", driver);
+                DevTools devTools = ((HasDevTools) driver).getDevTools();
+                devTools.createSessionIfThereIsNotOne();
+                devToolsList.add(devTools);
+                return devTools;
+            } else {
+                throw new SeleniumJupiterException(
+                        "Incorrect position of DevTool arguments"
+                                + " (it should be declared after a ChromiumDriver parameter)");
+            }
+        }
+
         WebDriverManager wdm = null;
         Browser browser = null;
         int browserNumber = 0;
 
-        Class<?> type = parameter.getType();
         boolean isGeneric = isGeneric(type);
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
@@ -563,6 +587,12 @@ public class SeleniumJupiter implements ParameterResolver,
         String contextId = getContextId(extensionContext);
 
         log.trace("Quitting contextId {}: (wdmMap={})", contextId, wdmMap);
+
+        // Close DevTools (if any)
+        devToolsList.forEach(devtools -> {
+            devtools.close();
+        });
+        devToolsList.clear();
 
         if (wdmMap.containsKey(contextId)) {
             Optional<Throwable> executionException = extensionContext

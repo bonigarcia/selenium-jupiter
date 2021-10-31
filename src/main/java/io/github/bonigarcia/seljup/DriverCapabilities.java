@@ -34,5 +34,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target({ PARAMETER, FIELD })
 public @interface DriverCapabilities {
+
     public String[] value() default "";
+
 }
