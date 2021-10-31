@@ -33,5 +33,4 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(TYPE)
 public @interface SingleSession {
-
 }
