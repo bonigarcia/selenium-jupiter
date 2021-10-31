@@ -126,12 +126,11 @@ public class SeleniumJupiter implements ParameterResolver,
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
-        boolean supports = (WebDriver.class.isAssignableFrom(type)
+        return (WebDriver.class.isAssignableFrom(type)
                 || type.equals(DevTools.class)
                 || (type.equals(List.class) && dockerBrowser.isPresent()
                         && isGeneric(parameterizedTypeName)))
                 && !isTestTemplate(extensionContext);
-        return supports;
     }
 
     @Override
@@ -618,9 +617,7 @@ public class SeleniumJupiter implements ParameterResolver,
         log.trace("Quitting contextId {}: (wdmMap={})", contextId, wdmMap);
 
         // Close DevTools (if any)
-        devToolsList.forEach(devtools -> {
-            devtools.close();
-        });
+        devToolsList.forEach(DevTools::close);
         devToolsList.clear();
 
         if (wdmMap.containsKey(contextId)) {
