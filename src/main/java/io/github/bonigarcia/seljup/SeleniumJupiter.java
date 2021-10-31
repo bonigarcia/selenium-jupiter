@@ -147,20 +147,7 @@ public class SeleniumJupiter implements ParameterResolver,
         // DevTools
         Class<?> type = parameter.getType();
         if (type.equals(DevTools.class)) {
-            if (wdmMap != null && wdmMap.get(contextId) != null
-                    && wdmMap.get(contextId).size() >= index) {
-                WebDriver driver = wdmMap.get(contextId).get(index - 1)
-                        .getWebDriver();
-                log.debug("Opening DevTools for {}", driver);
-                DevTools devTools = ((HasDevTools) driver).getDevTools();
-                devTools.createSessionIfThereIsNotOne();
-                devToolsList.add(devTools);
-                return devTools;
-            } else {
-                throw new SeleniumJupiterException(
-                        "Incorrect position of DevTool arguments"
-                                + " (it should be declared after a ChromiumDriver parameter)");
-            }
+            return resolveDevTools(contextId, index);
         }
 
         WebDriverManager wdm = null;
@@ -223,6 +210,23 @@ public class SeleniumJupiter implements ParameterResolver,
         putManagerInMap(contextId, wdm);
 
         return browserNumber == 0 ? wdm.create() : wdm.create(browserNumber);
+    }
+
+    private Object resolveDevTools(String contextId, int index) {
+        if (wdmMap != null && wdmMap.get(contextId) != null
+                && wdmMap.get(contextId).size() >= index) {
+            WebDriver driver = wdmMap.get(contextId).get(index - 1)
+                    .getWebDriver();
+            log.debug("Opening DevTools for {}", driver);
+            DevTools devTools = ((HasDevTools) driver).getDevTools();
+            devTools.createSessionIfThereIsNotOne();
+            devToolsList.add(devTools);
+            return devTools;
+        } else {
+            throw new SeleniumJupiterException(
+                    "Incorrect position of DevTool arguments"
+                            + " (it should be declared after a ChromiumDriver parameter)");
+        }
     }
 
     private String getContextId(ExtensionContext extensionContext) {
