@@ -35,7 +35,7 @@ public class BrowserBuilder {
     String[] preferences;
     Object capabilities;
 
-    private BrowserBuilder(String type) {
+    public BrowserBuilder(String type) {
         this.type = type;
     }
 

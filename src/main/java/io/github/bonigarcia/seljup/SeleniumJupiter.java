@@ -517,6 +517,12 @@ public class SeleniumJupiter implements ParameterResolver,
         browserListList.add(asList(browsers));
     }
 
+    public void addBrowsers(String... browsers) {
+        browserListList.add(asList(browsers).stream()
+                .map(browser -> new BrowserBuilder(browser).build())
+                .collect(Collectors.toList()));
+    }
+
     public void putBrowserList(String key, List<Browser> browserList) {
         browserListMap.put(key, browserList);
     }
