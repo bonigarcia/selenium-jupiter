@@ -64,7 +64,7 @@ include::../../test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[
 ----
 
 === Remote browsers
-Selenium-Jupiter also allows controlling remote browsers. These browsers are typically provided by a https://www.selenium.dev/documentation/en/grid/[Selenium Grid] infrastructure or a cloud provider (such as https://saucelabs.com/[Sauce Labs], https://www.browserstack.com/[BrowserStack], https://crossbrowsertesting.com/[CrossBrowserTesting], etc.). To this aim, Selenium-Jupiter provides two annotations:
+Selenium-Jupiter also allows controlling remote browsers. These browsers are typically provided by a https://www.selenium.dev/documentation/en/grid/[Selenium Grid] infrastructure or a cloud provider (such as https://saucelabs.com/[Sauce Labs], https://www.lambdatest.com/[LambdaTest], etc.). To this aim, Selenium-Jupiter provides two annotations:
 
 * `@DriverUrl`:  Annotation used to identify the URL of the Selenium Server.
 * `@DriverCapabilities`:  Annotation used to configure the desired capabilities, such as the browser type, version, platform, etc.
