@@ -17,7 +17,7 @@
         <selenium.version>4.1.0</selenium.version>
 
         <!-- Test dependencies -->
-        <logback.version>1.2.7</logback.version>
+        <logback.version>1.2.8</logback.version>
         <assertj.version>3.21.0</assertj.version>
 
         <!-- Plugins -->
