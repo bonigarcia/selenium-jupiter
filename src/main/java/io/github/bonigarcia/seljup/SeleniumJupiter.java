@@ -150,6 +150,12 @@ public class SeleniumJupiter implements ParameterResolver,
             return resolveDevTools(contextId, index);
         }
 
+        // HtmlUnit
+        if (type.getName()
+                .equals("org.openqa.selenium.htmlunit.HtmlUnitDriver")) {
+            return resolveHtmlUnit(type, extensionContext, parameter);
+        }
+
         WebDriverManager wdm = null;
         Browser browser = null;
         int browserNumber = 0;
@@ -227,6 +233,28 @@ public class SeleniumJupiter implements ParameterResolver,
                     "Incorrect position of DevTool arguments"
                             + " (it should be declared after a ChromiumDriver parameter)");
         }
+    }
+
+    private Object resolveHtmlUnit(Class<?> type,
+            ExtensionContext extensionContext, Parameter parameter) {
+        WebDriver driver = null;
+        try {
+            Optional<Capabilities> capabilities = getCapabilities(
+                    extensionContext, parameter, Optional.empty(),
+                    Optional.empty());
+
+            if (capabilities.isPresent()) {
+                driver = (WebDriver) type
+                        .getDeclaredConstructor(Capabilities.class)
+                        .newInstance(capabilities.get());
+            } else {
+                driver = (WebDriver) type.getDeclaredConstructor()
+                        .newInstance();
+            }
+        } catch (Exception e) {
+            log.warn("Exception trying to create HtmlUnit instance", e);
+        }
+        return driver;
     }
 
     private String getContextId(ExtensionContext extensionContext) {

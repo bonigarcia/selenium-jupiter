@@ -15,6 +15,7 @@
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
         <selenium.version>4.1.0</selenium.version>
+        <htmlunit.version>3.56.0</htmlunit.version>
 
         <!-- Test dependencies -->
         <logback.version>1.2.9</logback.version>
@@ -98,6 +99,12 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <version>${htmlunit.version}</version>
             <scope>provided</scope>
         </dependency>
 
