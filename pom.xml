@@ -14,7 +14,7 @@
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
-        <selenium.version>4.1.0</selenium.version>
+        <selenium.version>4.1.1</selenium.version>
         <htmlunit.version>3.56.0</htmlunit.version>
 
         <!-- Test dependencies -->
