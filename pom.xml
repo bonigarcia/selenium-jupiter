@@ -18,7 +18,7 @@
         <htmlunit.version>3.56.0</htmlunit.version>
 
         <!-- Test dependencies -->
-        <logback.version>1.2.9</logback.version>
+        <logback.version>1.2.10</logback.version>
         <assertj.version>3.21.0</assertj.version>
 
         <!-- Plugins -->
