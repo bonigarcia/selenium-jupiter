@@ -18,9 +18,6 @@ package io.github.bonigarcia.seljup.test.remote;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,26 +26,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.seljup.DriverCapabilities;
-import io.github.bonigarcia.seljup.DriverUrl;
 import io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 //tag::snippet-in-doc[]
-@EnabledIfDriverUrlOnline("http://localhost:4723/status")
+@EnabledIfDriverUrlOnline("http://localhost:4723")
 @ExtendWith(SeleniumJupiter.class)
 class AppiumTest {
 
     @DriverCapabilities
-    ChromeOptions options;
-
-    @DriverUrl
-    URL appiumServerUrl;
+    ChromeOptions options = new ChromeOptions();
 
     @BeforeEach
-    void setup() throws MalformedURLException {
-        appiumServerUrl = new URL("http://localhost:4723");
-
-        options = new ChromeOptions();
+    void setup() {
         options.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         options.setCapability(MobileCapabilityType.DEVICE_NAME,
                 "Nexus 5 API 30");

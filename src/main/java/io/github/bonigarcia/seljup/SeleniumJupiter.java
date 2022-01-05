@@ -690,7 +690,10 @@ public class SeleniumJupiter implements ParameterResolver,
         try {
             URL url = new URL(urlValue);
             if (!isOnline(url)) {
-                return disabled;
+                URL urlStatus = new URL(url, "/status");
+                if (!isOnline(urlStatus)) {
+                    return disabled;
+                }
             }
             urlFromAnnotation = url;
         } catch (MalformedURLException e) {
