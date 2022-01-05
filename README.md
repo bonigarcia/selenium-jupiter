@@ -163,7 +163,7 @@ Selenium-Jupiter is part of [OpenCollective], an online funding platform for ope
 <a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsors.svg?width=890"></a>
 
 ## About
-Selenium-Jupiter (Copyright &copy; 2017-2021) is a project created and maintained by [Boni García] and licensed under the terms of the [Apache 2.0 License].
+Selenium-Jupiter (Copyright &copy; 2017-2022) is a project created and maintained by [Boni García] and licensed under the terms of the [Apache 2.0 License].
 
 [Logo]: https://bonigarcia.dev/img/seljup.png
 [Selenium-Jupiter]: https://bonigarcia.dev/selenium-jupiter/
