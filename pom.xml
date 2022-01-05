@@ -17,6 +17,7 @@
         <selenium.version>4.1.1</selenium.version>
         <htmlunit.version>3.56.0</htmlunit.version>
         <selenide.version>6.1.2</selenide.version>
+        <appium.version>8.0.0-beta2</appium.version>
 
         <!-- Test dependencies -->
         <logback.version>1.2.10</logback.version>
@@ -125,6 +126,18 @@
                 <exclusion>
                     <groupId>org.apache.httpcomponents.client5</groupId>
                     <artifactId>httpclient5</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

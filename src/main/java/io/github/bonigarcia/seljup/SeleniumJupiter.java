@@ -95,6 +95,7 @@ public class SeleniumJupiter implements ParameterResolver,
     static final String SELENIDE_DRIVER_CLASS = "com.codeborne.selenide.SelenideDriver";
     static final String SELENIDE_CONFIG_INTERFACE = "com.codeborne.selenide.Config";
     static final String SELENIDE_CONFIG_CLASS = "com.codeborne.selenide.SelenideConfig";
+    static final String APPIUM_DRIVER_CLASS = "io.appium.java_client.AppiumDriver";
 
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
             .enabled("Test enabled");
@@ -165,6 +166,10 @@ public class SeleniumJupiter implements ParameterResolver,
         case SELENIDE_DRIVER_CLASS:
             return resolveSelenide(type, extensionContext, parameter);
 
+        // Appium
+        case APPIUM_DRIVER_CLASS:
+            return resolveAppium(testInstance, parameter);
+
         // Selenium WebDriver
         default:
             return resolveSeleniumWebDriver(extensionContext, contextId,
@@ -184,13 +189,7 @@ public class SeleniumJupiter implements ParameterResolver,
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
-        Optional<URL> url;
-        if (urlFromAnnotation != null) {
-            url = Optional.of(urlFromAnnotation);
-        } else {
-            url = annotationsReader.getUrl(parameter, testInstance,
-                    config.getSeleniumServerUrl());
-        }
+        Optional<URL> url = findUrl(parameter, testInstance);
         Optional<Capabilities> caps = annotationsReader
                 .getCapabilities(parameter, testInstance);
 
@@ -238,6 +237,16 @@ public class SeleniumJupiter implements ParameterResolver,
         return browserNumber == 0 ? wdm.create() : wdm.create(browserNumber);
     }
 
+    private Optional<URL> findUrl(Parameter parameter,
+            Optional<Object> testInstance) {
+        Optional<URL> url = annotationsReader.getUrl(parameter, testInstance,
+                config.getSeleniumServerUrl());
+        if (!url.isPresent() && urlFromAnnotation != null) {
+            url = Optional.of(urlFromAnnotation);
+        }
+        return url;
+    }
+
     private Object resolveDevTools(String contextId, int index) {
         if (wdmMap != null && wdmMap.get(contextId) != null
                 && wdmMap.get(contextId).size() >= index) {
@@ -273,6 +282,25 @@ public class SeleniumJupiter implements ParameterResolver,
             }
         } catch (Exception e) {
             log.warn("Exception trying to create HtmlUnit instance", e);
+        }
+        return driver;
+    }
+
+    private Object resolveAppium(Optional<Object> testInstance,
+            Parameter parameter) {
+        Object driver = null;
+        try {
+            Optional<URL> url = findUrl(parameter, testInstance);
+            Optional<Capabilities> caps = annotationsReader
+                    .getCapabilities(parameter, testInstance);
+
+            if (url.isPresent() && caps.isPresent()) {
+                driver = Class.forName(APPIUM_DRIVER_CLASS)
+                        .getDeclaredConstructor(URL.class, Capabilities.class)
+                        .newInstance(url.get(), caps.get());
+            }
+        } catch (Exception e) {
+            log.warn("Exception creating instance of AppiumDriver", e);
         }
         return driver;
     }
