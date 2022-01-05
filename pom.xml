@@ -16,6 +16,7 @@
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
         <selenium.version>4.1.1</selenium.version>
         <htmlunit.version>3.56.0</htmlunit.version>
+        <selenide.version>6.1.2</selenide.version>
 
         <!-- Test dependencies -->
         <logback.version>1.2.10</logback.version>
@@ -106,6 +107,26 @@
             <artifactId>htmlunit-driver</artifactId>
             <version>${htmlunit.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.client5</groupId>
+                    <artifactId>httpclient5</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- test -->

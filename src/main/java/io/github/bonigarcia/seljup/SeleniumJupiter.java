@@ -90,6 +90,12 @@ public class SeleniumJupiter implements ParameterResolver,
     final Logger log = getLogger(lookup().lookupClass());
 
     static final String CLASSPATH_PREFIX = "classpath:";
+    static final String DEVTOOLS_CLASS = "org.openqa.selenium.devtools.DevTools";
+    static final String HTMLUNIT_DRIVER_CLASS = "org.openqa.selenium.htmlunit.HtmlUnitDriver";
+    static final String SELENIDE_DRIVER_CLASS = "com.codeborne.selenide.SelenideDriver";
+    static final String SELENIDE_CONFIG_INTERFACE = "com.codeborne.selenide.Config";
+    static final String SELENIDE_CONFIG_CLASS = "com.codeborne.selenide.SelenideConfig";
+
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
             .enabled("Test enabled");
 
@@ -129,7 +135,8 @@ public class SeleniumJupiter implements ParameterResolver,
         return (WebDriver.class.isAssignableFrom(type)
                 || type.equals(DevTools.class)
                 || (type.equals(List.class) && dockerBrowser.isPresent()
-                        && isGeneric(parameterizedTypeName)))
+                        && isGeneric(parameterizedTypeName))
+                || type.getCanonicalName().equals(SELENIDE_DRIVER_CLASS))
                 && !isTestTemplate(extensionContext);
     }
 
@@ -144,18 +151,31 @@ public class SeleniumJupiter implements ParameterResolver,
         log.trace("Resolving parameter {} (contextId {}, index {})", parameter,
                 contextId, index);
 
-        // DevTools
         Class<?> type = parameter.getType();
-        if (type.equals(DevTools.class)) {
+        switch (type.getName()) {
+        // DevTools
+        case DEVTOOLS_CLASS:
             return resolveDevTools(contextId, index);
-        }
 
         // HtmlUnit
-        if (type.getName()
-                .equals("org.openqa.selenium.htmlunit.HtmlUnitDriver")) {
+        case HTMLUNIT_DRIVER_CLASS:
             return resolveHtmlUnit(type, extensionContext, parameter);
+
+        // Selenide
+        case SELENIDE_DRIVER_CLASS:
+            return resolveSelenide(type, extensionContext, parameter);
+
+        // Selenium WebDriver
+        default:
+            return resolveSeleniumWebDriver(extensionContext, contextId,
+                    parameter, index, testInstance, type);
         }
 
+    }
+
+    private Object resolveSeleniumWebDriver(ExtensionContext extensionContext,
+            String contextId, Parameter parameter, int index,
+            Optional<Object> testInstance, Class<?> type) {
         WebDriverManager wdm = null;
         Browser browser = null;
         int browserNumber = 0;
@@ -253,6 +273,22 @@ public class SeleniumJupiter implements ParameterResolver,
             }
         } catch (Exception e) {
             log.warn("Exception trying to create HtmlUnit instance", e);
+        }
+        return driver;
+    }
+
+    private Object resolveSelenide(Class<?> type,
+            ExtensionContext extensionContext, Parameter parameter) {
+        Object driver = null;
+        try {
+            Object config = Class.forName(SELENIDE_CONFIG_CLASS)
+                    .getDeclaredConstructor().newInstance();
+            driver = Class.forName(SELENIDE_DRIVER_CLASS)
+                    .getDeclaredConstructor(
+                            Class.forName(SELENIDE_CONFIG_INTERFACE))
+                    .newInstance(config);
+        } catch (Exception e) {
+            log.warn("Exception creating instance of SelenideDriver", e);
         }
         return driver;
     }
