@@ -839,6 +839,83 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 </div>
+<style>
+#carbonads * {
+	margin: initial;
+	padding: initial;
+}
+
+#carbonads {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Helvetica, Arial,
+		sans-serif;
+}
+
+#carbonads {
+	display: flex;
+	max-width: 330px;
+	background-color: hsl(0, 0%, 98%);
+	box-shadow: 0 1px 4px 1px hsla(0, 0%, 0%, 0.1);
+	z-index: 100;
+}
+
+#carbonads a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#carbonads a:hover {
+	color: inherit;
+}
+
+#carbonads span {
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+#carbonads .carbon-wrap {
+	display: flex;
+}
+
+#carbonads .carbon-img {
+	display: block;
+	margin: 0;
+	line-height: 1;
+}
+
+#carbonads .carbon-img img {
+	display: block;
+}
+
+#carbonads .carbon-text {
+	font-size: 13px;
+	padding: 10px;
+	margin-bottom: 16px;
+	line-height: 1.5;
+	text-align: left;
+}
+
+#carbonads .carbon-poweredby {
+	display: block;
+	padding: 6px 8px;
+	background: #f1f1f2;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 600;
+	font-size: 8px;
+	line-height: 1;
+	border-top-left-radius: 3px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+</style>
+
+<script async type="text/javascript"
+	src="//cdn.carbonads.com/carbon.js?serve=CEADT23M&placement=bonigarciadev"
+	id="_carbonads_js"></script>
 </div>
 </div>
 <div class="sect1">
@@ -1125,8 +1202,10 @@ Notice you will need hardware virtualization (hypervisor) or a virtual machine w
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.EnabledIfDockerAvailable</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
+<span class="annotation">@EnabledIfDockerAvailable</span>
 <span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
 <span class="type">class</span> <span class="class">DockerChromeBetaTest</span> {
 
@@ -1215,18 +1294,18 @@ Notice that the previous example also uses the attributes <code>lang</code> and 
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.CHROME</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
 <span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
 
 <span class="keyword">import</span> <span class="include">java.io.File</span>;
 <span class="keyword">import</span> <span class="include">java.time.Duration</span>;
+<span class="keyword">import</span> <span class="include">java.util.Arrays</span>;
+<span class="keyword">import</span> <span class="include">java.util.Optional</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterEach</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.RemoteWebDriver</span>;
-<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.SessionId</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
@@ -1234,16 +1313,16 @@ Notice that the previous example also uses the attributes <code>lang</code> and 
 <span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
 <span class="type">class</span> <span class="class">DockerChromeRecordingTest</span> {
 
-    <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+    <span class="directive">static</span> SessionId sessionId;
 
-    <span class="predefined-type">File</span> recordingFile;
-
-    <span class="annotation">@AfterEach</span>
-    <span class="type">void</span> teardown() {
-        <span class="keyword">if</span> (recordingFile != <span class="predefined-constant">null</span>) {
-            assertThat(recordingFile).exists();
-            recordingFile.delete();
-        }
+    <span class="annotation">@AfterAll</span>
+    <span class="directive">static</span> <span class="type">void</span> teardown() {
+        <span class="predefined-type">File</span><span class="type">[]</span> files = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>).listFiles();
+        Optional&lt;<span class="predefined-type">File</span>&gt; recording = <span class="predefined-type">Arrays</span>.stream(files).filter(
+                f -&gt; f.getName().endsWith(sessionId.toString() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.mp4</span><span class="delimiter">&quot;</span></span>))
+                .findFirst();
+        assertThat(recording).isNotEmpty();
+        recording.get().delete();
     }
 
     <span class="annotation">@Test</span>
@@ -1255,8 +1334,7 @@ Notice that the previous example also uses the attributes <code>lang</code> and 
 
         <span class="predefined-type">Thread</span>.sleep(<span class="predefined-type">Duration</span>.ofSeconds(<span class="integer">3</span>).toMillis());
 
-        recordingFile = <span class="keyword">new</span> <span class="predefined-type">File</span>(
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">recordingTest_arg0_chrome_</span><span class="delimiter">&quot;</span></span> + driver.getSessionId() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.mp4</span><span class="delimiter">&quot;</span></span>);
+        sessionId = driver.getSessionId();
     }
 
 }</code></pre>
@@ -1682,12 +1760,15 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">java.io.File</span>;
+<span class="keyword">import</span> <span class="include">java.util.Arrays</span>;
+<span class="keyword">import</span> <span class="include">java.util.Optional</span>;
 
-<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterAll</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterEach</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeAll</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.remote.SessionId</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 
@@ -1696,7 +1777,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
     <span class="annotation">@RegisterExtension</span>
     <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
 
-    <span class="directive">static</span> <span class="predefined-type">File</span> imageFile;
+    SessionId sessionId;
 
     <span class="annotation">@BeforeAll</span>
     <span class="directive">static</span> <span class="type">void</span> setup() {
@@ -1704,10 +1785,14 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
         seleniumJupiter.getConfig().takeScreenshotAsPng(); <span class="comment">// Default option</span>
     }
 
-    <span class="annotation">@AfterAll</span>
-    <span class="directive">static</span> <span class="type">void</span> teardown() {
-        assertThat(imageFile).exists();
-        imageFile.delete();
+    <span class="annotation">@AfterEach</span>
+    <span class="type">void</span> teardown() {
+        <span class="predefined-type">File</span><span class="type">[]</span> files = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>).listFiles();
+        Optional&lt;<span class="predefined-type">File</span>&gt; screenshot = <span class="predefined-type">Arrays</span>.stream(files).filter(
+                f -&gt; f.getName().endsWith(sessionId.toString() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.png</span><span class="delimiter">&quot;</span></span>))
+                .findFirst();
+        assertThat(screenshot).isNotEmpty();
+        screenshot.get().delete();
     }
 
     <span class="annotation">@Test</span>
@@ -1715,8 +1800,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
 
-        imageFile = <span class="keyword">new</span> <span class="predefined-type">File</span>(
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">screenshotTest_arg0_chrome_</span><span class="delimiter">&quot;</span></span> + driver.getSessionId() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.png</span><span class="delimiter">&quot;</span></span>);
+        sessionId = driver.getSessionId();
     }
 
 }</code></pre>
@@ -1803,6 +1887,9 @@ Notice that the previous example deletes the image at the end of the test. If yo
 </li>
 <li>
 <p><a href="https://github.com/bonigarcia/selenium-jupiter-webrtc">Selenium-Jupiter WebRTC</a>: Tests aimed to assess <a href="https://webrtc.org/">WebRTC</a> video conference applications with Selenium-Jupiter.</p>
+</li>
+<li>
+<p><a href="https://github.com/bonigarcia/rate-my-cat/">Rate my Cat!</a>: Complete sample application and tests using JUnit 5, Selenium WebDriver, Spring-Boot, and Mockito.</p>
 </li>
 <li>
 <p><a href="https://github.com/bonigarcia/selenium-webdriver-java">Selenium WebDriver with Java</a>: A comprehensive collection of Selenium WebDriver 4 examples using Java as language binding.</p>
@@ -2006,7 +2093,20 @@ The preference order of these configuration alternatives is (in case of overlapp
 <h2 id="further-documentation"><a class="anchor" href="#further-documentation"></a>9. Further Documentation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are other resources related to Selenium-Jupiter and automated testing you can find helpful. For instance, the following journal papers:</p>
+<p>There are other resources related to Selenium-Jupiter and automated testing you can find helpful. For instance, the following books:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>García, Boni. <a href="https://www.oreilly.com/library/view/hands-on-selenium-webdriver/9781098109998/">Hands-On Selenium WebDriver with Java</a>. <em>O&#8217;Reilly Media, Inc.</em>, Currently on early relase. Final release available on 2022.</p>
+</li>
+<li>
+<p>García, Boni. <a href="https://www.amazon.com/Mastering-Software-Testing-JUnit-Comprehensive-ebook/dp/B076ZQCK5Q/">Mastering Software Testing with JUnit 5</a>. <em>Packt Publishing Ltd</em>, 2017.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Or the following journal papers:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2030,16 +2130,6 @@ The preference order of these configuration alternatives is (in case of overlapp
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Or the following book:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>García, Boni. <a href="https://www.amazon.com/Mastering-Software-Testing-JUnit-Comprehensive-ebook/dp/B076ZQCK5Q/">Mastering Software Testing with JUnit 5</a>. <em>Packt Publishing Ltd</em>, 2017.</p>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -2054,7 +2144,7 @@ The preference order of these configuration alternatives is (in case of overlapp
 <div id="footer">
 <div id="footer-text">
 Version 4.0.1<br>
-Updated on 31-08-2021
+Updated on 10-01-2022
 </div>
 </div>
 </body>

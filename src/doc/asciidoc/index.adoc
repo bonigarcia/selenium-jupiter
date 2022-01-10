@@ -14,6 +14,14 @@ https://junit.org/junit5/[JUnit 5] is the next generation of the popular testing
 https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-source Java library that implements a JUnit 5 extension for developing Selenium WebDriver tests. Selenium-Jupiter uses several features of the Jupiter extension (such as parameters resolution, test templates, or conditional test execution). Thanks to this, the resulting Selenium-Jupiter tests follow a minimalist approach (i.e., the required boilerplate code for WebDriver is reduced) while providing a wide range of advanced features for end-to-end testing.
 ****
 
+ifndef::backend-pdf[]
+ifndef::backend-epub3[]
+++++
+include::carbon.html[]
+++++
+endif::[]
+endif::[]
+
 == Setup
 Selenium-Jupiter should be used as a Java dependency (JDK 8+ required). We typically use a _build tool_ (such as https://maven.apache.org/[Maven] or https://gradle.org/[Gradle]) to resolve the Selenium-Jupiter dependency. In Maven, it can be done as follows (notice that it is declared using the `test` scope since it is typically used in tests classes):
 
