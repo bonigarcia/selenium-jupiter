@@ -229,8 +229,8 @@ public class SeleniumJupiter implements ParameterResolver,
         // Output folder
         outputHandler = new OutputHandler(extensionContext, getConfig(),
                 parameter);
-        wdm.recordingPrefix(outputHandler.getPrefix());
-        wdm.recordingOutput(outputHandler.getOutputFolder());
+        wdm.dockerRecordingPrefix(outputHandler.getPrefix());
+        wdm.dockerRecordingOutput(outputHandler.getOutputFolder());
 
         putManagerInMap(contextId, wdm);
 

@@ -34,7 +34,7 @@ class DockerCustomWdmTest {
     @BeforeAll
     static void setup() {
         WebDriverManager wdm = WebDriverManager.chromedriver().browserInDocker()
-                .dockerImage("selenoid/vnc:chrome_91.0");
+                .dockerCustomImage("selenoid/vnc:chrome_91.0");
         seleniumJupiter.getConfig().setManager(wdm);
     }
 
