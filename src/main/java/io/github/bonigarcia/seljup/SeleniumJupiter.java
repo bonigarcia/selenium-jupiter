@@ -418,7 +418,7 @@ public class SeleniumJupiter implements ParameterResolver,
             if (browser.isAndroidBrowser()) {
                 wdm.browserInDockerAndroid();
             }
-            if (config.isRecording()) {
+            if (config.isRecording() || config.isRecordingWhenFailure()) {
                 wdm.enableRecording();
             }
             if (config.isVnc()) {
