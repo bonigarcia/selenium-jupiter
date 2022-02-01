@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.local;
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -27,6 +28,7 @@ import com.codeborne.selenide.SelenideDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
+@Disabled("Selenide 6.2.1 is not compatible with Selenium 4.1.2")
 class SelenideTest {
 
     @Test
