@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 public class BrowsersTemplate {
 
     static final String IN_DOCKER = "-in-docker";
+    static final String IN_SELENIDE = "-in-selenide";
 
     List<List<Browser>> browsers;
 
@@ -104,8 +105,9 @@ public class BrowsersTemplate {
         }
 
         public static BrowserType toBrowserType(String browser) {
-            return BrowserType.valueOf(browser.replace(IN_DOCKER, "")
-                    .replace("-", "_").toUpperCase(ROOT));
+            return BrowserType.valueOf(
+                    browser.replace(IN_DOCKER, "").replace(IN_SELENIDE, "")
+                            .replace("-", "_").toUpperCase(ROOT));
         }
 
         public boolean isAndroidBrowser() {
@@ -114,6 +116,10 @@ public class BrowsersTemplate {
 
         public boolean isDockerBrowser() {
             return getType().contains(IN_DOCKER);
+        }
+
+        public boolean isInSelenide() {
+            return getType().contains(IN_SELENIDE);
         }
 
         @Override

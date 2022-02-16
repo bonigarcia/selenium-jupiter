@@ -95,6 +95,7 @@ public class SeleniumJupiter implements ParameterResolver,
     static final String SELENIDE_DRIVER_CLASS = "com.codeborne.selenide.SelenideDriver";
     static final String SELENIDE_CONFIG_INTERFACE = "com.codeborne.selenide.Config";
     static final String SELENIDE_CONFIG_CLASS = "com.codeborne.selenide.SelenideConfig";
+    static final String SELENIDE_PROXY_CLASS = "com.codeborne.selenide.proxy.SelenideProxyServer";
     static final String APPIUM_DRIVER_CLASS = "io.appium.java_client.AppiumDriver";
 
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
@@ -162,10 +163,6 @@ public class SeleniumJupiter implements ParameterResolver,
         case HTMLUNIT_DRIVER_CLASS:
             return resolveHtmlUnit(type, extensionContext, parameter);
 
-        // Selenide
-        case SELENIDE_DRIVER_CLASS:
-            return resolveSelenide(type, extensionContext, parameter);
-
         // Appium
         case APPIUM_DRIVER_CLASS:
             return resolveAppium(testInstance, parameter);
@@ -175,9 +172,9 @@ public class SeleniumJupiter implements ParameterResolver,
             return resolveSeleniumWebDriver(extensionContext, contextId,
                     parameter, index, testInstance, type);
         }
-
     }
 
+    @SuppressWarnings("unchecked")
     private Object resolveSeleniumWebDriver(ExtensionContext extensionContext,
             String contextId, Parameter parameter, int index,
             Optional<Object> testInstance, Class<?> type) {
@@ -186,13 +183,13 @@ public class SeleniumJupiter implements ParameterResolver,
         int browserNumber = 0;
 
         boolean isGeneric = isGeneric(type);
+        boolean isSelenide = isSelenide(type);
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
         Optional<URL> url = findUrl(parameter, testInstance);
         Optional<Capabilities> caps = annotationsReader
                 .getCapabilities(parameter, testInstance);
-
         // Single session
         if (isSingleSession(extensionContext) && wdmMap.containsKey(contextId)
                 && index < wdmMap.get(contextId).size()) {
@@ -206,7 +203,7 @@ public class SeleniumJupiter implements ParameterResolver,
         if (config.getManager() != null) { // Custom manager
             wdm = config.getManager();
 
-        } else if (isGeneric && !browserListMap.isEmpty()) { // Template
+        } else if ((isGeneric || isSelenide)) { // Template
             browser = getBrowser(contextId, index);
             wdm = getManagerForTemplate(extensionContext, parameter, browser,
                     url);
@@ -234,7 +231,44 @@ public class SeleniumJupiter implements ParameterResolver,
 
         putManagerInMap(contextId, wdm);
 
-        return browserNumber == 0 ? wdm.create() : wdm.create(browserNumber);
+        Object object = browserNumber == 0 ? wdm.create()
+                : wdm.create(browserNumber);
+        if (isSelenide || browser.isInSelenide()) {
+            if (browserNumber == 0) {
+                object = createSelenideDriver((WebDriver) object);
+            } else {
+                object = ((List<WebDriver>) object).stream()
+                        .map(this::createSelenideDriver)
+                        .collect(Collectors.toList());
+            }
+        }
+
+        return object;
+    }
+
+    private Object createSelenideDriver(WebDriver driver) {
+        Object object = null;
+        try {
+            Object config = Class.forName(SELENIDE_CONFIG_CLASS)
+                    .getDeclaredConstructor().newInstance();
+            if (driver == null) {
+                object = Class.forName(SELENIDE_DRIVER_CLASS)
+                        .getDeclaredConstructor(
+                                Class.forName(SELENIDE_CONFIG_INTERFACE))
+                        .newInstance(config);
+            } else {
+                object = Class.forName(SELENIDE_DRIVER_CLASS)
+                        .getDeclaredConstructor(
+                                Class.forName(SELENIDE_CONFIG_INTERFACE),
+                                WebDriver.class,
+                                Class.forName(SELENIDE_PROXY_CLASS))
+                        .newInstance(config, driver, null);
+            }
+
+        } catch (Exception e) {
+            log.warn("Exception creating SelenideDriver object", e);
+        }
+        return object;
     }
 
     private Optional<URL> findUrl(Parameter parameter,
@@ -301,22 +335,6 @@ public class SeleniumJupiter implements ParameterResolver,
             }
         } catch (Exception e) {
             log.warn("Exception creating instance of AppiumDriver", e);
-        }
-        return driver;
-    }
-
-    private Object resolveSelenide(Class<?> type,
-            ExtensionContext extensionContext, Parameter parameter) {
-        Object driver = null;
-        try {
-            Object config = Class.forName(SELENIDE_CONFIG_CLASS)
-                    .getDeclaredConstructor().newInstance();
-            driver = Class.forName(SELENIDE_DRIVER_CLASS)
-                    .getDeclaredConstructor(
-                            Class.forName(SELENIDE_CONFIG_INTERFACE))
-                    .newInstance(config);
-        } catch (Exception e) {
-            log.warn("Exception creating instance of SelenideDriver", e);
         }
         return driver;
     }
@@ -486,7 +504,8 @@ public class SeleniumJupiter implements ParameterResolver,
             allWebDriver = !stream(
                     context.getTestMethod().get().getParameterTypes())
                             .map(s -> s.equals(WebDriver.class)
-                                    || s.equals(RemoteWebDriver.class))
+                                    || s.equals(RemoteWebDriver.class)
+                                    || isSelenide(s))
                             .collect(toList()).contains(false);
         }
         return allWebDriver;
@@ -566,7 +585,8 @@ public class SeleniumJupiter implements ParameterResolver,
                         Class<?> type = parameterContext.getParameter()
                                 .getType();
                         return type.equals(WebDriver.class)
-                                || type.equals(RemoteWebDriver.class);
+                                || type.equals(RemoteWebDriver.class)
+                                || isSelenide(type);
                     }
 
                     @Override
@@ -621,6 +641,10 @@ public class SeleniumJupiter implements ParameterResolver,
 
     public void putBrowserList(String key, List<Browser> browserList) {
         browserListMap.put(key, browserList);
+    }
+
+    private boolean isSelenide(Class<?> type) {
+        return type.getCanonicalName().equals(SELENIDE_DRIVER_CLASS);
     }
 
     private boolean isTestTemplate(ExtensionContext extensionContext) {

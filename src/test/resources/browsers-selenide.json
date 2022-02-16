@@ -1,0 +1,19 @@
+{
+   "browsers": [
+      [
+         {
+            "type": "chrome-in-selenide"
+         }
+      ],
+      [
+         {
+            "type": "firefox-in-selenide"
+         }
+      ],
+      [
+         {
+            "type": "chrome-in-selenide-in-docker"
+         }
+      ]
+   ]
+}
