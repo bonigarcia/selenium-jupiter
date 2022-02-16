@@ -203,17 +203,17 @@ public class SeleniumJupiter implements ParameterResolver,
         if (config.getManager() != null) { // Custom manager
             wdm = config.getManager();
 
-        } else if ((isGeneric || isSelenide)) { // Template
-            browser = getBrowser(contextId, index);
-            wdm = getManagerForTemplate(extensionContext, parameter, browser,
-                    url);
-
         } else if (dockerBrowser.isPresent()) { // Docker
             if (dockerBrowser.get().size() > 0) {
                 browserNumber = dockerBrowser.get().size();
             }
             wdm = getManagerForDocker(extensionContext, parameter,
                     dockerBrowser.get());
+
+        } else if (isGeneric || isSelenide) { // Template
+            browser = getBrowser(contextId, index);
+            wdm = getManagerForTemplate(extensionContext, parameter, browser,
+                    url);
 
         } else if (url.isPresent() && caps.isPresent()) { // Remote
             wdm = getManagerForRemote(url.get(), caps.get());
@@ -233,7 +233,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
         Object object = browserNumber == 0 ? wdm.create()
                 : wdm.create(browserNumber);
-        if (isSelenide || browser.isInSelenide()) {
+        if (isSelenide || (browser != null && browser.isInSelenide())) {
             if (browserNumber == 0) {
                 object = createSelenideDriver((WebDriver) object);
             } else {
