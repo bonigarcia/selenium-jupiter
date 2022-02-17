@@ -242,14 +242,15 @@ public class SeleniumJupiter implements ParameterResolver,
             object = browserNumber == 0 ? wdm.create()
                     : wdm.create(browserNumber);
         }
-        if (isSelenide || (browser != null && browser.isInSelenide())) {
+        if (object != null && (isSelenide
+                || (browser != null && browser.isInSelenide()))) {
             if (browserNumber == 0) {
                 object = selenideHandler.createSelenideDriver(
                         (WebDriver) object, parameter, testInstance);
             } else {
                 object = ((List<WebDriver>) object).stream()
                         .map(driver -> selenideHandler.createSelenideDriver(
-                                (WebDriver) driver, parameter, testInstance))
+                                driver, parameter, testInstance))
                         .collect(Collectors.toList());
             }
         }
