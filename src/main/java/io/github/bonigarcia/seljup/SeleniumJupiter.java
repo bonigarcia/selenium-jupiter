@@ -174,7 +174,6 @@ public class SeleniumJupiter implements ParameterResolver,
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Object resolveSeleniumWebDriver(ExtensionContext extensionContext,
             String contextId, Parameter parameter, int index,
             Optional<Object> testInstance, Class<?> type) {
@@ -231,6 +230,12 @@ public class SeleniumJupiter implements ParameterResolver,
 
         putManagerInMap(contextId, wdm);
 
+        return getObjectFromWdm(wdm, browser, browserNumber, isSelenide);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object getObjectFromWdm(WebDriverManager wdm, Browser browser,
+            int browserNumber, boolean isSelenide) {
         Object object = browserNumber == 0 ? wdm.create()
                 : wdm.create(browserNumber);
         if (isSelenide || (browser != null && browser.isInSelenide())) {
@@ -242,7 +247,6 @@ public class SeleniumJupiter implements ParameterResolver,
                         .collect(Collectors.toList());
             }
         }
-
         return object;
     }
 
