@@ -209,13 +209,13 @@ public class SeleniumJupiter implements ParameterResolver,
             wdm = getManagerForDocker(extensionContext, parameter,
                     dockerBrowser.get());
 
+        } else if (url.isPresent() && caps.isPresent()) { // Remote
+            wdm = getManagerForRemote(url.get(), caps.get());
+
         } else if (isGeneric || isSelenide) { // Template
             browser = getBrowser(contextId, index);
             wdm = getManagerForTemplate(extensionContext, parameter, browser,
                     url);
-
-        } else if (url.isPresent() && caps.isPresent()) { // Remote
-            wdm = getManagerForRemote(url.get(), caps.get());
 
         } else { // Local
             wdm = getManagerForLocal(extensionContext, parameter, type,
@@ -272,6 +272,7 @@ public class SeleniumJupiter implements ParameterResolver,
         } catch (Exception e) {
             log.warn("Exception creating SelenideDriver object", e);
         }
+
         return object;
     }
 
