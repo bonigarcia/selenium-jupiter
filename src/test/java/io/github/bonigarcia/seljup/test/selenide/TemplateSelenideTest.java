@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.template;
+package io.github.bonigarcia.seljup.test.selenide;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

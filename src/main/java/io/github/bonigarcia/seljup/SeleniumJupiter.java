@@ -92,10 +92,6 @@ public class SeleniumJupiter implements ParameterResolver,
     static final String CLASSPATH_PREFIX = "classpath:";
     static final String DEVTOOLS_CLASS = "org.openqa.selenium.devtools.DevTools";
     static final String HTMLUNIT_DRIVER_CLASS = "org.openqa.selenium.htmlunit.HtmlUnitDriver";
-    static final String SELENIDE_DRIVER_CLASS = "com.codeborne.selenide.SelenideDriver";
-    static final String SELENIDE_CONFIG_INTERFACE = "com.codeborne.selenide.Config";
-    static final String SELENIDE_CONFIG_CLASS = "com.codeborne.selenide.SelenideConfig";
-    static final String SELENIDE_PROXY_CLASS = "com.codeborne.selenide.proxy.SelenideProxyServer";
     static final String APPIUM_DRIVER_CLASS = "io.appium.java_client.AppiumDriver";
 
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
@@ -109,6 +105,7 @@ public class SeleniumJupiter implements ParameterResolver,
     Map<String, List<Browser>> browserListMap;
     OutputHandler outputHandler;
     URL urlFromAnnotation;
+    SelenideHandler selenideHandler;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -117,6 +114,7 @@ public class SeleniumJupiter implements ParameterResolver,
         browserListList = new ArrayList<>();
         browserListMap = new ConcurrentHashMap<>();
         devToolsList = new ArrayList<>();
+        selenideHandler = new SelenideHandler(annotationsReader);
     }
 
     @Override
@@ -138,7 +136,7 @@ public class SeleniumJupiter implements ParameterResolver,
                 || type.equals(DevTools.class)
                 || (type.equals(List.class) && dockerBrowser.isPresent()
                         && isGeneric(parameterizedTypeName))
-                || type.getCanonicalName().equals(SELENIDE_DRIVER_CLASS))
+                || selenideHandler.isSelenide(type))
                 && !isTestTemplate(extensionContext);
     }
 
@@ -182,7 +180,7 @@ public class SeleniumJupiter implements ParameterResolver,
         int browserNumber = 0;
 
         boolean isGeneric = isGeneric(type);
-        boolean isSelenide = isSelenide(type);
+        boolean isSelenide = selenideHandler.isSelenide(type);
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
@@ -230,49 +228,31 @@ public class SeleniumJupiter implements ParameterResolver,
 
         putManagerInMap(contextId, wdm);
 
-        return getObjectFromWdm(wdm, browser, browserNumber, isSelenide);
+        return getObjectFromWdm(wdm, browser, browserNumber, isSelenide,
+                parameter, testInstance);
     }
 
     @SuppressWarnings("unchecked")
     private Object getObjectFromWdm(WebDriverManager wdm, Browser browser,
-            int browserNumber, boolean isSelenide) {
-        Object object = browserNumber == 0 ? wdm.create()
-                : wdm.create(browserNumber);
+            int browserNumber, boolean isSelenide, Parameter parameter,
+            Optional<Object> testInstance) {
+        Object object = null;
+        if (!isSelenide || !selenideHandler.useCustomSelenideConfig(parameter,
+                testInstance)) {
+            object = browserNumber == 0 ? wdm.create()
+                    : wdm.create(browserNumber);
+        }
         if (isSelenide || (browser != null && browser.isInSelenide())) {
             if (browserNumber == 0) {
-                object = createSelenideDriver((WebDriver) object);
+                object = selenideHandler.createSelenideDriver(
+                        (WebDriver) object, parameter, testInstance);
             } else {
                 object = ((List<WebDriver>) object).stream()
-                        .map(this::createSelenideDriver)
+                        .map(driver -> selenideHandler.createSelenideDriver(
+                                (WebDriver) driver, parameter, testInstance))
                         .collect(Collectors.toList());
             }
         }
-        return object;
-    }
-
-    private Object createSelenideDriver(WebDriver driver) {
-        Object object = null;
-        try {
-            Object config = Class.forName(SELENIDE_CONFIG_CLASS)
-                    .getDeclaredConstructor().newInstance();
-            if (driver == null) {
-                object = Class.forName(SELENIDE_DRIVER_CLASS)
-                        .getDeclaredConstructor(
-                                Class.forName(SELENIDE_CONFIG_INTERFACE))
-                        .newInstance(config);
-            } else {
-                object = Class.forName(SELENIDE_DRIVER_CLASS)
-                        .getDeclaredConstructor(
-                                Class.forName(SELENIDE_CONFIG_INTERFACE),
-                                WebDriver.class,
-                                Class.forName(SELENIDE_PROXY_CLASS))
-                        .newInstance(config, driver, null);
-            }
-
-        } catch (Exception e) {
-            log.warn("Exception creating SelenideDriver object", e);
-        }
-
         return object;
     }
 
@@ -510,7 +490,7 @@ public class SeleniumJupiter implements ParameterResolver,
                     context.getTestMethod().get().getParameterTypes())
                             .map(s -> s.equals(WebDriver.class)
                                     || s.equals(RemoteWebDriver.class)
-                                    || isSelenide(s))
+                                    || selenideHandler.isSelenide(s))
                             .collect(toList()).contains(false);
         }
         return allWebDriver;
@@ -591,7 +571,7 @@ public class SeleniumJupiter implements ParameterResolver,
                                 .getType();
                         return type.equals(WebDriver.class)
                                 || type.equals(RemoteWebDriver.class)
-                                || isSelenide(type);
+                                || selenideHandler.isSelenide(type);
                     }
 
                     @Override
@@ -646,10 +626,6 @@ public class SeleniumJupiter implements ParameterResolver,
 
     public void putBrowserList(String key, List<Browser> browserList) {
         browserListMap.put(key, browserList);
-    }
-
-    private boolean isSelenide(Class<?> type) {
-        return type.getCanonicalName().equals(SELENIDE_DRIVER_CLASS);
     }
 
     private boolean isTestTemplate(ExtensionContext extensionContext) {
