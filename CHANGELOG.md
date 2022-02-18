@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.1.0] - 2022-02-18
+### Added
+- Support DevTools in the parameter resolution mechanism
+- Include @EnabledIfDriverUrlOnline to conditionally skip tests
+- Include @EnabledIfDockerAvailable to disable test conditionally depending on Docker
+- Include support for Appium 2.x in Selenium-Jupiter 4.x
+- Include support for Selenide in Selenium-Jupiter 4.x
+- Include methods in SeleniumJupiter class to get the Docker noVNC URL
+
+### Changed
+- Include timestamp in screenshot filename
+
+
 ## [4.0.1] - 2021-08-31
 ### Changed
 - Downgrade to Java 8
