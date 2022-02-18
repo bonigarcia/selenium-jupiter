@@ -12,6 +12,8 @@
 ### Changed
 - Include timestamp in screenshot filename
 
+### Fixed
+- Config option enableRecordingWhenFailure does not work for TestTemplate approach (issue #205)
 
 ## [4.0.1] - 2021-08-31
 ### Changed
