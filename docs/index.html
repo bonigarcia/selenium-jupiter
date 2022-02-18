@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.15">
+<meta name="generator" content="Asciidoctor 2.0.17">
 <meta name="author" content="Boni García">
 <title>Selenium-Jupiter</title>
 <style>
@@ -672,18 +672,18 @@ table.tableblock.grid-all { -webkit-border-radius: 0; border-radius: 0; -webkit-
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+/*! Stylesheet for CodeRay to loosely match GitHub themes | MIT License */
 pre.CodeRay{background:#f7f7f8}
-.CodeRay .line-numbers{border-right:1px solid currentColor;opacity:.35;padding:0 .5em 0 0}
+.CodeRay .line-numbers{border-right:1px solid;opacity:.35;padding:0 .5em 0 0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .CodeRay span.line-numbers{display:inline-block;margin-right:.75em}
 .CodeRay .line-numbers strong{color:#000}
 table.CodeRay{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.CodeRay td{vertical-align:top;line-height:inherit}
 table.CodeRay td.line-numbers{text-align:right}
 table.CodeRay td.code{padding:0 0 0 .75em}
-.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .debug{color:#fff!important;background:navy!important}
 .CodeRay .annotation{color:#007}
-.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-name{color:navy}
 .CodeRay .attribute-value{color:#700}
 .CodeRay .binary{color:#509}
 .CodeRay .comment{color:#998;font-style:italic}
@@ -692,7 +692,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .char .delimiter{color:#039}
 .CodeRay .class{color:#458;font-weight:bold}
 .CodeRay .complex{color:#a08}
-.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .constant,.CodeRay .predefined-constant{color:teal}
 .CodeRay .color{color:#099}
 .CodeRay .class-variable{color:#369}
 .CodeRay .decorator{color:#b0b}
@@ -707,7 +707,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .exception{color:inherit}
 .CodeRay .filename{color:#099}
 .CodeRay .function{color:#900;font-weight:bold}
-.CodeRay .global-variable{color:#008080}
+.CodeRay .global-variable{color:teal}
 .CodeRay .hex{color:#058}
 .CodeRay .integer,.CodeRay .float{color:#099}
 .CodeRay .include{color:#555}
@@ -718,7 +718,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .inline-delimiter{color:#d14}
 .CodeRay .important{color:#555;font-weight:bold}
 .CodeRay .interpreted{color:#b2b}
-.CodeRay .instance-variable{color:#008080}
+.CodeRay .instance-variable{color:teal}
 .CodeRay .label{color:#970}
 .CodeRay .local-variable{color:#963}
 .CodeRay .octal{color:#40e}
@@ -728,7 +728,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .directive{font-weight:bold}
 .CodeRay .type{font-weight:bold}
 .CodeRay .predefined-type{color:inherit}
-.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .reserved,.CodeRay .keyword{color:#000;font-weight:bold}
 .CodeRay .key{color:#808}
 .CodeRay .key .delimiter{color:#606}
 .CodeRay .key .char{color:#80f}
@@ -748,7 +748,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 .CodeRay .symbol{color:#990073}
 .CodeRay .symbol .content{color:#a60}
 .CodeRay .symbol .delimiter{color:#630}
-.CodeRay .tag{color:#008080}
+.CodeRay .tag{color:teal}
 .CodeRay .tag-special{color:#d70}
 .CodeRay .variable{color:#036}
 .CodeRay .insert{background:#afa}
@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.0.1</span>
+<span id="revdate">Version 4.1.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -794,7 +794,11 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <ul class="sectlevel2">
 <li><a href="#local-browsers">3.1. Local browsers</a></li>
 <li><a href="#conditional-tests">3.2. Conditional tests</a></li>
-<li><a href="#remote-browsers">3.3. Remote browsers</a></li>
+<li><a href="#remote-browsers">3.3. Remote browsers</a>
+<ul class="sectlevel3">
+<li><a href="#appium">3.3.1. Appium</a></li>
+</ul>
+</li>
 <li><a href="#docker-browsers">3.4. Docker browsers</a>
 <ul class="sectlevel3">
 <li><a href="#browser-versions">3.4.1. Browser Versions</a></li>
@@ -806,9 +810,10 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#browser-capabilities">3.5. Browser Capabilities</a></li>
 <li><a href="#template-tests">3.6. Template tests</a></li>
 <li><a href="#generic-driver">3.7. Generic driver</a></li>
-<li><a href="#single-session">3.8. Single session</a></li>
-<li><a href="#screenshots">3.9. Screenshots</a></li>
-<li><a href="#integration-with-jenkins">3.10. Integration with Jenkins</a></li>
+<li><a href="#chrome-devtools">3.8. Chrome DevTools</a></li>
+<li><a href="#single-session">3.9. Single session</a></li>
+<li><a href="#screenshots">3.10. Screenshots</a></li>
+<li><a href="#integration-with-jenkins">3.11. Integration with Jenkins</a></li>
 </ul>
 </li>
 <li><a href="#examples">4. Examples</a></li>
@@ -929,7 +934,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.0.1<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.1.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -940,7 +945,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.0.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.1.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -992,7 +997,7 @@ As of version 4, Selenium-Jupiter does not include Selenium WebDriver as a trans
 </div>
 </div>
 <div class="paragraph">
-<p>The possible <code>WebDriver</code> types we can specify as test parameters are <code>FirefoxDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java">example</a>), <code>EdgeDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java">example</a>), <code>SafariDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java">example</a>), <code>OperaDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java">example</a>), <code>InternetExplorerDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java">example</a>), and <code>ChromiumDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java">example</a>).</p>
+<p>The possible <code>WebDriver</code> types we can specify as test parameters are <code>FirefoxDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java">example</a>), <code>EdgeDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java">example</a>), <code>SafariDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java">example</a>), <code>OperaDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java">example</a>), <code>InternetExplorerDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java">example</a>), <code>ChromiumDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java">example</a>), and <code>SelenideDriver</code> (for controlling browsers through <a href="https://selenide.org/">Selenide</a>, see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java">example</a>).</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1042,6 +1047,69 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> test(SafariDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition, Selenium-Jupiter provides the class-level annotation <code>@EnabledIfDriverUrlOnline</code> for conditionally disabling tests depending on the availability of the driver URL. If this URL is online, it will be used for remote tests, for instance, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.Capabilities</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+
+<span class="annotation">@EnabledIfDriverUrlOnline</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4444/</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">RemoteChromeTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    Capabilities capabilities = <span class="keyword">new</span> ChromeOptions();
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(WebDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The last annotation provided by Selenium-Jupiter for custom test disabling is <code>@EnabledIfDockerAvailable</code>, which disables test when a Docker engine is not installed in the machine running the test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">io.github.bonigarcia.seljup.BrowserType.CHROME</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.WebDriver</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DockerBrowser</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.EnabledIfDockerAvailable</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+
+<span class="annotation">@EnabledIfDockerAvailable</span>
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">DockerChromeBetaTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
     }
@@ -1107,6 +1175,52 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 </div>
 <div class="paragraph">
 <p>You can find an example of an equivalent remote test but defining the remote URL and capabilities at field-level <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeTest.java">here</a>. A similar example, but using Sauce Labs is this <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/SauceLabsTest.java">one</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="appium"><a class="anchor" href="#appium"></a>3.3.1. Appium</h4>
+<div class="paragraph">
+<p>As of version 4.1.0, Selenium-Jupiter supports remote browsers hosted by <a href="https://appium.io/">Appium</a> 2. To use this feature, you need to specify the type <code>AppiumDriver</code>, and also the Appium server URL and capabilities. The following test shows a basic example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeEach</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeOptions</span>;
+
+<span class="keyword">import</span> <span class="include">io.appium.java_client.AppiumDriver</span>;
+<span class="keyword">import</span> <span class="include">io.appium.java_client.remote.MobileCapabilityType</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.DriverCapabilities</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+
+<span class="annotation">@EnabledIfDriverUrlOnline</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:4723</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">AppiumTest</span> {
+
+    <span class="annotation">@DriverCapabilities</span>
+    ChromeOptions options = <span class="keyword">new</span> ChromeOptions();
+
+    <span class="annotation">@BeforeEach</span>
+    <span class="type">void</span> setup() {
+        options.setCapability(MobileCapabilityType.PLATFORM_NAME, <span class="string"><span class="delimiter">&quot;</span><span class="content">Android</span><span class="delimiter">&quot;</span></span>);
+        options.setCapability(MobileCapabilityType.DEVICE_NAME,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">Nexus 5 API 30</span><span class="delimiter">&quot;</span></span>);
+        options.setCapability(MobileCapabilityType.AUTOMATION_NAME,
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">UiAutomator2</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(AppiumDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
+        assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1620,7 +1734,7 @@ Notice that instead of declaring the method with the usual <code>@Test</code> an
 <div class="ulist">
 <ul>
 <li>
-<p><code>type</code>: Type of browsers. It can be local (<code>chrome</code> , <code>firefox</code> , <code>edge</code> , <code>opera</code>, <code>safari</code> , <code>chromium</code> , or <code>iexplorer</code>) or in Docker (<code>chrome-in-docker</code>, <code>firefox-in-docker</code>, <code>edge-in-docker</code>, <code>opera-in-docker</code>, <code>safari-in-docker</code>, or <code>chrome-mobile</code>).</p>
+<p><code>type</code>: Type of browsers. It can be local (<code>chrome</code> , <code>firefox</code> , <code>edge</code> , <code>opera</code>, <code>safari</code> , <code>chromium</code> , or <code>iexplorer</code>) or in Docker (<code>chrome-in-docker</code>, <code>firefox-in-docker</code>, <code>edge-in-docker</code>, <code>opera-in-docker</code>, <code>safari-in-docker</code>, or <code>chrome-mobile</code>). In addition, as of Selenium-Jupiter 4.1.0, it is also possible to use the label <code>-in-selenide</code> to specify browsers controlled with Selenide. For example: <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/TemplateSelenideTest.java">test</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/resources/browsers-selenide.json">scenario</a>.</p>
 </li>
 <li>
 <p><code>version</code>: Optional value for the version. Concrete versions (e.g., <code>63.0</code>, <code>58.0</code>, etc.) and wildcards (<code>latest</code>, <code>latest-N</code>, <code>beta</code>, and <code>dev</code>) are accepted.</p>
@@ -1687,7 +1801,67 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 </div>
 </div>
 <div class="sect2">
-<h3 id="single-session"><a class="anchor" href="#single-session"></a>3.8. Single session</h3>
+<h3 id="chrome-devtools"><a class="anchor" href="#chrome-devtools"></a>3.8. Chrome DevTools</h3>
+<div class="paragraph">
+<p>As of version 4.1.0, Selenium-Jupiter allows to inject <code>DevTools</code> instances in tests. This object used to send commands using the Chrome DevTools Protocol (CDP) to the driver declared just before in the test. For instance, the parameter <code>devTools</code> in following test allows to handle CDP commands of the browser handled with <code>driver</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="keyword">import</span> <span class="include">java.io.IOException</span>;
+<span class="keyword">import</span> <span class="include">java.nio.file.Files</span>;
+<span class="keyword">import</span> <span class="include">java.nio.file.Path</span>;
+<span class="keyword">import</span> <span class="include">java.nio.file.Paths</span>;
+<span class="keyword">import</span> <span class="include">java.time.Duration</span>;
+<span class="keyword">import</span> <span class="include">java.util.Base64</span>;
+<span class="keyword">import</span> <span class="include">java.util.Optional</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.ExtendWith</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+
+<span class="annotation">@ExtendWith</span>(SeleniumJupiter.class)
+<span class="type">class</span> <span class="class">FullPageScreenshotTest</span> {
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testFullPageScreenshot(ChromeDriver driver, DevTools devTools)
+            <span class="directive">throws</span> <span class="exception">IOException</span> {
+        driver.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/long-page.html</span><span class="delimiter">&quot;</span></span>);
+        WebDriverWait wait = <span class="keyword">new</span> WebDriverWait(driver, <span class="predefined-type">Duration</span>.ofSeconds(<span class="integer">10</span>));
+        wait.until(ExpectedConditions.presenceOfNestedElementsLocatedBy(
+                By.className(<span class="string"><span class="delimiter">&quot;</span><span class="content">container</span><span class="delimiter">&quot;</span></span>), By.tagName(<span class="string"><span class="delimiter">&quot;</span><span class="content">p</span><span class="delimiter">&quot;</span></span>)));
+
+        GetLayoutMetricsResponse metrics = devTools
+                .send(Page.getLayoutMetrics());
+        Rect contentSize = metrics.getContentSize();
+        <span class="predefined-type">String</span> screenshotBase64 = devTools
+                .send(Page.captureScreenshot(Optional.empty(), Optional.empty(),
+                        Optional.of(<span class="keyword">new</span> Viewport(<span class="integer">0</span>, <span class="integer">0</span>, contentSize.getWidth(),
+                                contentSize.getHeight(), <span class="integer">1</span>)),
+                        Optional.empty(), Optional.of(<span class="predefined-constant">true</span>)));
+        Path destination = Paths.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">fullpage-screenshot-chrome.png</span><span class="delimiter">&quot;</span></span>);
+        Files.write(destination, Base64.getDecoder().decode(screenshotBase64));
+
+        assertThat(destination).exists();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="single-session"><a class="anchor" href="#single-session"></a>3.9. Single session</h3>
 <div class="paragraph">
 <p>By default, the instances provided by <em>Selenium-Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc.) are created <em>before each</em> test, and are disposed <em>after each</em> test. This default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <em>before all</em> tests and are disposed <em>after all</em> tests.</p>
 </div>
@@ -1751,7 +1925,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 </div>
 </div>
 <div class="sect2">
-<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>3.9. Screenshots</h3>
+<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>3.10. Screenshots</h3>
 <div class="paragraph">
 <p>Selenium-Jupiter allows making screenshots for each of the browser sessions at the end of the test. These screenshots can be encoded as Base64 or stored as PNG images. The following test shows an example. Notice that this feature can be enabled using the Java configuration (method <code>config()</code> of the Selenium-Jupiter instance. This instance can be obtained using the JUnit 5 annotation <code>@RegisterExtension</code> (see <a href="#advanced-configuration">advanced configuration</a> section for more information about configuration). The default image name is composed of the test name plus the <code>WebDriver</code> <em>sessionId</em>.</p>
 </div>
@@ -1820,7 +1994,7 @@ Notice that the previous example deletes the image at the end of the test. If yo
 </div>
 </div>
 <div class="sect2">
-<h3 id="integration-with-jenkins"><a class="anchor" href="#integration-with-jenkins"></a>3.10. Integration with Jenkins</h3>
+<h3 id="integration-with-jenkins"><a class="anchor" href="#integration-with-jenkins"></a>3.11. Integration with Jenkins</h3>
 <div class="paragraph">
 <p>Selenium-Jupiter seamlessly integrates with Jenkins through the <a href="https://plugins.jenkins.io/junit-attachments/">Jenkins attachment plugin</a>. This integration allows to attach output files of Selenium-Jupiter (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution in Jenkins. This is done using the method <code>useSurefireOutputFolder()</code> (or its equivalence configuration key <code>sel.jup.output.folder</code>) in Selenium-Jupiter (see <a href="#advanced-configuration">advanced configuration</a>). For instance:</p>
 </div>
@@ -2143,8 +2317,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.0.1<br>
-Updated on 10-01-2022
+Version 4.1.0<br>
+Updated on 18-02-2022
 </div>
 </div>
 </body>
