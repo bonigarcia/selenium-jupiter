@@ -57,7 +57,7 @@ At first glance, Selenium-Jupiter seamlessly uses local browsers (e.g., Chrome, 
 include::../../test/java/io/github/bonigarcia/seljup/test/local/ChromeTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java[example]), and `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java[example]).
+The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java[example]), `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java[example]), and `SelenideDriver` (for supporting https://selenide.org/[Selenide], see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java[example]).
 
 WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium WebDriver versions 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
 
@@ -69,6 +69,21 @@ Selenium-Jupiter provides the class-level annotation `@EnabledIfBrowserAvailable
 [source,java]
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[tags=snippet-in-doc,indent=0]
+----
+
+In addition, Selenium-Jupiter provides the class-level annotation `@EnabledIfDriverUrlOnline` for conditionally disabling tests depending on the availability of the driver URL. If this URL is online, it will be used for remote tests, for instance, as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The last annotation provided by Selenium-Jupiter for custom test disabling is `@EnabledIfDockerAvailable`, which disables test when a Docker engine is not installed in the machine running the test.
+
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeBetaTest.java[tags=snippet-in-doc,indent=0]
 ----
 
 === Remote browsers
@@ -85,6 +100,14 @@ include::../../test/java/io/github/bonigarcia/seljup/test/remote/RemoteFirefoxTe
 ----
 
 You can find an example of an equivalent remote test but defining the remote URL and capabilities at field-level https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeTest.java[here]. A similar example, but using Sauce Labs is this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/SauceLabsTest.java[one].
+
+As of version 4.1.0, Selenium-Jupiter supports remote browsers in https://appium.io/[Appium] 2. To use this feature, you need to specify the type `AppiumDriver`, and also the Appium server URL and capabilities. The following test shows a basic example:
+
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/remote/AppiumTest.java[tags=snippet-in-doc,indent=0]
+----
 
 === Docker browsers
 Selenium-Jupiter allows using browsers in Docker containers in an effortless manner. To that aim, we need to associate the `@DockerBrowser` annotation to parameters of the type `WebDriver` or `RemoteWebDriver` in Jupiter tests. Simply with that, Selenium-Jupiter discovers the latest version of the browser in Docker Hub, pulls this image (if necessary), and starts the browser in the Docker container. The following example shows how to use this feature with a Chrome browser in Docker:
@@ -229,6 +252,15 @@ For instance, the following test, if no additional configuration is done, will u
 ----
 include::../../test/java/io/github/bonigarcia/seljup/test/generic/GenericTest.java[tags=snippet-in-doc,indent=0]
 ----
+
+=== Chrome DevTools
+As of version 4.1.0, Selenium-Jupiter allows to inject `DevTools` instances in tests. This object used to send commands using the Chrome DevTools Protocol (CDP) to the driver declared just before in the test. For instance, the parameter `devTools` in following test allows to handle CDP commands of the browser handled with `driver`:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/devtools/FullPageScreenshotTest.java[tags=snippet-in-doc,indent=0]
+----
+
 
 === Single session
 By default, the instances provided by _Selenium-Jupiter_ (e.g. `ChromeDriver`, `FirefoxDriver`, etc.) are created _before each_ test, and are disposed _after each_ test. This default behavior can be changed using the class-level annotation `@SingleSession`. The instances provided in this case will be created _before all_ tests and are disposed _after all_ tests.
