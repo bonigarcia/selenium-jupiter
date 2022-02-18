@@ -57,7 +57,7 @@ At first glance, Selenium-Jupiter seamlessly uses local browsers (e.g., Chrome, 
 include::../../test/java/io/github/bonigarcia/seljup/test/local/ChromeTest.java[tags=snippet-in-doc,indent=0]
 ----
 
-The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java[example]), `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java[example]), and `SelenideDriver` (for supporting https://selenide.org/[Selenide], see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java[example]).
+The possible `WebDriver` types we can specify as test parameters are `FirefoxDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java[example]), `EdgeDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java[example]), `SafariDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java[example]), `OperaDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java[example]), `InternetExplorerDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java[example]), `ChromiumDriver` (see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java[example]), and `SelenideDriver` (for controlling browsers through https://selenide.org/[Selenide], see https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java[example]).
 
 WARNING: Most of the features provided by Selenium-Jupiter can be used in conjunction with Selenium WebDriver versions 3 and 4. Nevertheless, some of them (e.g., the class `ChromiumDriver` to control Chromium browsers) are only available in Selenium WebDriver 4.
 
@@ -101,7 +101,9 @@ include::../../test/java/io/github/bonigarcia/seljup/test/remote/RemoteFirefoxTe
 
 You can find an example of an equivalent remote test but defining the remote URL and capabilities at field-level https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/RemoteChromeTest.java[here]. A similar example, but using Sauce Labs is this https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/remote/SauceLabsTest.java[one].
 
-As of version 4.1.0, Selenium-Jupiter supports remote browsers in https://appium.io/[Appium] 2. To use this feature, you need to specify the type `AppiumDriver`, and also the Appium server URL and capabilities. The following test shows a basic example:
+==== Appium
+
+As of version 4.1.0, Selenium-Jupiter supports remote browsers hosted by https://appium.io/[Appium] 2. To use this feature, you need to specify the type `AppiumDriver`, and also the Appium server URL and capabilities. The following test shows a basic example:
 
 
 [source,java]
@@ -232,7 +234,7 @@ image::test-template.png[scaledwidth=100%]
 
 The fields accepted in the JSON notation are the following:
 
-* `type`: Type of browsers. It can be local (`chrome` , `firefox` , `edge` , `opera`, `safari` , `chromium` , or `iexplorer`) or in Docker (`chrome-in-docker`, `firefox-in-docker`, `edge-in-docker`, `opera-in-docker`, `safari-in-docker`, or `chrome-mobile`).
+* `type`: Type of browsers. It can be local (`chrome` , `firefox` , `edge` , `opera`, `safari` , `chromium` , or `iexplorer`) or in Docker (`chrome-in-docker`, `firefox-in-docker`, `edge-in-docker`, `opera-in-docker`, `safari-in-docker`, or `chrome-mobile`). In addition, as of Selenium-Jupiter 4.1.0, it is also possible to use the label `-in-selenide` to specify browsers controlled with Selenide. For example: https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/TemplateSelenideTest.java[test], https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/resources/browsers-selenide.json[scenario].
 * `version`: Optional value for the version. Concrete versions (e.g., `63.0`, `58.0`, etc.) and wildcards (`latest`, `latest-N`, `beta`, and `dev`) are accepted.
 * `arguments`: Arguments passed to the browser (e.g., `--headless`, `--incognito`,  etc.)
 * `preferences`: Arguments for Firefox (e.g., `media.navigator.streams.fake=true`).
