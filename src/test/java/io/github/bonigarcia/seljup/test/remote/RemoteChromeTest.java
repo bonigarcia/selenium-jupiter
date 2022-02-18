@@ -16,6 +16,7 @@
  */
 package io.github.bonigarcia.seljup.test.remote;
 
+//tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-//tag::snippet-in-doc[]
 @EnabledIfDriverUrlOnline("http://localhost:4444/")
 @ExtendWith(SeleniumJupiter.class)
 class RemoteChromeTest {
