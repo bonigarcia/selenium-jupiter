@@ -168,7 +168,7 @@ Selenium-Jupiter (Copyright &copy; 2017-2022) is a project created and maintaine
 [Logo]: https://bonigarcia.dev/img/seljup.png
 [Selenium-Jupiter]: https://bonigarcia.dev/selenium-jupiter/
 [JUnit 5]: https://junit.org/junit5/docs/current/user-guide/
-[Selenium WebDriver]: https://www.selenium.dev/docs/site/en/webdriver/
+[Selenium WebDriver]: https://www.selenium.dev/documentation/webdriver/
 [WebDriverManager]: https://github.com/bonigarcia/webdrivermanager
 [Docker]: https://www.docker.com/
 [Docker Engine]: https://www.docker.com/get-docker
