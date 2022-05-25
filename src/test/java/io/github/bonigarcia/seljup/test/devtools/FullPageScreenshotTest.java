@@ -32,10 +32,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v97.dom.model.Rect;
-import org.openqa.selenium.devtools.v97.page.Page;
-import org.openqa.selenium.devtools.v97.page.Page.GetLayoutMetricsResponse;
-import org.openqa.selenium.devtools.v97.page.model.Viewport;
+import org.openqa.selenium.devtools.v99.dom.model.Rect;
+import org.openqa.selenium.devtools.v99.page.Page;
+import org.openqa.selenium.devtools.v99.page.Page.GetLayoutMetricsResponse;
+import org.openqa.selenium.devtools.v99.page.model.Viewport;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
