@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.Binary;
@@ -35,7 +35,7 @@ class OperaOptionsTest {
 
     @Test
     void operaTest(
-            @Binary("/usr/bin/opera") @Arguments("private") @Opera WebDriver driver) {
+            @Binary("/usr/bin/opera") @Arguments("private") @Opera ChromeDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }

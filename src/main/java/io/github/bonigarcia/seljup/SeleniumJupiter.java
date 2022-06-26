@@ -106,7 +106,7 @@ public class SeleniumJupiter implements ParameterResolver,
     OutputHandler outputHandler;
     URL urlFromAnnotation;
     SelenideHandler selenideHandler;
-    boolean isOpera;
+    boolean isOpera = false;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -148,7 +148,7 @@ public class SeleniumJupiter implements ParameterResolver,
         Parameter parameter = parameterContext.getParameter();
         int index = parameterContext.getIndex();
         Optional<Object> testInstance = extensionContext.getTestInstance();
-        isOpera = isOpera(testInstance);
+        isOpera = isOperaAnnotation(testInstance);
 
         log.trace("Resolving parameter {} (contextId {}, index {})", parameter,
                 contextId, index);
@@ -342,12 +342,12 @@ public class SeleniumJupiter implements ParameterResolver,
         return wdm;
     }
 
-    private boolean isOpera(Optional<Object> testInstance) {
+    private boolean isOperaAnnotation(Optional<Object> testInstance) {
         boolean isOperaAnnotationPresent = false;
         try {
             Optional<Object> operaFromAnnotatedField = annotationsReader
                     .seekFieldAnnotatedWith(testInstance, Opera.class);
-            isOperaAnnotationPresent = operaFromAnnotatedField != null;
+            isOperaAnnotationPresent = operaFromAnnotatedField.isPresent();
         } catch (Exception e) {
             log.trace("Exception seeking opera annotation ({})",
                     e.getMessage());
