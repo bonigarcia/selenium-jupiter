@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,25 +16,30 @@
  */
 package io.github.bonigarcia.seljup.test.capabilities;
 
-import static io.github.bonigarcia.seljup.Browser.OPERA;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.seljup.Binary;
-import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.Opera;
+import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(OPERA)
+@Disabled("Redudant test for CI suite")
 @ExtendWith(SeleniumJupiter.class)
-class OperaBinaryTest {
+class OperaGlobalOptionsTest {
+
+    @Options
+    ChromeOptions operaOptions = new ChromeOptions();
+    {
+        operaOptions.setBinary("/usr/bin/opera");
+    }
 
     @Test
-    void operaExtensionTest(
-            @Binary("/usr/bin/opera") @Opera ChromeDriver driver) {
+    void operaTest(@Opera ChromeDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }

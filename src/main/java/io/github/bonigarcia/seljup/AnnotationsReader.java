@@ -160,8 +160,9 @@ public class AnnotationsReader {
                     Class<?> superclass;
                     while ((superclass = clazz
                             .getSuperclass()) != Object.class) {
-                        out = getField(annotation, annotatedType, superclass,
-                                object);
+                        Optional<T> field = getField(annotation, annotatedType,
+                                superclass, object);
+                        out = field;
                         if (out.isPresent()) {
                             break;
                         }
@@ -193,6 +194,10 @@ public class AnnotationsReader {
             }
         }
         return empty();
+    }
+
+    public boolean getOpera(Parameter parameter) {
+        return parameter.getAnnotation(Opera.class) != null;
     }
 
     public Optional<DockerBrowser> getDocker(Parameter parameter) {
