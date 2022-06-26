@@ -46,7 +46,6 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
@@ -63,6 +62,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * @author Boni Garcia
  * @since 4.0.0
  */
+@SuppressWarnings("deprecation")
 public class CapabilitiesHandler {
 
     static final Logger log = getLogger(lookup().lookupClass());
@@ -74,11 +74,13 @@ public class CapabilitiesHandler {
     Optional<Browser> browser;
     Optional<BrowserType> browserType;
     boolean isGeneric;
+    boolean isOpera;
 
     public CapabilitiesHandler(Config config,
             AnnotationsReader annotationsReader, Parameter parameter,
             ExtensionContext extensionContext, Optional<Browser> browser,
-            Optional<BrowserType> browserType, boolean isGeneric) {
+            Optional<BrowserType> browserType, boolean isGeneric,
+            boolean isOpera) {
         this.config = config;
         this.annotationsReader = annotationsReader;
         this.parameter = parameter;
@@ -86,6 +88,7 @@ public class CapabilitiesHandler {
         this.browser = browser;
         this.browserType = browserType;
         this.isGeneric = isGeneric;
+        this.isOpera = isOpera;
     }
 
     public Optional<Capabilities> getCapabilities() {
@@ -110,9 +113,10 @@ public class CapabilitiesHandler {
         } else if (type == FirefoxDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.FIREFOX)) {
             return Optional.of(FirefoxOptions.class);
-        } else if (type == OperaDriver.class || (browserType.isPresent()
-                && browserType.get() == BrowserType.OPERA)) {
-            return Optional.of(OperaOptions.class);
+        } else if (isOpera || type == OperaDriver.class
+                || (browserType.isPresent()
+                        && browserType.get() == BrowserType.OPERA)) {
+            return Optional.of(ChromeOptions.class);
         } else if (type == EdgeDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.EDGE)) {
             return Optional.of(EdgeOptions.class);

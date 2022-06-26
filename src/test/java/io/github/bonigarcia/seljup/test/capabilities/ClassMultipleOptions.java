@@ -18,7 +18,6 @@ package io.github.bonigarcia.seljup.test.capabilities;
 
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariOptions;
 
 import io.github.bonigarcia.seljup.Options;
@@ -33,9 +32,6 @@ class ClassMultipleOptions {
 
     @Options
     FirefoxOptions firefoxOptions = new FirefoxOptions();
-
-    @Options
-    OperaOptions operaOptions = new OperaOptions();
 
     @Options
     SafariOptions safariOptions = new SafariOptions();

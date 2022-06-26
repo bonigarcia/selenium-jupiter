@@ -20,15 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.WebDriver;
 
+import io.github.bonigarcia.seljup.Opera;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @ExtendWith(SeleniumJupiter.class)
 class ForcedOperaTest {
 
     @Test
-    void operaTest(OperaDriver driver) {
+    void operaTest(@Opera WebDriver driver) {
         // Even if Opera is not installed, test should reach this point
         assertTrue(true);
     }

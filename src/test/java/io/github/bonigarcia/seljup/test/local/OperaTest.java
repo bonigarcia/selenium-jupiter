@@ -21,9 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.WebDriver;
 
 import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
+import io.github.bonigarcia.seljup.Opera;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 @EnabledIfBrowserAvailable(OPERA)
@@ -31,7 +32,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class OperaTest {
 
     @Test
-    void test(OperaDriver driver) {
+    void test(@Opera WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }

@@ -106,6 +106,7 @@ public class SeleniumJupiter implements ParameterResolver,
     OutputHandler outputHandler;
     URL urlFromAnnotation;
     SelenideHandler selenideHandler;
+    boolean isOpera;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -147,6 +148,7 @@ public class SeleniumJupiter implements ParameterResolver,
         Parameter parameter = parameterContext.getParameter();
         int index = parameterContext.getIndex();
         Optional<Object> testInstance = extensionContext.getTestInstance();
+        isOpera = isOpera(testInstance);
 
         log.trace("Resolving parameter {} (contextId {}, index {})", parameter,
                 contextId, index);
@@ -210,7 +212,7 @@ public class SeleniumJupiter implements ParameterResolver,
         } else if (url.isPresent() && caps.isPresent()) { // Remote
             wdm = getManagerForRemote(url.get(), caps.get());
 
-        } else if (isGeneric || isSelenide) { // Template
+        } else if ((isGeneric || isSelenide) && !isOpera) { // Template
             browser = getBrowser(contextId, index);
             wdm = getManagerForTemplate(extensionContext, parameter, browser,
                     url);
@@ -340,6 +342,19 @@ public class SeleniumJupiter implements ParameterResolver,
         return wdm;
     }
 
+    private boolean isOpera(Optional<Object> testInstance) {
+        boolean isOperaAnnotationPresent = false;
+        try {
+            Optional<Object> operaFromAnnotatedField = annotationsReader
+                    .seekFieldAnnotatedWith(testInstance, Opera.class);
+            isOperaAnnotationPresent = operaFromAnnotatedField != null;
+        } catch (Exception e) {
+            log.trace("Exception seeking opera annotation ({})",
+                    e.getMessage());
+        }
+        return isOperaAnnotationPresent;
+    }
+
     @SuppressWarnings("unchecked")
     private WebDriverManager getManagerForLocal(
             ExtensionContext extensionContext, Parameter parameter,
@@ -349,7 +364,9 @@ public class SeleniumJupiter implements ParameterResolver,
             throw new SeleniumJupiterException(
                     "List<WebDriver> must be used together with @DockerBrowser");
         }
-        if (isGeneric) {
+        if (isOpera) {
+            wdm = WebDriverManager.operadriver();
+        } else if (isGeneric) {
             wdm = WebDriverManager.getInstance();
         } else {
             Class<? extends WebDriver> webdriverClass = (Class<? extends WebDriver>) type;
@@ -446,7 +463,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
         CapabilitiesHandler capsHandler = new CapabilitiesHandler(config,
                 annotationsReader, parameter, extensionContext, browser,
-                browserType, isGeneric(parameter.getType()));
+                browserType, isGeneric(parameter.getType()), isOpera);
 
         return capsHandler.getCapabilities();
 
