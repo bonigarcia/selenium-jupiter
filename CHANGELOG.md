@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.0] - 2022-06-26
+### Added
+- Add new custom annotation called @Opera for Opera browsers
+
+### Changed
+- Bump to WebDriverManager 5.2.1 (required for Selenium 4.3.0)
+
+
 ## [4.1.0] - 2022-02-18
 ### Added
 - Support DevTools in the parameter resolution mechanism

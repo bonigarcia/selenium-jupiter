@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.1.0</span>
+<span id="revdate">Version 4.2.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -934,7 +934,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.1.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.2.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -945,7 +945,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.1.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.2.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -997,7 +997,19 @@ As of version 4, Selenium-Jupiter does not include Selenium WebDriver as a trans
 </div>
 </div>
 <div class="paragraph">
-<p>The possible <code>WebDriver</code> types we can specify as test parameters are <code>FirefoxDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java">example</a>), <code>EdgeDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java">example</a>), <code>SafariDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java">example</a>), <code>OperaDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java">example</a>), <code>InternetExplorerDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java">example</a>), <code>ChromiumDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java">example</a>), and <code>SelenideDriver</code> (for controlling browsers through <a href="https://selenide.org/">Selenide</a>, see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java">example</a>).</p>
+<p>The possible <code>WebDriver</code> types we can specify as test parameters are <code>FirefoxDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/FirefoxTest.java">example</a>), <code>EdgeDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/EdgeTest.java">example</a>), <code>SafariDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/SafariTest.java">example</a>), <code>@Opera ChromeDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/OperaTest.java">example</a>), <code>InternetExplorerDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/IExplorerTest.java">example</a>), <code>ChromiumDriver</code> (see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/local/ChromiumTest.java">example</a>), and <code>SelenideDriver</code> (for controlling browsers through <a href="https://selenide.org/">Selenide</a>, see <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/selenide/SelenideTest.java">example</a>).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>OperaDriver</code> has deprecated as of Selenium WebDriver 4.1.3. The recommended way to control Opera browsers starting in that version is through <code>ChromeDriver</code>, configured to use an Opera browser. For this reason, Selenium-Jupiter incorporated the annotation <code>@Opera</code> as of version 4.2.0.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1552,7 +1564,7 @@ Notice that the previous example deletes the recording at the end of the test. I
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Options</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Field-level</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">To configure browsre options (e.g. <code>ChromeOptions</code> for Chrome, <code>FirefoxOptions</code> for Firefox, <code>EdgeOptions</code> for Edge, <code>OperaOptions</code> for Opera, and <code>SafariOptions</code> for Safari)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To configure browsre options (e.g. <code>ChromeOptions</code> for Chrome and Opera, <code>FirefoxOptions</code> for Firefox, <code>EdgeOptions</code> for Edge, and <code>SafariOptions</code> for Safari)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>@Arguments</code></p></td>
@@ -1822,10 +1834,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v97.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2260,7 +2272,9 @@ The preference order of these configuration alternatives is (in case of overlapp
 <h3 id="backers" class="discrete">Backers</h3>
 <a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/backers.svg?width=890"></a>
 <h3 id="sponsors" class="discrete">Sponsors</h3>
-<a href="https://opencollective.com/selenium-jupiter" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsors.svg?width=890"></a>
+<a href="https://opencollective.com/selenium-jupiter/sponsor/0/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/0/avatar.svg" style="width: 65px; height: 65px; object-fit: none;"></a>
+<a href="https://opencollective.com/selenium-jupiter/sponsor/1/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/1/avatar.svg" style="width: 65px; height: 65px; object-fit: none;"></a>
+<a href="https://opencollective.com/selenium-jupiter/sponsor/2/website" target="_blank"><img src="https://opencollective.com/selenium-jupiter/sponsor/2/avatar.svg"></a>
 </div>
 </div>
 <div class="sect1">
@@ -2317,8 +2331,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.1.0<br>
-Updated on 18-02-2022
+Version 4.2.0<br>
+Updated on 26-06-2022
 </div>
 </div>
 </body>
