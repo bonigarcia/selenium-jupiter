@@ -17,7 +17,9 @@
 package io.github.bonigarcia.seljup.test.docker;
 
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
+import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.time.Duration;
@@ -30,11 +32,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
+import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
 class DockerChromeRecordingConfigTest {
+
+    static final Logger log = getLogger(lookup().lookupClass());
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
@@ -44,6 +49,7 @@ class DockerChromeRecordingConfigTest {
     @BeforeAll
     static void setup() {
         seleniumJupiter.getConfig().enableRecording();
+        seleniumJupiter.getConfig().enableVnc();
     }
 
     @AfterAll
@@ -65,6 +71,11 @@ class DockerChromeRecordingConfigTest {
         Thread.sleep(Duration.ofSeconds(3).toMillis());
 
         sessionId = driver.getSessionId();
+
+        log.debug("noVNC URL (default): {}",
+                seleniumJupiter.getDockerNoVncUrl());
+        log.debug("noVNC URL (for driver): {}",
+                seleniumJupiter.getDockerNoVncUrl(driver));
     }
 
 }

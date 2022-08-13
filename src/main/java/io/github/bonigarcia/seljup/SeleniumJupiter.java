@@ -786,28 +786,49 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     public URL getDockerNoVncUrl() {
-        URL url = null;
-        if (!wdmMap.isEmpty()) {
-            List<WebDriverManager> wdmList = wdmMap.entrySet().iterator().next()
-                    .getValue();
-            return wdmList.get(0).getDockerNoVncUrl();
-        }
-        return url;
+        return invokeWdm("getDockerNoVncUrl");
     }
 
     public URL getDockerNoVncUrl(WebDriver driver) {
-        URL dockerNoVncUrl = null;
-        if (!wdmMap.isEmpty()) {
-            for (List<WebDriverManager> wdmList : wdmMap.values()) {
-                for (WebDriverManager wdm : wdmList) {
-                    dockerNoVncUrl = wdm.getDockerNoVncUrl(driver);
-                    if (dockerNoVncUrl != null) {
-                        return dockerNoVncUrl;
+        return invokeWdm(driver, "getDockerNoVncUrl");
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T invokeWdm(String method) {
+        T out = null;
+        try {
+            if (!wdmMap.isEmpty()) {
+                List<WebDriverManager> wdmList = wdmMap.entrySet().iterator()
+                        .next().getValue();
+                WebDriverManager wdm = wdmList.get(0);
+                Method wdmMethod = wdm.getClass().getMethod(method);
+                return (T) wdmMethod.invoke(wdm);
+            }
+        } catch (Exception e) {
+            log.warn("Exception invoking {}", method, e);
+        }
+        return out;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T invokeWdm(WebDriver driver, String method) {
+        T out = null;
+        try {
+            if (!wdmMap.isEmpty()) {
+                for (List<WebDriverManager> wdmList : wdmMap.values()) {
+                    for (WebDriverManager wdm : wdmList) {
+                        Method wdmMethod = wdm.getClass().getMethod(method);
+                        out = (T) wdmMethod.invoke(wdm);
+                        if (out != null) {
+                            return out;
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            log.warn("Exception invoking {} for {}", method, driver, e);
         }
-        return dockerNoVncUrl;
+        return out;
     }
 
 }
