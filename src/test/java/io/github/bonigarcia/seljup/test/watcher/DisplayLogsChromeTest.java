@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.watch;
+package io.github.bonigarcia.seljup.test.watcher;
 
 //tag::snippet-in-doc[]
 import static java.lang.invoke.MethodHandles.lookup;
@@ -28,13 +28,13 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
-class DisplayLogsFirefoxTest {
+class DisplayLogsChromeTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
@@ -48,7 +48,7 @@ class DisplayLogsFirefoxTest {
     }
 
     @Test
-    void test(@Watch(display = true) FirefoxDriver driver) {
+    void test(@Watch(display = true) ChromeDriver driver) {
         driver.get(
                 "https://bonigarcia.dev/selenium-webdriver-java/console-logs.html");
 

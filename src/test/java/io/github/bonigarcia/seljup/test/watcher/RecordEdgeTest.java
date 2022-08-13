@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.watch;
+package io.github.bonigarcia.seljup.test.watcher;
 
 //tag::snippet-in-doc[]
 import static java.lang.invoke.MethodHandles.lookup;
