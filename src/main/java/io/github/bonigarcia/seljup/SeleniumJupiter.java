@@ -229,6 +229,20 @@ public class SeleniumJupiter implements ParameterResolver,
 
         putManagerInMap(contextId, wdm);
 
+        // Watcher
+        Optional<Watch> watcher = annotationsReader.getWatch(parameter);
+        if (watcher.isPresent()) {
+            Watch watch = watcher.get();
+            if (watch.display()) {
+                wdm.watchAndDisplay();
+            } else {
+                wdm.watch();
+            }
+            if (watch.disableCsp()) {
+                wdm.disableCsp();
+            }
+        }
+
         return getObjectFromWdm(wdm, browser, browserNumber, isSelenide,
                 parameter, testInstance);
     }
@@ -793,16 +807,43 @@ public class SeleniumJupiter implements ParameterResolver,
         return invokeWdm(driver, "getDockerNoVncUrl");
     }
 
+    public List<Map<String, Object>> getLogs() {
+        return invokeWdm("getLogs");
+    }
+
+    public List<Map<String, Object>> getLogs(WebDriver driver) {
+        return invokeWdm(driver, "getLogs");
+    }
+
+    public void startRecording(String recFilename) {
+        invokeWdm("startRecording", recFilename);
+    }
+
+    public void startRecording(String recFilename, WebDriver driver) {
+        invokeWdm(driver, "startRecording", recFilename);
+    }
+
+    public void stopRecording() {
+        invokeWdm("stopRecording");
+    }
+
+    public void stopRecording(WebDriver driver) {
+        invokeWdm(driver, "stopRecording");
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> T invokeWdm(String method) {
+    public <T> T invokeWdm(String method, Object... params) {
         T out = null;
         try {
             if (!wdmMap.isEmpty()) {
                 List<WebDriverManager> wdmList = wdmMap.entrySet().iterator()
                         .next().getValue();
                 WebDriverManager wdm = wdmList.get(0);
-                Method wdmMethod = wdm.getClass().getMethod(method);
-                return (T) wdmMethod.invoke(wdm);
+                Method wdmMethod = (params.length == 0)
+                        ? wdm.getClass().getMethod(method)
+                        : wdm.getClass().getMethod(method,
+                                params[0].getClass());
+                return (T) wdmMethod.invoke(wdm, params);
             }
         } catch (Exception e) {
             log.warn("Exception invoking {}", method, e);
@@ -811,14 +852,17 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T invokeWdm(WebDriver driver, String method) {
+    public <T> T invokeWdm(WebDriver driver, String method, Object... params) {
         T out = null;
         try {
             if (!wdmMap.isEmpty()) {
                 for (List<WebDriverManager> wdmList : wdmMap.values()) {
                     for (WebDriverManager wdm : wdmList) {
-                        Method wdmMethod = wdm.getClass().getMethod(method);
-                        out = (T) wdmMethod.invoke(wdm);
+                        Method wdmMethod = (params.length == 0)
+                                ? wdm.getClass().getMethod(method)
+                                : wdm.getClass().getMethod(method,
+                                        params[0].getClass());
+                        out = (T) wdmMethod.invoke(wdm, params);
                         if (out != null) {
                             return out;
                         }

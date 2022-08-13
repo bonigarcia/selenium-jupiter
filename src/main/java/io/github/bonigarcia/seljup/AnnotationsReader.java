@@ -210,6 +210,15 @@ public class AnnotationsReader {
         return out;
     }
 
+    public Optional<Watch> getWatch(Parameter parameter) {
+        Optional<Watch> out = empty();
+        Watch watch = parameter.getAnnotation(Watch.class);
+        if (watch != null) {
+            out = of(watch);
+        }
+        return out;
+    }
+
     public Optional<List<Object>> getKeyValue(String keyValue) {
         StringTokenizer st = new StringTokenizer(keyValue, "=");
         if (st.countTokens() != 2) {
