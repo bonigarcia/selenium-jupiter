@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.3.0] - 2022-08-13
+### Added
+- Integrate with BrowserWatcher to provide monitoring capabilities
+- Separate recording output folders per class not only for surefire-configuration (#286)
+
+
 ## [4.2.0] - 2022-06-26
 ### Added
 - Add new custom annotation called @Opera for Opera browsers

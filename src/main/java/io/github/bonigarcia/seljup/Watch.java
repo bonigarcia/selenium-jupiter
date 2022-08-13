@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * Annotation for monitoring capabilities.
  *
  * @author Boni Garcia
- * @since 3.5.0
+ * @since 4.3.0
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
