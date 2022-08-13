@@ -30,7 +30,6 @@
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
         <maven-asciidoctor-plugin.version>2.2.2</maven-asciidoctor-plugin.version>
         <asciidoctorj-pdf.version>2.1.6</asciidoctorj-pdf.version>
-        <asciidoctorj-epub3.version>1.5.1</asciidoctorj-epub3.version>
         <maven-site.version>3.12.1</maven-site.version>
         <maven-project-info-reports.version>3.4.0</maven-project-info-reports.version>
         <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
@@ -220,11 +219,6 @@
                         <artifactId>asciidoctorj-pdf</artifactId>
                         <version>${asciidoctorj-pdf.version}</version>
                     </dependency>
-                    <dependency>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctorj-epub3</artifactId>
-                        <version>${asciidoctorj-epub3.version}</version>
-                    </dependency>
                 </dependencies>
                 <configuration>
                     <sourceDirectory>src/doc/asciidoc</sourceDirectory>
@@ -274,33 +268,6 @@
                             <sourceDirectory>src/doc/asciidoc</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
                             <outputFile>${project.artifactId}.pdf</outputFile>
-                            <attributes>
-                                <source-highlighter>coderay</source-highlighter>
-                                <imagesdir>img</imagesdir>
-                                <pagenums />
-                                <toc />
-                                <idprefix />
-                                <idseparator>-</idseparator>
-                                <icons>font</icons>
-                                <sectnums />
-                                <lang>en</lang>
-                                <revnumber>${project.version}</revnumber>
-                                <revdate>${maven.build.timestamp}</revdate>
-                            </attributes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>asciidoc-to-epub</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <doctype>book</doctype>
-                            <backend>epub3</backend>
-                            <sourceDirectory>src/doc/asciidoc</sourceDirectory>
-                            <sourceDocumentName>index.adoc</sourceDocumentName>
-                            <outputFile>${project.artifactId}.epub</outputFile>
                             <attributes>
                                 <source-highlighter>coderay</source-highlighter>
                                 <imagesdir>img</imagesdir>

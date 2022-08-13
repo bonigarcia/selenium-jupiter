@@ -5,6 +5,9 @@
 - Integrate with BrowserWatcher to provide monitoring capabilities
 - Separate recording output folders per class not only for surefire-configuration (#286)
 
+### Removed
+- Documentation in EPUB format
+
 
 ## [4.2.0] - 2022-06-26
 ### Added

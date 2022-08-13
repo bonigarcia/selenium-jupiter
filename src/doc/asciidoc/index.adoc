@@ -15,11 +15,9 @@ https://github.com/bonigarcia/selenium-jupiter[Selenium-Jupiter] is an open-sour
 ****
 
 ifndef::backend-pdf[]
-ifndef::backend-epub3[]
 ++++
 include::carbon.html[]
 ++++
-endif::[]
 endif::[]
 
 == Setup
@@ -397,7 +395,6 @@ There are two ways to try to get community support related to Selenium-Jupiter. 
 https://opencollective.com/selenium-jupiter[Selenium-Jupiter] is part of https://opencollective.com/bonigarcia[OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal https://opencollective.com/selenium-jupiter/donate[donation] or https://opencollective.com/selenium-jupiter/contribute/backer-10377/checkout[recurring contribution]) or as a https://opencollective.com/selenium-jupiter/contribute/sponsor-10378/checkout[sponsor] (i.e., a recurring contribution by a company).
 
 ifndef::backend-pdf[]
-ifndef::backend-epub3[]
 [discrete]
 === Backers
 ++++
@@ -409,7 +406,6 @@ include::backers.html[]
 ++++
 include::sponsors.html[]
 ++++
-endif::[]
 endif::[]
 
 == Further Documentation
@@ -428,4 +424,4 @@ Or the following journal papers:
 * García, Boni, and Juan Carlos Dueñas. "https://www.rintonpress.com/journals/jweonline.html#v14n56[Web browsing automation for applications quality control]." _Journal of web engineering_ (2015): 474-502.
 
 == About
-Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by https://bonigarcia.dev/[Boni García] (https://twitter.com/boni_gg[@boni_gg]), licensed under the terms of https://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation (also available in link:selenium-jupiter.pdf[PDF] and link:selenium-jupiter.epub[EPUB]) is released under the terms of https://creativecommons.org/licenses/by-nc-sa/2.0/[CC BY-NC-SA 2.0].
+Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by https://bonigarcia.dev/[Boni García] (https://twitter.com/boni_gg[@boni_gg]), licensed under the terms of https://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 License]. This documentation (also available in link:selenium-jupiter.pdf[PDF]) is released under the terms of https://creativecommons.org/licenses/by-nc-sa/2.0/[CC BY-NC-SA 2.0].
