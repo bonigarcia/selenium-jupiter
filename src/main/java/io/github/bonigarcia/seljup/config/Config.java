@@ -1,5 +1,6 @@
 /*
  * (C) Copyright 2018 Boni Garcia (https://bonigarcia.github.io/)
+ * (C) Copyright 2022 Bosch.IO GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +47,12 @@ public class Config {
 
     ConfigKey<String> properties = new ConfigKey<>("sel.jup.properties",
             String.class, "selenium-jupiter.properties");
+
     ConfigKey<String> outputFolder = new ConfigKey<>("sel.jup.output.folder",
             String.class);
+
+    ConfigKey<Boolean> outputFolderPerClass = new ConfigKey<>("sel.jup.output.folder.per.class",
+            Boolean.class);
 
     ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
             "sel.jup.selenium.server.url", String.class);
@@ -170,6 +175,14 @@ public class Config {
 
     public void setOutputFolder(String value) {
         this.outputFolder.setValue(value);
+    }
+
+    public boolean isOutputFolderPerClass() {
+        return resolve(outputFolderPerClass);
+    }
+
+    public void setOutputFolderPerClass(boolean value) {
+        this.outputFolderPerClass.setValue(value);
     }
 
     public boolean isVnc() {

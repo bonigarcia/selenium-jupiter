@@ -329,7 +329,9 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 [options="header"]
 |=======
 |Java API|Configuration key|Default value|Description
-|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `surefire-reports` for the <<integration-with-jenkins,integration with Jenkins>>
+|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `surefire-reports` for the <<integration-with-jenkins,integration with Jenkins>>. In case of the special value `surefire-reports` there will *always* be a separate output folder per class (see below, `setOutputFolderPerClass(boolean)`).
+|`setOutputFolderPerClass(boolean)`|`sel.jup.output.folder.per.class`|`false`|In case this value is `true`, the output files will be provided in separate folders per class. Otherwise, the output files
+ will be directly provided in the output folder.
 |`setScreenshot(boolean)` `enableScreenshot()`|`sel.jup.screenshot`|`false`|Enable screenshots at the end of the test
 |`setScreenshotWhenFailure(boolean)` `enableScreenshotWhenFailure()`|`sel.jup.screenshot.when.failure`|`false`|Enable screenshots at the end of the test only if the test fails
 |`setScreenshotFormat(String)` `takeScreenshotAsPng()` `takeScreenshotAsBase64()` `takeScreenshotAsBase64AndPng()`|`sel.jup.screenshot.format`|`png`|Configure screenshot format (accepted values: `png`, `base`, and `base64andpng`)

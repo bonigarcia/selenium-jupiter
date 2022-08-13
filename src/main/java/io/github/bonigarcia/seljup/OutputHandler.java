@@ -1,5 +1,6 @@
 /*
  * (C) Copyright 2018 Boni Garcia (https://bonigarcia.github.io/)
+ * (C) Copyright 2022 Bosch.IO GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,10 +104,18 @@ public class OutputHandler {
         Optional<Method> testMethod = extensionContext.getTestMethod();
         Optional<Class<?>> testInstance = extensionContext.getTestClass();
         if (testMethod.isPresent() && testInstance.isPresent()) {
+            Class<?> testClass = testInstance.get();
             if (outputFolder.equalsIgnoreCase(SUREFIRE_REPORTS_KEY)) {
-                outputFolder = getSurefireOutputFolder(testInstance.get());
-            } else if (outputFolder.isEmpty()) {
-                outputFolder = ".";
+                // backwards-compatibility: if the surefire-key is configured, always use class-specific output folder
+                outputFolder = getClassSpecificOutputFolder(SUREFIRE_REPORTS_FOLDER, testClass);
+            } else {
+                if (outputFolder.isEmpty()) {
+                    outputFolder = ".";
+                }
+
+                if (config.isOutputFolderPerClass()) {
+                    outputFolder = getClassSpecificOutputFolder(outputFolder, testClass);
+                }
             }
         }
 
@@ -118,10 +127,16 @@ public class OutputHandler {
         return outputFolder;
     }
 
-    public String getSurefireOutputFolder(Class<?> testInstance) {
+    private String getClassSpecificOutputFolder(String baseFolder, Class<?> testClass) {
+        String testClassName = testClass.getName();
+
         StringBuilder stringBuilder = new StringBuilder(
-                SUREFIRE_REPORTS_FOLDER);
-        stringBuilder.append(testInstance.getName());
+                baseFolder);
+        if (!baseFolder.endsWith(File.separator)) {
+            stringBuilder.append(File.separator);
+        }
+        stringBuilder.append(testClassName);
+
         return stringBuilder.toString();
     }
 
