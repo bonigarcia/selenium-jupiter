@@ -243,6 +243,52 @@ The fields accepted in the JSON notation are the following:
 
 You can find different examples in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/template[Selenium-Jupiter tests]. For instance: a test https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateRegisterTest.java[registering browser] in the scenario programmatically (instead of JSON), a test to use a https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateCapabilitiesTest.java[custom JSON browser scenario] (and capabilities), or another test using https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/template/TemplateTwoBrowsersTest.java[two browsers] in the same test.
 
+=== Browsers Monitoring
+As of version 4.3.0, Selenium-Jupiter provides seamless integration with https://bonigarcia.dev/browserwatcher/[BrowserWatcher]. BrowserWatcher is a browser extension designed to monitor different aspects of web browsers such as Chrome, Firefox, or Edge. This section summarizes the features of BrowserWatcher integrated into Selenium-Jupiter.
+
+==== Console Log Gathering
+Gathering the browser console might help find the cause of failed Selenium tests. This feature is implemented in some drivers like chromedriver, but it is not yet implemented in geckodriver (and therefore, it is not possible to gather the Firefox console). BrowserWatcher provides a cross-browser mechanism based on JavaScript to implement this feature. Selenium-Jupiter incorporates this feature for browsers controlled with Selenium WebDriver created through the annotation `@Watch`. Internally,  BrowserWatcher is installed as a browser extension and starts gathering browser logs during the session time. At some point, we need to invoke the Selenium-Jupiter method `getLogs()` to get the collected logs from the Java logic. The following test shows a basic example of this feature.
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/watcher/GatherLogsFirefoxTest.java[tags=snippet-in-doc,indent=0]
+----
+
+WARNING: When using Firefox, this feature requires at least Selenium WebDriver 4.1.2.
+
+==== Console Log Displaying
+In addition to log gathering, BrowserWatcher allows displaying the console logs as dialog notifications on the page. This feature can be enabled using the property `display`, for example, as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/watcher/DisplayLogsChromeTest.java[tags=snippet-in-doc,indent=0]
+----
+
+The following picture shows an example of these notifications:
+
+[[display-console-logs-example]]
+[.thumb]
+.Display logs example
+image::display-console-logs-example-v3.png[scaledwidth=100%]
+
+==== Tab Recording
+BrowserWatcher allows recording a browser tab. This feature requires a page loaded in the current tab (in other words, it cannot record empty or configuration pages). Then, the recording is started using the method `startRecording()` and stopped with `stopRecording()`, for instance, as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/watcher/RecordEdgeTest.java[tags=snippet-in-doc,indent=0]
+----
+
+WARNING: This feature is based on the API https://developer.chrome.com/docs/extensions/reference/tabCapture/[tabCapture]. Therefore, this feature is not available in Firefox since this API is not implemented by Firefox yet.
+
+==== Disabling CSP
+https://content-security-policy.com/[Content Security Policy (CSP)] is the name of an HTTP response header that browsers use to improve the security of web pages. CSP helps to protect from attacks such as cross-site scripting (XSS). Nevertheless, developers might want to disable the CSP headers received from the server for testing purposes. For this reason, BrowserWatcher allows bypassing these CSP headers. This feature (i.e., disabling CSP headers) can be enabled in WebDriverManager using the property `disableCsp`, as follows:
+
+[source,java]
+----
+include::../../test/java/io/github/bonigarcia/seljup/test/watcher/DisableCspFirefoxTest.java[tags=snippet-in-doc,indent=0]
+----
+
 === Generic driver
 Selenium-Jupiter allows using a configurable `WebDriver` object. This generic driver is declared as usual (i.e., test method or constructor parameter) using the type `RemoteWebDriver` or `WebDriver`. The concrete type of browser to be used is established utilizing the configuration key `wdm.defaultBrowser`. The default value for this key is `chrome`. All the values used in the template test defined in the previous section (i.e. `chrome`, `firefox`, `edge`, `chrome-in-docker`, `firefox-in-docker`, etc.) can also be used to define the type of browser in this mode. 
 

@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.2.0</span>
+<span id="revdate">Version 4.3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -809,11 +809,19 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#browser-capabilities">3.5. Browser Capabilities</a></li>
 <li><a href="#template-tests">3.6. Template tests</a></li>
-<li><a href="#generic-driver">3.7. Generic driver</a></li>
-<li><a href="#chrome-devtools">3.8. Chrome DevTools</a></li>
-<li><a href="#single-session">3.9. Single session</a></li>
-<li><a href="#screenshots">3.10. Screenshots</a></li>
-<li><a href="#integration-with-jenkins">3.11. Integration with Jenkins</a></li>
+<li><a href="#browsers-monitoring">3.7. Browsers Monitoring</a>
+<ul class="sectlevel3">
+<li><a href="#console-log-gathering">3.7.1. Console Log Gathering</a></li>
+<li><a href="#console-log-displaying">3.7.2. Console Log Displaying</a></li>
+<li><a href="#tab-recording">3.7.3. Tab Recording</a></li>
+<li><a href="#disabling-csp">3.7.4. Disabling CSP</a></li>
+</ul>
+</li>
+<li><a href="#generic-driver">3.8. Generic driver</a></li>
+<li><a href="#chrome-devtools">3.9. Chrome DevTools</a></li>
+<li><a href="#single-session">3.10. Single session</a></li>
+<li><a href="#screenshots">3.11. Screenshots</a></li>
+<li><a href="#integration-with-jenkins">3.12. Integration with Jenkins</a></li>
 </ul>
 </li>
 <li><a href="#examples">4. Examples</a></li>
@@ -934,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.2.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.3.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -945,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.2.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1770,7 +1778,283 @@ Notice that instead of declaring the method with the usual <code>@Test</code> an
 </div>
 </div>
 <div class="sect2">
-<h3 id="generic-driver"><a class="anchor" href="#generic-driver"></a>3.7. Generic driver</h3>
+<h3 id="browsers-monitoring"><a class="anchor" href="#browsers-monitoring"></a>3.7. Browsers Monitoring</h3>
+<div class="paragraph">
+<p>As of version 4.3.0, Selenium-Jupiter provides seamless integration with <a href="https://bonigarcia.dev/browserwatcher/">BrowserWatcher</a>. BrowserWatcher is a browser extension designed to monitor different aspects of web browsers such as Chrome, Firefox, or Edge. This section summarizes the features of BrowserWatcher integrated into Selenium-Jupiter.</p>
+</div>
+<div class="sect3">
+<h4 id="console-log-gathering"><a class="anchor" href="#console-log-gathering"></a>3.7.1. Console Log Gathering</h4>
+<div class="paragraph">
+<p>Gathering the browser console might help find the cause of failed Selenium tests. This feature is implemented in some drivers like chromedriver, but it is not yet implemented in geckodriver (and therefore, it is not possible to gather the Firefox console). BrowserWatcher provides a cross-browser mechanism based on JavaScript to implement this feature. Selenium-Jupiter incorporates this feature for browsers controlled with Selenium WebDriver created through the annotation <code>@Watch</code>. Internally,  BrowserWatcher is installed as a browser extension and starts gathering browser logs during the session time. At some point, we need to invoke the Selenium-Jupiter method <code>getLogs()</code> to get the collected logs from the Java logic. The following test shows a basic example of this feature.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
+<span class="keyword">import</span> <span class="include">java.util.Map</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Watch</span>;
+
+<span class="type">class</span> <span class="class">GatherLogsFirefoxTest</span> {
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(<span class="annotation">@Watch</span> FirefoxDriver driver) {
+        driver.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/console-logs.html</span><span class="delimiter">&quot;</span></span>);
+
+        <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;&gt; logMessages = seleniumJupiter.getLogs();
+
+        <span class="keyword">for</span> (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; map : logMessages) {
+            log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>, map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
+                    <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
+                            map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
+                                    + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
+                    map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>));
+        }
+
+        assertThat(logMessages).hasSize(<span class="integer">5</span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When using Firefox, this feature requires at least Selenium WebDriver 4.1.2.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="console-log-displaying"><a class="anchor" href="#console-log-displaying"></a>3.7.2. Console Log Displaying</h4>
+<div class="paragraph">
+<p>In addition to log gathering, BrowserWatcher allows displaying the console logs as dialog notifications on the page. This feature can be enabled using the property <code>display</code>, for example, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">java.time.Duration</span>;
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
+<span class="keyword">import</span> <span class="include">java.util.Map</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.AfterEach</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Watch</span>;
+
+<span class="type">class</span> <span class="class">DisplayLogsChromeTest</span> {
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
+
+    <span class="annotation">@AfterEach</span>
+    <span class="type">void</span> teardown() <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        <span class="comment">// pause for manual browser inspection</span>
+        <span class="predefined-type">Thread</span>.sleep(<span class="predefined-type">Duration</span>.ofSeconds(<span class="integer">3</span>).toMillis());
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(<span class="annotation">@Watch</span>(display = <span class="predefined-constant">true</span>) ChromeDriver driver) {
+        driver.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/console-logs.html</span><span class="delimiter">&quot;</span></span>);
+
+        <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;&gt; logMessages = seleniumJupiter.getLogs();
+
+        <span class="keyword">for</span> (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; map : logMessages) {
+            log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>, map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
+                    <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
+                            map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
+                                    + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
+                    map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>));
+        }
+
+        assertThat(logMessages).hasSize(<span class="integer">5</span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following picture shows an example of these notifications:</p>
+</div>
+<div id="display-console-logs-example" class="imageblock thumb">
+<div class="content">
+<img src="img/display-console-logs-example-v3.png" alt="display console logs example v3">
+</div>
+<div class="title">Figure 3. Display logs example</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="tab-recording"><a class="anchor" href="#tab-recording"></a>3.7.3. Tab Recording</h4>
+<div class="paragraph">
+<p>BrowserWatcher allows recording a browser tab. This feature requires a page loaded in the current tab (in other words, it cannot record empty or configuration pages). Then, the recording is started using the method <code>startRecording()</code> and stopped with <code>stopRecording()</code>, for instance, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.fail</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">java.io.File</span>;
+<span class="keyword">import</span> <span class="include">java.time.Duration</span>;
+<span class="keyword">import</span> <span class="include">java.util.concurrent.TimeUnit</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.BeforeEach</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.edge.EdgeDriver</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Watch</span>;
+
+<span class="type">class</span> <span class="class">RecordEdgeTest</span> {
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="type">int</span> REC_TIMEOUT_SEC = <span class="integer">10</span>;
+    <span class="directive">static</span> <span class="directive">final</span> <span class="type">int</span> POLL_TIME_MSEC = <span class="integer">100</span>;
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> REC_FILENAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">myRecordingEdge</span><span class="delimiter">&quot;</span></span>;
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> REC_EXT = <span class="string"><span class="delimiter">&quot;</span><span class="content">.webm</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
+
+    <span class="predefined-type">File</span> targetFolder;
+
+    <span class="annotation">@BeforeEach</span>
+    <span class="type">void</span> setup() {
+        targetFolder = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="predefined-type">System</span>.getProperty(<span class="string"><span class="delimiter">&quot;</span><span class="content">user.home</span><span class="delimiter">&quot;</span></span>), <span class="string"><span class="delimiter">&quot;</span><span class="content">Downloads</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(<span class="annotation">@Watch</span> EdgeDriver driver) <span class="directive">throws</span> <span class="exception">InterruptedException</span> {
+        driver.get(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html</span><span class="delimiter">&quot;</span></span>);
+
+        seleniumJupiter.startRecording(REC_FILENAME);
+
+        <span class="comment">// 1 + 3</span>
+        driver.findElement(By.xpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">//span[text()='1']</span><span class="delimiter">&quot;</span></span>)).click();
+        driver.findElement(By.xpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">//span[text()='+']</span><span class="delimiter">&quot;</span></span>)).click();
+        driver.findElement(By.xpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">//span[text()='3']</span><span class="delimiter">&quot;</span></span>)).click();
+        driver.findElement(By.xpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">//span[text()='=']</span><span class="delimiter">&quot;</span></span>)).click();
+
+        <span class="comment">// ... should be 4, wait for it</span>
+        WebDriverWait wait = <span class="keyword">new</span> WebDriverWait(driver, <span class="predefined-type">Duration</span>.ofSeconds(<span class="integer">10</span>));
+        wait.until(ExpectedConditions.textToBe(By.className(<span class="string"><span class="delimiter">&quot;</span><span class="content">screen</span><span class="delimiter">&quot;</span></span>), <span class="string"><span class="delimiter">&quot;</span><span class="content">4</span><span class="delimiter">&quot;</span></span>));
+
+        seleniumJupiter.stopRecording();
+
+        <span class="type">long</span> timeoutMs = <span class="predefined-type">System</span>.currentTimeMillis()
+                + <span class="predefined-type">TimeUnit</span>.SECONDS.toMillis(REC_TIMEOUT_SEC);
+
+        <span class="predefined-type">File</span> recFile;
+        <span class="keyword">do</span> {
+            recFile = <span class="keyword">new</span> <span class="predefined-type">File</span>(targetFolder, REC_FILENAME + REC_EXT);
+            <span class="keyword">if</span> (<span class="predefined-type">System</span>.currentTimeMillis() &gt; timeoutMs) {
+                fail(<span class="string"><span class="delimiter">&quot;</span><span class="content">Timeout of </span><span class="delimiter">&quot;</span></span> + REC_TIMEOUT_SEC
+                        + <span class="string"><span class="delimiter">&quot;</span><span class="content"> seconds waiting for recording </span><span class="delimiter">&quot;</span></span> + recFile);
+                <span class="keyword">break</span>;
+            }
+            <span class="predefined-type">Thread</span>.sleep(POLL_TIME_MSEC);
+
+        } <span class="keyword">while</span> (!recFile.exists());
+
+        log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Recording available at {}</span><span class="delimiter">&quot;</span></span>, recFile);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This feature is based on the API <a href="https://developer.chrome.com/docs/extensions/reference/tabCapture/">tabCapture</a>. Therefore, this feature is not available in Firefox since this API is not implemented by Firefox yet.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="disabling-csp"><a class="anchor" href="#disabling-csp"></a>3.7.4. Disabling CSP</h4>
+<div class="paragraph">
+<p><a href="https://content-security-policy.com/">Content Security Policy (CSP)</a> is the name of an HTTP response header that browsers use to improve the security of web pages. CSP helps to protect from attacks such as cross-site scripting (XSS). Nevertheless, developers might want to disable the CSP headers received from the server for testing purposes. For this reason, BrowserWatcher allows bypassing these CSP headers. This feature (i.e., disabling CSP headers) can be enabled in WebDriverManager using the property <code>disableCsp</code>, as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
+<span class="keyword">import</span> <span class="include">java.util.Map</span>;
+
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
+<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
+
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
+<span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Watch</span>;
+
+<span class="type">class</span> <span class="class">DisableCspFirefoxTest</span> {
+
+    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
+
+    <span class="annotation">@RegisterExtension</span>
+    <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
+
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> test(<span class="annotation">@Watch</span>(disableCsp = <span class="predefined-constant">true</span>) FirefoxDriver driver) {
+        driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://paypal.com/</span><span class="delimiter">&quot;</span></span>);
+        <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;&gt; logMessages = seleniumJupiter.getLogs();
+        assertThat(logMessages).isNotNull();
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="generic-driver"><a class="anchor" href="#generic-driver"></a>3.8. Generic driver</h3>
 <div class="paragraph">
 <p>Selenium-Jupiter allows using a configurable <code>WebDriver</code> object. This generic driver is declared as usual (i.e., test method or constructor parameter) using the type <code>RemoteWebDriver</code> or <code>WebDriver</code>. The concrete type of browser to be used is established utilizing the configuration key <code>wdm.defaultBrowser</code>. The default value for this key is <code>chrome</code>. All the values used in the template test defined in the previous section (i.e. <code>chrome</code>, <code>firefox</code>, <code>edge</code>, <code>chrome-in-docker</code>, <code>firefox-in-docker</code>, etc.) can also be used to define the type of browser in this mode.</p>
 </div>
@@ -1813,7 +2097,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 </div>
 </div>
 <div class="sect2">
-<h3 id="chrome-devtools"><a class="anchor" href="#chrome-devtools"></a>3.8. Chrome DevTools</h3>
+<h3 id="chrome-devtools"><a class="anchor" href="#chrome-devtools"></a>3.9. Chrome DevTools</h3>
 <div class="paragraph">
 <p>As of version 4.1.0, Selenium-Jupiter allows to inject <code>DevTools</code> instances in tests. This object used to send commands using the Chrome DevTools Protocol (CDP) to the driver declared just before in the test. For instance, the parameter <code>devTools</code> in following test allows to handle CDP commands of the browser handled with <code>driver</code>:</p>
 </div>
@@ -1873,7 +2157,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 </div>
 </div>
 <div class="sect2">
-<h3 id="single-session"><a class="anchor" href="#single-session"></a>3.9. Single session</h3>
+<h3 id="single-session"><a class="anchor" href="#single-session"></a>3.10. Single session</h3>
 <div class="paragraph">
 <p>By default, the instances provided by <em>Selenium-Jupiter</em> (e.g. <code>ChromeDriver</code>, <code>FirefoxDriver</code>, etc.) are created <em>before each</em> test, and are disposed <em>after each</em> test. This default behavior can be changed using the class-level annotation <code>@SingleSession</code>. The instances provided in this case will be created <em>before all</em> tests and are disposed <em>after all</em> tests.</p>
 </div>
@@ -1937,7 +2221,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 </div>
 </div>
 <div class="sect2">
-<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>3.10. Screenshots</h3>
+<h3 id="screenshots"><a class="anchor" href="#screenshots"></a>3.11. Screenshots</h3>
 <div class="paragraph">
 <p>Selenium-Jupiter allows making screenshots for each of the browser sessions at the end of the test. These screenshots can be encoded as Base64 or stored as PNG images. The following test shows an example. Notice that this feature can be enabled using the Java configuration (method <code>config()</code> of the Selenium-Jupiter instance. This instance can be obtained using the JUnit 5 annotation <code>@RegisterExtension</code> (see <a href="#advanced-configuration">advanced configuration</a> section for more information about configuration). The default image name is composed of the test name plus the <code>WebDriver</code> <em>sessionId</em>.</p>
 </div>
@@ -2006,7 +2290,7 @@ Notice that the previous example deletes the image at the end of the test. If yo
 </div>
 </div>
 <div class="sect2">
-<h3 id="integration-with-jenkins"><a class="anchor" href="#integration-with-jenkins"></a>3.11. Integration with Jenkins</h3>
+<h3 id="integration-with-jenkins"><a class="anchor" href="#integration-with-jenkins"></a>3.12. Integration with Jenkins</h3>
 <div class="paragraph">
 <p>Selenium-Jupiter seamlessly integrates with Jenkins through the <a href="https://plugins.jenkins.io/junit-attachments/">Jenkins attachment plugin</a>. This integration allows to attach output files of Selenium-Jupiter (typically PNG screenshots and MP4 recordings of Docker browsers) and keep these files associated with job execution in Jenkins. This is done using the method <code>useSurefireOutputFolder()</code> (or its equivalence configuration key <code>sel.jup.output.folder</code>) in Selenium-Jupiter (see <a href="#advanced-configuration">advanced configuration</a>). For instance:</p>
 </div>
@@ -2055,7 +2339,7 @@ Notice that the previous example deletes the image at the end of the test. If yo
 <div class="content">
 <img src="img/jenkins-attachements-test.png" alt="jenkins attachements test">
 </div>
-<div class="title">Figure 3. Example of test execution through Jenkins with attachments</div>
+<div class="title">Figure 4. Example of test execution through Jenkins with attachments</div>
 </div>
 </div>
 </div>
@@ -2137,7 +2421,14 @@ The preference order of these configuration alternatives is (in case of overlapp
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>setOutputFolder(String)</code> <code>useSurefireOutputFolder()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.output.folder</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>.</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Output folder for recordings and screenshots. This key accepts the special value <code>surefire-reports</code> for the <a href="#integration-with-jenkins">integration with Jenkins</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output folder for recordings and screenshots. This key accepts the special value <code>surefire-reports</code> for the <a href="#integration-with-jenkins">integration with Jenkins</a>. In case of the special value <code>surefire-reports</code> there will <strong>always</strong> be a separate output folder per class (see below, <code>setOutputFolderPerClass(boolean)</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>setOutputFolderPerClass(boolean)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.output.folder.per.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In case this value is <code>true</code>, the output files will be provided in separate folders per class. Otherwise, the output files
+ will be directly provided in the output folder.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>setScreenshot(boolean)</code> <code>enableScreenshot()</code></p></td>
@@ -2324,15 +2615,15 @@ The preference order of these configuration alternatives is (in case of overlapp
 <h2 id="about"><a class="anchor" href="#about"></a>10. About</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a> and <a href="selenium-jupiter.epub">EPUB</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
+<p>Selenium-Jupiter (Copyright © 2017-2021) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.2.0<br>
-Updated on 26-06-2022
+Version 4.3.0<br>
+Updated on 13-08-2022
 </div>
 </div>
 </body>
