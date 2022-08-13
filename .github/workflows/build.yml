@@ -31,7 +31,11 @@ jobs:
     - name: Start Xvfb
       run: Xvfb :99 &
     - name: Run tests
-      run: mvn -B test
+      uses: nick-invision/retry@v2.7.1
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: mvn -B test
     - name: Upload analysis to SonarCloud
       if: success() && !contains(github.ref, 'pull')
       run: >
