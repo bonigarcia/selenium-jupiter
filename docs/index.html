@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.3.0</span>
+<span id="revdate">Version 4.3.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.3.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.3.1<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1818,15 +1818,14 @@ Notice that instead of declaring the method with the usual <code>@Test</code> an
 
         <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;&gt; logMessages = seleniumJupiter.getLogs();
 
-        <span class="keyword">for</span> (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; map : logMessages) {
-            log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>, map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
-                    <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
-                            map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
-                                    + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
-                    map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>));
-        }
-
         assertThat(logMessages).hasSize(<span class="integer">5</span>);
+
+        logMessages.forEach(map -&gt; log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>,
+                map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
+                <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
+                        map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
+                                + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
+                map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>)));
     }
 
 }</code></pre>
@@ -1889,15 +1888,14 @@ When using Firefox, this feature requires at least Selenium WebDriver 4.1.2.
 
         <span class="predefined-type">List</span>&lt;<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;&gt; logMessages = seleniumJupiter.getLogs();
 
-        <span class="keyword">for</span> (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; map : logMessages) {
-            log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>, map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
-                    <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
-                            map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
-                                    + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
-                    map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>));
-        }
-
         assertThat(logMessages).hasSize(<span class="integer">5</span>);
+
+        logMessages.forEach(map -&gt; log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">[{}] [{}] {}</span><span class="delimiter">&quot;</span></span>,
+                map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">datetime</span><span class="delimiter">&quot;</span></span>),
+                <span class="predefined-type">String</span>.format(<span class="string"><span class="delimiter">&quot;</span><span class="content">%1$-14s</span><span class="delimiter">&quot;</span></span>,
+                        map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">source</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase() + <span class="string"><span class="delimiter">&quot;</span><span class="content">.</span><span class="delimiter">&quot;</span></span>
+                                + map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>).toString().toUpperCase()),
+                map.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>)));
     }
 
 }</code></pre>
@@ -2622,8 +2620,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.3.0<br>
-Updated on 13-08-2022
+Version 4.3.1<br>
+Updated on 21-08-2022
 </div>
 </div>
 </body>
