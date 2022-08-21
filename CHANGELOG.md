@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.3.1] - 2022-08-13
+### Changed
+- Bump to WebDriverManager 5.3.0 (avoids 403 error and enhance log gathering in Firefox)
+
+
 ## [4.3.0] - 2022-08-13
 ### Added
 - Integrate with BrowserWatcher to provide monitoring capabilities
