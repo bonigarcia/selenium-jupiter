@@ -17,9 +17,7 @@
 package io.github.bonigarcia.seljup.test.watcher;
 
 //tag::snippet-in-doc[]
-import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.List;
 import java.util.Map;
@@ -27,14 +25,11 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
 class DisableCspFirefoxTest {
-
-    static final Logger log = getLogger(lookup().lookupClass());
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
