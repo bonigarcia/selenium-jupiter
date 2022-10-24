@@ -13,7 +13,7 @@
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <selenium.version>4.5.0</selenium.version>
-        <htmlunit.version>4.5.0</htmlunit.version>
+        <htmlunit.version>4.5.2</htmlunit.version>
         <selenide.version>6.9.0</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
         <appium.version>8.2.0</appium.version>
