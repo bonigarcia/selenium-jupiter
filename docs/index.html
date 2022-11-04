@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.3.1</span>
+<span id="revdate">Version 4.3.2</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.3.1<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.3.2<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.2</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -2017,9 +2017,7 @@ This feature is based on the API <a href="https://developer.chrome.com/docs/exte
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.lang.invoke.MethodHandles.lookup</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
-<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.slf4j.LoggerFactory.getLogger</span>;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
 
 <span class="keyword">import</span> <span class="include">java.util.List</span>;
 <span class="keyword">import</span> <span class="include">java.util.Map</span>;
@@ -2027,14 +2025,11 @@ This feature is based on the API <a href="https://developer.chrome.com/docs/exte
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.Test</span>;
 <span class="keyword">import</span> <span class="include">org.junit.jupiter.api.extension.RegisterExtension</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.firefox.FirefoxDriver</span>;
-<span class="keyword">import</span> <span class="include">org.slf4j.Logger</span>;
 
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.SeleniumJupiter</span>;
 <span class="keyword">import</span> <span class="include">io.github.bonigarcia.seljup.Watch</span>;
 
 <span class="type">class</span> <span class="class">DisableCspFirefoxTest</span> {
-
-    <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Logger</span> log = getLogger(lookup().lookupClass());
 
     <span class="annotation">@RegisterExtension</span>
     <span class="directive">static</span> SeleniumJupiter seleniumJupiter = <span class="keyword">new</span> SeleniumJupiter();
@@ -2116,10 +2111,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v102.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2583,10 +2578,16 @@ The preference order of these configuration alternatives is (in case of overlapp
 </ul>
 </div>
 <div class="paragraph">
-<p>Or the following journal papers:</p>
+<p>Or the following papers:</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p>Leotta, M., et al. "<a href="https://link.springer.com/chapter/10.1007/978-3-031-14179-9_3">An Empirical Study to Quantify the SetUp and Maintenance Benefits of Adopting WebDriverManager</a>." <em>15th International Conference on the Quality of Information and Communications Technology</em> (QUATIC) 2022, Talavera de la Reina, Spain. September 2022.</p>
+</li>
+<li>
+<p>García, Boni, et al. "<a href="https://www.sciencedirect.com/science/article/abs/pii/S0164121222000516">Selenium-Jupiter: A JUnit 5 extension for Selenium WebDriver</a>." <em>Journal of Systems and Software</em> (2022): 111298.</p>
+</li>
 <li>
 <p>García, Boni, et al. "<a href="https://link.springer.com/article/10.1007%2Fs10664-021-09975-3">Automated driver management for Selenium WebDriver</a>." <em>Empirical Software Engineering</em> 26.5 (2021): 1-51.</p>
 </li>
@@ -2620,8 +2621,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.3.1<br>
-Updated on 21-08-2022
+Version 4.3.2<br>
+Updated on 04-11-2022
 </div>
 </div>
 </body>
