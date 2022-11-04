@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.2] - 2022-11-4
+### Changed
+- Bump to WebDriverManager 5.3.1 (fix latest issues related to driver management)
+
+### Removed
+- Remove references of OperaOptions (removed as of Selenium 4.5.0)
+
+
 ## [4.3.1] - 2022-08-13
 ### Changed
 - Bump to WebDriverManager 5.3.0 (avoids 403 error and enhance log gathering in Firefox)
