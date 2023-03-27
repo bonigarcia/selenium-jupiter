@@ -12,7 +12,7 @@
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
-        <selenium.version>4.8.1</selenium.version>
+        <selenium.version>4.8.3</selenium.version>
         <htmlunit.version>4.8.1.1</htmlunit.version>
         <selenide.version>6.12.4</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
