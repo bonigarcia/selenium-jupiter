@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="author" content="Boni García">
 <title>Selenium-Jupiter</title>
 <style>
@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 4.3.3</span>
+<span id="revdate">Version 4.3.4</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>4.3.3<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>4.3.4<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.3</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:4.3.4</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -2111,10 +2111,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v106.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v113.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v113.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v113.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v113.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2139,7 +2139,7 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
                 .send(Page.captureScreenshot(Optional.empty(), Optional.empty(),
                         Optional.of(<span class="keyword">new</span> Viewport(<span class="integer">0</span>, <span class="integer">0</span>, contentSize.getWidth(),
                                 contentSize.getHeight(), <span class="integer">1</span>)),
-                        Optional.empty(), Optional.of(<span class="predefined-constant">true</span>)));
+                        Optional.empty(), Optional.of(<span class="predefined-constant">true</span>), Optional.empty()));
         Path destination = Paths.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">fullpage-screenshot-chrome.png</span><span class="delimiter">&quot;</span></span>);
         Files.write(destination, Base64.getDecoder().decode(screenshotBase64));
 
@@ -2621,8 +2621,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.3.3<br>
-Updated on 19-01-2023
+Version 4.3.4<br>
+Updated on 15-05-2023
 </div>
 </div>
 </body>
