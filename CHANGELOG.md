@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.3.4] - 2023-05-12
+### Changed
+- Bump to WebDriverManager 5.3.3 (fix monitoring features)
+
+
 ## [4.3.3] - 2023-01-19
 ### Changed
 - Bump to WebDriverManager 5.3.2 (fix issues related to driver manager in macOS M1 and Edge in Docker)
