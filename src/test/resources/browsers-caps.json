@@ -8,8 +8,8 @@
                 "--use-fake-ui-for-media-stream"
              ],
              "capabilities" : {
-                "custom-cap-1": "custom-value-1",
-                "custom-cap-2": "custom-value-2"
+                "custom:cap-1": "custom-value-1",
+                "custom:cap-2": "custom-value-2"
              }
          }
       ],
