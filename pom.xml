@@ -14,7 +14,7 @@
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
         <selenium.version>4.9.1</selenium.version>
         <htmlunit.version>4.9.1</htmlunit.version>
-        <selenide.version>6.14.1</selenide.version>
+        <selenide.version>6.15.0</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
         <appium.version>8.5.0</appium.version>
 
