@@ -181,6 +181,7 @@
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <releaseProfiles>sonatype-oss-release</releaseProfiles>
+                    <useReleaseProfile>true</useReleaseProfile>
                 </configuration>
             </plugin>
             <plugin>
