@@ -3,7 +3,7 @@
 
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>4.3.5</version>
+    <version>4.3.6-SNAPSHOT</version>
 
     <properties>
         <!-- Compile dependencies -->
