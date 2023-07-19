@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.3.6] - 2023-07-19
+### Changed
+- Bump to WebDriverManager 5.4.1 (use last good versions CfT endpoint only when driver version is unknown)
+
+
 ## [4.3.5] - 2023-06-21
 ### Changed
 - Bump to Java 11 (required in Selenium as of September 30, 2023). See https://www.selenium.dev/blog/2023/java-8-support/
