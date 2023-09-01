@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.3.7] - 2023-08-01
+### Changed
+- Bump to WebDriverManager 5.5.3 (fix issues related to CfT request)
+
+
 ## [4.3.6] - 2023-07-19
 ### Changed
 - Bump to WebDriverManager 5.4.1 (use last good versions CfT endpoint only when driver version is unknown)
