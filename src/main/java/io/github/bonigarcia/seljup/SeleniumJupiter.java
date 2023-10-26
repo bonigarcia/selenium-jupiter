@@ -25,7 +25,6 @@ import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -508,7 +507,7 @@ public class SeleniumJupiter implements ParameterResolver,
                             .map(s -> s.equals(WebDriver.class)
                                     || s.equals(RemoteWebDriver.class)
                                     || selenideHandler.isSelenide(s))
-                            .collect(toList()).contains(false);
+                            .toList().contains(false);
         }
         return allWebDriver;
     }
