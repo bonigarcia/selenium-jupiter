@@ -23,9 +23,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.android.options.EspressoOptions;
 import io.github.bonigarcia.seljup.DriverCapabilities;
 import io.github.bonigarcia.seljup.EnabledIfDriverUrlOnline;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
@@ -39,10 +40,10 @@ class AppiumTest {
 
     @BeforeEach
     void setup() {
-        options.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-        options.setCapability(MobileCapabilityType.DEVICE_NAME,
+        options.setCapability(CapabilityType.PLATFORM_NAME, "Android");
+        options.setCapability(EspressoOptions.DEVICE_NAME_OPTION,
                 "Nexus 5 API 30");
-        options.setCapability(MobileCapabilityType.AUTOMATION_NAME,
+        options.setCapability(EspressoOptions.AUTOMATION_NAME_OPTION,
                 "UiAutomator2");
     }
 
