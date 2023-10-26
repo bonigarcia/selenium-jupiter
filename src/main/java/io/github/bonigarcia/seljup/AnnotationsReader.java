@@ -20,6 +20,7 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.lang.annotation.Annotation;
@@ -188,9 +189,9 @@ public class AnnotationsReader {
                     || annotatedType.isAssignableFrom(field.getType()))) {
                 field.setAccessible(true);
                 if (annotatedType != null) {
-                    return of(annotatedType.cast(field.get(object)));
+                    return ofNullable(annotatedType.cast(field.get(object)));
                 }
-                return (Optional<T>) of(field.get(object));
+                return (Optional<T>) ofNullable(field.get(object));
             }
         }
         return empty();
