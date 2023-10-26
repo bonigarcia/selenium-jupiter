@@ -12,9 +12,9 @@
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
-        <selenium.version>4.13.0</selenium.version>
+        <selenium.version>4.14.1</selenium.version>
         <htmlunit.version>4.13.0</htmlunit.version>
-        <selenide.version>6.19.1</selenide.version>
+        <selenide.version>7.0.0</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
         <appium.version>9.0.0</appium.version>
 
@@ -35,7 +35,7 @@
         <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
 
         <!-- Java -->
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
 
@@ -86,6 +86,7 @@
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
+
         </dependency>
 
         <!-- provided -->
@@ -132,6 +133,12 @@
             <artifactId>browserup-proxy-core</artifactId>
             <version>${browserup-proxy.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.appium</groupId>
