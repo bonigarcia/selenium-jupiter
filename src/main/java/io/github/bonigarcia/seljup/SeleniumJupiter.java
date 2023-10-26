@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -262,10 +261,10 @@ public class SeleniumJupiter implements ParameterResolver,
                 object = selenideHandler.createSelenideDriver(
                         (WebDriver) object, parameter, testInstance);
             } else if (object != null) {
-                object = ((List<WebDriver>) object).stream()
-                        .map(driver -> selenideHandler.createSelenideDriver(
-                                driver, parameter, testInstance))
-                        .collect(Collectors.toList());
+                object = ((List<WebDriver>) object).stream().map(
+                        driver -> selenideHandler.createSelenideDriver(driver,
+                                parameter, testInstance))
+                        .toList();
             }
         }
         return object;
@@ -638,8 +637,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
     public void addBrowsers(String... browsers) {
         browserListList.add(asList(browsers).stream()
-                .map(browser -> new BrowserBuilder(browser).build())
-                .collect(Collectors.toList()));
+                .map(browser -> new BrowserBuilder(browser).build()).toList());
     }
 
     public void putBrowserList(String key, List<Browser> browserList) {
@@ -775,8 +773,7 @@ public class SeleniumJupiter implements ParameterResolver,
                 if (config.isRecordingWhenFailure()
                         && !executionException.isPresent()) {
                     recordingList = manager.getWebDriverList().stream()
-                            .map(manager::getDockerRecordingPath)
-                            .collect(Collectors.toList());
+                            .map(manager::getDockerRecordingPath).toList();
                 }
 
                 // Quit manager
