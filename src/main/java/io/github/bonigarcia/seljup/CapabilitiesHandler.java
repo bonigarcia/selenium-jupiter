@@ -112,7 +112,7 @@ public class CapabilitiesHandler {
                 && browserType.get() == BrowserType.FIREFOX)) {
             return Optional.of(FirefoxOptions.class);
         } else if (isOpera || (browserType.isPresent()
-                        && browserType.get() == BrowserType.OPERA)) {
+                && browserType.get() == BrowserType.OPERA)) {
             return Optional.of(ChromeOptions.class);
         } else if (type == EdgeDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.EDGE)) {
@@ -178,13 +178,21 @@ public class CapabilitiesHandler {
                     && browser.get().getCapabilities() != null) {
                 Method setCapabilityMethod = optionsClass
                         .getMethod("setCapability", String.class, String.class);
-
+                Method setCapabilityBooleanMethod = optionsClass.getMethod(
+                        "setCapability", String.class, boolean.class);
                 @SuppressWarnings("unchecked")
-                Set<Entry<String, String>> caps = ((LinkedTreeMap<String, String>) browser
+                Set<Entry<String, Object>> caps = ((LinkedTreeMap<String, Object>) browser
                         .get().getCapabilities()).entrySet();
-                for (Entry<String, String> entry : caps) {
-                    setCapabilityMethod.invoke(options, entry.getKey(),
-                            entry.getValue());
+
+                for (Entry<String, Object> entry : caps) {
+                    Object value = entry.getValue();
+                    if (value.getClass().equals(Boolean.class)) {
+                        setCapabilityBooleanMethod.invoke(options,
+                                entry.getKey(), entry.getValue());
+                    } else {
+                        setCapabilityMethod.invoke(options, entry.getKey(),
+                                entry.getValue());
+                    }
                 }
             }
         } catch (Exception e) {
