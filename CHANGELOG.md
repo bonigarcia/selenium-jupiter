@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.0.0] - 2023-10-27
+### Added
+- Capabilities handler accepts also boolean capabilities (#409)
+
+### Changed
+- Use Java 17 (required for the use of Selenide dependency)
+- Bump to WebDriverManager 5.6.7 (fix issues related to use host as Docker network)
+
+### Fixed
+- Use of Options.ofNullable in annotation reader logic (#410)
+
+
 ## [4.3.7] - 2023-08-01
 ### Changed
 - Bump to WebDriverManager 5.5.3 (fix issues related to CfT request)
