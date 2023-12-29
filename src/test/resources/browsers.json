@@ -15,13 +15,21 @@
       [
          {
             "type": "chrome-in-docker",
-            "version": "beta"
+            "version": "beta",
+            "arguments": [
+               "--disable-gpu",
+               "--no-sandbox"
+            ]
          }
       ],
       [
          {
             "type": "chrome-in-docker",
-            "version": "dev"
+            "version": "dev",
+            "arguments": [
+               "--disable-gpu",
+               "--no-sandbox"
+            ]
          }
       ]
    ]
