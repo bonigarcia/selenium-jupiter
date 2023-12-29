@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.1] - 2023-12-30
+### Added
+- Include args field in DockerBrowser annotation
+
+
 ## [5.0.0] - 2023-10-27
 ### Added
 - Capabilities handler accepts also boolean capabilities (#409)
