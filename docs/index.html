@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 5.0.0</span>
+<span id="revdate">Version 5.0.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>5.0.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>5.0.1<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:5.0.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:5.0.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1129,7 +1129,7 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> test(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu,--no-sandbox</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
     }
@@ -1346,7 +1346,7 @@ Notice you will need hardware virtualization (hypervisor) or a virtual machine w
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> test(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu,--no-sandbox</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
     }
@@ -1727,13 +1727,21 @@ Notice that instead of declaring the method with the usual <code>@Test</code> an
       [
          {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">arguments</span><span class="delimiter">&quot;</span></span>: [
+               <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu</span><span class="delimiter">&quot;</span></span>,
+               <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-sandbox</span><span class="delimiter">&quot;</span></span>
+            ]
          }
       ],
       [
          {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dev</span><span class="delimiter">&quot;</span></span>
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dev</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">arguments</span><span class="delimiter">&quot;</span></span>: [
+               <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu</span><span class="delimiter">&quot;</span></span>,
+               <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-sandbox</span><span class="delimiter">&quot;</span></span>
+            ]
          }
       ]
    ]
@@ -2114,10 +2122,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v116.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v116.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v116.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v116.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2630,8 +2638,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 5.0.0<br>
-Updated on 27-10-2023
+Version 5.0.1<br>
+Updated on 29-12-2023
 </div>
 </div>
 </body>
