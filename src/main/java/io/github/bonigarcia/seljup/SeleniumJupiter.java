@@ -400,6 +400,9 @@ public class SeleniumJupiter implements ParameterResolver,
         if (dockerBrowser.volumes().length > 0) {
             wdm.dockerVolumes(dockerBrowser.volumes());
         }
+        if (!dockerBrowser.args().isEmpty()) {
+            wdm.dockerDefaultArgs(dockerBrowser.args());
+        }
         if (!dockerBrowser.lang().isEmpty()) {
             wdm.dockerLang(dockerBrowser.lang());
         }

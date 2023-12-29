@@ -48,4 +48,6 @@ public @interface DockerBrowser {
 
     public String[] volumes() default {};
 
+    public String args() default "--disable-gpu";
+
 }
