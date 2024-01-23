@@ -749,8 +749,9 @@ public class SeleniumJupiter implements ParameterResolver,
         boolean singleSession = false;
         Optional<Class<?>> testClass = extensionContext.getTestClass();
         if (testClass.isPresent()) {
-            singleSession = testClass.get()
-                    .isAnnotationPresent(SingleSession.class);
+            singleSession =
+                findAnnotation(testClass.get(), SingleSession.class)
+                        .isPresent();
         }
         log.trace("Single session {}", singleSession);
         return singleSession;
