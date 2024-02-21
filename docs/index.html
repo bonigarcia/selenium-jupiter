@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Boni García">
 <title>Selenium-Jupiter</title>
 <style>
@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 5.0.1</span>
+<span id="revdate">Version 5.1.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>5.0.1<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>5.1.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:5.0.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:5.1.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -2122,10 +2122,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v119.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v122.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v122.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v122.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v122.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2631,15 +2631,15 @@ The preference order of these configuration alternatives is (in case of overlapp
 <h2 id="about"><a class="anchor" href="#about"></a>10. About</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Selenium-Jupiter (Copyright © 2017-2023) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
+<p>Selenium-Jupiter (Copyright © 2017-2024) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 5.0.1<br>
-Updated on 29-12-2023
+Version 5.1.0<br>
+Updated on 21-02-2024
 </div>
 </div>
 </body>
