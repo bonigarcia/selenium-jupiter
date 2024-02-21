@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.0] - 2024-02-21
+### Added
+- Let @SingleSession supports meta-present (#447)
+
+### Changed
+- Bump to WebDriverManager 5.7.0 (fix issues related to chromedriver)
+
+
 ## [5.0.1] - 2023-12-30
 ### Added
 - Include args field in DockerBrowser annotation
