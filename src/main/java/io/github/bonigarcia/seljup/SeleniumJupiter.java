@@ -165,6 +165,9 @@ public class SeleniumJupiter implements ParameterResolver,
 
         // Selenium WebDriver
         default:
+            if ("HTMLUNIT".equalsIgnoreCase(System.getProperty("wdm.defaultBrowser"))) {
+                return resolveHtmlUnit(type, extensionContext, parameter);
+            }
             return resolveSeleniumWebDriver(extensionContext, contextId,
                     parameter, index, testInstance, type);
         }
@@ -300,16 +303,19 @@ public class SeleniumJupiter implements ParameterResolver,
             ExtensionContext extensionContext, Parameter parameter) {
         WebDriver driver = null;
         try {
-            Optional<Capabilities> capabilities = getCapabilities(
-                    extensionContext, parameter, Optional.empty(),
-                    Optional.empty());
+            Optional<Capabilities> capabilities = Optional.empty();
+            if (HTMLUNIT_DRIVER_CLASS.equals(type.getName())) {
+                capabilities = getCapabilities(
+                        extensionContext, parameter, Optional.empty(),
+                        Optional.empty());
+            }
 
             if (capabilities.isPresent()) {
                 driver = (WebDriver) type
                         .getDeclaredConstructor(Capabilities.class)
                         .newInstance(capabilities.get());
             } else {
-                driver = (WebDriver) type.getDeclaredConstructor()
+                driver = (WebDriver) Class.forName(HTMLUNIT_DRIVER_CLASS).getDeclaredConstructor()
                         .newInstance();
             }
         } catch (Exception e) {
