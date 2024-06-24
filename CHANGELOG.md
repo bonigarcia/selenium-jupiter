@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.1.1] - 2024-06-24
+### Changed
+- Bump to WebDriverManager 5.9.1 (fix issues related to vulnerable dependencies)
+
+
 ## [5.1.0] - 2024-02-21
 ### Added
 - Let @SingleSession supports meta-present (#447)
