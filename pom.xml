@@ -20,7 +20,7 @@
 
         <!-- Test dependencies -->
         <logback.version>1.5.15</logback.version>
-        <assertj.version>3.27.1</assertj.version>
+        <assertj.version>3.27.2</assertj.version>
 
         <!-- Plugins -->
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
