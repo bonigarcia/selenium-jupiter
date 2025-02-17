@@ -8,7 +8,7 @@
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>2.0.16</slf4j.version>
-        <webdrivermanager.version>5.9.2</webdrivermanager.version>
+        <webdrivermanager.version>5.9.3</webdrivermanager.version>
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
