@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
 import static io.github.bonigarcia.wdm.WebDriverManager.isOnline;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.nio.charset.Charset.defaultCharset;
@@ -387,9 +386,6 @@ public class SeleniumJupiter implements ParameterResolver,
         BrowserType browserType = dockerBrowser.type();
         wdm = WebDriverManager.getInstance(browserType.toBrowserName())
                 .browserVersion(browserVersion).browserInDocker();
-        if (browserType == CHROME_MOBILE) {
-            wdm.browserInDockerAndroid();
-        }
         if (dockerBrowser.recording() || config.isRecording()
                 || config.isRecordingWhenFailure()) {
             wdm.enableRecording();
@@ -435,9 +431,6 @@ public class SeleniumJupiter implements ParameterResolver,
             }
             if (browser.isDockerBrowser()) {
                 wdm.browserInDocker();
-            }
-            if (browser.isAndroidBrowser()) {
-                wdm.browserInDockerAndroid();
             }
             if (config.isRecording() || config.isRecordingWhenFailure()) {
                 wdm.enableRecording();
@@ -749,9 +742,8 @@ public class SeleniumJupiter implements ParameterResolver,
         boolean singleSession = false;
         Optional<Class<?>> testClass = extensionContext.getTestClass();
         if (testClass.isPresent()) {
-            singleSession =
-                findAnnotation(testClass.get(), SingleSession.class)
-                        .isPresent();
+            singleSession = findAnnotation(testClass.get(), SingleSession.class)
+                    .isPresent();
         }
         log.trace("Single session {}", singleSession);
         return singleSession;

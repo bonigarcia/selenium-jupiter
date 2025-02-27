@@ -45,8 +45,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.safari.SafariOptions;
 import org.slf4j.Logger;
 
 import com.google.gson.internal.LinkedTreeMap;
@@ -111,15 +109,9 @@ public class CapabilitiesHandler {
         } else if (type == FirefoxDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.FIREFOX)) {
             return Optional.of(FirefoxOptions.class);
-        } else if (isOpera || (browserType.isPresent()
-                && browserType.get() == BrowserType.OPERA)) {
-            return Optional.of(ChromeOptions.class);
         } else if (type == EdgeDriver.class || (browserType.isPresent()
                 && browserType.get() == BrowserType.EDGE)) {
             return Optional.of(EdgeOptions.class);
-        } else if (type == SafariDriver.class || (browserType.isPresent()
-                && browserType.get() == BrowserType.SAFARI)) {
-            return Optional.of(SafariOptions.class);
         } else if (type == InternetExplorerDriver.class) {
             return Optional.of(InternetExplorerOptions.class);
         } else if (type == ChromiumDriver.class) {

@@ -1,14 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bonigarcia</groupId>
     <artifactId>selenium-jupiter</artifactId>
-    <version>5.1.2-SNAPSHOT</version>
+    <version>6.0.0-SNAPSHOT</version>
 
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
-        <webdrivermanager.version>5.9.3</webdrivermanager.version>
+        <webdrivermanager.version>6.0.0-SNAPSHOT</webdrivermanager.version>
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.12.0</junit.jupiter.version>
@@ -49,8 +51,8 @@
 
     <name>selenium-jupiter</name>
     <description>
-		JUnit 5 extension for Selenium WebDriver
-	</description>
+        JUnit 5 extension for Selenium WebDriver
+    </description>
     <url>https://bonigarcia.dev/selenium-jupiter</url>
 
     <developers>
@@ -70,7 +72,8 @@
 
     <scm>
         <connection>scm:git:git://github.com/bonigarcia/selenium-jupiter.git</connection>
-        <developerConnection>scm:git:git@github.com:bonigarcia/selenium-jupiter.git</developerConnection>
+        <developerConnection>
+            scm:git:git@github.com:bonigarcia/selenium-jupiter.git</developerConnection>
         <url>https://github.com/bonigarcia/selenium-jupiter</url>
         <tag>selenium-jupiter-5.1.1</tag>
     </scm>
@@ -372,4 +375,16 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

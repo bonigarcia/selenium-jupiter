@@ -24,18 +24,14 @@ package io.github.bonigarcia.seljup;
  */
 public enum BrowserType {
 
-    CHROME, FIREFOX, OPERA, EDGE, SAFARI, CHROME_MOBILE;
+    CHROME, FIREFOX, EDGE, CHROMIUM;
 
     public String toBrowserName() {
-        if (this == CHROME_MOBILE) {
-            return CHROME.name();
-        } else {
-            return this.name();
-        }
+        return this.name();
     }
 
     public boolean isChromeBased() {
-        return this == BrowserType.CHROME || this == BrowserType.CHROME_MOBILE;
+        return this == BrowserType.CHROME || this == BrowserType.CHROMIUM;
     }
 
 }

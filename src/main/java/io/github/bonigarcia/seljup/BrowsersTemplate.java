@@ -16,7 +16,6 @@
  */
 package io.github.bonigarcia.seljup;
 
-import static io.github.bonigarcia.seljup.BrowserType.CHROME_MOBILE;
 import static java.util.Locale.ROOT;
 
 import java.util.List;
@@ -108,10 +107,6 @@ public class BrowsersTemplate {
             return BrowserType.valueOf(
                     browser.replace(IN_DOCKER, "").replace(IN_SELENIDE, "")
                             .replace("-", "_").toUpperCase(ROOT));
-        }
-
-        public boolean isAndroidBrowser() {
-            return toBrowserType() == CHROME_MOBILE;
         }
 
         public boolean isDockerBrowser() {
