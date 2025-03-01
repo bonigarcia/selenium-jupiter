@@ -37,7 +37,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.chromium.ChromiumDriver;
-import org.openqa.selenium.chromium.ChromiumOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -115,7 +114,7 @@ public class CapabilitiesHandler {
         } else if (type == InternetExplorerDriver.class) {
             return Optional.of(InternetExplorerOptions.class);
         } else if (type == ChromiumDriver.class) {
-            return Optional.of(ChromiumOptions.class);
+            return Optional.of(ChromeOptions.class);
         } else if (isGeneric) {
             String defaultBrowser = WebDriverManager.getInstance().config()
                     .getDefaultBrowser();
