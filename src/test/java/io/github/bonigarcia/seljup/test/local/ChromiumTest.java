@@ -18,24 +18,32 @@ package io.github.bonigarcia.seljup.test.local;
 
 import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openqa.selenium.net.PortProber.findFreePort;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.chromium.ChromiumDriver;
 
-import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
+import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@Disabled
 @EnabledIfBrowserAvailable(CHROMIUM)
 @ExtendWith(SeleniumJupiter.class)
 class ChromiumTest {
 
+    @Options
+    ChromeOptions options = new ChromeOptions();
+    {
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-debugging-port=" + findFreePort());
+    }
+
     @Test
-    void test(@Arguments({ "--no-sandbox", "--disable-gpu",
-            "--disable-dev-shm-usage" }) ChromiumDriver driver) {
+    void test(ChromiumDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
