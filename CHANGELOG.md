@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.0.0] - TBD
+### Changed
+- Bump to WebDriverManager 6.0.0 (docker-selenium, powershell)
+- Update options class for Chromium
+
+### Removed
+- Remove support for Opera, Safari (WebKit), and Chrome Mobile in Docker
+- Remove browser version discovery in Windows through WMIC (deprecated)
+
+
 ## [5.1.1] - 2024-06-24
 ### Changed
 - Bump to WebDriverManager 5.9.1 (fix issues related to vulnerable dependencies)
