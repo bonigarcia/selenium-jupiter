@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chromium.ChromiumDriver;
 
-import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
@@ -32,8 +31,7 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 class ChromiumTest {
 
     @Test
-    void test(@Arguments({
-            "--user-data-dir=/tmp/user-data" }) ChromiumDriver driver) {
+    void test(ChromiumDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
