@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2020 Boni Garcia (https://bonigarcia.github.io/)
+ * (C) Copyright 2025 Boni Garcia (https://bonigarcia.github.io/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,27 @@
  * limitations under the License.
  *
  */
-package io.github.bonigarcia.seljup.test.local;
+package io.github.bonigarcia.seljup.test.docker;
 
-import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
+//tag::snippet-in-doc[]
+import static io.github.bonigarcia.seljup.BrowserType.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.chromium.ChromiumDriver;
+import org.openqa.selenium.WebDriver;
 
-import io.github.bonigarcia.seljup.Arguments;
-import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
+import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
-@EnabledIfBrowserAvailable(CHROMIUM)
 @ExtendWith(SeleniumJupiter.class)
-class ChromiumTest {
+class DockerChromiumTest {
 
     @Test
-    void test(@Arguments({ "--no-sandbox", "--disable-gpu",
-            "--disable-dev-shm-usage",
-            "--user-data-dir=/tmp/user-data" }) ChromiumDriver driver) {
+    void testChrome(@DockerBrowser(type = CHROMIUM) WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
 
 }
+//end::snippet-in-doc[]
