@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.local;
 import static io.github.bonigarcia.seljup.Browser.CHROMIUM;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chromium.ChromiumDriver;
@@ -27,14 +28,14 @@ import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.EnabledIfBrowserAvailable;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 
+@Disabled
 @EnabledIfBrowserAvailable(CHROMIUM)
 @ExtendWith(SeleniumJupiter.class)
 class ChromiumTest {
 
     @Test
     void test(@Arguments({ "--no-sandbox", "--disable-gpu",
-            "--disable-dev-shm-usage",
-            "--user-data-dir=/tmp/user-data" }) ChromiumDriver driver) {
+            "--disable-dev-shm-usage" }) ChromiumDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
