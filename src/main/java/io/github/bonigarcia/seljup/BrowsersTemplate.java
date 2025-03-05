@@ -42,15 +42,18 @@ public class BrowsersTemplate {
         String type;
         String version;
         String remoteUrl;
+        String binary;
         String[] arguments;
         String[] preferences;
         Object capabilities;
 
         public Browser(String type, String version, String remoteUrl,
-                String[] arguments, String[] preferences, Object capabilities) {
+                String binary, String[] arguments, String[] preferences,
+                Object capabilities) {
             this.type = type;
             this.version = version;
             this.remoteUrl = remoteUrl;
+            this.binary = binary;
             this.arguments = arguments;
             this.preferences = preferences;
             this.capabilities = capabilities;
@@ -73,6 +76,14 @@ public class BrowsersTemplate {
 
         public void setRemoteUrl(String url) {
             this.remoteUrl = url;
+        }
+
+        public String getBinary() {
+            return binary;
+        }
+
+        public void setBinary(String binary) {
+            this.binary = binary;
         }
 
         public String[] getArguments() {

@@ -18,13 +18,11 @@ package io.github.bonigarcia.seljup.test.template;
 
 import static io.github.bonigarcia.seljup.BrowserBuilder.chrome;
 import static io.github.bonigarcia.seljup.BrowserBuilder.chromeInDocker;
-import static io.github.bonigarcia.seljup.BrowserBuilder.chromeMobile;
 import static io.github.bonigarcia.seljup.BrowserBuilder.edge;
 import static io.github.bonigarcia.seljup.BrowserBuilder.firefox;
 import static io.github.bonigarcia.seljup.BrowserBuilder.firefoxInDocker;
 import static io.github.bonigarcia.seljup.BrowserBuilder.iexplorer;
 import static io.github.bonigarcia.seljup.BrowserBuilder.opera;
-import static io.github.bonigarcia.seljup.BrowserBuilder.operaInDocker;
 import static io.github.bonigarcia.seljup.BrowserBuilder.safari;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,8 +38,7 @@ class BrowserBuilderTest {
 
     static Stream<BrowserBuilder> browserBuilderProvider() {
         return Stream.of(chrome(), firefox(), opera(), edge(), safari(),
-                iexplorer(), chromeInDocker(), firefoxInDocker(),
-                operaInDocker(), chromeMobile());
+                iexplorer(), chromeInDocker(), firefoxInDocker());
     }
 
     @ParameterizedTest

@@ -31,6 +31,7 @@ public class BrowserBuilder {
     String type;
     String version;
     String remoteUrl;
+    String binary;
     String[] arguments;
     String[] preferences;
     Object capabilities;
@@ -41,10 +42,6 @@ public class BrowserBuilder {
 
     public static BrowserBuilder chrome() {
         return new BrowserBuilder("chrome");
-    }
-
-    public static BrowserBuilder chromeMobile() {
-        return new BrowserBuilder("chrome-mobile");
     }
 
     public static BrowserBuilder firefox() {
@@ -75,16 +72,12 @@ public class BrowserBuilder {
         return new BrowserBuilder("firefox-in-docker");
     }
 
-    public static BrowserBuilder operaInDocker() {
-        return new BrowserBuilder("opera-in-docker");
+    public static BrowserBuilder chromiumInDocker() {
+        return new BrowserBuilder("chromium-in-docker");
     }
 
     public static BrowserBuilder edgeInDocker() {
         return new BrowserBuilder("edge-in-docker");
-    }
-
-    public static BrowserBuilder safariInDocker() {
-        return new BrowserBuilder("safari-in-docker");
     }
 
     public BrowserBuilder version(String version) {
@@ -114,8 +107,8 @@ public class BrowserBuilder {
     }
 
     public Browser build() {
-        return new Browser(type, version, remoteUrl, arguments, preferences,
-                capabilities);
+        return new Browser(type, version, remoteUrl, binary, arguments,
+                preferences, capabilities);
     }
 
 }

@@ -68,20 +68,22 @@ public class CapabilitiesHandler {
     ExtensionContext extensionContext;
     Optional<Browser> browser;
     Optional<BrowserType> browserType;
+    Optional<String> binary;
     boolean isGeneric;
     boolean isOpera;
 
     public CapabilitiesHandler(Config config,
             AnnotationsReader annotationsReader, Parameter parameter,
             ExtensionContext extensionContext, Optional<Browser> browser,
-            Optional<BrowserType> browserType, boolean isGeneric,
-            boolean isOpera) {
+            Optional<BrowserType> browserType, Optional<String> binary,
+            boolean isGeneric, boolean isOpera) {
         this.config = config;
         this.annotationsReader = annotationsReader;
         this.parameter = parameter;
         this.extensionContext = extensionContext;
         this.browser = browser;
         this.browserType = browserType;
+        this.binary = binary;
         this.isGeneric = isGeneric;
         this.isOpera = isOpera;
     }
@@ -217,7 +219,9 @@ public class CapabilitiesHandler {
 
             Binary binary = parameter.getAnnotation(Binary.class);
             if (binary != null) {
-                setBinaryMethod.invoke(options, binary.value());
+                String binaryValue = binary.value();
+                setBinary(binaryValue);
+                setBinaryMethod.invoke(options, binaryValue);
             }
         } catch (Exception e) {
             log.trace("Exception reading binary of {} ({})", optionsClass,
@@ -339,6 +343,14 @@ public class CapabilitiesHandler {
             log.warn("There was a problem handling extension", e);
         }
         return file;
+    }
+
+    public Optional<String> getBinary() {
+        return binary;
+    }
+
+    public void setBinary(String binary) {
+        this.binary = Optional.of(binary);
     }
 
 }

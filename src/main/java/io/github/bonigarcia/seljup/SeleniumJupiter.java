@@ -179,6 +179,8 @@ public class SeleniumJupiter implements ParameterResolver,
         boolean isGeneric = isGeneric(type);
         boolean isSelenide = selenideHandler.isSelenide(type);
         boolean isOpera = annotationsReader.getOpera(parameter);
+        Binary binary = annotationsReader.getBinary(parameter);
+
         Optional<DockerBrowser> dockerBrowser = annotationsReader
                 .getDocker(parameter);
 
@@ -215,7 +217,7 @@ public class SeleniumJupiter implements ParameterResolver,
 
         } else { // Local
             wdm = getManagerForLocal(extensionContext, parameter, type,
-                    isGeneric, isOpera);
+                    isGeneric, isOpera, binary);
         }
 
         // Output folder
@@ -301,7 +303,7 @@ public class SeleniumJupiter implements ParameterResolver,
         try {
             Optional<Capabilities> capabilities = getCapabilities(
                     extensionContext, parameter, Optional.empty(),
-                    Optional.empty());
+                    Optional.empty(), Optional.empty());
 
             if (capabilities.isPresent()) {
                 driver = (WebDriver) type
@@ -355,7 +357,7 @@ public class SeleniumJupiter implements ParameterResolver,
     @SuppressWarnings("unchecked")
     private WebDriverManager getManagerForLocal(
             ExtensionContext extensionContext, Parameter parameter,
-            Class<?> type, boolean isGeneric, boolean isOpera) {
+            Class<?> type, boolean isGeneric, boolean isOpera, Binary binary) {
         WebDriverManager wdm;
         if (type == List.class) {
             throw new SeleniumJupiterException(
@@ -370,8 +372,13 @@ public class SeleniumJupiter implements ParameterResolver,
             wdm = WebDriverManager.getInstance(webdriverClass);
         }
 
+        Optional<String> opBinary = binary != null ? Optional.of(binary.value())
+                : Optional.empty();
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, Optional.empty(), Optional.empty());
+                parameter, Optional.empty(), Optional.empty(), opBinary);
+        if (opBinary.isPresent()) {
+            wdm.browserBinary(binary.value());
+        }
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -406,7 +413,8 @@ public class SeleniumJupiter implements ParameterResolver,
             wdm.dockerTimezone(dockerBrowser.timezone());
         }
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, Optional.of(browserType), Optional.empty());
+                parameter, Optional.of(browserType), Optional.empty(),
+                Optional.empty());
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -419,13 +427,16 @@ public class SeleniumJupiter implements ParameterResolver,
         WebDriverManager wdm;
         Optional<BrowserType> browserType = Optional.empty();
         Optional<Browser> opBrowser = Optional.empty();
+        Optional<String> opBinary = Optional.empty();
         if (browser != null) {
             opBrowser = Optional.of(browser);
             browserType = Optional.of(browser.toBrowserType());
+            opBinary = Optional.of(browser.getBinary());
             wdm = WebDriverManager
                     .getInstance(browserType.get().toBrowserName())
                     .browserVersion(browser.getVersion())
-                    .remoteAddress(browser.getRemoteUrl());
+                    .remoteAddress(browser.getRemoteUrl())
+                    .browserBinary(browser.getBinary());
             if (url.isPresent()) {
                 wdm.remoteAddress(url.get().toString());
             }
@@ -444,7 +455,7 @@ public class SeleniumJupiter implements ParameterResolver,
         }
 
         Optional<Capabilities> capabilities = getCapabilities(extensionContext,
-                parameter, browserType, opBrowser);
+                parameter, browserType, opBrowser, opBinary);
         if (capabilities.isPresent()) {
             wdm.capabilities(capabilities.get());
         }
@@ -453,12 +464,13 @@ public class SeleniumJupiter implements ParameterResolver,
 
     private Optional<Capabilities> getCapabilities(
             ExtensionContext extensionContext, Parameter parameter,
-            Optional<BrowserType> browserType, Optional<Browser> browser) {
+            Optional<BrowserType> browserType, Optional<Browser> browser,
+            Optional<String> binary) {
 
         boolean isOpera = annotationsReader.getOpera(parameter);
         CapabilitiesHandler capsHandler = new CapabilitiesHandler(config,
                 annotationsReader, parameter, extensionContext, browser,
-                browserType, isGeneric(parameter.getType()), isOpera);
+                browserType, binary, isGeneric(parameter.getType()), isOpera);
 
         return capsHandler.getCapabilities();
 

@@ -201,6 +201,10 @@ public class AnnotationsReader {
         return parameter.getAnnotation(Opera.class) != null;
     }
 
+    public Binary getBinary(Parameter parameter) {
+        return parameter.getAnnotation(Binary.class);
+    }
+
     public Optional<DockerBrowser> getDocker(Parameter parameter) {
         Optional<DockerBrowser> out = empty();
         DockerBrowser dockerBrowser = parameter
