@@ -17,7 +17,11 @@
 package io.github.bonigarcia.seljup.test.capabilities;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,9 +32,15 @@ import io.github.bonigarcia.seljup.SeleniumJupiter;
 @ExtendWith(SeleniumJupiter.class)
 class ChromeBinaryTest {
 
+    static final String BROWSER_BINARY = "/usr/bin/google-chrome-beta";
+
+    @BeforeEach
+    void setup() {
+        assumeThat(Paths.get(BROWSER_BINARY)).exists();
+    }
+
     @Test
-    void operaExtensionTest(
-            @Binary("/usr/bin/google-chrome-beta") ChromeDriver driver) {
+    void chromeBinaryTest(@Binary(BROWSER_BINARY) ChromeDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
