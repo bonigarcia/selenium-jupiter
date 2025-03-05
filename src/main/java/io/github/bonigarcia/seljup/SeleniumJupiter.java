@@ -431,7 +431,7 @@ public class SeleniumJupiter implements ParameterResolver,
         if (browser != null) {
             opBrowser = Optional.of(browser);
             browserType = Optional.of(browser.toBrowserType());
-            opBinary = Optional.of(browser.getBinary());
+            opBinary = Optional.ofNullable(browser.getBinary());
             wdm = WebDriverManager
                     .getInstance(browserType.get().toBrowserName())
                     .browserVersion(browser.getVersion())
