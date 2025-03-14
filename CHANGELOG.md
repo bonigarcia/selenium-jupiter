@@ -1,6 +1,9 @@
 # Changelog
 
 ## [6.0.0] - TBD
+### Added
+- Set browser binary in WebDriverManager when @Binary is used in Selenium-Jupiter
+
 ### Changed
 - Bump to WebDriverManager 6.0.0 (docker-selenium, powershell)
 - Update options class for Chromium
