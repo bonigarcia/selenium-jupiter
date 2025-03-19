@@ -1,6 +1,6 @@
 # Changelog
 
-## [6.0.0] - TBD
+## [6.0.0] - 2025-03-19
 ### Added
 - Set browser binary in WebDriverManager when @Binary is used in Selenium-Jupiter
 
