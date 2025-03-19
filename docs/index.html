@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <meta name="author" content="Boni García">
 <title>Selenium-Jupiter</title>
 <style>
@@ -783,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 5.1.1</span>
+<span id="revdate">Version 6.0.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -942,7 +942,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>5.1.1<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>6.0.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -953,7 +953,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:5.1.1</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:6.0.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1129,7 +1129,7 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> test(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu,--no-sandbox</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
     }
@@ -1274,7 +1274,7 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 </div>
 </div>
 <div class="paragraph">
-<p>The used Docker images by Selenium-Jupiter have been created and maintained by <a href="https://aerokube.com/selenoid/">Aerokube</a> (you can check the available versions on the <a href="https://aerokube.com/images/latest/">browser images</a> page). Therefore, the available browsers to be executed as Docker containers in WebDriverManager are <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeTest.java">Chrome</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxTest.java">Firefox</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeTest.java">Edge</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerOperaTest.java">Opera</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerSafariTest.java">Safari</a>, and <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeMobileTest.java">Chrome Mobile</a>.</p>
+<p>As of version 6, WebDriverManager uses the official Docker browser images created and maintained by the Selenium project, i.e., <a href="https://github.com/SeleniumHQ/docker-selenium">docker-selenium</a>. Therefore, the available browsers to be executed as Docker containers in Selenium-Jupiter are <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeTest.java">Chrome</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerFirefoxTest.java">Firefox</a>, <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerEdgeTest.java">Edge</a>, and <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromiumTest.java">Chromium</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1283,19 +1283,7 @@ Although not mandatory, it is highly recommended to use a logger library to trac
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The case of Safari is particular since a real Safari browser can only be executed under a Mac OS machine. This way, the Safari Docker containers use the <a href="https://webkit.org/">WebKit engine</a>. This engine is the same used in browser containers, and therefore, from a functional point of view, both browsers (a real Safari and this Docker image) should behave in the same way.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-Notice you will need hardware virtualization (hypervisor) or a virtual machine with nested virtualization support to run Chrome Mobile images.
+Some <em>dockerized</em> browsers (e.g., Chromium and Edge) are supported in ARM64 architecture. See the <a href="https://github.com/SeleniumHQ/docker-selenium">docker-selenium</a> README for further information.
 </td>
 </tr>
 </table>
@@ -1314,13 +1302,13 @@ Notice you will need hardware virtualization (hypervisor) or a virtual machine w
 <p><code>"latest"</code> : To specify the latest version explicitly (default option).</p>
 </li>
 <li>
-<p><code>"latest-N"</code> : Where <code>N</code> is an integer value to be subtracted from the current stable version. For example, if we specify <code>latest-1</code> (i.e., <em>latest version minus one</em>), the previous version to the stable release will be used (see an example <a href="https://github.com/bonigarcia/selenium-jupiter/blob/master/src/test/java/io/github/bonigarcia/seljup/test/docker/DockerChromeLatestMinusOneTest.java">here</a>).</p>
+<p><code>"latest-N"</code> : Where <code>N</code> is an integer value to be subtracted from the current stable version. For example, if we specify <code>latest-1</code> (i.e., <em>latest version minus one</em>), the previous version to the stable release will be used (see an example <a href="https://github.com/bonigarcia/webdrivermanager/blob/master/src/test/java/io/github/bonigarcia/wdm/test/docker/DockerChromeVersionsTest.java">here</a>).</p>
 </li>
 <li>
-<p><code>"beta"</code>: To use the beta version. This version is only available for Chrome and Firefox, thanks to the Docker images maintained by <a href="https://hub.docker.com/r/twilio/selenoid/">Twilio</a> (a fork of the Aerokube images for the beta and development versions of Chrome and Firefox).</p>
+<p><code>"beta"</code>: To use the beta version.</p>
 </li>
 <li>
-<p><code>"dev"</code>: To use the development version (again, for Chrome and Firefox).</p>
+<p><code>"dev"</code>: To use the development version.</p>
 </li>
 </ul>
 </div>
@@ -1346,7 +1334,7 @@ Notice you will need hardware virtualization (hypervisor) or a virtual machine w
 
     <span class="annotation">@Test</span>
     <span class="type">void</span> test(
-            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu,--no-sandbox</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
+            <span class="annotation">@DockerBrowser</span>(type = CHROME, version = <span class="string"><span class="delimiter">&quot;</span><span class="content">beta</span><span class="delimiter">&quot;</span></span>) WebDriver driver) {
         driver.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://bonigarcia.dev/selenium-webdriver-java/</span><span class="delimiter">&quot;</span></span>);
         assertThat(driver.getTitle()).contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">Selenium WebDriver</span><span class="delimiter">&quot;</span></span>);
     }
@@ -2122,10 +2110,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v126.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v126.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v126.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v126.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v133.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v133.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v133.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v133.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2594,6 +2582,15 @@ The preference order of these configuration alternatives is (in case of overlapp
 <div class="ulist">
 <ul>
 <li>
+<p>Leotta, M., et al., "<a href="https://www.sciencedirect.com/science/article/pii/S0950584924002003">A family of experiments to quantify the benefits of adopting WebDriverManager and Selenium-Jupiter</a>." <em>Information and Software Technology</em> 178 (2025): 107595.</p>
+</li>
+<li>
+<p>García, Boni, et al. "<a href="https://link.springer.com/chapter/10.1007/978-3-031-70245-7_10">Exploring Browser Automation: A Comparative Study of Selenium, Cypress, Puppeteer, and Playwright</a>." <em>International Conference on the Quality of Information and Communications Technology</em>. Springer Nature Switzerland, 2024.</p>
+</li>
+<li>
+<p>Leotta, M., et al. "<a href="https://dl.acm.org/doi/10.1145/3661167.3661192">AI-generated test scripts for web E2E testing with ChatGPT and Copilot: a preliminary study</a>." Proceedings of the <em>28th International Conference on Evaluation and Assessment in Software Engineering</em>. 2024.</p>
+</li>
+<li>
 <p>García, Boni, et al. "<a href="https://www.sciencedirect.com/science/article/pii/S0164121223001188">Enhancing Web Applications Observability through Instrumented Automated Browsers</a>." <em>Journal of Systems and Software</em> (2023): 111723.</p>
 </li>
 <li>
@@ -2631,15 +2628,15 @@ The preference order of these configuration alternatives is (in case of overlapp
 <h2 id="about"><a class="anchor" href="#about"></a>10. About</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Selenium-Jupiter (Copyright © 2017-2024) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
+<p>Selenium-Jupiter (Copyright © 2017-2025) is an open-source project created and maintained by <a href="https://bonigarcia.dev/">Boni García</a> (<a href="https://twitter.com/boni_gg">@boni_gg</a>), licensed under the terms of <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. This documentation (also available in <a href="selenium-jupiter.pdf">PDF</a>) is released under the terms of <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 5.1.1<br>
-Updated on 24-06-2024
+Version 6.0.0<br>
+Updated on 19-03-2025
 </div>
 </div>
 </body>
