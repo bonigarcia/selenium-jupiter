@@ -19,6 +19,7 @@ package io.github.bonigarcia.seljup.test.template;
 //tag::snippet-in-doc[]
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.bonigarcia.seljup.BrowserScenarioTest;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -30,6 +31,12 @@ class TemplateTest {
 
     @TestTemplate
     void templateTest(WebDriver driver) {
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        assertThat(driver.getTitle()).contains("Selenium WebDriver");
+    }
+
+    @BrowserScenarioTest(name = "Templated Test Name - {type} {version}")
+    void namePatternTest(WebDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
         assertThat(driver.getTitle()).contains("Selenium WebDriver");
     }
