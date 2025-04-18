@@ -659,9 +659,7 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private boolean isTestTemplate(ExtensionContext extensionContext) {
-        return extensionContext.getTestMethod()
-                .map(method -> AnnotationSupport.isAnnotated(method, TestTemplate.class))
-                .orElse(false);
+        return AnnotationSupport.isAnnotated(extensionContext.getTestMethod(), TestTemplate.class);
     }
 
     private boolean isGeneric(Class<?> type) {
