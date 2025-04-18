@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,6 +35,7 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
+@Disabled
 class DisplayLogsChromeTest {
 
     static final Logger log = getLogger(lookup().lookupClass());

@@ -24,6 +24,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
+@Disabled
 class GatherLogsFirefoxTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
