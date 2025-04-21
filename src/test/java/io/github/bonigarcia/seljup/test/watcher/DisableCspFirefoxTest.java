@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -30,7 +29,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
-@Disabled
 class DisableCspFirefoxTest {
 
     @RegisterExtension

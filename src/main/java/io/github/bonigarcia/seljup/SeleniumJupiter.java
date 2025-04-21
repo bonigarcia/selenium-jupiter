@@ -557,13 +557,15 @@ public class SeleniumJupiter implements ParameterResolver,
             if (!browserJsonContent.isEmpty()) {
                 return new Gson()
                         .fromJson(browserJsonContent, BrowsersTemplate.class)
-                        .getStream().map(b -> invocationContext(b, this, extensionContext));
+                        .getStream()
+                        .map(b -> invocationContext(b, this, extensionContext));
             }
 
             if (browserListMap != null) {
                 List<Browser> browsers = browserListMap.get(contextId);
                 if (browsers != null) {
-                    return Stream.of(invocationContext(browsers, this, extensionContext));
+                    return Stream.of(invocationContext(browsers, this,
+                            extensionContext));
                 } else {
                     return Stream.empty();
                 }
@@ -578,17 +580,20 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private synchronized TestTemplateInvocationContext invocationContext(
-            List<Browser> template, SeleniumJupiter parent, ExtensionContext extensionContext) {
+            List<Browser> template, SeleniumJupiter parent,
+            ExtensionContext extensionContext) {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {
-                return AnnotationSupport.findAnnotation(
-                        extensionContext.getRequiredTestMethod(), BrowserScenarioTest.class)
-                    .map(annotation -> BrowserScenarioTest.NameFormatter.format(
-                            annotation.name(),
-                            extensionContext.getDisplayName(),
-                            template.get(0))
-                    ).orElse(template.toString());
+                return AnnotationSupport
+                        .findAnnotation(
+                                extensionContext.getRequiredTestMethod(),
+                                BrowserScenarioTest.class)
+                        .map(annotation -> BrowserScenarioTest.NameFormatter
+                                .format(annotation.name(),
+                                        extensionContext.getDisplayName(),
+                                        template.get(0)))
+                        .orElse(template.toString());
             }
 
             @Override
@@ -659,7 +664,8 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private boolean isTestTemplate(ExtensionContext extensionContext) {
-        return AnnotationSupport.isAnnotated(extensionContext.getTestMethod(), TestTemplate.class);
+        return AnnotationSupport.isAnnotated(extensionContext.getTestMethod(),
+                TestTemplate.class);
     }
 
     private boolean isGeneric(Class<?> type) {
@@ -824,6 +830,10 @@ public class SeleniumJupiter implements ParameterResolver,
         return invokeWdm(driver, "getLogs");
     }
 
+    public void startRecording() {
+        invokeWdm("startRecording");
+    }
+
     public void startRecording(String recFilename) {
         invokeWdm("startRecording", recFilename);
     }
@@ -838,6 +848,14 @@ public class SeleniumJupiter implements ParameterResolver,
 
     public void stopRecording(WebDriver driver) {
         invokeWdm(driver, "stopRecording");
+    }
+
+    public Path getRecordingPath() {
+        return invokeWdm("getRecordingPath");
+    }
+
+    public Path getRecordingPath(WebDriver driver) {
+        return invokeWdm(driver, "getRecordingPath");
     }
 
     @SuppressWarnings("unchecked")

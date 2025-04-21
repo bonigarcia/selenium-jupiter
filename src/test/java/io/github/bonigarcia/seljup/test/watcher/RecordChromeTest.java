@@ -18,19 +18,16 @@ package io.github.bonigarcia.seljup.test.watcher;
 
 //tag::snippet-in-doc[]
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.By;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -38,32 +35,19 @@ import org.slf4j.Logger;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
-@Disabled
-class RecordEdgeTest {
+class RecordChromeTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
-
-    static final int REC_TIMEOUT_SEC = 10;
-    static final int POLL_TIME_MSEC = 100;
-    static final String REC_FILENAME = "myRecordingEdge";
-    static final String REC_EXT = ".webm";
 
     @RegisterExtension
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
-    File targetFolder;
-
-    @BeforeEach
-    void setup() {
-        targetFolder = new File(System.getProperty("user.home"), "Downloads");
-    }
-
     @Test
-    void test(@Watch EdgeDriver driver) throws InterruptedException {
+    void test(@Watch ChromeDriver driver) throws InterruptedException {
         driver.get(
                 "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html");
 
-        seleniumJupiter.startRecording(REC_FILENAME);
+        seleniumJupiter.startRecording();
 
         // 1 + 3
         driver.findElement(By.xpath("//span[text()='1']")).click();
@@ -77,22 +61,10 @@ class RecordEdgeTest {
 
         seleniumJupiter.stopRecording();
 
-        long timeoutMs = System.currentTimeMillis()
-                + TimeUnit.SECONDS.toMillis(REC_TIMEOUT_SEC);
+        Path recordingPath = seleniumJupiter.getRecordingPath();
+        assertThat(recordingPath).exists();
 
-        File recFile;
-        do {
-            recFile = new File(targetFolder, REC_FILENAME + REC_EXT);
-            if (System.currentTimeMillis() > timeoutMs) {
-                fail("Timeout of " + REC_TIMEOUT_SEC
-                        + " seconds waiting for recording " + recFile);
-                break;
-            }
-            Thread.sleep(POLL_TIME_MSEC);
-
-        } while (!recFile.exists());
-
-        log.debug("Recording available at {}", recFile);
+        log.debug("Recording available at {}", recordingPath);
     }
 
 }

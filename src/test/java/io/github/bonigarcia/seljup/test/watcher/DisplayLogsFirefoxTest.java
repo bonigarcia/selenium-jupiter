@@ -26,17 +26,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.slf4j.Logger;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.seljup.Watch;
 
-@Disabled
-class DisplayLogsChromeTest {
+class DisplayLogsFirefoxTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
@@ -50,7 +48,7 @@ class DisplayLogsChromeTest {
     }
 
     @Test
-    void test(@Watch(display = true) ChromeDriver driver) {
+    void test(@Watch(display = true) FirefoxDriver driver) {
         driver.get(
                 "https://bonigarcia.dev/selenium-webdriver-java/console-logs.html");
 
