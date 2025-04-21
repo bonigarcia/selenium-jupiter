@@ -1,5 +1,19 @@
 # Changelog
 
+
+## [6.1.0] - 2025-04-21
+### Added
+- Customizable test template display names (#591)
+- Wait for extension recording (WEBM) in the Downloads folder
+- Include getRecordingPath() method in  Selenium-Jupiter API
+
+### Changed
+- Bump to WebDriverManager 6.1.0 (BrowserWatcher 2.0.0 -MV3-)
+
+### Removed
+- Remove console log displaying and disabling CSP in Chromium-based browsers (not supported in MV2)
+
+
 ## [6.0.0] - 2025-03-19
 ### Added
 - Set browser binary in WebDriverManager when @Binary is used in Selenium-Jupiter
