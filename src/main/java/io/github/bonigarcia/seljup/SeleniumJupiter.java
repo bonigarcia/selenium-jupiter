@@ -60,6 +60,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.platform.commons.support.AnnotationSupport;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.DevTools;
@@ -528,7 +529,7 @@ public class SeleniumJupiter implements ParameterResolver,
             // Registered browsers
             if (!browserListList.isEmpty()) {
                 return browserListList.stream()
-                        .map(b -> invocationContext(b, this));
+                        .map(b -> invocationContext(b, this, extensionContext));
             }
 
             // Browser scenario by content
@@ -556,13 +557,13 @@ public class SeleniumJupiter implements ParameterResolver,
             if (!browserJsonContent.isEmpty()) {
                 return new Gson()
                         .fromJson(browserJsonContent, BrowsersTemplate.class)
-                        .getStream().map(b -> invocationContext(b, this));
+                        .getStream().map(b -> invocationContext(b, this, extensionContext));
             }
 
             if (browserListMap != null) {
                 List<Browser> browsers = browserListMap.get(contextId);
                 if (browsers != null) {
-                    return Stream.of(invocationContext(browsers, this));
+                    return Stream.of(invocationContext(browsers, this, extensionContext));
                 } else {
                     return Stream.empty();
                 }
@@ -577,11 +578,17 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private synchronized TestTemplateInvocationContext invocationContext(
-            List<Browser> template, SeleniumJupiter parent) {
+            List<Browser> template, SeleniumJupiter parent, ExtensionContext extensionContext) {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {
-                return template.toString();
+                return AnnotationSupport.findAnnotation(
+                        extensionContext.getRequiredTestMethod(), BrowserScenarioTest.class)
+                    .map(annotation -> BrowserScenarioTest.NameFormatter.format(
+                            annotation.name(),
+                            extensionContext.getDisplayName(),
+                            template.get(0))
+                    ).orElse(template.toString());
             }
 
             @Override
@@ -652,9 +659,7 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     private boolean isTestTemplate(ExtensionContext extensionContext) {
-        Optional<Method> testMethod = extensionContext.getTestMethod();
-        return testMethod.isPresent()
-                && testMethod.get().isAnnotationPresent(TestTemplate.class);
+        return AnnotationSupport.isAnnotated(extensionContext.getTestMethod(), TestTemplate.class);
     }
 
     private boolean isGeneric(Class<?> type) {
