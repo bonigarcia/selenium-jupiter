@@ -91,6 +91,8 @@ public class SeleniumJupiter implements ParameterResolver,
     static final String DEVTOOLS_CLASS = "org.openqa.selenium.devtools.DevTools";
     static final String HTMLUNIT_DRIVER_CLASS = "org.openqa.selenium.htmlunit.HtmlUnitDriver";
     static final String APPIUM_DRIVER_CLASS = "io.appium.java_client.AppiumDriver";
+    static final String START_RECORDING = "startRecording";
+    static final String STOP_RECORDING = "stopRecording";
 
     static final ConditionEvaluationResult ENABLED = ConditionEvaluationResult
             .enabled("Test enabled");
@@ -831,23 +833,23 @@ public class SeleniumJupiter implements ParameterResolver,
     }
 
     public void startRecording() {
-        invokeWdm("startRecording");
+        invokeWdm(START_RECORDING);
     }
 
     public void startRecording(String recFilename) {
-        invokeWdm("startRecording", recFilename);
+        invokeWdm(START_RECORDING, recFilename);
     }
 
     public void startRecording(String recFilename, WebDriver driver) {
-        invokeWdm(driver, "startRecording", recFilename);
+        invokeWdm(driver, START_RECORDING, recFilename);
     }
 
     public void stopRecording() {
-        invokeWdm("stopRecording");
+        invokeWdm(STOP_RECORDING);
     }
 
     public void stopRecording(WebDriver driver) {
-        invokeWdm(driver, "stopRecording");
+        invokeWdm(driver, STOP_RECORDING);
     }
 
     public Path getRecordingPath() {
