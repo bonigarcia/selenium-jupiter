@@ -43,7 +43,7 @@ class RecordChromeTest {
     static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
     @Test
-    void test(@Watch ChromeDriver driver) throws InterruptedException {
+    void test(@Watch ChromeDriver driver) {
         driver.get(
                 "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html");
 
