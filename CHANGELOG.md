@@ -1,5 +1,9 @@
 # Changelog
 
+## [6.1.1] - 2025-04-22
+### Fixed
+- Check TestTemplate and BrowserScenarioTest annotations (to avoid "No ParameterResolver registered for parameter" error)
+
 
 ## [6.1.0] - 2025-04-21
 ### Added
