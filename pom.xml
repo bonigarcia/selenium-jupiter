@@ -11,7 +11,7 @@
         <webdrivermanager.version>6.1.0</webdrivermanager.version>
 
         <!-- Provided dependencies -->
-        <junit.jupiter.version>5.12.2</junit.jupiter.version>
+        <junit.jupiter.version>5.13.0</junit.jupiter.version>
         <selenium.version>4.33.0</selenium.version>
         <htmlunit.version>4.13.0</htmlunit.version>
         <selenide.version>7.9.3</selenide.version>
