@@ -16,7 +16,7 @@
         <htmlunit.version>4.13.0</htmlunit.version>
         <selenide.version>7.9.3</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
-        <appium.version>9.4.0</appium.version>
+        <appium.version>9.5.0</appium.version>
 
         <!-- Test dependencies -->
         <logback.version>1.5.18</logback.version>
