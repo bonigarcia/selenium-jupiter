@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.1.2] - 2025-07-09
+### Changed
+- Bump to WebDriverManager 6.1.1 (fix BrowserWatcher recording)
+- Update configuration to publish artifacts in Maven Central
+
+
 ## [6.1.1] - 2025-04-22
 ### Fixed
 - Check TestTemplate and BrowserScenarioTest annotations (to avoid "No ParameterResolver registered for parameter" error)
