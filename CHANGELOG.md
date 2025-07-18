@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.2.0] - 2025-07-18
+### Changed
+- Bump to WebDriverManager 6.2.0 (fix Edge driver URL)
+
+
 ## [6.1.2] - 2025-07-09
 ### Changed
 - Bump to WebDriverManager 6.1.1 (fix BrowserWatcher recording)
