@@ -21,11 +21,7 @@
       [
          {
             "type": "chrome-in-docker",
-            "version": "dev",
-            "arguments": [
-               "--disable-gpu",
-               "--no-sandbox"
-            ]
+            "version": "dev"
          }
       ]
    ]
