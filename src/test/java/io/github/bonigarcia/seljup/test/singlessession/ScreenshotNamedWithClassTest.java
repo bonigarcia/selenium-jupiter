@@ -19,7 +19,6 @@ import io.github.bonigarcia.seljup.SingleSession;
 @TestInstance(PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SingleSession
-@Disabled("To avoid breaking CI build")
 class ScreenshotNamedWithClassTest {
 
     @RegisterExtension
@@ -38,6 +37,7 @@ class ScreenshotNamedWithClassTest {
         this.driver = webDriver;
     }
 
+    @Disabled("To avoid breaking CI build")
     @Test
     void shouldFailAndCreateScreenshotTest() {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");

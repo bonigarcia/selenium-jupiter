@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.bonigarcia</groupId>
@@ -8,7 +10,7 @@
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
-        <webdrivermanager.version>6.2.0</webdrivermanager.version>
+        <webdrivermanager.version>6.2.1-SNAPSHOT</webdrivermanager.version>
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
@@ -17,6 +19,7 @@
         <selenide.version>7.10.0</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
         <appium.version>10.0.0</appium.version>
+        <extentreports.version>5.1.2</extentreports.version>
 
         <!-- Test dependencies -->
         <logback.version>1.5.18</logback.version>
@@ -90,7 +93,6 @@
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
-
         </dependency>
 
         <!-- provided -->
@@ -155,6 +157,12 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- test -->

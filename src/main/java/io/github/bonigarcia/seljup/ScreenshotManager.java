@@ -34,6 +34,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
+import com.aventstack.extentreports.ExtentTest;
+
 import io.github.bonigarcia.seljup.config.Config;
 
 /**
@@ -66,22 +68,26 @@ public class ScreenshotManager {
                 || (executionException.isPresent() && isSscreenshotWhenFailure);
     }
 
-    void makeScreenshotIfRequired(List<WebDriver> driverList) {
-        driverList.forEach(this::makeScreenshotIfRequired);
+    void makeScreenshotIfRequired(List<WebDriver> driverList, ExtentTest test) {
+        driverList.forEach(driver -> {
+            makeScreenshotIfRequired(driver, test);
+        });
     }
 
-    void makeScreenshotIfRequired(WebDriver driver) {
+    void makeScreenshotIfRequired(WebDriver driver, ExtentTest test) {
         if (isScreenshotRequired() && driver != null) {
+            String base64Screenshot = getBase64Screenshot(driver);
             String screenshotFormat = config.getScreenshotFormat();
             switch (screenshotFormat) {
             case PNG_KEY:
+                test.addScreenCaptureFromBase64String(base64Screenshot);
                 logFileScreenshot(driver);
                 break;
             case BASE64_KEY:
-                logBase64Screenshot(driver);
+                logBase64Screenshot(base64Screenshot);
                 break;
             case BASE64_AND_PNG_KEY:
-                logBase64Screenshot(driver);
+                logBase64Screenshot(base64Screenshot);
                 logFileScreenshot(driver);
                 break;
             default:
@@ -91,10 +97,12 @@ public class ScreenshotManager {
         }
     }
 
-    void logBase64Screenshot(WebDriver driver) {
+    public static String getBase64Screenshot(WebDriver driver) {
+        return ((TakesScreenshot) driver).getScreenshotAs(BASE64);
+    }
+
+    void logBase64Screenshot(String screenshotBase64) {
         try {
-            String screenshotBase64 = ((TakesScreenshot) driver)
-                    .getScreenshotAs(BASE64);
             log.debug("Screenshot (in Base64) at the end of test "
                     + "(copy&paste this string as URL in browser to watch it):\r\n"
                     + "data:image/png;base64,{}", screenshotBase64);

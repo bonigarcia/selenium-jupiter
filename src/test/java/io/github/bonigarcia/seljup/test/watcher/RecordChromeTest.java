@@ -61,10 +61,14 @@ class RecordChromeTest {
 
         seleniumJupiter.stopRecording();
 
+        // Get recording as path
         Path recordingPath = seleniumJupiter.getRecordingPath();
         assertThat(recordingPath).exists();
-
         log.debug("Recording available at {}", recordingPath);
+
+        // Get recording as base64
+        String recordingBase64 = seleniumJupiter.getRecordingBase64();
+        assertThat(recordingBase64).isNotEmpty();
     }
 
 }
