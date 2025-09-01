@@ -78,11 +78,11 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/bonigarcia/selenium-jupiter.git</connection>
+        <connection>scm:git:https://github.com/bonigarcia/selenium-jupiter.git</connection>
         <developerConnection>
-            scm:git:git@github.com:bonigarcia/selenium-jupiter.git</developerConnection>
+            scm:git:https://github.com/selenium-jupiter.git</developerConnection>
         <url>https://github.com/bonigarcia/selenium-jupiter</url>
-        <tag>selenium-jupiter-5.1.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>
