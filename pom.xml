@@ -10,7 +10,7 @@
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
-        <webdrivermanager.version>6.2.1-SNAPSHOT</webdrivermanager.version>
+        <webdrivermanager.version>6.3.0</webdrivermanager.version>
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
