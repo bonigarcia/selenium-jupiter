@@ -55,6 +55,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
@@ -92,10 +93,10 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;
  * @author Boni Garcia
  * @since 1.0.0
  */
-public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
-        AfterTestExecutionCallback, AfterEachCallback, AfterAllCallback,
-        TestTemplateInvocationContextProvider, ExecutionCondition,
-        TestExecutionExceptionHandler, TestWatcher {
+public class SeleniumJupiter implements BeforeAllCallback, BeforeEachCallback,
+        ParameterResolver, AfterTestExecutionCallback, AfterEachCallback,
+        AfterAllCallback, TestTemplateInvocationContextProvider,
+        ExecutionCondition, TestExecutionExceptionHandler, TestWatcher {
 
     final Logger log = getLogger(lookup().lookupClass());
 
@@ -136,7 +137,11 @@ public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
     }
 
     @Override
-    public void beforeEach(ExtensionContext extensionContext) throws Exception {
+    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+        report = getReports(extensionContext);
+    }
+
+    private ExtentReports getReports(ExtensionContext extensionContext) {
         Store store = extensionContext.getRoot()
                 .getStore(ExtensionContext.Namespace.create(STORE_NAMESPACE));
         report = store.get(STORE_NAME, ExtentReports.class);
@@ -144,25 +149,30 @@ public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
             report = new ExtentReports();
             store.put(STORE_NAME, report);
 
-            String outputFolder = config.getOutputFolder();
-            String reportFileName = config.getReportFileName();
-            if (reportFileName.contains(REPORT_DATE_PLACEHOLDER)) {
-                LocalDateTime now = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter
-                        .ofPattern("yyyyMMdd-HHmmss");
-                String timestamp = now.format(formatter);
-                reportFileName = reportFileName.replace(REPORT_DATE_PLACEHOLDER,
-                        timestamp);
-            }
-
-            File reportFile = new File(outputFolder, reportFileName);
-            ExtentSparkReporter htmlReporter = new ExtentSparkReporter(
-                    reportFile);
-            htmlReporter.config().setTheme(Theme.STANDARD); // Dark is possible
-            report.attachReporter(htmlReporter);
-
             Runtime.getRuntime().addShutdownHook(new Thread(report::flush));
         }
+        return report;
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
+        ExtentReports reports = getReports(extensionContext);
+
+        String outputFolder = config.getOutputFolder();
+        String reportFileName = config.getReportFileName();
+        if (reportFileName.contains(REPORT_DATE_PLACEHOLDER)) {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("yyyyMMdd-HHmmss");
+            String timestamp = now.format(formatter);
+            reportFileName = reportFileName.replace(REPORT_DATE_PLACEHOLDER,
+                    timestamp);
+        }
+
+        File reportFile = new File(outputFolder, reportFileName);
+        ExtentSparkReporter htmlReporter = new ExtentSparkReporter(reportFile);
+        htmlReporter.config().setTheme(Theme.STANDARD); // Dark is possible
+        reports.attachReporter(htmlReporter);
     }
 
     @Override
@@ -543,7 +553,7 @@ public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
                 });
                 wdm.stopDockerRecording();
                 String recordingBase64 = wdm.getRecordingBase64();
-                if (recordingBase64 != null) {
+                if (recordingBase64 != null && !recordingBase64.isEmpty()) {
                     test.addVideoFromBase64String(recordingBase64);
                 }
             });
