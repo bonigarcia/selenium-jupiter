@@ -538,9 +538,8 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         if (wdmMap.containsKey(contextId)) {
             ExtentTest test = wdmMap.get(contextId).getTest();
             wdmMap.get(contextId).getWdmList().forEach(wdm -> {
-                wdm.getWebDriverList().forEach(driver -> {
-                    screenshotManager.makeScreenshotIfRequired(driver, test);
-                });
+                wdm.getWebDriverList().forEach(driver -> screenshotManager
+                        .makeScreenshotIfRequired(driver, test));
                 wdm.stopDockerRecording();
                 String recordingBase64 = wdm.getRecordingBase64();
                 if (recordingBase64 != null && !recordingBase64.isEmpty()) {
@@ -568,12 +567,12 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     public boolean supportsTestTemplate(ExtensionContext extensionContext) {
         boolean allWebDriver = false;
         if (extensionContext.getTestMethod().isPresent()) {
-            allWebDriver = !stream(
-                    extensionContext.getTestMethod().get().getParameterTypes())
-                            .map(s -> s.equals(WebDriver.class)
-                                    || s.equals(RemoteWebDriver.class)
-                                    || selenideHandler.isSelenide(s))
-                            .toList().contains(false);
+            Method method = extensionContext.getTestMethod().get();
+            allWebDriver = !stream(method.getParameterTypes())
+                    .map(s -> s.equals(WebDriver.class)
+                            || s.equals(RemoteWebDriver.class)
+                            || selenideHandler.isSelenide(s))
+                    .toList().contains(false);
         }
         return allWebDriver;
     }

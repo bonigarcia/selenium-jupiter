@@ -69,9 +69,7 @@ public class ScreenshotManager {
     }
 
     void makeScreenshotIfRequired(List<WebDriver> driverList, ExtentTest test) {
-        driverList.forEach(driver -> {
-            makeScreenshotIfRequired(driver, test);
-        });
+        driverList.forEach(driver -> makeScreenshotIfRequired(driver, test));
     }
 
     void makeScreenshotIfRequired(WebDriver driver, ExtentTest test) {

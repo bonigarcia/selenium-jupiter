@@ -44,7 +44,7 @@ public class WdmTest {
     ExtensionContext extensionContext;
 
     public WdmTest(ExtentReports report, ExtensionContext extensionContext) {
-        this.wdmList = new CopyOnWriteArrayList<WebDriverManager>();
+        this.wdmList = new CopyOnWriteArrayList<>();
         this.extensionContext = extensionContext;
         this.test = createExtentTest(report, extensionContext);
     }
@@ -63,9 +63,9 @@ public class WdmTest {
         String testName = context.getTestClass()
                 .map(testClass -> testClass.getSimpleName() + "." + displayName)
                 .orElse(displayName);
-        ExtentTest test = report.createTest(testName);
-        context.getTags().forEach(test::assignCategory);
-        return test;
+        ExtentTest extentTest = report.createTest(testName);
+        context.getTags().forEach(extentTest::assignCategory);
+        return extentTest;
     }
 
     public void gatherBrowserData() {
