@@ -27,6 +27,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
@@ -38,6 +39,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -52,7 +55,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.Extension;
@@ -89,7 +92,7 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;
  * @author Boni Garcia
  * @since 1.0.0
  */
-public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
+public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
         AfterTestExecutionCallback, AfterEachCallback, AfterAllCallback,
         TestTemplateInvocationContextProvider, ExecutionCondition,
         TestExecutionExceptionHandler, TestWatcher {
@@ -104,7 +107,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     static final String STOP_RECORDING = "stopRecording";
     static final String STORE_NAMESPACE = "report-store";
     static final String STORE_NAME = "reports";
-    static final String REPORT_NAME = "selenium-juputer-report.html";
+    static final String REPORT_DATE_PLACEHOLDER = "{date}";
     static final String FORMATTED_INFO = "<pre>%s:" + System.lineSeparator()
             + "%s</pre>";
 
@@ -133,7 +136,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     }
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
         Store store = extensionContext.getRoot()
                 .getStore(ExtensionContext.Namespace.create(STORE_NAMESPACE));
         report = store.get(STORE_NAME, ExtentReports.class);
@@ -141,11 +144,25 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
             report = new ExtentReports();
             store.put(STORE_NAME, report);
 
+            String outputFolder = config.getOutputFolder();
+            String reportFileName = config.getReportFileName();
+            if (reportFileName.contains(REPORT_DATE_PLACEHOLDER)) {
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter
+                        .ofPattern("yyyyMMdd-HHmmss");
+                String timestamp = now.format(formatter);
+                reportFileName = reportFileName.replace(REPORT_DATE_PLACEHOLDER,
+                        timestamp);
+            }
+
+            File reportFile = new File(outputFolder, reportFileName);
+            ExtentSparkReporter htmlReporter = new ExtentSparkReporter(
+                    reportFile);
+            htmlReporter.config().setTheme(Theme.STANDARD); // Dark is possible
+            report.attachReporter(htmlReporter);
+
             Runtime.getRuntime().addShutdownHook(new Thread(report::flush));
         }
-        ExtentSparkReporter htmlReporter = new ExtentSparkReporter(REPORT_NAME);
-        htmlReporter.config().setTheme(Theme.STANDARD); // Dark is possible
-        report.attachReporter(htmlReporter);
     }
 
     @Override

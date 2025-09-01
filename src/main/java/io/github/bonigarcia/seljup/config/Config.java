@@ -51,8 +51,8 @@ public class Config {
     ConfigKey<String> outputFolder = new ConfigKey<>("sel.jup.output.folder",
             String.class);
 
-    ConfigKey<Boolean> outputFolderPerClass = new ConfigKey<>("sel.jup.output.folder.per.class",
-            Boolean.class);
+    ConfigKey<Boolean> outputFolderPerClass = new ConfigKey<>(
+            "sel.jup.output.folder.per.class", Boolean.class);
 
     ConfigKey<String> seleniumServerUrl = new ConfigKey<>(
             "sel.jup.selenium.server.url", String.class);
@@ -75,6 +75,9 @@ public class Config {
             "sel.jup.browser.template.json.file", String.class);
     ConfigKey<String> browserTemplateJsonContent = new ConfigKey<>(
             "sel.jup.browser.template.json.content", String.class);
+
+    ConfigKey<String> reportFileName = new ConfigKey<>(
+            "sel.jup.report.file.name", String.class);
 
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
@@ -247,6 +250,14 @@ public class Config {
 
     public void setBrowserTemplateJsonContent(String value) {
         this.browserTemplateJsonContent.setValue(value);
+    }
+
+    public String getReportFileName() {
+        return resolve(reportFileName);
+    }
+
+    public void setReportFileName(String value) {
+        this.reportFileName.setValue(value);
     }
 
     public WebDriverManager getManager() {
