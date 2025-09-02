@@ -284,7 +284,7 @@ public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
         wdm.dockerRecordingPrefix(outputHandler.getPrefix());
         wdm.dockerRecordingOutput(outputHandler.getOutputFolder());
 
-        putManagerInMap(extensionContext, contextId, wdm);
+        putManagerInMap(contextId, wdm);
 
         // Watcher
         Optional<Watch> watcher = annotationsReader.getWatch(parameter);
@@ -813,8 +813,7 @@ public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
         }
     }
 
-    private void putManagerInMap(ExtensionContext extensionContext,
-            String contextId, WebDriverManager wdm) {
+    private void putManagerInMap(String contextId, WebDriverManager wdm) {
         log.trace("Put manager {} in map (context id {})", wdm, contextId);
 
         if (wdmMap.containsKey(contextId)) {
