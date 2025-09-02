@@ -11,6 +11,7 @@
         <!-- Compile dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
         <webdrivermanager.version>6.3.1</webdrivermanager.version>
+        <extentreports.version>5.1.2</extentreports.version>
 
         <!-- Provided dependencies -->
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
@@ -19,7 +20,6 @@
         <selenide.version>7.10.0</selenide.version>
         <browserup-proxy.version>2.1.2</browserup-proxy.version>
         <appium.version>10.0.0</appium.version>
-        <extentreports.version>5.1.2</extentreports.version>
 
         <!-- Test dependencies -->
         <logback.version>1.5.18</logback.version>
@@ -97,6 +97,11 @@
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+        </dependency>
 
         <!-- provided -->
         <dependency>
@@ -160,12 +165,6 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>${extentreports.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- test -->
