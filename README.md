@@ -153,6 +153,17 @@ class TemplateTest {
 }
 ```
 
+### Reporting
+As of version 6.3.0, Selenium-Jupiter provides built-in reporting capabilities through [ExtentReports]. This feature is enabled out of the box. All the tests executed with Selenium-Jupiter in the same suite will be reported (passed, skipped, failed) in a single HTML report per test suite execution. In addition, all the video recordings, both using `@DockerBrowser` and `@Watch`, will be gathered by Selenium-Jupiter and added to the resulting report (internally, the videos are encoded as Base64 in the HTML report), for example:
+
+![Test report with embedded recording](https://bonigarcia.dev/selenium-jupiter/img/selenium-jupiter-report-example-1.png)
+
+Finally, when a test fails, Selenium-Jupiter will gather two troubleshooting resources from the browser. First, it will try to take a screenshot of the browser (if it is still available). Second, it will try to gather the browser console logs, if possible. The screenshot(s) and the log(s) are automatically added for failed tests, for example:
+
+![Test report with gathered screenshots and browser console logs](https://bonigarcia.dev/selenium-jupiter/img/selenium-jupiter-report-example-2.png)
+
+You can find a complete HTML report example in this [link].
+
 ## Support
 Selenium-Jupiter is part of [OpenCollective], an online funding platform for open and transparent communities. You can support the project by contributing as a backer (i.e., a personal [donation] or [recurring contribution]) or as a [sponsor] (i.e., a recurring contribution by a company).
 
@@ -186,3 +197,5 @@ Selenium-Jupiter (Copyright &copy; 2017-2024) is a project created and maintaine
 [sponsor]: https://opencollective.com/selenium-jupiter/contribute/sponsor-8133/checkout
 [Boni Garcia]: https://bonigarcia.dev/
 [Apache 2.0 License]: https://www.apache.org/licenses/LICENSE-2.0
+[ExtentReports]: https://extentreports.com/
+[link]: https://bonigarcia.dev/selenium-jupiter/reports/selenium-jupiter-20250902-150317.html
