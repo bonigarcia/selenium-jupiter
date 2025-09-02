@@ -311,7 +311,7 @@ p a > code:hover { color: #444444; }
 #header:after, #content:after, #footnotes:after, #footer:after { clear: both; }
 
 #header { margin-bottom: 2.5em; }
-#header > h1 { color: #616366; font-weight: normal; border-bottom: 1px solid #dddddd; margin-bottom: -28px; padding-bottom: 32px; padding-top: 10px; background: url('./img/seljup.png') no-repeat left 8.25em top 0em;}
+#header > h1 { color: #616366; font-family:'Publica Play Regular'; font-weight: normal; border-bottom: 1px solid #dddddd; margin-bottom: -28px; padding-bottom: 32px; padding-top: 10px; background: url('./img/seljup.png') no-repeat left 8.25em top 0em;}
 #header span { color: #616366; }
 #header #revnumber { text-transform: capitalize; }
 #header br { display: none; }
@@ -662,6 +662,13 @@ table.tableblock.grid-all { -webkit-border-radius: 0; border-radius: 0; -webkit-
 #footer { background-image: url('./img/footer-bg.jpg'); padding: 25px 0; }
 
 #footer-text { color: #fff; text-shadow: 1px 1px 1px #333; font-size: 80%; text-align: center; }
+
+@font-face {
+    font-family: 'Publica Play Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('./css/PublicaPlay-Regular.woff') format('woff');
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
@@ -776,7 +783,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h1>Selenium-Jupiter</h1>
 <div class="details">
 <span id="author" class="author">Boni García</span><br>
-<span id="revdate">Version 6.2.0</span>
+<span id="revdate">Version 6.3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -815,6 +822,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#single-session">3.10. Single session</a></li>
 <li><a href="#screenshots">3.11. Screenshots</a></li>
 <li><a href="#integration-with-jenkins">3.12. Integration with Jenkins</a></li>
+<li><a href="#reporting">3.13. Reporting</a></li>
 </ul>
 </li>
 <li><a href="#examples">4. Examples</a></li>
@@ -935,7 +943,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>io.github.bonigarcia<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>selenium-jupiter<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>6.2.0<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>6.3.0<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
@@ -946,7 +954,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="error">d</span><span class="error">e</span><span class="error">p</span><span class="error">e</span><span class="error">n</span><span class="error">d</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">i</span><span class="error">e</span><span class="error">s</span> {
-    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:6.2.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
+    <span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">I</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">m</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">t</span><span class="error">i</span><span class="error">o</span><span class="error">n</span><span class="error">(</span><span class="string"><span class="delimiter">&quot;</span><span class="content">io.github.bonigarcia:selenium-jupiter:6.3.0</span><span class="delimiter">&quot;</span></span><span class="error">)</span>
 }</code></pre>
 </div>
 </div>
@@ -1720,11 +1728,7 @@ You can use the capabilities annotations also for browsers in Docker (see <a hre
       [
          {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">chrome-in-docker</span><span class="delimiter">&quot;</span></span>,
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dev</span><span class="delimiter">&quot;</span></span>,
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">arguments</span><span class="delimiter">&quot;</span></span>: [
-               <span class="string"><span class="delimiter">&quot;</span><span class="content">--disable-gpu</span><span class="delimiter">&quot;</span></span>,
-               <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-sandbox</span><span class="delimiter">&quot;</span></span>
-            ]
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dev</span><span class="delimiter">&quot;</span></span>
          }
       ]
    ]
@@ -1966,10 +1970,14 @@ This feature is not available for BrowserWatcher 2.x (i.e., based on manifest v3
 
         seleniumJupiter.stopRecording();
 
+        <span class="comment">// Get recording as path</span>
         Path recordingPath = seleniumJupiter.getRecordingPath();
         assertThat(recordingPath).exists();
-
         log.debug(<span class="string"><span class="delimiter">&quot;</span><span class="content">Recording available at {}</span><span class="delimiter">&quot;</span></span>, recordingPath);
+
+        <span class="comment">// Get recording as base64</span>
+        <span class="predefined-type">String</span> recordingBase64 = seleniumJupiter.getRecordingBase64();
+        assertThat(recordingBase64).isNotEmpty();
     }
 
 }</code></pre>
@@ -2089,10 +2097,10 @@ See the <a href="#advanced-configuration">advanced configuration</a> section for
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.By</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.chrome.ChromeDriver</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.DevTools</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v136.dom.model.Rect</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v136.page.Page</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v136.page.Page.GetLayoutMetricsResponse</span>;
-<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v136.page.model.Viewport</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v139.dom.model.Rect</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v139.page.Page</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v139.page.Page.GetLayoutMetricsResponse</span>;
+<span class="keyword">import</span> <span class="include">org.openqa.selenium.devtools.v139.page.model.Viewport</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.ExpectedConditions</span>;
 <span class="keyword">import</span> <span class="include">org.openqa.selenium.support.ui.WebDriverWait</span>;
 
@@ -2313,6 +2321,30 @@ Notice that the previous example deletes the image at the end of the test. If yo
 <div class="title">Figure 4. Example of test execution through Jenkins with attachments</div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="reporting"><a class="anchor" href="#reporting"></a>3.13. Reporting</h3>
+<div class="paragraph">
+<p>As of version 6.3.0, Selenium-Jupiter provides built-in reporting capabilities through <a href="https://extentreports.com/">ExtentReports</a>. This feature is enabled out of the box. All the tests executed with Selenium-Jupiter in the same suite will be reported (passed, skipped, failed) in a single HTML report per test suite execution. In addition, all the video recordings, both using <code>@DockerBrowser</code> and <code>@Watch</code>, will be gathered by Selenium-Jupiter and added to the resulting report (internally, the videos are encoded as Base64 in the HTML report), for example:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="img/selenium-jupiter-report-example-1.png" alt="selenium jupiter report example 1">
+</div>
+<div class="title">Figure 5. Test report with embedded recording</div>
+</div>
+<div class="paragraph">
+<p>Finally, when a test fails, Selenium-Jupiter will gather two troubleshooting resources from the browser. First, it will try to take a screenshot of the browser (if it is still available). Second, it will try to gather the browser console logs, if possible. The screenshot(s) and the log(s) are automatically added for failed tests, for example:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="img/selenium-jupiter-report-example-2.png" alt="selenium jupiter report example 2">
+</div>
+<div class="title">Figure 6. Test report with gathered screenshots and browser console logs</div>
+</div>
+<div class="paragraph">
+<p>You can find a complete HTML report example in this <a href="reports/selenium-jupiter-20250902-150317.html">link</a>.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2392,7 +2424,13 @@ The preference order of these configuration alternatives is (in case of overlapp
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>setOutputFolder(String)</code> <code>useSurefireOutputFolder()</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.output.folder</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>.</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Output folder for recordings and screenshots. This key accepts the special value <code>surefire-reports</code> for the <a href="#integration-with-jenkins">integration with Jenkins</a>. In case of the special value <code>surefire-reports</code> there will <strong>always</strong> be a separate output folder per class (see below, <code>setOutputFolderPerClass(boolean)</code>).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output folder for recordings, screenshots, and reports. This key accepts the special value <code>surefire-reports</code> for the <a href="#integration-with-jenkins">integration with Jenkins</a>. In case of the special value <code>surefire-reports</code> there will <strong>always</strong> be a separate output folder per class (see below, <code>setOutputFolderPerClass(boolean)</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>setReportFileName(String)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sel.jup.report.file.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>selenium-jupiter-{date}.html</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File name for the HTML report created in each test suite execution. If the <code>{date}</code> placeholder is used in this name, the system timestamp is added. By default, this file is created in the current folder (see previous configuration key).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>setOutputFolderPerClass(boolean)</code></p></td>
@@ -2614,8 +2652,8 @@ The preference order of these configuration alternatives is (in case of overlapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 6.2.0<br>
-Updated on 18-07-2025
+Version 6.3.0<br>
+Updated on 02-09-2025
 </div>
 </div>
 </body>
