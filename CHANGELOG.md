@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.3.0] - 2025-09-01
+### Added
+- Built-in integration with ExtentReports for generating reports with screenshots and recordings
+- Include workflows to release WebDriverManager in Maven Central and doc in GH Pages
+
+### Changed
+- Bump to WebDriverManager 6.3.1 (getRecordingBase64())
+
+
 ## [6.2.0] - 2025-07-18
 ### Changed
 - Bump to WebDriverManager 6.2.0 (fix Edge driver URL)

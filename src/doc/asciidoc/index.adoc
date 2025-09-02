@@ -344,6 +344,23 @@ If we run this test in Jenkins in which is already installed and configured the 
 .Example of test execution through Jenkins with attachments
 image::jenkins-attachements-test.png[scaledwidth=100%]
 
+
+=== Reporting
+As of version 6.3.0, Selenium-Jupiter provides built-in reporting capabilities through https://extentreports.com/[ExtentReports]. This feature is enabled out of the box. All the tests executed with Selenium-Jupiter in the same suite will be reported (passed, skipped, failed) in a single HTML report per test suite execution. In addition, all the video recordings, both using `@DockerBrowser` and `@Watch`, will be gathered by Selenium-Jupiter and added to the resulting report (internally, the videos are encoded as Base64 in the HTML report), for example:
+
+[.thumb]
+.Test report with embedded recording
+image::selenium-jupiter-report-example-1.png[scaledwidth=100%]
+
+
+Finally, when a test fails, Selenium-Jupiter will gather two troubleshooting resources from the browser. First, it will try to take a screenshot of the browser (if it is still available). Second, it will try to gather the browser console logs, if possible. The screenshot(s) and the log(s) are automatically added for failed tests, for example:
+
+[.thumb]
+.Test report with gathered screenshots and browser console logs
+image::selenium-jupiter-report-example-2.png[scaledwidth=100%]
+
+You can find a complete HTML report example in this link:reports/selenium-jupiter-20250902-150317.html[link].
+
 == Examples
 All the examples presented in this documentation are available in the https://github.com/bonigarcia/selenium-jupiter/tree/master/src/test/java/io/github/bonigarcia/seljup/test/[Selenium-Jupiter tests]. Moreover, different public repositories contain test examples using Selenium-Jupiter, such as:
 
@@ -373,7 +390,8 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 [options="header"]
 |=======
 |Java API|Configuration key|Default value|Description
-|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings and screenshots. This key accepts the special value `surefire-reports` for the <<integration-with-jenkins,integration with Jenkins>>. In case of the special value `surefire-reports` there will *always* be a separate output folder per class (see below, `setOutputFolderPerClass(boolean)`).
+|`setOutputFolder(String)` `useSurefireOutputFolder()`|`sel.jup.output.folder`|`.`|Output folder for recordings, screenshots, and reports. This key accepts the special value `surefire-reports` for the <<integration-with-jenkins,integration with Jenkins>>. In case of the special value `surefire-reports` there will *always* be a separate output folder per class (see below, `setOutputFolderPerClass(boolean)`).
+|`setReportFileName(String)`|`sel.jup.report.file.name`|`selenium-jupiter-{date}.html`|File name for the HTML report created in each test suite execution. If the `{date}` placeholder is used in this name, the system timestamp is added. By default, this file is created in the current folder (see previous configuration key).
 |`setOutputFolderPerClass(boolean)`|`sel.jup.output.folder.per.class`|`false`|In case this value is `true`, the output files will be provided in separate folders per class. Otherwise, the output files
  will be directly provided in the output folder.
 |`setScreenshot(boolean)` `enableScreenshot()`|`sel.jup.screenshot`|`false`|Enable screenshots at the end of the test
