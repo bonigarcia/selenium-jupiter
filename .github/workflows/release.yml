@@ -44,7 +44,7 @@ jobs:
           </servers>
         </settings>
         EOF
-    - name: Make release
+    - name: Make release in Maven Central
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
@@ -55,6 +55,13 @@ jobs:
             -Dscm.url=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
             -Dscm.developerConnection=https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
             -Darguments="-DskipTests -Dgpg.executable=gpg"
+    - name: Make release in GitHub
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: selenium-jupiter-${{ inputs.release_version }}
+        draft: false
+        prerelease: false
     - name: Update doc
       run: |
         mvn site -Ddoc.version=${{ inputs.release_version }}
