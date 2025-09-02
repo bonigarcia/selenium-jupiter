@@ -68,17 +68,21 @@ public class ScreenshotManager {
                 || (executionException.isPresent() && isSscreenshotWhenFailure);
     }
 
-    void makeScreenshotIfRequired(List<WebDriver> driverList, ExtentTest test) {
-        driverList.forEach(driver -> makeScreenshotIfRequired(driver, test));
+    void makeScreenshotIfRequired(List<WebDriver> driverList,
+            Optional<ExtentTest> optionalTest) {
+        driverList.forEach(
+                driver -> makeScreenshotIfRequired(driver, optionalTest));
     }
 
-    void makeScreenshotIfRequired(WebDriver driver, ExtentTest test) {
+    void makeScreenshotIfRequired(WebDriver driver,
+            Optional<ExtentTest> optionalTest) {
         if (isScreenshotRequired() && driver != null) {
             String base64Screenshot = getBase64Screenshot(driver);
             String screenshotFormat = config.getScreenshotFormat();
             switch (screenshotFormat) {
             case PNG_KEY:
-                test.addScreenCaptureFromBase64String(base64Screenshot);
+                optionalTest.ifPresent(test -> test
+                        .addScreenCaptureFromBase64String(base64Screenshot));
                 logFileScreenshot(driver);
                 break;
             case BASE64_KEY:

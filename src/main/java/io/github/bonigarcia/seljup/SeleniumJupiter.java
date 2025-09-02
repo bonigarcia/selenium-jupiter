@@ -43,11 +43,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -55,7 +57,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.Extension;
@@ -92,7 +94,7 @@ import io.github.bonigarcia.wdm.config.DriverManagerType;
  * @author Boni Garcia
  * @since 1.0.0
  */
-public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
+public class SeleniumJupiter implements BeforeEachCallback, ParameterResolver,
         AfterTestExecutionCallback, AfterEachCallback, AfterAllCallback,
         TestTemplateInvocationContextProvider, ExecutionCondition,
         TestExecutionExceptionHandler, TestWatcher {
@@ -115,7 +117,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
             .enabled("Test enabled");
 
     Config config;
-    Map<String, WdmTest> wdmMap;
+    Map<String, List<WebDriverManager>> wdmMap;
     List<DevTools> devToolsList;
     AnnotationsReader annotationsReader;
     List<List<Browser>> browserListList;
@@ -124,6 +126,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     URL urlFromAnnotation;
     SelenideHandler selenideHandler;
     ExtentReports report;
+    Map<String, ExtentTest> testMap;
 
     public SeleniumJupiter() {
         config = new Config();
@@ -133,10 +136,11 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         browserListMap = new ConcurrentHashMap<>();
         devToolsList = new ArrayList<>();
         selenideHandler = new SelenideHandler(annotationsReader);
+        testMap = new HashMap<>();
     }
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
         Store store = extensionContext.getRoot()
                 .getStore(ExtensionContext.Namespace.create(STORE_NAMESPACE));
         report = store.get(STORE_NAME, ExtentReports.class);
@@ -163,6 +167,9 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
 
             Runtime.getRuntime().addShutdownHook(new Thread(report::flush));
         }
+
+        testMap.put(extensionContext.getUniqueId(),
+                createExtentTest(report, extensionContext));
     }
 
     @Override
@@ -240,9 +247,8 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
                 .getCapabilities(parameter, testInstance);
         // Single session
         if (isSingleSession(extensionContext) && wdmMap.containsKey(contextId)
-                && index < wdmMap.get(contextId).getWdmList().size()) {
-            WebDriver driver = wdmMap.get(contextId).getWdmList().get(index)
-                    .getWebDriver();
+                && index < wdmMap.get(contextId).size()) {
+            WebDriver driver = wdmMap.get(contextId).get(index).getWebDriver();
             if (driver != null) {
                 log.trace("Returning driver at index {}: {}", index, driver);
                 return driver;
@@ -334,8 +340,8 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
 
     private Object resolveDevTools(String contextId, int index) {
         if (wdmMap != null && wdmMap.get(contextId) != null
-                && wdmMap.get(contextId).getWdmList().size() >= index) {
-            WebDriver driver = wdmMap.get(contextId).getWdmList().get(index - 1)
+                && wdmMap.get(contextId).size() >= index) {
+            WebDriver driver = wdmMap.get(contextId).get(index - 1)
                     .getWebDriver();
             log.debug("Opening DevTools for {}", driver);
             DevTools devTools = ((HasDevTools) driver).getDevTools();
@@ -532,18 +538,18 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     public void afterTestExecution(ExtensionContext extensionContext)
             throws Exception {
         String contextId = getContextId(extensionContext);
-        ScreenshotManager screenshotManager = new ScreenshotManager(
-                extensionContext, getConfig(), outputHandler);
-
         if (wdmMap.containsKey(contextId)) {
-            ExtentTest test = wdmMap.get(contextId).getTest();
-            wdmMap.get(contextId).getWdmList().forEach(wdm -> {
+            Optional<ExtentTest> optionalTest = findTest(extensionContext);
+            ScreenshotManager screenshotManager = new ScreenshotManager(
+                    extensionContext, getConfig(), outputHandler);
+            wdmMap.get(contextId).forEach(wdm -> {
                 wdm.getWebDriverList().forEach(driver -> screenshotManager
-                        .makeScreenshotIfRequired(driver, test));
+                        .makeScreenshotIfRequired(driver, optionalTest));
                 wdm.stopDockerRecording();
                 String recordingBase64 = wdm.getRecordingBase64();
                 if (recordingBase64 != null && !recordingBase64.isEmpty()) {
-                    test.addVideoFromBase64String(recordingBase64);
+                    optionalTest.ifPresent(test -> test
+                            .addVideoFromBase64String(recordingBase64));
                 }
             });
         }
@@ -812,13 +818,13 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         log.trace("Put manager {} in map (context id {})", wdm, contextId);
 
         if (wdmMap.containsKey(contextId)) {
-            wdmMap.get(contextId).getWdmList().add(wdm);
+            wdmMap.get(contextId).add(wdm);
             log.trace("Adding {} to existing map (id {})", wdm, contextId);
         } else {
-            WdmTest wdmTest = new WdmTest(report, extensionContext);
-            wdmTest.getWdmList().add(wdm);
-            wdmMap.put(contextId, wdmTest);
-            log.trace("Adding {} to new map (id {})", wdmTest, contextId);
+            List<WebDriverManager> wdmList = new ArrayList<>();
+            wdmList.add(wdm);
+            wdmMap.put(contextId, wdmList);
+            log.trace("Adding {} to new map (id {})", wdm, contextId);
         }
     }
 
@@ -845,7 +851,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         if (wdmMap.containsKey(contextId)) {
             Optional<Throwable> executionException = extensionContext
                     .getExecutionException();
-            wdmMap.get(contextId).getWdmList().forEach(wdm -> {
+            wdmMap.get(contextId).forEach(wdm -> {
                 // Get recording files (to be deleted after quit)
                 List<Path> recordingList = Collections.emptyList();
                 if (config.isRecordingWhenFailure()
@@ -928,7 +934,7 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         try {
             if (!wdmMap.isEmpty()) {
                 List<WebDriverManager> wdmTestList = wdmMap.entrySet()
-                        .iterator().next().getValue().getWdmList();
+                        .iterator().next().getValue();
                 WebDriverManager wdm = wdmTestList.get(0);
                 Method wdmMethod = (params.length == 0)
                         ? wdm.getClass().getMethod(method)
@@ -947,8 +953,8 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
         T out = null;
         try {
             if (!wdmMap.isEmpty()) {
-                for (WdmTest wdmTest : wdmMap.values()) {
-                    for (WebDriverManager wdm : wdmTest.getWdmList()) {
+                for (List<WebDriverManager> wdmList : wdmMap.values()) {
+                    for (WebDriverManager wdm : wdmList) {
                         Method wdmMethod = (params.length == 0)
                                 ? wdm.getClass().getMethod(method)
                                 : wdm.getClass().getMethod(method,
@@ -969,32 +975,76 @@ public class SeleniumJupiter implements BeforeAllCallback, ParameterResolver,
     @Override
     public void handleTestExecutionException(ExtensionContext extensionContext,
             Throwable throwable) throws Throwable {
-        String contextId = getContextId(extensionContext);
-        if (wdmMap.containsKey(contextId)) {
-            WdmTest wdmTest = wdmMap.get(contextId);
-            wdmTest.gatherBrowserData();
-            ExtentTest test = wdmTest.getTest();
+        findTest(extensionContext).ifPresent(test -> {
+            gatherBrowserData(test, extensionContext);
             test.fail(throwable);
-        }
+        });
         throw throwable;
     }
 
     @Override
     public void testDisabled(ExtensionContext extensionContext,
             Optional<String> reason) {
-        String contextId = getContextId(extensionContext);
-        if (wdmMap.containsKey(contextId)) {
-            wdmMap.get(contextId).getTest()
-                    .skip(reason.orElse("Disabled test"));
-        }
+        findTest(extensionContext)
+                .ifPresent(test -> test.skip(reason.orElse("Disabled test")));
     }
 
     @Override
     public void testAborted(ExtensionContext extensionContext,
             Throwable cause) {
+        findTest(extensionContext).ifPresent(test -> test.skip(cause));
+    }
+
+    private ExtentTest createExtentTest(ExtentReports report,
+            ExtensionContext context) {
+        String displayName = context.getDisplayName();
+        String testName = context.getTestClass()
+                .map(testClass -> testClass.getSimpleName() + "." + displayName)
+                .orElse(displayName);
+        ExtentTest extentTest = report.createTest(testName);
+        context.getTags().forEach(extentTest::assignCategory);
+        return extentTest;
+    }
+
+    private Optional<ExtentTest> findTest(ExtensionContext extensionContext) {
+        Optional<ExtentTest> test = Optional.empty();
+        String uniqueId = extensionContext.getUniqueId();
+        if (testMap.containsKey(uniqueId)) {
+            test = Optional.of(testMap.get(uniqueId));
+        }
+        return test;
+    }
+
+    private void gatherBrowserData(ExtentTest test,
+            ExtensionContext extensionContext) {
         String contextId = getContextId(extensionContext);
+        List<WebDriverManager> wdmList = wdmMap.get(contextId);
         if (wdmMap.containsKey(contextId)) {
-            wdmMap.get(contextId).getTest().skip(cause);
+            for (WebDriverManager wdm : wdmList) {
+                for (WebDriver driver : wdm.getWebDriverList()) {
+                    String driverInfo = driver.toString();
+
+                    // Screenshot
+                    String base64Screenshot = ScreenshotManager
+                            .getBase64Screenshot(driver);
+                    test.addScreenCaptureFromBase64String(base64Screenshot,
+                            driverInfo);
+
+                    // Logs
+                    List<Map<String, Object>> logs = wdm.getLogs(driver);
+                    if (logs != null && !logs.isEmpty()) {
+                        String logAsString = logs.stream()
+                                .map(entry -> String.format("[%s] [%s] %s",
+                                        entry.get("datetime"),
+                                        entry.get("type"),
+                                        entry.get("message")))
+                                .collect(Collectors
+                                        .joining(System.lineSeparator()));
+                        test.info(String.format(FORMATTED_INFO,
+                                driverInfo + " console", logAsString));
+                    }
+                }
+            }
         }
     }
 
