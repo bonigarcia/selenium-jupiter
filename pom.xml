@@ -80,7 +80,7 @@
     <scm>
         <connection>scm:git:https://github.com/bonigarcia/selenium-jupiter.git</connection>
         <developerConnection>
-            scm:git:https://github.com/selenium-jupiter.git</developerConnection>
+            scm:git:https://github.com/bonigarcia/selenium-jupiter.git</developerConnection>
         <url>https://github.com/bonigarcia/selenium-jupiter</url>
         <tag>HEAD</tag>
     </scm>
