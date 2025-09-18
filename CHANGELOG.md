@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.3.1] - 2025-09-18
+### Changed
+- Bump to WebDriverManager 6.3.2 (fix Edge support)
+
+
 ## [6.3.0] - 2025-09-01
 ### Added
 - Built-in integration with ExtentReports for generating reports with screenshots and recordings
