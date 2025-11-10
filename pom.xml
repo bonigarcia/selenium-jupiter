@@ -8,7 +8,7 @@
     <properties>
         <!-- Compile dependencies -->
         <slf4j.version>2.0.17</slf4j.version>
-        <webdrivermanager.version>6.3.2</webdrivermanager.version>
+        <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <extentreports.version>5.1.2</extentreports.version>
 
         <!-- Provided dependencies -->
