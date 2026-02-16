@@ -12,7 +12,7 @@
         <extentreports.version>5.1.2</extentreports.version>
 
         <!-- Provided dependencies -->
-        <junit.jupiter.version>6.0.2</junit.jupiter.version>
+        <junit.jupiter.version>6.0.3</junit.jupiter.version>
         <selenium.version>4.40.0</selenium.version>
         <htmlunit.version>4.13.0</htmlunit.version>
         <selenide.version>7.14.0</selenide.version>
