@@ -1,5 +1,11 @@
 # Changelog
 
+
+## [6.3.2] - 2026-04-24
+### Changed
+- Bump to WebDriverManager 6.3.4 (fix Edge support)
+
+
 ## [6.3.1] - 2025-09-18
 ### Changed
 - Bump to WebDriverManager 6.3.2 (fix Edge support)
