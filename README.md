@@ -134,12 +134,6 @@ class TemplateTest {
       [
          {
             "type": "chrome-in-docker",
-            "version": "latest-1"
-         }
-      ],
-      [
-         {
-            "type": "chrome-in-docker",
             "version": "beta"
          }
       ],

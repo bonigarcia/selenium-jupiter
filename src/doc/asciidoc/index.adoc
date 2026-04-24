@@ -130,7 +130,6 @@ A significant aspect of the Docker containers for browsers is that the latest ve
 Nevertheless, we can use a browser version in Docker using the attribute `version()` of the `@DockerBrowser` annotation. This attribute accepts a `String` parameter specifying the version. This version can be fixed (e.g., `91.0`), and it also accepts the following wildcards:
 
 * `"latest"` : To specify the latest version explicitly (default option).
-* `"latest-N"` : Where `N` is an integer value to be subtracted from the current stable version. For example, if we specify `latest-1` (i.e., _latest version minus one_), the previous version to the stable release will be used (see an example https://github.com/bonigarcia/webdrivermanager/blob/master/src/test/java/io/github/bonigarcia/wdm/test/docker/DockerChromeVersionsTest.java[here]).
 * `"beta"`: To use the beta version.
 * `"dev"`: To use the development version.
 
@@ -224,7 +223,7 @@ The next piece we need to execute this test template is the browser scenario. By
 include::../../test/resources/browsers.json[indent=0]
 ----
 
-When we run the template test using this browser scenario, we will execute four tests using Chrome in Docker: the first using the stable (_latest_) version, the second using the previous to the stable version(`latest-1`), the third using the beta version (`beta`), and the last one using the development version (`dev`). If we run the test in Eclipse, for example, we will get the following output:
+When we run the template test using this browser scenario, we will execute four tests using Chrome in Docker: the first using the stable (_latest_) version, the second using the beta version (`beta`), and the last one using the development version (`dev`). If we run the test in Eclipse, for example, we will get the following output:
 
 [.thumb]
 .Example of test template execution in Eclipse
