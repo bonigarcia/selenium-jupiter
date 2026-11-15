@@ -79,6 +79,9 @@ public class Config {
     ConfigKey<String> reportFileName = new ConfigKey<>(
             "sel.jup.report.file.name", String.class);
 
+    ConfigKey<Boolean> headless = new ConfigKey<>("sel.jup.headless",
+            Boolean.class);
+
     private <T> T resolve(ConfigKey<T> configKey) {
         String strValue = null;
         String name = configKey.getName();
@@ -260,6 +263,14 @@ public class Config {
         this.reportFileName.setValue(value);
     }
 
+    public boolean isHeadless() {
+        return resolve(headless);
+    }
+
+    public void setHeadless(boolean value) {
+        this.headless.setValue(value);
+    }
+
     public WebDriverManager getManager() {
         return manager;
     }
@@ -288,6 +299,10 @@ public class Config {
 
     public void enableScreenshotWhenFailure() {
         setScreenshotWhenFailure(true);
+    }
+
+    public void enableHeadless() {
+        setHeadless(true);
     }
 
     public void useSurefireOutputFolder() {

@@ -145,6 +145,9 @@ public class CapabilitiesHandler {
         // Arguments
         handleArguments(optionsClass, options);
 
+        // Headless
+        handleHeadless(optionsClass, options);
+
         // Extensions
         handleExtensions(optionsClass, options);
 
@@ -228,6 +231,25 @@ public class CapabilitiesHandler {
         } catch (Exception e) {
             log.trace("Exception reading binary of {} ({})", optionsClass,
                     e.getMessage());
+        }
+    }
+
+    private void handleHeadless(
+            Class<? extends Capabilities> optionsClass,
+            Capabilities options) {
+        try {
+            if (config.isHeadless()) {
+                Method addArgumentsMethod = optionsClass.getMethod(
+                        "addArguments", List.class);
+                String headlessArg = optionsClass == FirefoxOptions.class
+                        ? "-headless"
+                        : "--headless";
+                addArgumentsMethod.invoke(options,
+                        Arrays.asList(headlessArg));
+            }
+        } catch (Exception e) {
+            log.trace("Exception setting headless mode for {} ({})",
+                    optionsClass, e.getMessage());
         }
     }
 

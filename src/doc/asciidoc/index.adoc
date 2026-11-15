@@ -187,7 +187,7 @@ Selenium-Jupiter provides different annotations to specify browser-specific capa
 |=======
 |Anotation|Level|Description
 |`@Options`|Field-level|To configure browsre options (e.g. `ChromeOptions` for Chrome and Opera, `FirefoxOptions` for Firefox, `EdgeOptions` for Edge, and `SafariOptions` for Safari)
-|`@Arguments`|Parameter-level|To specify browser arguments (e.g., `--headless`, `--incognito`, etc.)
+|`@Arguments`|Parameter-level|To specify browser arguments (e.g., `--headless`, `--incognito`, etc.). Equivalent global setting: use configuration key `sel.jup.headless` to enable headless mode for all tests (see <<advanced-configuration,advanced configuration>>)
 |`@Preferences`|Parameter-level|To specify Firefox arguments (e.g., `media.navigator.streams.fake=true`, etc.)
 |`@Binary`|Parameter-level|To set the location of the browser binary
 |`@Extensions`|Parameter-level|To add browser extensions (_plugins_)
@@ -196,6 +196,8 @@ Selenium-Jupiter provides different annotations to specify browser-specific capa
 NOTE: The annotations marked as _parameter-level_ are applied to a single _WebDriver_ parameter. The annotations marked as _field-level_ are applied globally in a test class.
 
 The following example shows how to specify options for Chrome. In the first test (called `headlessTest`), we set the argument `--headless`, used for headless Chrome (i.e., without GUI). In the second test (`webrtcTest`), we use two different arguments: `--use-fake-device-for-media-stream` and `--use-fake-ui-for-media-stream`, used to fake user media (i.e., camera and microphone) in https://webrtc.org/[WebRTC] applications. In the third test (`extensionTest`), we add an extension to Chrome using the `@Extensions` annotation. The value of this field is an extension file that will be searched: i) using value as its relative/absolute path; ii) using value as a file name in the project classpath.
+
+TIP: You can also enable headless mode globally (without `@Arguments`) using the configuration key `sel.jup.headless` (see <<advanced-configuration,advanced configuration>>).
 
 [source,java]
 ----
@@ -399,6 +401,7 @@ The following table describes all the possible Java methods in the Selenium-Jupi
 |`setRecording(boolean)` `enableRecording()`|`sel.jup.recording`|`false`|Enable recording of Docker browsers
 |`setRecordingWhenFailure(true)` `enableRecordingWhenFailure()`|`sel.jup.recording.when.failure`|`false`|Enable recording of Docker browsers only if test fails
 |`setVnc(boolean)` `enableVnc()`|`sel.jup.vnc`|`false`|Enable the remote access in Docker browsers
+|`setHeadless(boolean)` `enableHeadless()`|`sel.jup.headless`|`false`|Enable headless mode for local browsers (i.e., without GUI). Equivalent to passing `--headless` (Chrome/Edge) or `-headless` (Firefox) as browser argument
 |`setBrowserTemplateJsonFile` `(String)`|`sel.jup.browser.template.` `json.file`|`classpath:browsers.json`|Location of the JSON browser scenario. If this value do not start with the word `classpath:`, the JSON file willbe searched using the specified path 
 |`setBrowserTemplateJsonContent` `(String)`|`sel.jup.browser.template.` `json.content`|`""`|Content of JSON browsers scenario
 |`setProperties(String)`|`sel.jup.properties`|`selenium-jupiter.` `properties`|Properties file (in the project classpath) for default configuration values
