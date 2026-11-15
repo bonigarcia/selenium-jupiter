@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
@@ -281,18 +283,28 @@ public class CapabilitiesHandler {
             Class<? extends Capabilities> optionsClass, Capabilities options) {
         try {
             boolean isFirefox = optionsClass == FirefoxOptions.class;
-            Method addExtensionsMethod = isFirefox
-                    ? optionsClass.getMethod("setProfile", FirefoxProfile.class)
+            Method addExtensionsMethod = isFirefox ? null
                     : optionsClass.getMethod("addExtensions", File[].class);
 
             Extensions extensions = parameter.getAnnotation(Extensions.class);
             if (extensions != null) {
-                for (String extension : extensions.value()) {
-                    if (isFirefox) {
-                        FirefoxProfile firefoxProfile = new FirefoxProfile();
-                        firefoxProfile.addExtension(getExtension(extension));
-                        addExtensionsMethod.invoke(options, firefoxProfile);
-                    } else {
+                if (isFirefox) {
+                    FirefoxProfile firefoxProfile = new FirefoxProfile();
+                    File profileDir = firefoxProfile.layoutOnDisk();
+                    File extDir = new File(profileDir, "extensions");
+                    extDir.mkdirs();
+                    for (String extension : extensions.value()) {
+                        File src = getExtension(extension);
+                        Files.copy(src.toPath(),
+                                new File(extDir, src.getName()).toPath(),
+                                StandardCopyOption.REPLACE_EXISTING);
+                    }
+                    firefoxProfile = new FirefoxProfile(profileDir);
+                    Method setProfileMethod = optionsClass
+                            .getMethod("setProfile", FirefoxProfile.class);
+                    setProfileMethod.invoke(options, firefoxProfile);
+                } else {
+                    for (String extension : extensions.value()) {
                         addExtensionsMethod.invoke(options,
                                 getExtension(extension));
                     }
