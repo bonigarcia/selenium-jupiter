@@ -36,7 +36,7 @@ class ChromeGlobalCapabilitiesTest {
     ChromeOptions options = new ChromeOptions();
     {
         Map<String, String> mobileEmulation = new HashMap<>();
-        mobileEmulation.put("deviceName", "Nexus 5");
+        mobileEmulation.put("deviceName", "Pixel 7");
         options.setExperimentalOption("mobileEmulation", mobileEmulation);
     }
 
