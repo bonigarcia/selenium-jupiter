@@ -35,7 +35,7 @@ jobs:
         timeout_minutes: 30
         max_attempts: 3
         command: |
-          mvn -B test
+          mvn -B -U test
     - name: Upload analysis to SonarCloud
       if: success() && !contains(github.ref, 'pull')
       run: >
