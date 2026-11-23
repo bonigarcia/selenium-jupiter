@@ -20,7 +20,7 @@
         <appium.version>11.0.0</appium.version>
 
         <!-- Test dependencies -->
-        <logback.version>1.6.7</logback.version>
+        <logback.version>1.6.8</logback.version>
         <assertj.version>3.27.7</assertj.version>
 
         <!-- Plugins -->
